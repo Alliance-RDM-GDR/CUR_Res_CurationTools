@@ -60,7 +60,7 @@ write.csv(img.info,file = paste0("Image_Metadata_Magick_",Sys.Date(),".csv"))
 install_exiftool()
 
 img.info2 = data.frame()
-for (i in files.jpg) {
+for (i in files.img) {
   temp <- exif_read(i)
   img.info2 <- bind_rows(img.info2,temp)
 }
