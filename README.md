@@ -9,6 +9,7 @@ The following table describes each script with the following: Code it is written
 | Script | Language | File Type | Description | Output | Dependencies |
 |--------|----------|-----------|-------------|--------|--------------|
 | Unzip.sh | Shell | Zip | Unpack any .zip files in the directory | Unpacked files | None |
+| unzipbz2.sh | Shell | BZ2 | Unpack any .bz2 files in multiple subdirectories | Unpacked files | None |
 | FileExtensionGen.R | R | all | Determine the file extension for each file by taking text to the right of the last period ("."). Files without an extension are retained with their full pathname. Tabulate the occurences of each file extension | .csv file with a count of each file extension. Files without an extension are retained with their full pathname and a count of 1. | Tidyverse R package (specifically dplyr) |
 ### Checking
 | Script | Language | File Type | Description | Output | Dependencies |
