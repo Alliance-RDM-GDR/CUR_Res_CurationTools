@@ -1,0 +1,26 @@
+# Preface
+
+This resource was designed for data curators supporting depositors and institutional partners. Functions are organized by task area, and each function follows a consistent documentation template aligned with best practices for reproducible research.
+
+**What you’ll need**
+
+- R ≥ 4.3 and Quarto ≥ 1.5  
+- Suggested packages: `jsonlite`, `readr`, `dplyr`, `stringr`, `fs`, `janitor`, `purrr`, `yaml`, `tibble`, `glue`, `httr2`
+
+**How to build**
+
+From the project root:
+
+```bash
+#Open bash chunks
+quarto render
+#Close bash chuck
+```
+
+To render a single chapter (HTML):
+
+```bash
+#Open bash chunks
+quarto render 03-quality-control.qmd --to html
+#Close bash chuck
+```

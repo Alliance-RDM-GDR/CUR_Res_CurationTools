@@ -1,29 +1,178 @@
 ---
-title: "Untitled"
-format: html
-editor: visual
+title: "Guide to opening and inspecting GeoPackage (.gpkg) files"
+format:
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+params:
+  file_path: "D:/Alliance/FRDR/Curation/2024/974/Files/Vector/20230605_cbblackburn1_p1.gpkg"
 ---
 
-## Open .gpkg files
+## Overview
+
+A **GeoPackage (`.gpkg`)** is an open, standards-based file format for geospatial information. It as a versatile that can hold multiple layers of vector features (points, lines, polygons), raster imagery, and even non-spatial tables. Its self-contained nature makes it an excellent format for data distribution and archival.
+
+This document provides a guide for curators and researchers on how to programmatically inspect, read, and visualize the contents of a `.gpkg` file using R. It also suggests powerful external tools for deeper visual exploration.
+
+## Setup
+
+This workflow relies on the **`sf`** (Simple Features) package, which is the modern standard for working with vector geospatial data in R. For enhanced visualization, we will also use the **`leaflet`** package.
+
+### R Packages
+
+If you don't have these packages installed, run this command once in your R console:
 
 ```{r}
-# Install and load the sf package
-#install.packages("sf")
-library(sf)
-
-# Define the path to your .gpkg file
-file_path <- "974/Vector_Data/20230606_cbblackburn3_p1.gpkg"
-
-# Read the GeoPackage file
-gpkg_data <- st_read(file_path)
-
-# Explore the data
-summary(gpkg_data)
-head(gpkg_data)
-str(gpkg_data)
-
-# Plot the data
-plot(gpkg_data)
-
+# install.packages(c("sf", "tidyverse", "leaflet"))
 ```
 
+### Load libraries
+
+This chunk loads the necessary libraries for the session.
+
+```{r load-libraries}
+#| label: load-libraries
+#| message: false
+library(sf)
+library(tidyverse)
+library(leaflet)
+```
+
+## Inspect the GeoPackage contents
+
+Using common R functions allow us to undertand the overall structure of the data
+
+### Using `summary()` for statistical overviews
+
+The **`summary()`** function provides a statistical summary for each column in your data frame. For numeric columns, it calculates key statistics like mean, median, and range. For text or categorical columns, it shows the length and class. It also gives a summary of the geometry column, including its type and bounding box.
+
+```{r explore-summary}
+#| label: explore-summary
+
+
+file_path <- params$file_path
+gpkg_data <- st_read(file_path )
+
+summary(gpkg_data)
+```
+
+------------------------------------------------------------------------
+
+### Using `head()` to preview rows
+
+The **`head()`** function displays the first few rows (six, by default) of your data frame.
+
+```{r explore-head}
+#| label: explore-head
+
+head(gpkg_data)
+```
+
+------------------------------------------------------------------------
+
+### Using `str()` for data structure
+
+The **`str()`** (structure) function provides a high-level overview of the file. It list the total number of observations (rows) and variables (columns), and then lists each column's name, its data type (e.g., `num` for numeric, `chr` for character), and the first few data entries.
+
+```{r explore-str}
+#| label: explore-str
+
+str(gpkg_data)
+```
+
+### Inspecting layers
+
+Also, a single `.gpkg` file can contain many layers. Before reading any data, the first step is to inspect the file to see what it holds. The `st_layers()` function lists all available layers without loading them into memory.
+
+```{r inspect-layers}
+#| label: inspect-layers
+
+# Get the file path from the document's parameters
+file_path <- params$file_path
+
+# List all layers within the GeoPackage file
+st_layers(dsn = file_path)
+```
+
+The output above is a table of contents for the GeoPackage. It shows each layer's **name**, its **geometry type** (e.g., polygon, point), the number of **features** (rows), and the number of **fields** (columns). This is the first and most important quality check to ensure the file's contents match its documentation.
+
+## Read a specific layer
+
+Once the names of the layers are known, we can read a specific one into R using `st_read()`. This function loads the data as an `sf` data frame, which behaves like a regular data frame but with an extra "geometry" column that stores the spatial information.
+
+```{r read-layer}
+#| label: read-layer
+
+# [cite_start]Read a specific layer by name from the GeoPackage file [cite: 1]
+# Note: If you omit the 'layer' argument, st_read() defaults to the first layer.
+gpkg_data <- st_read(file_path, layer = "20230605_cbblackburn1_p1_labels_points") # Replace "Streams" with your layer name
+
+# [cite_start]Explore the data's structure and attributes [cite: 1]
+glimpse(gpkg_data)
+
+# Check the Coordinate Reference System (CRS)
+st_crs(gpkg_data)
+```
+
+Always check the **CRS**. It defines how the geometric coordinates relate to real-world locations. Missing or incorrect CRS information is a common data quality issue that can render a dataset unusable.
+
+## Visualize the Data
+
+We can create both static and interactive maps for geospacial data.
+
+### Static Plot
+
+For a quick, simple preview of the geometry, the base `plot()` function works well.
+
+```{r static-plot}
+#| label: static-plot
+
+# [cite_start]Create a static plot of the layer's geometry [cite: 1]
+plot(st_geometry(gpkg_data))
+
+# You can also color the plot based on a specific data column
+# plot(gpkg_data["ATTRIBUTE_NAME"])
+```
+
+### Interactive Map
+
+For more compelling exploration, the `leaflet` package can create an interactive map that you can pan and zoom.First, the coordinates nned to be transformed to EPSG:4326 to be read by `leaflet`.
+
+The leaflet package has different functions for each geometry type:
+
+-   addPolygons() for areas.
+
+-   addPolylines() for lines.
+
+-   addCircleMarkers() or addMarkers() for points.
+
+```{r interactive-map}
+#| label: transform-and-plot-map
+#| fig-cap: "Interactive map of the data, correctly projected in WGS 84 for web display."
+
+# 1. Transform the data to the CRS that Leaflet expects (EPSG:4326)
+gpkg_data_wgs84 <- st_transform(gpkg_data, crs = 4326)
+
+# 2. Now, create the map using the *transformed* data
+leaflet(gpkg_data_wgs84) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircleMarkers(
+    radius = 3,         # Sets the circle size in pixels
+    stroke = FALSE,     # Removes the circle outline
+    fillOpacity = 0.8,  # Sets the transparency of the circle
+    popup = ~paste0("<strong>Attribute: </strong>", as.character(gpkg_data_wgs84[[1]]))
+  )
+```
+
+## Additional tools
+
+While R is excellent for programmatic analysis, other tools are indispensable for deep visual inspection and management of GeoPackage files.
+
+### QGIS (Desktop GIS Software)
+
+**QGIS** is a free, open-source, and extremely powerful Geographic Information System. It's the industry standard for working with geospatial data outside of a programming environment.
+
+### DB Browser for SQLite (Database Tool)
+
+Since a `.gpkg` file is fundamentally an SQLite database, you can use a database browser to inspect its raw structure.

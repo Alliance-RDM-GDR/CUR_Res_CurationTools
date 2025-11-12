@@ -1,0 +1,22 @@
+---
+title: "R Functions for Research Data Management"
+subtitle: "A Practical Guide for Data Curators"
+format: html
+---
+
+::: {.lead}
+This book collects well-documented R functions and hands-on workflows to support research data management (RDM) in practice — from ingest and validation to metadata enrichment, curation, and reporting.
+:::
+
+```{r}
+#| label: setup
+#| include: false
+# This chunk is executed for all chapters when building the book.
+
+```
+
+> **How to read this book:** Each chapter introduces a task area (e.g., ingest, quality control). For each function, you’ll find its purpose, arguments, return value, examples, tests, and references. Copy/paste-ready snippets are provided in callouts.
+
+:::{.callout-tip}
+**Reproducibility first.** All examples rely on versioned functions in `R/` with deterministic behavior and unit tests where applicable.
+:::

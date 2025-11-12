@@ -1,0 +1,48 @@
+project:
+  type: book
+  output-dir: _book
+
+book:
+  title: "Tools for Research Data Management and curation"
+  subtitle: "A Practical Guide for Data Curators"
+  author: "Curation services team of the Digital Research Alliance of Canada"
+  date: today
+  chapters:
+    - index.qmd
+    - part: FileChecks.qmd
+      chapters:
+        - FileChecker.qmd
+        - ExtensionChecker.qmd
+        - ImageChecker.qmd
+        
+    - part: OpenFiles.qmd
+      chapters:
+        - OpenFiles_gpkg.qmd
+
+
+
+
+bibliography: references.bib
+format:
+  html:
+    theme:
+      - cosmo
+    css: styles/styles.css
+    toc-depth: 3
+    code-copy: true
+    code-tools: true
+  pdf:
+    documentclass: scrbook
+    geometry:
+      - margin=1in
+      - heightrounded
+  docx:
+    toc: true
+
+execute:
+  echo: true
+  warning: false
+  message: false
+  freeze: auto
+
+editor: visual

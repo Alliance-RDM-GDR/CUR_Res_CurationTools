@@ -1,0 +1,221 @@
+---
+title: "Image File Metadata and Quality Control"
+author: "Natalie Williams"
+date: "2025-10-14"
+format: 
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+params:
+  target_dir: "D://Alliance/FRDR/Curation/2025/1352/files/Reconstructions"
+---
+
+## Overview
+
+This notebook provides a workflow for performing standardized quality control checks on image files. It automatically scans a directory for common image formats (`.jpg`, `.jpeg`, `.png`, `.tiff`), extracts comprehensive metadata, and generates summary reports.
+
+The process uses two specialized R packages to create two distinct levels of reporting:
+
+1.  **`magick`**: Provides a high-level technical summary that allows the verification of valid images and checking elemental properties like dimensions, colorspace, and file size.
+
+2.  **`exiftoolr`**: Performs a deep extraction of all embedded EXIF metadata, including camera/scanner model, software versions, GPS coordinates, and creation timestamps.
+
+Finally, we offer a guide on how to use the extracted metadata to identify common curation issues, such as inconsistent image dimensions, missing location data, or potential privacy concerns.
+
+---
+
+## One-time setup
+
+Before running this notebook, ensure the required R packages and the `ExifTool` command-line software are installed.
+
+### R Packages
+
+The following R packages are required. If you don't have them, uncomment this code and run it once in your R console:
+
+```{r}
+# install.packages(c("tidyverse", "magick", "exiftoolr"))
+```
+
+### ExifTool software
+
+The `exiftoolr` package is a wrapper around a command-line tool called **ExifTool**. Install this tool for the detailed metadata extraction to work. **Run the following command *once* to install the software.
+
+```{r}
+#  exiftoolr::install_exiftool()
+```
+
+---
+
+## Load libraries
+
+Load all the necessary libraries for the session.
+
+```{r load-libraries}
+#| label: load-libraries
+#| message: false
+library(tidyverse)
+library(magick)
+library(exiftoolr)
+```
+
+---
+
+## Select a target directory
+
+Here, we select the directory to be analyzed and find all relevant image files within it. The directory is set by the `target_dir` parameter at the top of this document.The code uses a single command to find all files ending in `.jpg`, `.jpeg`, `.png`, or `.tiff`.
+
+```{r find-files}
+#| label: find-files
+
+# Get the directory path from the document's parameters
+target_dir <- params$target_dir
+print(paste("Analyzing directory:", target_dir))
+
+# Find all image files using a regular expression for the extensions
+image_files <- list.files(
+  path = target_dir,
+  pattern = "\\.(jpg|jpeg|png|tiff|tif)$",
+  recursive = TRUE,
+  full.names = TRUE,
+  ignore.case = TRUE
+)
+
+# Print the number of files found and show the first few paths
+print(paste("Found", length(image_files), "image files."))
+head(image_files)
+```
+
+---
+
+## Technical Summary with `magick`
+
+The `magick` package allow us to confirm these files are readable and for extracting basic technical properties. This step loops through each file, reads its information, and collects it into a single table. 
+
+```{r magick-summary}
+#| label: magick-summary
+#| message: false
+#| warning: false
+
+# Use purrr::map_dfr to efficiently loop through files and bind results
+magick_info <- purrr::map_dfr(image_files, function(file_path) {
+  tryCatch({
+    # image_read() validates the file, image_info() extracts metadata
+    image_read(file_path) %>%
+      image_info() %>%
+      # Add the filename to the summary table
+      mutate(SourceFile = file_path)
+  }, error = function(e) {
+    # If a file is corrupt or not a valid image, print a warning
+    message("Could not process file with magick: ", file_path, " | Error: ", e$message)
+    # Return NULL for this file so map_dfr skips it
+    return(NULL)
+  })
+})
+
+# Display the first few rows of the technical summary table
+print("--- Magick Technical Summary ---")
+head(magick_info)
+
+# Save the results to a CSV file
+write.csv(
+  magick_info, 
+  file = paste0("Results/ImageCheck/Image_Metadata_Magick_", Sys.Date(), ".csv"), 
+  row.names = FALSE
+)
+```
+
+---
+
+## Detailed EXIF Metadata with `exiftoolr`
+
+This step uses `exiftoolr` to extract all available embedded metadata from the image files. This can include hundreds of fields detailing everything from the camera settings and lens information to GPS coordinates and software versions. Please note that the output can have many columns. 
+
+```{r exiftool-summary}
+#| label: exiftool-summary
+#| message: false
+#| warning: false
+#| results: 'hide'
+
+exif_info <- exif_read(image_files)
+
+# Save the detailed results to a CSV file
+write.csv(
+  exif_info,
+  file = paste0("Results/ImageCheck/Image_Metadata_Exif_", Sys.Date(), ".csv"),
+  row.names = FALSE
+)
+
+head(exif_info)
+```
+
+---
+
+## Additional tools
+
+We can perfom additional checks for images using th efollowing chunks. 
+
+### Identify inconsistent image dimensions
+
+In many datasets, all images are expected to have the same dimensions (width and height). A simple summary can quickly flag any outliers.
+
+```{r curation-check-dimensions}
+#| label: curation-check-dimensions
+#| code-fold: false
+
+dimension_summary <- magick_info %>%
+  count(width, height, format, name = "file_count") %>%
+  arrange(desc(file_count))
+
+print("Summary of Image Dimensions:")
+print(dimension_summary)
+```
+
+### Summarize a Key EXIF Field (e.g., Megapixels)
+
+Verifying that all images were captured with the same device can be a critical quality check.
+
+```{r curation-check-model}
+#| label: curation-check-model
+#| code-fold: false
+
+# We only need the Make and Model columns from the exif_info table
+device_summary <- exif_info %>%
+  # Check if the columns exist before trying to use them
+  { if ("Megapixels" %in% names(.)) 
+      count(., Megapixels, name = "file_count") 
+    else 
+      tibble(Message = "Megapixels metadata not found.")
+  }
+
+print("Summary of Megapixels:")
+print(device_summary)
+```
+
+### Check for Geospatial Information (Privacy/Completeness)
+
+It's important to know if your image files contain embedded GPS coordinates. This can be a privacy concern if the data is meant to be anonymous, or a completeness issue if the location data is required.
+
+```{r curation-check-gps}
+#| label: curation-check-gps
+#| code-fold: false
+
+# Check for the presence of the GPSLatitude column
+if ("GPSLatitude" %in% names(exif_info)) {
+  
+  gps_summary <- exif_info %>%
+    summarise(
+      files_with_gps = sum(!is.na(GPSLatitude)),
+      files_missing_gps = sum(is.na(GPSLatitude)),
+      total_files = n()
+    )
+  
+  print("Summary of GPS Metadata:")
+  print(gps_summary)
+  
+} else {
+  
+  print("No GPS metadata columns found in any of the files.")
+  
+}
+```

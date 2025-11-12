@@ -1,0 +1,22 @@
+# Introduction
+
+This book provides:
+
+- A curated set of R functions for common RDM tasks.
+- A documentation template to standardize function descriptions.
+- Usage examples and minimal tests.
+
+## Documentation template
+
+Use this structure for each function section:
+
+- **Function name** and a one-line **purpose**.
+- **Signature** and **arguments**.
+- **Return value** (class/structure).
+- **Side effects** (I/O, logs).
+- **Examples** (copy/paste).
+- **Validation** (what’s checked).
+- **Limitations** and **edge cases**.
+- **References** and **related work**.
+
+See subsequent chapters for filled-in examples.

@@ -1,0 +1,5 @@
+# Appendix
+
+- Glossary of terms (FAIR, PID, schema, README).
+- Links to FRDR documentation and Tri-Agency RDM Policy.
+- Notes on privacy, sensitive data, and ethical curation.

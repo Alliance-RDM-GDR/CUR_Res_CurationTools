@@ -1,0 +1,15 @@
+{
+  "hash": "0908fd50acc71d7a8d13137e6537f980",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"R Functions for Research Data Management\"\nsubtitle: \"A Practical Guide for Data Curators\"\nformat: html\n---\n\n\n\n\n\n\n\n\n::: {.lead}\nThis book collects well-documented R functions and hands-on workflows to support research data management (RDM) in practice — from ingest and validation to metadata enrichment, curation, and reporting.\n:::\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n> **How to read this book:** Each chapter introduces a task area (e.g., ingest, quality control). For each function, you’ll find its purpose, arguments, return value, examples, tests, and references. Copy/paste-ready snippets are provided in callouts.\n\n:::{.callout-tip}\n**Reproducibility first.** All examples rely on versioned functions in `R/` with deterministic behavior and unit tests where applicable.\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
