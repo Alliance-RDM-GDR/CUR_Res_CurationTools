@@ -15,19 +15,19 @@ This notebook provides a standardized procedure for checking and summarizing the
 
 **With this procedure curators can:**
 
-* **Discover files:** Automatically find all `.csv` files in the project directory.
-* **Extract metadata:** For each file, gather information on column names, data types, and row counts.
-* **Calculate descriptive statistics:** Compute summary statistics (min, max, mean, median) and the count of missing values (`NA`) for each column.
-* **Generate summary outputs:** Create two final `.csv` files:
+-   **Discover files:** Automatically find all `.csv` files in the project directory.
+-   **Extract metadata:** For each file, gather information on column names, data types, and row counts.
+-   **Calculate descriptive statistics:** Compute summary statistics (min, max, mean, median) and the count of missing values (`NA`) for each column.
+-   **Generate summary outputs:** Create two final `.csv` files:
     1.  `MetaData_CSV.csv`: A detailed, long-format summary of every column from every file.
     2.  `ColumnCheck_CSV.csv`: A wide-format summary to easily compare column names and types across all files.
 
 **Assumptions:**
 
-* This notebook is located and run in the root directory of the data deposit.
-* All compressed files (e.g., `.zip`, `.tar`) have already been extracted.
+-   This notebook is located and run in the root directory of the data deposit.
+-   All compressed files (e.g., `.zip`, `.tar`) have already been extracted.
 
----
+------------------------------------------------------------------------
 
 ## Setup: Loading libraries
 
@@ -39,8 +39,7 @@ library(tidyverse)
 library(rstudioapi)
 ```
 
----
-
+------------------------------------------------------------------------
 
 ## Select target directory
 
@@ -81,7 +80,7 @@ csv.files <- list.files(
 print(csv.files)
 ```
 
----
+------------------------------------------------------------------------
 
 ## Generate metadata summaries
 
@@ -170,7 +169,7 @@ rm(tmp, tmp.stat, tmp.meta)
 head(csv.summ)
 ```
 
----
+------------------------------------------------------------------------
 
 ## Create a comparison table
 
@@ -191,7 +190,7 @@ col.compare <- csv.summ %>%
 print(col.compare)
 ```
 
----
+------------------------------------------------------------------------
 
 ## Write the results to file
 
@@ -200,8 +199,28 @@ Finally, we save our two summary data frames as new `.csv` files. These files wi
 ```{r write-files}
 #| label: write-output-files
 
-write.csv(csv.summ, file = "Results/FileChecks/MetaData_CSV.csv", row.names = FALSE)
-write.csv(col.compare, file = "Results/FileChecks/ColumnCheck_CSV.csv", row.names = FALSE)
+write.csv(csv.summ, file = "Results/FileChecks_csv/MetaData_CSV.csv", row.names = FALSE)
+write.csv(col.compare, file = "Results/FileChecks_csv/ColumnCheck_CSV.csv", row.names = FALSE)
 
 print("Summary files 'MetaData_CSV.csv' and 'ColumnCheck_CSV.csv' have been created in your current working directory.")
 ```
+
+---
+
+## Using the Non-Interactive R Script
+
+For users who want to run this analysis on a server or from the command line, a non-interactive version of this script is available.
+
+* **R Script:** **[`FileChecks_csv_Script.R`](Scripts/FileChecks_csv_Script.R)**
+* **Example SLURM Submission Script:** **[`FileCkecks_csv.sh`](Scrum/FileCkecks_csv.sh)**
+
+### How to Use
+
+- **For RStudio:**
+
+1.  Download the `FileChecks_csv_Script.R` script.
+2.  Open in Rstudio and run the whole script. or run it from your terminal, passing the path to your data folder as an argument:
+
+- **For clusters**
+
+Alternatively, adapt the `FileCkecks_csv.sh` script to match your cluster's environment and your data path, then submit it using `sbatch`.

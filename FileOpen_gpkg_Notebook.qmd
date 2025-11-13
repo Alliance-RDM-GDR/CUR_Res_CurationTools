@@ -1,19 +1,17 @@
 ---
-title: "Guide to opening and inspecting GeoPackage (.gpkg) files"
+title: "GeoPackage (.gpkg) files"
 format:
   html:
     toc: true
     toc-location: left
     code-fold: true
 params:
-  file_path: "D:/Alliance/FRDR/Curation/2024/974/Files/Vector/20230605_cbblackburn1_p1.gpkg"
+  file_path: "data/FileOpen_gpkg/20230606_cbblackburn3_p1.gpkg"
 ---
 
 ## Overview
 
-A **GeoPackage (`.gpkg`)** is an open, standards-based file format for geospatial information. It as a versatile that can hold multiple layers of vector features (points, lines, polygons), raster imagery, and even non-spatial tables. Its self-contained nature makes it an excellent format for data distribution and archival.
-
-This document provides a guide for curators and researchers on how to programmatically inspect, read, and visualize the contents of a `.gpkg` file using R. It also suggests powerful external tools for deeper visual exploration.
+A **GeoPackage (`.gpkg`)** is an open, standards-based file format for geospatial information. It as a versatile that can hold multiple layers of vector features (points, lines, polygons), raster imagery, and even non-spatial tables. Its self-contained nature makes it an excellent format for data distribution and archival. This document provides a guide for curators and researchers on how to programmatically inspect, read, and visualize the contents of a `.gpkg` file using R. It also suggests powerful external tools for deeper visual exploration.
 
 ## Setup
 
@@ -49,7 +47,6 @@ The **`summary()`** function provides a statistical summary for each column in y
 
 ```{r explore-summary}
 #| label: explore-summary
-
 
 file_path <- params$file_path
 gpkg_data <- st_read(file_path )
@@ -104,11 +101,11 @@ Once the names of the layers are known, we can read a specific one into R using 
 ```{r read-layer}
 #| label: read-layer
 
-# [cite_start]Read a specific layer by name from the GeoPackage file [cite: 1]
+# Read a specific layer by name from the GeoPackage file
 # Note: If you omit the 'layer' argument, st_read() defaults to the first layer.
-gpkg_data <- st_read(file_path, layer = "20230605_cbblackburn1_p1_labels_points") # Replace "Streams" with your layer name
+gpkg_data <- st_read(file_path, layer = "20230606_cbblackburn3_p1_labels_points") # Replace "Streams" with your layer name
 
-# [cite_start]Explore the data's structure and attributes [cite: 1]
+# Explore the data's structure and attributes
 glimpse(gpkg_data)
 
 # Check the Coordinate Reference System (CRS)
@@ -128,7 +125,7 @@ For a quick, simple preview of the geometry, the base `plot()` function works we
 ```{r static-plot}
 #| label: static-plot
 
-# [cite_start]Create a static plot of the layer's geometry [cite: 1]
+# Create a static plot of the layer's geometry
 plot(st_geometry(gpkg_data))
 
 # You can also color the plot based on a specific data column
@@ -137,15 +134,11 @@ plot(st_geometry(gpkg_data))
 
 ### Interactive Map
 
-For more compelling exploration, the `leaflet` package can create an interactive map that you can pan and zoom.First, the coordinates nned to be transformed to EPSG:4326 to be read by `leaflet`.
+For more compelling exploration, the `leaflet` package can create an interactive map that you can pan and zoom.First, the coordinates nned to be transformed to EPSG:4326 to be read by `leaflet`. The leaflet package has different functions for each geometry type:
 
-The leaflet package has different functions for each geometry type:
-
--   addPolygons() for areas.
-
--   addPolylines() for lines.
-
--   addCircleMarkers() or addMarkers() for points.
+* addPolygons() for areas.
+* addPolylines() for lines.
+* addCircleMarkers() or addMarkers() for points.
 
 ```{r interactive-map}
 #| label: transform-and-plot-map
@@ -171,7 +164,7 @@ While R is excellent for programmatic analysis, other tools are indispensable fo
 
 ### QGIS (Desktop GIS Software)
 
-**QGIS** is a free, open-source, and extremely powerful Geographic Information System. It's the industry standard for working with geospatial data outside of a programming environment.
+**QGIS** is a free, open-source, and extremely powerful Geographic Information System. It's the industry standard for working with geospatial data outside of an programming environment.
 
 ### DB Browser for SQLite (Database Tool)
 

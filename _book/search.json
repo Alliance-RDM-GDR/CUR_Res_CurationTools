@@ -228,5 +228,499 @@
       "FileChecks",
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>File extension and inventory check</span>"
     ]
+  },
+  {
+    "objectID": "FileChecks_csv_Notebook.html",
+    "href": "FileChecks_csv_Notebook.html",
+    "title": "3  Automated CSV File Checker",
+    "section": "",
+    "text": "3.1 Overview\nThis notebook provides a standardized procedure for checking and summarizing the contents of multiple .csv files within a directory. The goal is to automatically generate metadata summaries that can be used for data quality control, documentation, and initial exploratory analysis.\nWith this procedure curators can:\nAssumptions:",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Automated CSV File Checker</span>"
+    ]
+  },
+  {
+    "objectID": "FileChecks_csv_Notebook.html#overview",
+    "href": "FileChecks_csv_Notebook.html#overview",
+    "title": "3  Automated CSV File Checker",
+    "section": "",
+    "text": "Discover files: Automatically find all .csv files in the project directory.\nExtract metadata: For each file, gather information on column names, data types, and row counts.\nCalculate descriptive statistics: Compute summary statistics (min, max, mean, median) and the count of missing values (NA) for each column.\nGenerate summary outputs: Create two final .csv files:\n\nMetaData_CSV.csv: A detailed, long-format summary of every column from every file.\nColumnCheck_CSV.csv: A wide-format summary to easily compare column names and types across all files.\n\n\n\n\nThis notebook is located and run in the root directory of the data deposit.\nAll compressed files (e.g., .zip, .tar) have already been extracted.",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Automated CSV File Checker</span>"
+    ]
+  },
+  {
+    "objectID": "FileChecks_csv_Notebook.html#setup-loading-libraries",
+    "href": "FileChecks_csv_Notebook.html#setup-loading-libraries",
+    "title": "3  Automated CSV File Checker",
+    "section": "3.2 Setup: Loading libraries",
+    "text": "3.2 Setup: Loading libraries\nFirst, we need to load the tidyverse library. We also load the rstudioapi library to enable the interactive directory selection prompt (It comes pre-installed with RStudio).\n\nlibrary(tidyverse)\nlibrary(rstudioapi)",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Automated CSV File Checker</span>"
+    ]
+  },
+  {
+    "objectID": "FileChecks_csv_Notebook.html#select-target-directory",
+    "href": "FileChecks_csv_Notebook.html#select-target-directory",
+    "title": "3  Automated CSV File Checker",
+    "section": "3.3 Select target directory",
+    "text": "3.3 Select target directory\nFirst, we select the directory to analyze and find .csv files within it.\n\n3.3.1 Select a Directory\nIn the chunk below, select the directory you want to analize.\n\n# Manually define the path to the directory you want to analyze.\n# You must update this path every time you want to check a new folder.\ntarget_dir &lt;- \"D:/Alliance/FRDR/Curation/2025/1337/files/v3\"\n\n# Print the directory being used to confirm\nprint(paste(\"Using directory:\", target_dir))\n\n[1] \"Using directory: D:/Alliance/FRDR/Curation/2025/1337/files/v3\"\n\n\n\n\n3.3.2 Find CSV Files in the Selected Directory\nNow that we have the path to the target directory, this code searches that location and all its subdirectories (recursive = TRUE) for files ending with the .csv extension.\nWe set full.names = TRUE to ensure that csv.files stores the complete file path for each file, which is necessary for the script to read them correctly.\n\ncsv.files &lt;- list.files(\n  path = target_dir,       # The directory to search\n  pattern = \"*.csv\",       # The file pattern to look for\n  recursive = TRUE,        # Search in sub-folders as well\n  full.names = TRUE        # Return the full file path, not just the name\n)\n\n# Let's print the full paths of the files found to check\nprint(csv.files)\n\n [1] \"D:/Alliance/FRDR/Curation/2025/1337/files/v3/Figure3A.csv\"                   \n [2] \"D:/Alliance/FRDR/Curation/2025/1337/files/v3/Figure3B.csv\"                   \n [3] \"D:/Alliance/FRDR/Curation/2025/1337/files/v3/Figure3C_Intergrated_heat.csv\"  \n [4] \"D:/Alliance/FRDR/Curation/2025/1337/files/v3/Figure3C_Thermogram.csv\"        \n [5] \"D:/Alliance/FRDR/Curation/2025/1337/files/v3/Figure3D.csv\"                   \n [6] \"D:/Alliance/FRDR/Curation/2025/1337/files/v3/Figure4B.csv\"                   \n [7] \"D:/Alliance/FRDR/Curation/2025/1337/files/v3/Figure4C.csv\"                   \n [8] \"D:/Alliance/FRDR/Curation/2025/1337/files/v3/Figure4D.csv\"                   \n [9] \"D:/Alliance/FRDR/Curation/2025/1337/files/v3/Figure6A.csv\"                   \n[10] \"D:/Alliance/FRDR/Curation/2025/1337/files/v3/Figure6B.csv\"                   \n[11] \"D:/Alliance/FRDR/Curation/2025/1337/files/v3/Figure6C_Intergrated_heat.csv\"  \n[12] \"D:/Alliance/FRDR/Curation/2025/1337/files/v3/Figure6C_Thermogram.csv\"        \n[13] \"D:/Alliance/FRDR/Curation/2025/1337/files/v3/Figure6D.csv\"                   \n[14] \"D:/Alliance/FRDR/Curation/2025/1337/files/v3/Figure7A.csv\"                   \n[15] \"D:/Alliance/FRDR/Curation/2025/1337/files/v3/Figure7B.csv\"                   \n[16] \"D:/Alliance/FRDR/Curation/2025/1337/files/v3/Figure7C.csv\"                   \n[17] \"D:/Alliance/FRDR/Curation/2025/1337/files/v3/Figure8B.csv\"                   \n[18] \"D:/Alliance/FRDR/Curation/2025/1337/files/v3/FigureS1A.csv\"                  \n[19] \"D:/Alliance/FRDR/Curation/2025/1337/files/v3/FigureS1B.csv\"                  \n[20] \"D:/Alliance/FRDR/Curation/2025/1337/files/v3/FigureS1C_Intergrated_Heat.csv\" \n[21] \"D:/Alliance/FRDR/Curation/2025/1337/files/v3/FigureS1C_Thermogram.csv\"       \n[22] \"D:/Alliance/FRDR/Curation/2025/1337/files/v3/FigureS1D_intergrated_Heat_.csv\"\n[23] \"D:/Alliance/FRDR/Curation/2025/1337/files/v3/FigureS1D_Thermogram.csv\"       \n[24] \"D:/Alliance/FRDR/Curation/2025/1337/files/v3/FigureS2.csv\"                   \n[25] \"D:/Alliance/FRDR/Curation/2025/1337/files/v3/FigureS3A.csv\"                  \n[26] \"D:/Alliance/FRDR/Curation/2025/1337/files/v3/FigureS3B.csv\"",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Automated CSV File Checker</span>"
+    ]
+  },
+  {
+    "objectID": "FileChecks_csv_Notebook.html#generate-metadata-summaries",
+    "href": "FileChecks_csv_Notebook.html#generate-metadata-summaries",
+    "title": "3  Automated CSV File Checker",
+    "section": "3.4 Generate metadata summaries",
+    "text": "3.4 Generate metadata summaries\nHere, the code will loop through each full file path in our csv.files list, read the file, and extract the required metadata.\n\n3.4.1 Initializing the summary table\n\ncsv.summ &lt;- data.frame(\n  file.name = character(),\n  column.name = character(),\n  column.type = character(),\n  rows = integer(),\n  min = character(),\n  mean = character(),\n  med = character(),\n  max = character(),\n  NAs = character()\n)\n\n\n\n3.4.2 Processing each file\nHere, we systematically loops through each CSV file selected to summarize the data and handle errors. For valid data, we extract metadata (like column names, data types, and row count), and calculate descriptive statistics (min, mean, max, and a count of missing values). When not valid columns are found (corrupted or contains unexpected data types) the script print a detailed message in the console identifying the problematic file and the specific error.\n\n# The Main Loop: Processing Each File\nfor (i in csv.files) {\n  \n  # Use tryCatch to handle potential errors in a file without stopping the whole script\n  tryCatch({\n    \n    # --- All the original processing code is placed inside the tryCatch block ---\n    tmp &lt;- read.csv(i)\n    \n    tmp.meta &lt;- data.frame(\n      file.name = basename(i),\n      column.name = colnames(tmp),\n      column.type = sapply(tmp, class),\n      rows = nrow(tmp)\n    )\n    \n    tmp.stat &lt;- tmp %&gt;%\n      summarise(\n        across(\n          .cols = everything(),\n          .fns = list(\n            min = ~min(.x, na.rm = TRUE),\n            mean = ~mean(.x, na.rm = TRUE),\n            med = ~median(.x, na.rm = TRUE),\n            max = ~max(.x, na.rm = TRUE),\n            NAs = ~sum(is.na(.x))\n          ),\n          .names = \"{.col}|{.fn}\"\n        )\n      ) %&gt;%\n      mutate(\n        across(everything(), as.character)\n      ) %&gt;%\n      pivot_longer(\n        cols = everything(),\n        names_to = c(\"column.name\", \".value\"),\n        names_pattern = \"(.*)\\\\|(.*)\"\n      )\n      \n    tmp.meta &lt;- full_join(tmp.meta, tmp.stat, by = \"column.name\")\n    \n    csv.summ &lt;- bind_rows(csv.summ, tmp.meta)\n    \n  }, error = function(e) {\n    # If an error occurs for a file, this code will run instead of crashing\n    message(paste(\"--- ERROR --- Failed to process file:\", i))\n    message(paste(\"Specific error message:\", e$message))\n    message(\"Skipping this file and continuing with the next one.\\n\")\n  })\n}\n\n# Clean up temporary variables from the loop\nrm(tmp, tmp.stat, tmp.meta)\n\n# View the first few rows of the final detailed summary table\nhead(csv.summ)\n\n     file.name   column.name column.type rows     min             mean     med\n1 Figure3A.csv Wavelength_nm     integer   61     465              495     495\n2 Figure3A.csv        F_0_uM     integer   61 2320000  4057213.1147541 4210000\n3 Figure3A.csv      F_0.2_uM     integer   61 1920000 3339180.32786885 3450000\n4 Figure3A.csv      F_0.4_uM     integer   61 1540000 2662459.01639344 2740000\n5 Figure3A.csv      F_0.8_uM     integer   61  984950  1655163.1147541 1710000\n6 Figure3A.csv      F_1.0_uM     integer   61  858680 1441109.01639344 1490000\n      max NAs\n1     525   0\n2 5000000   0\n3 4140000   0\n4 3310000   0\n5 2070000   0\n6 1800000   0",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Automated CSV File Checker</span>"
+    ]
+  },
+  {
+    "objectID": "FileChecks_csv_Notebook.html#create-a-comparison-table",
+    "href": "FileChecks_csv_Notebook.html#create-a-comparison-table",
+    "title": "3  Automated CSV File Checker",
+    "section": "3.5 Create a comparison table",
+    "text": "3.5 Create a comparison table\nThis step creates the wide-format col.compare table, making it easy to spot inconsistencies in column names and data types across files.\n\ncol.compare &lt;- csv.summ %&gt;%\n  pivot_wider(\n    id_cols = \"file.name\",\n    names_from = \"column.name\",\n    values_from = \"column.type\",\n    values_fn = ~paste(., collapse = \", \")\n  )\n\n# View the column comparison table to confirm it's a flat table\nprint(col.compare)\n\n# A tibble: 23 × 83\n   file.name   Wavelength_nm F_0_uM F_0.2_uM F_0.4_uM F_0.8_uM F_1.0_uM F_1.5_uM\n   &lt;chr&gt;       &lt;chr&gt;         &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;   \n 1 Figure3A.c… integer       integ… integer  integer  integer  integer  integer \n 2 Figure3B.c… &lt;NA&gt;          &lt;NA&gt;   &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;    \n 3 Figure3C_I… &lt;NA&gt;          &lt;NA&gt;   &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;    \n 4 Figure3C_T… &lt;NA&gt;          &lt;NA&gt;   &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;    \n 5 Figure4B.c… &lt;NA&gt;          &lt;NA&gt;   &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;    \n 6 Figure4C.c… &lt;NA&gt;          &lt;NA&gt;   &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;    \n 7 Figure4D.c… &lt;NA&gt;          &lt;NA&gt;   &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;    \n 8 Figure6A.c… integer       integ… integer  integer  &lt;NA&gt;     integer  &lt;NA&gt;    \n 9 Figure6B.c… &lt;NA&gt;          &lt;NA&gt;   &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;    \n10 Figure6C_I… &lt;NA&gt;          &lt;NA&gt;   &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;    \n# ℹ 13 more rows\n# ℹ 75 more variables: F_2.0_uM &lt;chr&gt;, F_5.0_uM &lt;chr&gt;, F_10.0_uM &lt;chr&gt;,\n#   F_20.0_uM &lt;chr&gt;, Concentration_nM &lt;chr&gt;, F_F0_Bvd904 &lt;chr&gt;,\n#   F_F0_Bvd904.1 &lt;chr&gt;, F_F0_Bvd904.2 &lt;chr&gt;, Molar_Ratio &lt;chr&gt;,\n#   kcal_per_mole_of_injection &lt;chr&gt;, Fitted &lt;chr&gt;, Time_min &lt;chr&gt;,\n#   microCal_sec &lt;chr&gt;, delta_F_0_nM &lt;chr&gt;, delta_F_5_nM &lt;chr&gt;,\n#   delta_F_10_nM &lt;chr&gt;, delta_F_20_nM &lt;chr&gt;, delta_F_50_nM &lt;chr&gt;, …",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Automated CSV File Checker</span>"
+    ]
+  },
+  {
+    "objectID": "FileChecks_csv_Notebook.html#write-the-results-to-file",
+    "href": "FileChecks_csv_Notebook.html#write-the-results-to-file",
+    "title": "3  Automated CSV File Checker",
+    "section": "3.6 Write the results to file",
+    "text": "3.6 Write the results to file\nFinally, we save our two summary data frames as new .csv files. These files will be saved in your current working directory, not necessarily the directory you selected for analysis.\n\nwrite.csv(csv.summ, file = \"Results/FileChecks_csv/MetaData_CSV.csv\", row.names = FALSE)\nwrite.csv(col.compare, file = \"Results/FileChecks_csv/ColumnCheck_CSV.csv\", row.names = FALSE)\n\nprint(\"Summary files 'MetaData_CSV.csv' and 'ColumnCheck_CSV.csv' have been created in your current working directory.\")\n\n[1] \"Summary files 'MetaData_CSV.csv' and 'ColumnCheck_CSV.csv' have been created in your current working directory.\"",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Automated CSV File Checker</span>"
+    ]
+  },
+  {
+    "objectID": "FileChecks_csv_Notebook.html#using-the-non-interactive-r-script",
+    "href": "FileChecks_csv_Notebook.html#using-the-non-interactive-r-script",
+    "title": "3  Automated CSV File Checker",
+    "section": "3.7 Using the Non-Interactive R Script",
+    "text": "3.7 Using the Non-Interactive R Script\nFor users who want to run this analysis on a server or from the command line, a non-interactive version of this script is available.\n\nR Script: FileChecks_csv_Script.R\nExample SLURM Submission Script: FileCkecks_csv.sh\n\n\n3.7.1 How to Use\n\nFor RStudio:\n\n\nDownload the FileChecks_csv_Script.R script.\nOpen in Rstudio and run the whole script. or run it from your terminal, passing the path to your data folder as an argument:\n\n\nFor clusters\n\nAlternatively, adapt the FileCkecks_csv.sh script to match your cluster’s environment and your data path, then submit it using sbatch.",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Automated CSV File Checker</span>"
+    ]
+  },
+  {
+    "objectID": "FileChecks_Extensions_Notebook.html",
+    "href": "FileChecks_Extensions_Notebook.html",
+    "title": "2  File extension and inventory check",
+    "section": "",
+    "text": "2.1 Overview\nThis notebook provides a utility to inventory the contents of a data directory. Its primary purpose is to scan a target folder, identify all files, and generate a summary table counting the occurrences of each unique file extension.\nThis process helps answer key questions:\nThe output is a clean CSV file that serves as an inventory of the entire data package.",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>File extension and inventory check</span>"
+    ]
+  },
+  {
+    "objectID": "FileChecks_Extensions_Notebook.html#overview",
+    "href": "FileChecks_Extensions_Notebook.html#overview",
+    "title": "2  File extension and inventory check",
+    "section": "",
+    "text": "What types of files are present in the dataset?\nAre there any unexpected or disallowed file formats?\nAre there hidden files (e.g., .DS_Store, Thumbs.db) that should be removed before publication?\nDoes the file count match the dataset’s documentation?",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>File extension and inventory check</span>"
+    ]
+  },
+  {
+    "objectID": "FileChecks_Extensions_Notebook.html#setup",
+    "href": "FileChecks_Extensions_Notebook.html#setup",
+    "title": "2  File extension and inventory check",
+    "section": "2.2 Setup",
+    "text": "2.2 Setup\nThis workflow uses the tidyverse suite of packages, which includes dplyr for data manipulation and stringr for text processing.\n\n2.2.1 R Packages\nIf you don’t have the tidyverse package installed, run this command once in your R console:\n\n\nCode\n# install.packages(\"tidyverse\")",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>File extension and inventory check</span>"
+    ]
+  },
+  {
+    "objectID": "FileChecks_Extensions_Notebook.html#load-libraries",
+    "href": "FileChecks_Extensions_Notebook.html#load-libraries",
+    "title": "2  File extension and inventory check",
+    "section": "2.3 Load libraries",
+    "text": "2.3 Load libraries\nThis chunk loads the necessary library for the session.\n\n\nCode\nlibrary(tidyverse)",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>File extension and inventory check</span>"
+    ]
+  },
+  {
+    "objectID": "FileChecks_Extensions_Notebook.html#select-the-target-directory",
+    "href": "FileChecks_Extensions_Notebook.html#select-the-target-directory",
+    "title": "2  File extension and inventory check",
+    "section": "2.4 Select the target directory",
+    "text": "2.4 Select the target directory\nThis section identifies the directory to be analyzed and creates a complete list of every file within it, including those in sub-folders and hidden files. The directory is set by the target_dir parameter at the top of this document.\n\n\nCode\n# Get the directory path from the document's parameters\ntarget_dir &lt;- params$target_dir\nprint(paste(\"Analyzing directory:\", target_dir))\n\n\n[1] \"Analyzing directory: data/FileChecks_Extensions/\"\n\n\nCode\n# Find all files, including hidden files (`all.files = TRUE`)\nall_files &lt;- list.files(\n  path = target_dir,\n  recursive = TRUE,\n  full.names = TRUE, # Get the full path for robustness\n  all.files = TRUE   # Include dotfiles (e.g., .git, .Rproj)\n)\n\n# Print the total number of files found\nprint(paste(\"Found\", length(all_files), \"total files (including hidden).\"))\n\n\n[1] \"Found 7 total files (including hidden).\"",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>File extension and inventory check</span>"
+    ]
+  },
+  {
+    "objectID": "FileChecks_Extensions_Notebook.html#extract-extensions-and-generate-summary-table",
+    "href": "FileChecks_Extensions_Notebook.html#extract-extensions-and-generate-summary-table",
+    "title": "2  File extension and inventory check",
+    "section": "2.5 Extract extensions and generate summary table",
+    "text": "2.5 Extract extensions and generate summary table\nThe code takes the complete list of file paths and performs two steps:\n\nExtract extensions: It isolates the file extension from each path. The logic is designed to handle files with multiple dots (e.g., archive.tar.gz) and files with no extension at all.\nCount and summarize: It then counts the occurrences of each unique extension and sorts the results to show the most common file types first.\n\n\n\nCode\nfile_summary &lt;- tibble(FilePath = all_files) %&gt;%\n  mutate(\n    # basename() gets just the filename from the full path\n    FileName = basename(FilePath),\n    # Use stringr for a more readable and robust extraction\n    Extension = str_extract(FileName, \"(?&lt;=\\\\.)[^.]+$\") %&gt;%\n      # If no extension is found (returns NA), replace with a descriptor\n      replace_na(\"(no extension)\")\n  ) %&gt;%\n  count(Extension, name = \"Count\", sort = TRUE)\n\nprint(\"--- Summary of File Extensions ---\")\n\n\n[1] \"--- Summary of File Extensions ---\"\n\n\nCode\nprint(file_summary)\n\n\n# A tibble: 4 × 2\n  Extension Count\n  &lt;chr&gt;     &lt;int&gt;\n1 tif           4\n2 nc            1\n3 txt           1\n4 xml           1\n\n\nCode\n# Save the results to a CSV file\nwrite.csv(\n  file_summary,\n  file = paste0(\"Results/FileCheks_Extensions/File_Extension_Summary_\", Sys.Date(), \".csv\"),\n  row.names = FALSE\n)\n\nprint(\"File extension summary has been saved.\")\n\n\n[1] \"File extension summary has been saved.\"",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>File extension and inventory check</span>"
+    ]
+  },
+  {
+    "objectID": "FileChecks_Extensions_Notebook.html#additional-tools",
+    "href": "FileChecks_Extensions_Notebook.html#additional-tools",
+    "title": "2  File extension and inventory check",
+    "section": "2.6 Additional tools",
+    "text": "2.6 Additional tools\n\n2.6.1 Identify Unexpected Formats\nQuickly scan the Extension column. Do you see any proprietary formats (.xlsx, .psd, .paj) that should have been converted to open, preservation-friendly formats (.csv, .tiff, .txt)?\n\n\n2.6.2 Find and Remove System “Junk” Files\nMany operating systems create hidden files that are not part of the actual dataset and should be removed before publication.\nCommon examples to look for: * DS_Store (macOS) * Thumbs.db (Windows) * __MACOSX (Created by macOS when zipping files) * .Rhistory or .Rproj.user (RStudio project files)\nIf these appear in your summary, you can locate and delete them to clean the dataset.",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>File extension and inventory check</span>"
+    ]
+  },
+  {
+    "objectID": "FileChecks.html",
+    "href": "FileChecks.html",
+    "title": "FileChecks",
+    "section": "",
+    "text": "This is the frot pages for the cheks part. Perhaps add a table summary with all the available resources",
+    "crumbs": [
+      "FileChecks"
+    ]
+  },
+  {
+    "objectID": "ImageChecker.html",
+    "href": "ImageChecker.html",
+    "title": "4  Image File Metadata and Quality Control",
+    "section": "",
+    "text": "4.1 Overview\nThis notebook provides a workflow for performing standardized quality control checks on image files. It automatically scans a directory for common image formats (.jpg, .jpeg, .png, .tiff), extracts comprehensive metadata, and generates summary reports.\nThe process uses two specialized R packages to create two distinct levels of reporting:\nFinally, we offer a guide on how to use the extracted metadata to identify common curation issues, such as inconsistent image dimensions, missing location data, or potential privacy concerns.",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Image File Metadata and Quality Control</span>"
+    ]
+  },
+  {
+    "objectID": "ImageChecker.html#overview",
+    "href": "ImageChecker.html#overview",
+    "title": "4  Image File Metadata and Quality Control",
+    "section": "",
+    "text": "magick: Provides a high-level technical summary that allows the verification of valid images and checking elemental properties like dimensions, colorspace, and file size.\nexiftoolr: Performs a deep extraction of all embedded EXIF metadata, including camera/scanner model, software versions, GPS coordinates, and creation timestamps.",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Image File Metadata and Quality Control</span>"
+    ]
+  },
+  {
+    "objectID": "ImageChecker.html#one-time-setup",
+    "href": "ImageChecker.html#one-time-setup",
+    "title": "4  Image File Metadata and Quality Control",
+    "section": "4.2 One-time setup",
+    "text": "4.2 One-time setup\nBefore running this notebook, ensure the required R packages and the ExifTool command-line software are installed.\n\n4.2.1 R Packages\nThe following R packages are required. If you don’t have them, uncomment this code and run it once in your R console:\n\n\nCode\n# install.packages(c(\"tidyverse\", \"magick\", \"exiftoolr\"))\n\n\n\n\n4.2.2 ExifTool software\nThe exiftoolr package is a wrapper around a command-line tool called ExifTool. Install this tool for the detailed metadata extraction to work. **Run the following command once to install the software.\n\n\nCode\n#  exiftoolr::install_exiftool()",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Image File Metadata and Quality Control</span>"
+    ]
+  },
+  {
+    "objectID": "ImageChecker.html#load-libraries",
+    "href": "ImageChecker.html#load-libraries",
+    "title": "4  Image File Metadata and Quality Control",
+    "section": "4.3 Load libraries",
+    "text": "4.3 Load libraries\nLoad all the necessary libraries for the session.\n\n\nCode\nlibrary(tidyverse)\nlibrary(magick)\nlibrary(exiftoolr)",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Image File Metadata and Quality Control</span>"
+    ]
+  },
+  {
+    "objectID": "ImageChecker.html#select-a-target-directory",
+    "href": "ImageChecker.html#select-a-target-directory",
+    "title": "4  Image File Metadata and Quality Control",
+    "section": "4.4 Select a target directory",
+    "text": "4.4 Select a target directory\nHere, we select the directory to be analyzed and find all relevant image files within it. The directory is set by the target_dir parameter at the top of this document.The code uses a single command to find all files ending in .jpg, .jpeg, .png, or .tiff.\n\n\nCode\n# Get the directory path from the document's parameters\ntarget_dir &lt;- params$target_dir\nprint(paste(\"Analyzing directory:\", target_dir))\n\n\n[1] \"Analyzing directory: data/FileChecks_Extensions/\"\n\n\nCode\n# Find all image files using a regular expression for the extensions\nimage_files &lt;- list.files(\n  path = target_dir,\n  pattern = \"\\\\.(jpg|jpeg|png|tiff|tif)$\",\n  recursive = TRUE,\n  full.names = TRUE,\n  ignore.case = TRUE\n)\n\n# Print the number of files found and show the first few paths\nprint(paste(\"Found\", length(image_files), \"image files.\"))\n\n\n[1] \"Found 4 image files.\"\n\n\nCode\nhead(image_files)\n\n\n[1] \"data/FileChecks_Extensions/CHIRPS_precipitation_1981-01-01.tif\"      \n[2] \"data/FileChecks_Extensions/CHIRPS_precipitation_1981-01-03.tif\"      \n[3] \"data/FileChecks_Extensions/CHIRTS_maximum_temperature_1983-01-07.tif\"\n[4] \"data/FileChecks_Extensions/CHIRTS_maximum_temperature_1983-01-09.tif\"",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Image File Metadata and Quality Control</span>"
+    ]
+  },
+  {
+    "objectID": "ImageChecker.html#technical-summary-with-magick",
+    "href": "ImageChecker.html#technical-summary-with-magick",
+    "title": "4  Image File Metadata and Quality Control",
+    "section": "4.5 Technical Summary with magick",
+    "text": "4.5 Technical Summary with magick\nThe magick package allow us to confirm these files are readable and for extracting basic technical properties. This step loops through each file, reads its information, and collects it into a single table.\n\n\nCode\n# Use purrr::map_dfr to efficiently loop through files and bind results\nmagick_info &lt;- purrr::map_dfr(image_files, function(file_path) {\n  tryCatch({\n    # image_read() validates the file, image_info() extracts metadata\n    image_read(file_path) %&gt;%\n      image_info() %&gt;%\n      # Add the filename to the summary table\n      mutate(SourceFile = file_path)\n  }, error = function(e) {\n    # If a file is corrupt or not a valid image, print a warning\n    message(\"Could not process file with magick: \", file_path, \" | Error: \", e$message)\n    # Return NULL for this file so map_dfr skips it\n    return(NULL)\n  })\n})\n\n# Display the first few rows of the technical summary table\nprint(\"--- Magick Technical Summary ---\")\n\n\n[1] \"--- Magick Technical Summary ---\"\n\n\nCode\nhead(magick_info)\n\n\n# A tibble: 4 × 8\n  format width height colorspace matte filesize density SourceFile              \n  &lt;chr&gt;  &lt;int&gt;  &lt;int&gt; &lt;chr&gt;      &lt;lgl&gt;    &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;                   \n1 TIFF     110    164 Gray       FALSE     1880 72x72   data/FileChecks_Extensi…\n2 TIFF     110    164 Gray       FALSE     9648 72x72   data/FileChecks_Extensi…\n3 TIFF     110    164 Gray       FALSE    30646 72x72   data/FileChecks_Extensi…\n4 TIFF     110    164 Gray       FALSE    30777 72x72   data/FileChecks_Extensi…\n\n\nCode\n# Save the results to a CSV file\nwrite.csv(\n  magick_info, \n  file = paste0(\"Results/FileChecks_Images/Image_Metadata_Magick_\", Sys.Date(), \".csv\"), \n  row.names = FALSE\n)",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Image File Metadata and Quality Control</span>"
+    ]
+  },
+  {
+    "objectID": "ImageChecker.html#detailed-exif-metadata-with-exiftoolr",
+    "href": "ImageChecker.html#detailed-exif-metadata-with-exiftoolr",
+    "title": "4  Image File Metadata and Quality Control",
+    "section": "4.6 Detailed EXIF Metadata with exiftoolr",
+    "text": "4.6 Detailed EXIF Metadata with exiftoolr\nThis step uses exiftoolr to extract all available embedded metadata from the image files. This can include hundreds of fields detailing everything from the camera settings and lens information to GPS coordinates and software versions. Please note that the output can have many columns.\n\n\nCode\nexif_info &lt;- exif_read(image_files)\n\n# Save the detailed results to a CSV file\nwrite.csv(\n  exif_info,\n  file = paste0(\"Results/FileChecks_Images/Image_Metadata_Exif_\", Sys.Date(), \".csv\"),\n  row.names = FALSE\n)\n\nhead(exif_info)",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Image File Metadata and Quality Control</span>"
+    ]
+  },
+  {
+    "objectID": "ImageChecker.html#additional-tools",
+    "href": "ImageChecker.html#additional-tools",
+    "title": "4  Image File Metadata and Quality Control",
+    "section": "4.7 Additional tools",
+    "text": "4.7 Additional tools\nWe can perfom additional checks for images using th efollowing chunks.\n\n4.7.1 Identify inconsistent image dimensions\nIn many datasets, all images are expected to have the same dimensions (width and height). A simple summary can quickly flag any outliers.\n\ndimension_summary &lt;- magick_info %&gt;%\n  count(width, height, format, name = \"file_count\") %&gt;%\n  arrange(desc(file_count))\n\nprint(\"Summary of Image Dimensions:\")\n\n[1] \"Summary of Image Dimensions:\"\n\nprint(dimension_summary)\n\n# A tibble: 1 × 4\n  width height format file_count\n  &lt;int&gt;  &lt;int&gt; &lt;chr&gt;       &lt;int&gt;\n1   110    164 TIFF            4\n\n\n\n\n4.7.2 Summarize a Key EXIF Field (e.g., Megapixels)\nVerifying that all images were captured with the same device can be a critical quality check.\n\n# We only need the Make and Model columns from the exif_info table\ndevice_summary &lt;- exif_info %&gt;%\n  # Check if the columns exist before trying to use them\n  { if (\"Megapixels\" %in% names(.)) \n      count(., Megapixels, name = \"file_count\") \n    else \n      tibble(Message = \"Megapixels metadata not found.\")\n  }\n\nprint(\"Summary of Megapixels:\")\n\n[1] \"Summary of Megapixels:\"\n\nprint(device_summary)\n\n  Megapixels file_count\n1    0.01804          4\n\n\n\n\n4.7.3 Check for Geospatial Information (Privacy/Completeness)\nIt’s important to know if your image files contain embedded GPS coordinates. This can be a privacy concern if the data is meant to be anonymous, or a completeness issue if the location data is required.\n\n# Check for the presence of the GPSLatitude column\nif (\"GPSLatitude\" %in% names(exif_info)) {\n  \n  gps_summary &lt;- exif_info %&gt;%\n    summarise(\n      files_with_gps = sum(!is.na(GPSLatitude)),\n      files_missing_gps = sum(is.na(GPSLatitude)),\n      total_files = n()\n    )\n  \n  print(\"Summary of GPS Metadata:\")\n  print(gps_summary)\n  \n} else {\n  \n  print(\"No GPS metadata columns found in any of the files.\")\n  \n}\n\n[1] \"No GPS metadata columns found in any of the files.\"",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Image File Metadata and Quality Control</span>"
+    ]
+  },
+  {
+    "objectID": "FileChecks_Extensions_Notebook.html#using-the-non-interactive-r-script",
+    "href": "FileChecks_Extensions_Notebook.html#using-the-non-interactive-r-script",
+    "title": "2  File extension and inventory check",
+    "section": "2.7 Using the Non-Interactive R Script",
+    "text": "2.7 Using the Non-Interactive R Script\nFor users who want to run this analysis on a server or from the command line, a pure R script is available to perform the same process.\nPrerequisites: * R with tidyverse, magick, and exiftoolr installed. * ExifTool command-line software must be installed on the system.\nDownload the R Script: FileChecks_Extensions_Script.R\n\n2.7.1 Example HPC Submission Script\n#!/bin/bash\n#SBATCH --nodes=1\n#SBATCH --ntasks=1\n#SBATCH --time=00:20:00\n#SBATCH --job-name=img_check\n\nmodule load R\n# module load exiftool # Uncomment if your cluster requires this\n\nDATA_DIR=\"/scratch/your_user/your_project/images_v1\"\n\nRscript FileChecks_Extensions_Script.R $DATA_DIR\n\n\n\n\n:::{#quarto-navigation-envelope .hidden}\n[Tools for Research Data Management and curation]{.hidden .quarto-markdown-envelope-contents render-id=\"cXVhcnRvLWludC1zaWRlYmFyLXRpdGxl\"}\n[Tools for Research Data Management and curation]{.hidden .quarto-markdown-envelope-contents render-id=\"cXVhcnRvLWludC1uYXZiYXItdGl0bGU=\"}\n[&lt;span class='chapter-number'&gt;3&lt;/span&gt;  &lt;span class='chapter-title'&gt;Automated CSV File Checker&lt;/span&gt;]{.hidden .quarto-markdown-envelope-contents render-id=\"cXVhcnRvLWludC1uZXh0\"}\n[FileChecks]{.hidden .quarto-markdown-envelope-contents render-id=\"cXVhcnRvLWludC1wcmV2\"}\n[&lt;span class='chapter-number'&gt;1&lt;/span&gt;  &lt;span class='chapter-title'&gt;R Functions for Research Data Management&lt;/span&gt;]{.hidden .quarto-markdown-envelope-contents render-id=\"cXVhcnRvLWludC1zaWRlYmFyOi9pbmRleC5odG1sPHNwYW4tY2xhc3M9J2NoYXB0ZXItbnVtYmVyJz4xPC9zcGFuPi0tPHNwYW4tY2xhc3M9J2NoYXB0ZXItdGl0bGUnPlItRnVuY3Rpb25zLWZvci1SZXNlYXJjaC1EYXRhLU1hbmFnZW1lbnQ8L3NwYW4+\"}\n[FileChecks]{.hidden .quarto-markdown-envelope-contents render-id=\"cXVhcnRvLWludC1zaWRlYmFyOnF1YXJ0by1zaWRlYmFyLXNlY3Rpb24tMQ==\"}\n[&lt;span class='chapter-number'&gt;2&lt;/span&gt;  &lt;span class='chapter-title'&gt;File extension and inventory check&lt;/span&gt;]{.hidden .quarto-markdown-envelope-contents render-id=\"cXVhcnRvLWludC1zaWRlYmFyOi9GaWxlQ2hlY2tzX0V4dGVuc2lvbnNfTm90ZWJvb2suaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+Mjwvc3Bhbj4tLTxzcGFuLWNsYXNzPSdjaGFwdGVyLXRpdGxlJz5GaWxlLWV4dGVuc2lvbi1hbmQtaW52ZW50b3J5LWNoZWNrPC9zcGFuPg==\"}\n[&lt;span class='chapter-number'&gt;3&lt;/span&gt;  &lt;span class='chapter-title'&gt;Automated CSV File Checker&lt;/span&gt;]{.hidden .quarto-markdown-envelope-contents render-id=\"cXVhcnRvLWludC1zaWRlYmFyOi9GaWxlQ2hlY2tzX2Nzdl9Ob3RlYm9vay5odG1sPHNwYW4tY2xhc3M9J2NoYXB0ZXItbnVtYmVyJz4zPC9zcGFuPi0tPHNwYW4tY2xhc3M9J2NoYXB0ZXItdGl0bGUnPkF1dG9tYXRlZC1DU1YtRmlsZS1DaGVja2VyPC9zcGFuPg==\"}\n[&lt;span class='chapter-number'&gt;4&lt;/span&gt;  &lt;span class='chapter-title'&gt;Image File Metadata and Quality Control&lt;/span&gt;]{.hidden .quarto-markdown-envelope-contents render-id=\"cXVhcnRvLWludC1zaWRlYmFyOi9GaWxlQ2hlY2tzX0ltYWdlc19Ob3RlYm9vay5odG1sPHNwYW4tY2xhc3M9J2NoYXB0ZXItbnVtYmVyJz40PC9zcGFuPi0tPHNwYW4tY2xhc3M9J2NoYXB0ZXItdGl0bGUnPkltYWdlLUZpbGUtTWV0YWRhdGEtYW5kLVF1YWxpdHktQ29udHJvbDwvc3Bhbj4=\"}\n[OpenFiles]{.hidden .quarto-markdown-envelope-contents render-id=\"cXVhcnRvLWludC1zaWRlYmFyOnF1YXJ0by1zaWRlYmFyLXNlY3Rpb24tMg==\"}\n[&lt;span class='chapter-number'&gt;5&lt;/span&gt;  &lt;span class='chapter-title'&gt;Guide to opening and inspecting GeoPackage (.gpkg) files&lt;/span&gt;]{.hidden .quarto-markdown-envelope-contents render-id=\"cXVhcnRvLWludC1zaWRlYmFyOi9PcGVuRmlsZXNfZ3BrZy5odG1sPHNwYW4tY2xhc3M9J2NoYXB0ZXItbnVtYmVyJz41PC9zcGFuPi0tPHNwYW4tY2xhc3M9J2NoYXB0ZXItdGl0bGUnPkd1aWRlLXRvLW9wZW5pbmctYW5kLWluc3BlY3RpbmctR2VvUGFja2FnZS0oLmdwa2cpLWZpbGVzPC9zcGFuPg==\"}\n[FileChecks]{.hidden .quarto-markdown-envelope-contents render-id=\"cXVhcnRvLWJyZWFkY3J1bWJzLUZpbGVDaGVja3M=\"}\n[&lt;span class='chapter-number'&gt;2&lt;/span&gt;  &lt;span class='chapter-title'&gt;File extension and inventory check&lt;/span&gt;]{.hidden .quarto-markdown-envelope-contents render-id=\"cXVhcnRvLWJyZWFkY3J1bWJzLTxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+Mjwvc3Bhbj4tLTxzcGFuLWNsYXNzPSdjaGFwdGVyLXRpdGxlJz5GaWxlLWV4dGVuc2lvbi1hbmQtaW52ZW50b3J5LWNoZWNrPC9zcGFuPg==\"}\n:::\n\n\n\n:::{#quarto-meta-markdown .hidden}\n[[2]{.chapter-number}  [File extension and inventory check]{.chapter-title} – Tools for Research Data Management and curation]{.hidden .quarto-markdown-envelope-contents render-id=\"cXVhcnRvLW1ldGF0aXRsZQ==\"}\n[[2]{.chapter-number}  [File extension and inventory check]{.chapter-title} – Tools for Research Data Management and curation]{.hidden .quarto-markdown-envelope-contents render-id=\"cXVhcnRvLXR3aXR0ZXJjYXJkdGl0bGU=\"}\n[[2]{.chapter-number}  [File extension and inventory check]{.chapter-title} – Tools for Research Data Management and curation]{.hidden .quarto-markdown-envelope-contents render-id=\"cXVhcnRvLW9nY2FyZHRpdGxl\"}\n[Tools for Research Data Management and curation]{.hidden .quarto-markdown-envelope-contents render-id=\"cXVhcnRvLW1ldGFzaXRlbmFtZQ==\"}\n[]{.hidden .quarto-markdown-envelope-contents render-id=\"cXVhcnRvLXR3aXR0ZXJjYXJkZGVzYw==\"}\n[]{.hidden .quarto-markdown-envelope-contents render-id=\"cXVhcnRvLW9nY2FyZGRkZXNj\"}\n:::\n\n\n\n\n&lt;!-- --&gt;\n\n::: {.quarto-embedded-source-code}\n```````````````````{.markdown shortcodes=\"false\"}\n---\ntitle: \"File extension and inventory check\"\nauthor: \"Natalie Williams\"\ndate: \"2025-11-13\"\nformat: \n  html:\n    toc: true\n    toc-location: left\n    code-fold: true\nparams:\n  target_dir: \"data/FileChecks_Extensions/\"\n---\n\n## Overview\n\nThis notebook provides a utility to inventory the contents of a data directory. Its primary purpose is to scan a target folder, identify all files, and generate a summary table counting the occurrences of each unique file extension.\n\nThis process helps answer key questions:\n\n-   What types of files are present in the dataset?\n-   Are there any unexpected or disallowed file formats?\n-   Are there hidden files (e.g., `.DS_Store`, `Thumbs.db`) that should be removed before publication?\n-   Does the file count match the dataset's documentation?\n\nThe output is a clean CSV file that serves as an inventory of the entire data package.\n\n------------------------------------------------------------------------\n\n## Setup\n\nThis workflow uses the `tidyverse` suite of packages, which includes `dplyr` for data manipulation and `stringr` for text processing.\n\n### R Packages\n\nIf you don't have the `tidyverse` package installed, run this command once in your R console:\n\nquarto-executable-code-5450563D\n\n```r\n# install.packages(\"tidyverse\")",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>File extension and inventory check</span>"
+    ]
+  },
+  {
+    "objectID": "FileChecks_Extensions_Notebook.html#load-libraries-1",
+    "href": "FileChecks_Extensions_Notebook.html#load-libraries-1",
+    "title": "2  File extension and inventory check",
+    "section": "2.8 Load libraries",
+    "text": "2.8 Load libraries\nThis chunk loads the necessary library for the session.\n#| label: load-libraries\n#| message: false\n\nlibrary(tidyverse)",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>File extension and inventory check</span>"
+    ]
+  },
+  {
+    "objectID": "FileChecks_Extensions_Notebook.html#select-the-target-directory-1",
+    "href": "FileChecks_Extensions_Notebook.html#select-the-target-directory-1",
+    "title": "2  File extension and inventory check",
+    "section": "2.9 Select the target directory",
+    "text": "2.9 Select the target directory\nThis section identifies the directory to be analyzed and creates a complete list of every file within it, including those in sub-folders and hidden files. The directory is set by the target_dir parameter at the top of this document.\n#| label: find-files\n\n# Get the directory path from the document's parameters\ntarget_dir &lt;- params$target_dir\nprint(paste(\"Analyzing directory:\", target_dir))\n\n# Find all files, including hidden files (`all.files = TRUE`)\nall_files &lt;- list.files(\n  path = target_dir,\n  recursive = TRUE,\n  full.names = TRUE, # Get the full path for robustness\n  all.files = TRUE   # Include dotfiles (e.g., .git, .Rproj)\n)\n\n# Print the total number of files found\nprint(paste(\"Found\", length(all_files), \"total files (including hidden).\"))",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>File extension and inventory check</span>"
+    ]
+  },
+  {
+    "objectID": "FileChecks_Extensions_Notebook.html#extract-extensions-and-generate-summary-table-1",
+    "href": "FileChecks_Extensions_Notebook.html#extract-extensions-and-generate-summary-table-1",
+    "title": "2  File extension and inventory check",
+    "section": "2.10 Extract extensions and generate summary table",
+    "text": "2.10 Extract extensions and generate summary table\nThe code takes the complete list of file paths and performs two steps:\n\nExtract extensions: It isolates the file extension from each path. The logic is designed to handle files with multiple dots (e.g., archive.tar.gz) and files with no extension at all.\nCount and summarize: It then counts the occurrences of each unique extension and sorts the results to show the most common file types first.\n\n#| label: generate-summary\n\nfile_summary &lt;- tibble(FilePath = all_files) %&gt;%\n  mutate(\n    # basename() gets just the filename from the full path\n    FileName = basename(FilePath),\n    # Use stringr for a more readable and robust extraction\n    Extension = str_extract(FileName, \"(?&lt;=\\\\.)[^.]+$\") %&gt;%\n      # If no extension is found (returns NA), replace with a descriptor\n      replace_na(\"(no extension)\")\n  ) %&gt;%\n  count(Extension, name = \"Count\", sort = TRUE)\n\nprint(\"--- Summary of File Extensions ---\")\nprint(file_summary)\n\n# Save the results to a CSV file\nwrite.csv(\n  file_summary,\n  file = paste0(\"Results/FileCheks_Extensions/File_Extension_Summary_\", Sys.Date(), \".csv\"),\n  row.names = FALSE\n)\n\nprint(\"File extension summary has been saved.\")",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>File extension and inventory check</span>"
+    ]
+  },
+  {
+    "objectID": "FileChecks_Extensions_Notebook.html#additional-tools-1",
+    "href": "FileChecks_Extensions_Notebook.html#additional-tools-1",
+    "title": "2  File extension and inventory check",
+    "section": "2.11 Additional tools",
+    "text": "2.11 Additional tools\n\n2.11.1 Identify Unexpected Formats\nQuickly scan the Extension column. Do you see any proprietary formats (.xlsx, .psd, .paj) that should have been converted to open, preservation-friendly formats (.csv, .tiff, .txt)?\n\n\n2.11.2 Find and Remove System “Junk” Files\nMany operating systems create hidden files that are not part of the actual dataset and should be removed before publication.\nCommon examples to look for: * DS_Store (macOS) * Thumbs.db (Windows) * __MACOSX (Created by macOS when zipping files) * .Rhistory or .Rproj.user (RStudio project files)\nIf these appear in your summary, you can locate and delete them to clean the dataset.",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>File extension and inventory check</span>"
+    ]
+  },
+  {
+    "objectID": "FileChecks_Extensions_Notebook.html#using-the-non-interactive-r-script-1",
+    "href": "FileChecks_Extensions_Notebook.html#using-the-non-interactive-r-script-1",
+    "title": "2  File extension and inventory check",
+    "section": "2.12 Using the Non-Interactive R Script",
+    "text": "2.12 Using the Non-Interactive R Script\nFor users who want to run this analysis on a server or from the command line, a pure R script is available to perform the same process.\nPrerequisites: * R with tidyverse, magick, and exiftoolr installed. * ExifTool command-line software must be installed on the system.\nDownload the R Script: FileChecks_Extensions_Script.R\n\n2.12.1 Example HPC Submission Script\n#!/bin/bash\n#SBATCH --nodes=1\n#SBATCH --ntasks=1\n#SBATCH --time=00:20:00\n#SBATCH --job-name=img_check\n\nmodule load R\n# module load exiftool # Uncomment if your cluster requires this\n\nDATA_DIR=\"/scratch/your_user/your_project/images_v1\"\n\nRscript FileChecks_Extensions_Script.R $DATA_DIR\n:::",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>File extension and inventory check</span>"
+    ]
+  },
+  {
+    "objectID": "FileChecks_Images_Notebook.html",
+    "href": "FileChecks_Images_Notebook.html",
+    "title": "4  Image File Metadata and Quality Control",
+    "section": "",
+    "text": "4.1 Overview\nThis notebook provides a workflow for performing standardized quality control checks on image files. It automatically scans a directory for common image formats (.jpg, .jpeg, .png, .tiff), extracts comprehensive metadata, and generates summary reports.\nThe process uses two specialized R packages to create two distinct levels of reporting:\nFinally, we offer a guide on how to use the extracted metadata to identify common curation issues, such as inconsistent image dimensions, missing location data, or potential privacy concerns.",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Image File Metadata and Quality Control</span>"
+    ]
+  },
+  {
+    "objectID": "FileChecks_Images_Notebook.html#overview",
+    "href": "FileChecks_Images_Notebook.html#overview",
+    "title": "4  Image File Metadata and Quality Control",
+    "section": "",
+    "text": "magick: Provides a high-level technical summary that allows the verification of valid images and checking elemental properties like dimensions, colorspace, and file size.\nexiftoolr: Performs a deep extraction of all embedded EXIF metadata, including camera/scanner model, software versions, GPS coordinates, and creation timestamps.",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Image File Metadata and Quality Control</span>"
+    ]
+  },
+  {
+    "objectID": "FileChecks_Images_Notebook.html#one-time-setup",
+    "href": "FileChecks_Images_Notebook.html#one-time-setup",
+    "title": "4  Image File Metadata and Quality Control",
+    "section": "4.2 One-time setup",
+    "text": "4.2 One-time setup\nBefore running this notebook, ensure the required R packages and the ExifTool command-line software are installed.\n\n4.2.1 R Packages\nThe following R packages are required. If you don’t have them, uncomment this code and run it once in your R console:\n\n\nCode\n# install.packages(c(\"tidyverse\", \"magick\", \"exiftoolr\", \"rstudioapi\"))\n\n\n\n\n4.2.2 ExifTool software\nThe exiftoolr package is a wrapper around a command-line tool called ExifTool. You must install this tool for the detailed metadata extraction to work. Run the following command once in your console to install the software.\n\n\nCode\n# exiftoolr::install_exiftool()",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Image File Metadata and Quality Control</span>"
+    ]
+  },
+  {
+    "objectID": "FileChecks_Images_Notebook.html#load-libraries",
+    "href": "FileChecks_Images_Notebook.html#load-libraries",
+    "title": "4  Image File Metadata and Quality Control",
+    "section": "4.3 Load libraries",
+    "text": "4.3 Load libraries\nLoad all the necessary libraries for the session.\n\n\nCode\nlibrary(tidyverse)\nlibrary(magick)\nlibrary(exiftoolr)\n# The rstudioapi package is needed for the interactive folder selection\nlibrary(rstudioapi)",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Image File Metadata and Quality Control</span>"
+    ]
+  },
+  {
+    "objectID": "FileChecks_Images_Notebook.html#select-a-target-directory",
+    "href": "FileChecks_Images_Notebook.html#select-a-target-directory",
+    "title": "4  Image File Metadata and Quality Control",
+    "section": "4.4 Select a target directory",
+    "text": "4.4 Select a target directory\nHere, we interactively select the directory to be analyzed.\n\nNote: If you are running this interactively in RStudio, a dialog box will appear. If you are rendering this document (where no user interaction is possible), it will default to the params$target_dir defined in the YAML header.\n\n\n\nCode\n# 1. Try to select interactively if in RStudio\nif (interactive() && .Platform$OS.type == \"windows\") { \n  # .Platform check helps avoid errors in some non-interactive rendering contexts\n  selected_dir &lt;- rstudioapi::selectDirectory(caption = \"Select Image Directory\")\n} else {\n  selected_dir &lt;- NULL\n}\n\n# 2. Logic to determine final directory (Interactive vs Parameter)\nif (!is.null(selected_dir)) {\n  target_dir &lt;- selected_dir\n} else {\n  target_dir &lt;- params$target_dir\n}\n\nprint(paste(\"Analyzing directory:\", target_dir))\n\n\n[1] \"Analyzing directory: data/FileChecks_Images/\"\n\n\n\n4.4.1 Find Image Files\nThe code uses a single command to find all files ending in .jpg, .jpeg, .png, or .tiff within the selected directory.\n\n\nCode\n# Find all image files using a regular expression for the extensions\nimage_files &lt;- list.files(\n  path = target_dir,\n  pattern = \"\\\\.(jpg|jpeg|png|tiff|tif)$\",\n  recursive = TRUE,\n  full.names = TRUE,\n  ignore.case = TRUE\n)\n\n# Print the number of files found and show the first few paths\nprint(paste(\"Found\", length(image_files), \"image files.\"))\n\n\n[1] \"Found 4 image files.\"\n\n\nCode\nhead(image_files)\n\n\n[1] \"data/FileChecks_Images/CHIRPS_precipitation_1981-01-01.tif\"      \n[2] \"data/FileChecks_Images/CHIRPS_precipitation_1981-01-03.tif\"      \n[3] \"data/FileChecks_Images/CHIRTS_maximum_temperature_1983-01-07.tif\"\n[4] \"data/FileChecks_Images/CHIRTS_maximum_temperature_1983-01-09.tif\"",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Image File Metadata and Quality Control</span>"
+    ]
+  },
+  {
+    "objectID": "FileChecks_Images_Notebook.html#technical-summary-with-magick",
+    "href": "FileChecks_Images_Notebook.html#technical-summary-with-magick",
+    "title": "4  Image File Metadata and Quality Control",
+    "section": "4.5 Technical Summary with magick",
+    "text": "4.5 Technical Summary with magick\nThe magick package allow us to confirm these files are readable and for extracting basic technical properties. This step loops through each file, reads its information, and collects it into a single table.\n\n\nCode\n# Use purrr::map_dfr to efficiently loop through files and bind results\nmagick_info &lt;- purrr::map_dfr(image_files, function(file_path) {\n  tryCatch({\n    # image_read() validates the file, image_info() extracts metadata\n    image_read(file_path) %&gt;%\n      image_info() %&gt;%\n      # Add the filename to the summary table\n      mutate(SourceFile = file_path)\n  }, error = function(e) {\n    # If a file is corrupt or not a valid image, print a warning\n    message(\"Could not process file with magick: \", file_path, \" | Error: \", e$message)\n    # Return NULL for this file so map_dfr skips it\n    return(NULL)\n  })\n})\n\n# Display the first few rows of the technical summary table\nprint(\"--- Magick Technical Summary ---\")\n\n\n[1] \"--- Magick Technical Summary ---\"\n\n\nCode\nhead(magick_info)\n\n\n# A tibble: 4 × 8\n  format width height colorspace matte filesize density SourceFile              \n  &lt;chr&gt;  &lt;int&gt;  &lt;int&gt; &lt;chr&gt;      &lt;lgl&gt;    &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;                   \n1 TIFF     110    164 Gray       FALSE     1880 72x72   data/FileChecks_Images/…\n2 TIFF     110    164 Gray       FALSE     9648 72x72   data/FileChecks_Images/…\n3 TIFF     110    164 Gray       FALSE    30646 72x72   data/FileChecks_Images/…\n4 TIFF     110    164 Gray       FALSE    30777 72x72   data/FileChecks_Images/…\n\n\nCode\n# Save the results to a CSV file\n# Create output directory if it doesn't exist\ndir.create(\"Results/FileChecks_Images\", recursive = TRUE, showWarnings = FALSE)\n\nwrite.csv(\n  magick_info, \n  file = paste0(\"Results/FileChecks_Images/Image_Metadata_Magick_\", Sys.Date(), \".csv\"), \n  row.names = FALSE\n)",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Image File Metadata and Quality Control</span>"
+    ]
+  },
+  {
+    "objectID": "FileChecks_Images_Notebook.html#detailed-exif-metadata-with-exiftoolr",
+    "href": "FileChecks_Images_Notebook.html#detailed-exif-metadata-with-exiftoolr",
+    "title": "4  Image File Metadata and Quality Control",
+    "section": "4.6 Detailed EXIF Metadata with exiftoolr",
+    "text": "4.6 Detailed EXIF Metadata with exiftoolr\nThis step uses exiftoolr to extract all available embedded metadata from the image files. This can include hundreds of fields detailing everything from the camera settings and lens information to GPS coordinates and software versions. Please note that the output can have many columns.\n\n\nCode\n# exif_read processes all files at once (no loop needed)\nexif_info &lt;- tryCatch({\n  exif_read(image_files)\n}, error = function(e) {\n  message(\"Error running ExifTool. Ensure it is installed. Error: \", e$message)\n  return(data.frame())\n})\n\n# Save the detailed results to a CSV file if data exists\nif (nrow(exif_info) &gt; 0) {\n  write.csv(\n    exif_info,\n    file = paste0(\"Results/FileChecks_Images/Image_Metadata_Exif_\", Sys.Date(), \".csv\"),\n    row.names = FALSE\n  )\n  print(\"ExifTool metadata saved.\")\n} else {\n  print(\"No EXIF metadata could be extracted.\")\n}\n\nhead(exif_info)",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Image File Metadata and Quality Control</span>"
+    ]
+  },
+  {
+    "objectID": "FileChecks_Images_Notebook.html#additional-tools",
+    "href": "FileChecks_Images_Notebook.html#additional-tools",
+    "title": "4  Image File Metadata and Quality Control",
+    "section": "4.7 Additional tools",
+    "text": "4.7 Additional tools\nWe can perform additional checks for images using the following chunks.\n\n4.7.1 Identify inconsistent image dimensions\nIn many datasets, all images are expected to have the same dimensions (width and height). A simple summary can quickly flag any outliers.\n\nif (nrow(magick_info) &gt; 0) {\n  dimension_summary &lt;- magick_info %&gt;%\n    count(width, height, format, name = \"file_count\") %&gt;%\n    arrange(desc(file_count))\n  \n  print(\"Summary of Image Dimensions:\")\n  print(dimension_summary)\n}\n\n[1] \"Summary of Image Dimensions:\"\n# A tibble: 1 × 4\n  width height format file_count\n  &lt;int&gt;  &lt;int&gt; &lt;chr&gt;       &lt;int&gt;\n1   110    164 TIFF            4\n\n\n\n\n4.7.2 Summarize a Key EXIF Field (e.g., Megapixels)\nVerifying that all images were captured with the same device can be a critical quality check.\n\nif (nrow(exif_info) &gt; 0) {\n  # We only need the Make and Model columns from the exif_info table\n  device_summary &lt;- exif_info %&gt;%\n    # Check if the columns exist before trying to use them\n    { if (\"Megapixels\" %in% names(.)) \n        count(., Megapixels, name = \"file_count\") \n      else \n        tibble(Message = \"Megapixels metadata not found.\")\n    }\n  \n  print(\"Summary of Megapixels:\")\n  print(device_summary)\n}\n\n[1] \"Summary of Megapixels:\"\n  Megapixels file_count\n1    0.01804          4\n\n\n\n\n4.7.3 Check for Geospatial Information (Privacy/Completeness)\nIt’s important to know if your image files contain embedded GPS coordinates. This can be a privacy concern if the data is meant to be anonymous, or a completeness issue if the location data is required.\n\nif (nrow(exif_info) &gt; 0) {\n  # Check for the presence of the GPSLatitude column\n  if (\"GPSLatitude\" %in% names(exif_info)) {\n    \n    gps_summary &lt;- exif_info %&gt;%\n      summarise(\n        files_with_gps = sum(!is.na(GPSLatitude)),\n        files_missing_gps = sum(is.na(GPSLatitude)),\n        total_files = n()\n      )\n    \n    print(\"Summary of GPS Metadata:\")\n    print(gps_summary)\n    \n  } else {\n    print(\"No GPS metadata columns found in any of the files.\")\n  }\n}\n\n[1] \"No GPS metadata columns found in any of the files.\"",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Image File Metadata and Quality Control</span>"
+    ]
+  },
+  {
+    "objectID": "FileChecks_Images_Notebook.html#using-the-non-interactive-r-script",
+    "href": "FileChecks_Images_Notebook.html#using-the-non-interactive-r-script",
+    "title": "4  Image File Metadata and Quality Control",
+    "section": "4.8 🚀 Using the Non-Interactive R Script",
+    "text": "4.8 🚀 Using the Non-Interactive R Script\nFor users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.\nPrerequisites: * R with tidyverse, magick, and exiftoolr installed. * ExifTool command-line software must be installed on the system.\nDownload the R Script: FileChecks_Images_Script.R\n\n4.8.1 Example HPC Submission Script\n#!/bin/bash\n#SBATCH --nodes=1\n#SBATCH --ntasks=1\n#SBATCH --time=00:20:00\n#SBATCH --job-name=img_check\n\nmodule load R\n# module load exiftool # Uncomment if your cluster requires this module\n\nDATA_DIR=\"/scratch/your_user/your_project/images_v1\"\n\nRscript FileChecks_Images_Script.R $DATA_DIR",
+    "crumbs": [
+      "FileChecks",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Image File Metadata and Quality Control</span>"
+    ]
+  },
+  {
+    "objectID": "FileOpen_gpkg_Notebook.html",
+    "href": "FileOpen_gpkg_Notebook.html",
+    "title": "5  GeoPackage (.gpkg) files",
+    "section": "",
+    "text": "5.1 Overview\nA GeoPackage (.gpkg) is an open, standards-based file format for geospatial information. It as a versatile that can hold multiple layers of vector features (points, lines, polygons), raster imagery, and even non-spatial tables. Its self-contained nature makes it an excellent format for data distribution and archival. This document provides a guide for curators and researchers on how to programmatically inspect, read, and visualize the contents of a .gpkg file using R. It also suggests powerful external tools for deeper visual exploration.",
+    "crumbs": [
+      "OpenFiles",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>GeoPackage (.gpkg) files</span>"
+    ]
+  },
+  {
+    "objectID": "FileOpen_gpkg_Notebook.html#setup",
+    "href": "FileOpen_gpkg_Notebook.html#setup",
+    "title": "5  GeoPackage (.gpkg) files",
+    "section": "5.2 Setup",
+    "text": "5.2 Setup\nThis workflow relies on the sf (Simple Features) package, which is the modern standard for working with vector geospatial data in R. For enhanced visualization, we will also use the leaflet package.\n\n5.2.1 R Packages\nIf you don’t have these packages installed, run this command once in your R console:\n\n\nCode\n# install.packages(c(\"sf\", \"tidyverse\", \"leaflet\"))\n\n\n\n\n5.2.2 Load libraries\nThis chunk loads the necessary libraries for the session.\n\n\nCode\nlibrary(sf)\nlibrary(tidyverse)\nlibrary(leaflet)",
+    "crumbs": [
+      "OpenFiles",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>GeoPackage (.gpkg) files</span>"
+    ]
+  },
+  {
+    "objectID": "FileOpen_gpkg_Notebook.html#inspect-the-geopackage-contents",
+    "href": "FileOpen_gpkg_Notebook.html#inspect-the-geopackage-contents",
+    "title": "5  GeoPackage (.gpkg) files",
+    "section": "5.3 Inspect the GeoPackage contents",
+    "text": "5.3 Inspect the GeoPackage contents\nUsing common R functions allow us to undertand the overall structure of the data\n\n5.3.1 Using summary() for statistical overviews\nThe summary() function provides a statistical summary for each column in your data frame. For numeric columns, it calculates key statistics like mean, median, and range. For text or categorical columns, it shows the length and class. It also gives a summary of the geometry column, including its type and bounding box.\n\n\nCode\nfile_path &lt;- params$file_path\ngpkg_data &lt;- st_read(file_path )\n\n\nMultiple layers are present in data source D:\\Alliance\\RDM\\CUR_Res_CurationTools\\data\\FileOpen_gpkg\\20230606_cbblackburn3_p1.gpkg, reading layer `20230606_cbblackburn3_p1_labels_points'.\nUse `st_layers' to list all layer names and their type in a data source.\nSet the `layer' argument in `st_read' to read a particular layer.\n\n\nReading layer `20230606_cbblackburn3_p1_labels_points' from data source \n  `D:\\Alliance\\RDM\\CUR_Res_CurationTools\\data\\FileOpen_gpkg\\20230606_cbblackburn3_p1.gpkg' \n  using driver `GPKG'\nSimple feature collection with 43 features and 18 fields\nGeometry type: POINT\nDimension:     XY\nBounding box:  xmin: 291888.9 ymin: 5367633 xmax: 291909.5 ymax: 5367670\nProjected CRS: WGS 84 / UTM zone 19N\n\n\nCode\nsummary(gpkg_data)\n\n\n     plot            class_code        scientific_name      taxon_id        \n Length:43          Length:43          Length:43          Length:43         \n Class :character   Class :character   Class :character   Class :character  \n Mode  :character   Mode  :character   Mode  :character   Mode  :character  \n                                                                            \n                                                                            \n                                                                            \n planted_natural     instrument        height1_no_shoot_cm height2_no_shoot_cm\n Length:43          Length:43          Min.   :  0         Min.   :  0.0      \n Class :character   Class :character   1st Qu.:  0         1st Qu.:  0.0      \n Mode  :character   Mode  :character   Median :  0         Median :  0.0      \n                                       Mean   :123         Mean   :120.5      \n                                       3rd Qu.:305         3rd Qu.:310.0      \n                                       Max.   :500         Max.   :490.0      \n height3_no_shoot_cm total_height1_cm total_height2_cm total_height3_cm\n Min.   :  0.0       Min.   :130      Min.   :  0.0    Min.   :  0     \n 1st Qu.:  0.0       1st Qu.:315      1st Qu.:  0.0    1st Qu.:  0     \n Median :  0.0       Median :390      Median :  0.0    Median :  0     \n Mean   :122.6       Mean   :397      Mean   :141.2    Mean   :144     \n 3rd Qu.:295.0       3rd Qu.:490      3rd Qu.:355.0    3rd Qu.:350     \n Max.   :480.0       Max.   :600      Max.   :520.0    Max.   :580     \n diameter_type       diameter1_mm     diameter2_mm    diameter3_mm \n Length:43          Min.   : 10.00   Min.   : 0.00   Min.   : 0.0  \n Class :character   1st Qu.: 48.50   1st Qu.: 0.00   1st Qu.: 0.0  \n Mode  :character   Median : 61.00   Median : 0.00   Median : 0.0  \n                    Mean   : 58.86   Mean   :17.88   Mean   :17.4  \n                    3rd Qu.: 68.00   3rd Qu.:41.50   3rd Qu.:42.0  \n                    Max.   :114.00   Max.   :80.00   Max.   :74.0  \n   comments         date_mesured                  geom   \n Length:43          Length:43          POINT        :43  \n Class :character   Class :character   epsg:32619   : 0  \n Mode  :character   Mode  :character   +proj=utm ...: 0  \n                                                         \n                                                         \n                                                         \n\n\n\n\n\n5.3.2 Using head() to preview rows\nThe head() function displays the first few rows (six, by default) of your data frame.\n\n\nCode\nhead(gpkg_data)\n\n\nSimple feature collection with 6 features and 18 fields\nGeometry type: POINT\nDimension:     XY\nBounding box:  xmin: 291899.9 ymin: 5367635 xmax: 291901.3 ymax: 5367641\nProjected CRS: WGS 84 / UTM zone 19N\n  plot class_code    scientific_name                             taxon_id\n1 &lt;NA&gt;       thoc Thuja occidentalis https://www.gbif.org/species/2684178\n2 &lt;NA&gt;       thoc Thuja occidentalis https://www.gbif.org/species/2684178\n3 &lt;NA&gt;       thoc Thuja occidentalis https://www.gbif.org/species/2684178\n4 &lt;NA&gt;       thoc Thuja occidentalis https://www.gbif.org/species/2684178\n5 &lt;NA&gt;       pigl       Picea glauca https://www.gbif.org/species/5284745\n6 &lt;NA&gt;       thoc Thuja occidentalis https://www.gbif.org/species/2684178\n  planted_natural instrument height1_no_shoot_cm height2_no_shoot_cm\n1         planted      laser                   0                   0\n2         planted      laser                   0                   0\n3         planted      laser                   0                   0\n4         planted      laser                   0                   0\n5         planted      laser                   0                   0\n6         planted      laser                   0                   0\n  height3_no_shoot_cm total_height1_cm total_height2_cm total_height3_cm\n1                   0              530                0                0\n2                   0              530                0                0\n3                   0              530                0                0\n4                   0              530                0                0\n5                   0              240                0                0\n6                   0              280                0                0\n  diameter_type diameter1_mm diameter2_mm diameter3_mm           comments\n1           dbh           99            0            0 tree split in four\n2           dbh          114            0            0 tree split in four\n3           dbh           96            0            0 tree split in four\n4           dbh           83            0            0 tree split in four\n5           dbh           47            0            0               &lt;NA&gt;\n6           dbh           63            0            0               &lt;NA&gt;\n                   date_mesured                     geom\n1 Wed, 28 Jun 2023 19:42:34 GMT POINT (291900.9 5367635)\n2 Wed, 28 Jun 2023 19:42:34 GMT POINT (291900.9 5367635)\n3 Wed, 28 Jun 2023 19:42:34 GMT POINT (291900.9 5367635)\n4 Wed, 28 Jun 2023 19:42:34 GMT POINT (291900.9 5367635)\n5 Wed, 28 Jun 2023 19:36:19 GMT POINT (291899.9 5367639)\n6 Wed, 28 Jun 2023 19:35:03 GMT POINT (291901.3 5367641)\n\n\n\n\n\n5.3.3 Using str() for data structure\nThe str() (structure) function provides a high-level overview of the file. It list the total number of observations (rows) and variables (columns), and then lists each column’s name, its data type (e.g., num for numeric, chr for character), and the first few data entries.\n\n\nCode\nstr(gpkg_data)\n\n\nClasses 'sf' and 'data.frame':  43 obs. of  19 variables:\n $ plot               : chr  NA NA NA NA ...\n $ class_code         : chr  \"thoc\" \"thoc\" \"thoc\" \"thoc\" ...\n $ scientific_name    : chr  \"Thuja occidentalis\" \"Thuja occidentalis\" \"Thuja occidentalis\" \"Thuja occidentalis\" ...\n $ taxon_id           : chr  \"https://www.gbif.org/species/2684178\" \"https://www.gbif.org/species/2684178\" \"https://www.gbif.org/species/2684178\" \"https://www.gbif.org/species/2684178\" ...\n $ planted_natural    : chr  \"planted\" \"planted\" \"planted\" \"planted\" ...\n $ instrument         : chr  \"laser\" \"laser\" \"laser\" \"laser\" ...\n $ height1_no_shoot_cm: num  0 0 0 0 0 0 0 0 0 0 ...\n $ height2_no_shoot_cm: num  0 0 0 0 0 0 0 0 0 0 ...\n $ height3_no_shoot_cm: num  0 0 0 0 0 0 0 0 0 0 ...\n $ total_height1_cm   : num  530 530 530 530 240 280 370 260 490 450 ...\n $ total_height2_cm   : num  0 0 0 0 0 0 0 0 0 0 ...\n $ total_height3_cm   : num  0 0 0 0 0 0 0 0 0 0 ...\n $ diameter_type      : chr  \"dbh\" \"dbh\" \"dbh\" \"dbh\" ...\n $ diameter1_mm       : num  99 114 96 83 47 ...\n $ diameter2_mm       : num  0 0 0 0 0 0 0 0 0 0 ...\n $ diameter3_mm       : num  0 0 0 0 0 0 0 0 0 0 ...\n $ comments           : chr  \"tree split in four\" \"tree split in four\" \"tree split in four\" \"tree split in four\" ...\n $ date_mesured       : chr  \"Wed, 28 Jun 2023 19:42:34 GMT\" \"Wed, 28 Jun 2023 19:42:34 GMT\" \"Wed, 28 Jun 2023 19:42:34 GMT\" \"Wed, 28 Jun 2023 19:42:34 GMT\" ...\n $ geom               :sfc_POINT of length 43; first list element:  'XY' num  291901 5367635\n - attr(*, \"sf_column\")= chr \"geom\"\n - attr(*, \"agr\")= Factor w/ 3 levels \"constant\",\"aggregate\",..: NA NA NA NA NA NA NA NA NA NA ...\n  ..- attr(*, \"names\")= chr [1:18] \"plot\" \"class_code\" \"scientific_name\" \"taxon_id\" ...\n\n\n\n\n5.3.4 Inspecting layers\nAlso, a single .gpkg file can contain many layers. Before reading any data, the first step is to inspect the file to see what it holds. The st_layers() function lists all available layers without loading them into memory.\n\n\nCode\n# Get the file path from the document's parameters\nfile_path &lt;- params$file_path\n\n# List all layers within the GeoPackage file\nst_layers(dsn = file_path)\n\n\nDriver: GPKG \nAvailable layers:\n                              layer_name geometry_type features fields\n1 20230606_cbblackburn3_p1_labels_points         Point       43     18\n2  20230606_cbblackburn3_p1_labels_masks       Polygon      145      3\n               crs_name\n1 WGS 84 / UTM zone 19N\n2 WGS 84 / UTM zone 19N\n\n\nThe output above is a table of contents for the GeoPackage. It shows each layer’s name, its geometry type (e.g., polygon, point), the number of features (rows), and the number of fields (columns). This is the first and most important quality check to ensure the file’s contents match its documentation.",
+    "crumbs": [
+      "OpenFiles",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>GeoPackage (.gpkg) files</span>"
+    ]
+  },
+  {
+    "objectID": "FileOpen_gpkg_Notebook.html#read-a-specific-layer",
+    "href": "FileOpen_gpkg_Notebook.html#read-a-specific-layer",
+    "title": "5  GeoPackage (.gpkg) files",
+    "section": "5.4 Read a specific layer",
+    "text": "5.4 Read a specific layer\nOnce the names of the layers are known, we can read a specific one into R using st_read(). This function loads the data as an sf data frame, which behaves like a regular data frame but with an extra “geometry” column that stores the spatial information.\n\n\nCode\n# Read a specific layer by name from the GeoPackage file\n# Note: If you omit the 'layer' argument, st_read() defaults to the first layer.\ngpkg_data &lt;- st_read(file_path, layer = \"20230606_cbblackburn3_p1_labels_points\") # Replace \"Streams\" with your layer name\n\n\nReading layer `20230606_cbblackburn3_p1_labels_points' from data source \n  `D:\\Alliance\\RDM\\CUR_Res_CurationTools\\data\\FileOpen_gpkg\\20230606_cbblackburn3_p1.gpkg' \n  using driver `GPKG'\nSimple feature collection with 43 features and 18 fields\nGeometry type: POINT\nDimension:     XY\nBounding box:  xmin: 291888.9 ymin: 5367633 xmax: 291909.5 ymax: 5367670\nProjected CRS: WGS 84 / UTM zone 19N\n\n\nCode\n# Explore the data's structure and attributes\nglimpse(gpkg_data)\n\n\nRows: 43\nColumns: 19\n$ plot                &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n$ class_code          &lt;chr&gt; \"thoc\", \"thoc\", \"thoc\", \"thoc\", \"pigl\", \"thoc\", \"p…\n$ scientific_name     &lt;chr&gt; \"Thuja occidentalis\", \"Thuja occidentalis\", \"Thuja…\n$ taxon_id            &lt;chr&gt; \"https://www.gbif.org/species/2684178\", \"https://w…\n$ planted_natural     &lt;chr&gt; \"planted\", \"planted\", \"planted\", \"planted\", \"plant…\n$ instrument          &lt;chr&gt; \"laser\", \"laser\", \"laser\", \"laser\", \"laser\", \"lase…\n$ height1_no_shoot_cm &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…\n$ height2_no_shoot_cm &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…\n$ height3_no_shoot_cm &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…\n$ total_height1_cm    &lt;dbl&gt; 530, 530, 530, 530, 240, 280, 370, 260, 490, 450, …\n$ total_height2_cm    &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…\n$ total_height3_cm    &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…\n$ diameter_type       &lt;chr&gt; \"dbh\", \"dbh\", \"dbh\", \"dbh\", \"dbh\", \"dbh\", \"dbh\", \"…\n$ diameter1_mm        &lt;dbl&gt; 99.00, 114.00, 96.00, 83.00, 47.00, 63.00, 70.57, …\n$ diameter2_mm        &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…\n$ diameter3_mm        &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…\n$ comments            &lt;chr&gt; \"tree split in four\", \"tree split in four\", \"tree …\n$ date_mesured        &lt;chr&gt; \"Wed, 28 Jun 2023 19:42:34 GMT\", \"Wed, 28 Jun 2023…\n$ geom                &lt;POINT [m]&gt; POINT (291900.9 5367635), POINT (291900.9 53…\n\n\nCode\n# Check the Coordinate Reference System (CRS)\nst_crs(gpkg_data)\n\n\nCoordinate Reference System:\n  User input: WGS 84 / UTM zone 19N \n  wkt:\nPROJCRS[\"WGS 84 / UTM zone 19N\",\n    BASEGEOGCRS[\"WGS 84\",\n        ENSEMBLE[\"World Geodetic System 1984 ensemble\",\n            MEMBER[\"World Geodetic System 1984 (Transit)\"],\n            MEMBER[\"World Geodetic System 1984 (G730)\"],\n            MEMBER[\"World Geodetic System 1984 (G873)\"],\n            MEMBER[\"World Geodetic System 1984 (G1150)\"],\n            MEMBER[\"World Geodetic System 1984 (G1674)\"],\n            MEMBER[\"World Geodetic System 1984 (G1762)\"],\n            MEMBER[\"World Geodetic System 1984 (G2139)\"],\n            ELLIPSOID[\"WGS 84\",6378137,298.257223563,\n                LENGTHUNIT[\"metre\",1]],\n            ENSEMBLEACCURACY[2.0]],\n        PRIMEM[\"Greenwich\",0,\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n        ID[\"EPSG\",4326]],\n    CONVERSION[\"UTM zone 19N\",\n        METHOD[\"Transverse Mercator\",\n            ID[\"EPSG\",9807]],\n        PARAMETER[\"Latitude of natural origin\",0,\n            ANGLEUNIT[\"degree\",0.0174532925199433],\n            ID[\"EPSG\",8801]],\n        PARAMETER[\"Longitude of natural origin\",-69,\n            ANGLEUNIT[\"degree\",0.0174532925199433],\n            ID[\"EPSG\",8802]],\n        PARAMETER[\"Scale factor at natural origin\",0.9996,\n            SCALEUNIT[\"unity\",1],\n            ID[\"EPSG\",8805]],\n        PARAMETER[\"False easting\",500000,\n            LENGTHUNIT[\"metre\",1],\n            ID[\"EPSG\",8806]],\n        PARAMETER[\"False northing\",0,\n            LENGTHUNIT[\"metre\",1],\n            ID[\"EPSG\",8807]]],\n    CS[Cartesian,2],\n        AXIS[\"(E)\",east,\n            ORDER[1],\n            LENGTHUNIT[\"metre\",1]],\n        AXIS[\"(N)\",north,\n            ORDER[2],\n            LENGTHUNIT[\"metre\",1]],\n    USAGE[\n        SCOPE[\"Navigation and medium accuracy spatial referencing.\"],\n        AREA[\"Between 72°W and 66°W, northern hemisphere between equator and 84°N, onshore and offshore. Aruba. Bahamas. Brazil. Canada - New Brunswick (NB); Labrador; Nunavut; Nova Scotia (NS); Quebec. Colombia. Dominican Republic. Greenland. Netherlands Antilles. Puerto Rico. Turks and Caicos Islands. United States. Venezuela.\"],\n        BBOX[0,-72,84,-66]],\n    ID[\"EPSG\",32619]]\n\n\nAlways check the CRS. It defines how the geometric coordinates relate to real-world locations. Missing or incorrect CRS information is a common data quality issue that can render a dataset unusable.",
+    "crumbs": [
+      "OpenFiles",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>GeoPackage (.gpkg) files</span>"
+    ]
+  },
+  {
+    "objectID": "FileOpen_gpkg_Notebook.html#visualize-the-data",
+    "href": "FileOpen_gpkg_Notebook.html#visualize-the-data",
+    "title": "5  GeoPackage (.gpkg) files",
+    "section": "5.5 Visualize the Data",
+    "text": "5.5 Visualize the Data\nWe can create both static and interactive maps for geospacial data.\n\n5.5.1 Static Plot\nFor a quick, simple preview of the geometry, the base plot() function works well.\n\n\nCode\n# Create a static plot of the layer's geometry\nplot(st_geometry(gpkg_data))\n\n\n\n\n\n\n\n\n\nCode\n# You can also color the plot based on a specific data column\n# plot(gpkg_data[\"ATTRIBUTE_NAME\"])\n\n\n\n\n5.5.2 Interactive Map\nFor more compelling exploration, the leaflet package can create an interactive map that you can pan and zoom.First, the coordinates nned to be transformed to EPSG:4326 to be read by leaflet. The leaflet package has different functions for each geometry type:\n\naddPolygons() for areas.\naddPolylines() for lines.\naddCircleMarkers() or addMarkers() for points.\n\n\n\nCode\n# 1. Transform the data to the CRS that Leaflet expects (EPSG:4326)\ngpkg_data_wgs84 &lt;- st_transform(gpkg_data, crs = 4326)\n\n# 2. Now, create the map using the *transformed* data\nleaflet(gpkg_data_wgs84) %&gt;%\n  addProviderTiles(providers$CartoDB.Positron) %&gt;%\n  addCircleMarkers(\n    radius = 3,         # Sets the circle size in pixels\n    stroke = FALSE,     # Removes the circle outline\n    fillOpacity = 0.8,  # Sets the transparency of the circle\n    popup = ~paste0(\"&lt;strong&gt;Attribute: &lt;/strong&gt;\", as.character(gpkg_data_wgs84[[1]]))\n  )\n\n\n\n\nInteractive map of the data, correctly projected in WGS 84 for web display.",
+    "crumbs": [
+      "OpenFiles",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>GeoPackage (.gpkg) files</span>"
+    ]
+  },
+  {
+    "objectID": "FileOpen_gpkg_Notebook.html#additional-tools",
+    "href": "FileOpen_gpkg_Notebook.html#additional-tools",
+    "title": "5  GeoPackage (.gpkg) files",
+    "section": "5.6 Additional tools",
+    "text": "5.6 Additional tools\nWhile R is excellent for programmatic analysis, other tools are indispensable for deep visual inspection and management of GeoPackage files.\n\n5.6.1 QGIS (Desktop GIS Software)\nQGIS is a free, open-source, and extremely powerful Geographic Information System. It’s the industry standard for working with geospatial data outside of an programming environment.\n\n\n5.6.2 DB Browser for SQLite (Database Tool)\nSince a .gpkg file is fundamentally an SQLite database, you can use a database browser to inspect its raw structure.",
+    "crumbs": [
+      "OpenFiles",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>GeoPackage (.gpkg) files</span>"
+    ]
   }
 ]

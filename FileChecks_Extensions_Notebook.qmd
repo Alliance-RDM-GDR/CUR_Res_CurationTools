@@ -1,14 +1,14 @@
 ---
 title: "File extension and inventory check"
-author: "Gemini"
-date: "2025-10-16"
+author: "Natalie Williams"
+date: "2025-11-13"
 format: 
   html:
     toc: true
     toc-location: left
     code-fold: true
 params:
-  target_dir: "D://Alliance/FRDR/Curation/2025/1352/files/Reconstructions"
+  target_dir: "data/FileChecks_Extensions/"
 ---
 
 ## Overview
@@ -17,14 +17,14 @@ This notebook provides a utility to inventory the contents of a data directory. 
 
 This process helps answer key questions:
 
-* What types of files are present in the dataset?
-* Are there any unexpected or disallowed file formats?
-* Are there hidden files (e.g., `.DS_Store`, `Thumbs.db`) that should be removed before publication?
-* Does the file count match the dataset's documentation?
+-   What types of files are present in the dataset?
+-   Are there any unexpected or disallowed file formats?
+-   Are there hidden files (e.g., `.DS_Store`, `Thumbs.db`) that should be removed before publication?
+-   Does the file count match the dataset's documentation?
 
 The output is a clean CSV file that serves as an inventory of the entire data package.
 
----
+------------------------------------------------------------------------
 
 ## Setup
 
@@ -38,7 +38,7 @@ If you don't have the `tidyverse` package installed, run this command once in yo
 # install.packages("tidyverse")
 ```
 
----
+------------------------------------------------------------------------
 
 ## Load libraries
 
@@ -51,7 +51,7 @@ This chunk loads the necessary library for the session.
 library(tidyverse)
 ```
 
----
+------------------------------------------------------------------------
 
 ## Select the target directory
 
@@ -76,7 +76,7 @@ all_files <- list.files(
 print(paste("Found", length(all_files), "total files (including hidden)."))
 ```
 
----
+------------------------------------------------------------------------
 
 ## Extract extensions and generate summary table
 
@@ -105,14 +105,14 @@ print(file_summary)
 # Save the results to a CSV file
 write.csv(
   file_summary,
-  file = paste0("Results/ExtensionChecker/File_Extension_Summary_", Sys.Date(), ".csv"),
+  file = paste0("Results/FileCheks_Extensions/File_Extension_Summary_", Sys.Date(), ".csv"),
   row.names = FALSE
 )
 
 print("File extension summary has been saved.")
 ```
 
----
+------------------------------------------------------------------------
 
 ## Additional tools
 
@@ -124,10 +124,32 @@ Quickly scan the `Extension` column. Do you see any proprietary formats (`.xlsx`
 
 Many operating systems create hidden files that are not part of the actual dataset and should be removed before publication.
 
-**Common examples to look for:**
-* `DS_Store` (macOS)
-* `Thumbs.db` (Windows)
-* `__MACOSX` (Created by macOS when zipping files)
-* `.Rhistory` or `.Rproj.user` (RStudio project files)
+**Common examples to look for:** \* `DS_Store` (macOS) \* `Thumbs.db` (Windows) \* `__MACOSX` (Created by macOS when zipping files) \* `.Rhistory` or `.Rproj.user` (RStudio project files)
 
 If these appear in your summary, you can locate and delete them to clean the dataset.
+
+## Using the Non-Interactive R Script
+
+For users who want to run this analysis on a server or from the command line, a pure R script is available to perform the same process.
+
+**Prerequisites:**
+* R with `tidyverse`, `magick`, and `exiftoolr` installed.
+* **ExifTool** command-line software must be installed on the system.
+
+Download the **R Script:** **[`FileChecks_Extensions_Script.R`](Scripts/FileChecks_Extensions_Script.R)**
+
+### Example HPC Submission Script 
+
+```bash
+#!/bin/bash
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=00:20:00
+#SBATCH --job-name=img_check
+
+module load R
+# module load exiftool # Uncomment if your cluster requires this
+
+DATA_DIR="/scratch/your_user/your_project/images_v1"
+
+Rscript FileChecks_Extensions_Script.R $DATA_DIR

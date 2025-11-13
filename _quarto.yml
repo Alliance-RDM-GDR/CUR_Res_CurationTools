@@ -11,13 +11,13 @@ book:
     - index.qmd
     - part: FileChecks.qmd
       chapters:
-        - FileChecker.qmd
-        - ExtensionChecker.qmd
-        - ImageChecker.qmd
+        - FileChecks_Extensions_Notebook.qmd
+        - FileChecks_csv_Notebook.qmd
+        - FileChecks_Images_Notebook.qmd
         
     - part: OpenFiles.qmd
       chapters:
-        - OpenFiles_gpkg.qmd
+        - FileOpen_gpkg_Notebook.qmd
 
 
 
