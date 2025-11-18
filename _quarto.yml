@@ -9,15 +9,26 @@ book:
   date: today
   chapters:
     - index.qmd
-    - part: FileChecks.qmd
+
+    - part: Data_General.qmd
       chapters:
         - FileChecks_Extensions_Notebook.qmd
+
+    - part: Data_Tabular.qmd
+      chapters:
         - FileChecks_csv_Notebook.qmd
-        - FileChecks_Images_Notebook.qmd
+        - FileOpen_xlsx_Notebook.qmd
         
-    - part: OpenFiles.qmd
+    - part: Data_Scientific.qmd
       chapters:
         - FileOpen_gpkg_Notebook.qmd
+        - FileOpen_nc_Notebook.qmd
+        - FileOpen_mat_Notebook.qmd
+        
+        
+    - part: Data_Image.qmd
+      chapters:
+        - FileChecks_Images_Notebook.qmd
 
 
 

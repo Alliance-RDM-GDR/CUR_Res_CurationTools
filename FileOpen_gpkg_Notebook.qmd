@@ -136,9 +136,9 @@ plot(st_geometry(gpkg_data))
 
 For more compelling exploration, the `leaflet` package can create an interactive map that you can pan and zoom.First, the coordinates nned to be transformed to EPSG:4326 to be read by `leaflet`. The leaflet package has different functions for each geometry type:
 
-* addPolygons() for areas.
-* addPolylines() for lines.
-* addCircleMarkers() or addMarkers() for points.
+-   addPolygons() for areas.
+-   addPolylines() for lines.
+-   addCircleMarkers() or addMarkers() for points.
 
 ```{r interactive-map}
 #| label: transform-and-plot-map
@@ -169,3 +169,28 @@ While R is excellent for programmatic analysis, other tools are indispensable fo
 ### DB Browser for SQLite (Database Tool)
 
 Since a `.gpkg` file is fundamentally an SQLite database, you can use a database browser to inspect its raw structure.
+
+
+## Using the Non-Interactive R Script
+
+For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
+
+### The `FileOpen_gpkg_Script.R` Script
+
+Download the **R Script:** **[`FileOpen_gpkg_Script.R`](Scripts/FileOpen_gpkg_Script.R)**
+
+### Example HPC Submission Script (`FileOpen_gpkg_submit.sh`)
+
+```bash
+#!/bin/bash
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=00:15:00
+#SBATCH --job-name=nc_check
+
+# Load R module (often includes NetCDF/HDF5 libraries)
+module load R 
+
+DATA_DIR="/scratch/your_user/your_project/netcdf_data"
+
+Rscript FileOpen_gpkg_Script.R $DATA_DIR

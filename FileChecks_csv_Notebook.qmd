@@ -1,5 +1,5 @@
 ---
-title: "Automated CSV File Checker"
+title: "CSV Files"
 author: "Natalie Williams"
 date: "2025-10-10"
 format: html

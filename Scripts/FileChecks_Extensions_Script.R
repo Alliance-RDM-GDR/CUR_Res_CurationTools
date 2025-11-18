@@ -3,7 +3,7 @@
 # ---------------------------------------------------------------------------
 #
 # TITLE: File Extension and Inventory Check
-# AUTHOR: Natalie Williams (Adapted by Gemini)
+# AUTHOR: Natalie Williams
 # DATE: 2025-11-13
 #
 # DESCRIPTION:

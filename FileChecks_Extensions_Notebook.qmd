@@ -1,5 +1,5 @@
 ---
-title: "File extension and inventory check"
+title: "File extensions"
 author: "Natalie Williams"
 date: "2025-11-13"
 format: 

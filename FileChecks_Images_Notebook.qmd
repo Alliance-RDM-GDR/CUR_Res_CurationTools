@@ -1,5 +1,5 @@
 ---
-title: "Image File Metadata and Quality Control"
+title: "Image Files (General)"
 author: "Natalie Williams"
 date: "2025-10-14"
 format: 

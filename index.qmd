@@ -1,6 +1,6 @@
 ---
-title: "R Functions for Research Data Management"
-subtitle: "A Practical Guide for Data Curators"
+title: "Research data curators toolbox"
+subtitle: "A Practical Guide"
 format: html
 ---
 

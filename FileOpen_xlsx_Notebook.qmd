@@ -1,0 +1,258 @@
+---
+title: "Excel Files (.xls, .xlsx)"
+author: "Daniel Manrique-Castano"
+date: "2025-11-17"
+format: 
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+params:
+  target_dir: "."
+---
+
+## Overview
+
+This notebook provides a workflow for inspecting and summarizing the contents of multiple Excel workbooks (`.xls` and `.xlsx`) within a directory. Because Excel files are complex containers, this tool is designed to help curators quickly assess their structure and content *before* attempting a full data conversion.
+
+**The process performs four key checks for each workbook:**
+
+1.  **Lists all sheet names** to identify hidden sheets or unexpected content.
+2.  **Gets the true dimensions** (rows and columns) of each sheet.
+3.  **Reads the first 5 rows** of each sheet to preview headers and content.
+4.  **Attempts to detect non-tabular data** (like charts, pictures, or complex merged-cell headers) by checking for default or minimal column names.
+
+---
+
+## Setup
+
+This workflow relies on the `readxl` package to parse Excel files and `rstudioapi` for the interactive directory selection.
+
+### R Packages
+
+If you don't have these packages installed, run this command once in your R console:
+
+```{r}
+# install.packages(c("tidyverse", "readxl", "rstudioapi"))
+```
+
+---
+
+## Load Libraries
+
+This chunk loads all the necessary libraries for the session.
+
+```{r load-libraries}
+#| label: load-libraries
+#| message: false
+
+library(tidyverse)
+library(readxl)
+library(rstudioapi)
+```
+
+---
+
+## Select Target Directory
+
+This section identifies the directory to be analyzed and finds all Excel files within it.
+
+> **Note:** If you are running this interactively in RStudio, a dialog box will appear. If you are rendering this document (where no user interaction is possible), it will default to the `params$target_dir` defined in the YAML header.
+
+```{r select-directory}
+#| label: select-target-dir
+
+# 1. Try to select interactively if in RStudio
+if (interactive() && .Platform$OS.type == "windows") { 
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select Excel Directory")
+} else {
+  selected_dir <- NULL
+}
+
+# 2. Logic to determine final directory (Interactive vs Parameter)
+if (!is.null(selected_dir)) {
+  target_dir <- selected_dir
+} else {
+  target_dir <- params$target_dir
+}
+
+print(paste("Analyzing directory:", target_dir))
+```
+
+### Find Excel Files
+
+Now we scan the selected directory for all `.xls` and `.xlsx` files.
+
+```{r find-files}
+#| label: find-files
+
+# Find all Excel files using a regex pattern
+excel_files <- list.files(
+  path = target_dir,
+  pattern = "\\.xlsx?$", # Matches .xls or .xlsx
+  recursive = TRUE,
+  full.names = TRUE,
+  ignore.case = TRUE
+)
+
+# Print the number of files found and show the first few paths
+print(paste("Found", length(excel_files), "Excel files."))
+head(excel_files)
+```
+
+---
+
+## 📊 Generate Structural Report
+
+This is the core of the notebook. The code will loop through each Excel file, then loop through each *sheet* within that file, and generate a summary report.
+
+```{r generate-report}
+#| label: generate-report
+#| warning: false
+#| message: false
+
+# 1. Initialize an empty list to store results
+all_sheets_summary <- list()
+
+# 2. Loop over each Excel file
+for (file_path in excel_files) {
+  
+  file_name <- basename(file_path)
+  
+  # Use a tryCatch in case the file is corrupt or password-protected
+  tryCatch({
+    
+    # Check 1: List all sheet names
+    sheet_names <- excel_sheets(file_path)
+    
+    if (length(sheet_names) == 0) {
+      # Handle empty workbooks
+      all_sheets_summary[[length(all_sheets_summary) + 1]] <- tibble(
+        FileName = file_name,
+        SheetName = "(No Sheets Found)",
+        Dimensions = "0 x 0",
+        IsLikelyNonTabular = TRUE,
+        HeaderPreview = "(Empty)"
+      )
+      next # Skip to the next file
+    }
+    
+    # 3. Loop over each sheet in the workbook
+    for (sheet_name in sheet_names) {
+      
+      # Use a tryCatch for each sheet (a sheet might be corrupt)
+      tryCatch({
+        
+        # Check 2: Get true dimensions by reading the whole sheet
+        # We specify .name_repair to prevent messages
+        full_sheet_data <- read_excel(file_path, sheet = sheet_name, .name_repair = "minimal")
+        true_dims <- paste(dim(full_sheet_data), collapse = " x ")
+        
+        # Check 3 & 4: Read headers and check for non-tabular data
+        # We use .name_repair = "minimal" to detect default '...#' names
+        header_preview <- read_excel(file_path, sheet = sheet_name, n_max = 5, .name_repair = "minimal")
+        col_names <- colnames(header_preview)
+        
+        # This is a proxy. It's TRUE if:
+        # a) Any column name is a default '...#' (often means merged headers)
+        # b) There is only 1 column (often means a chart or text block)
+        is_non_tabular <- any(str_detect(col_names, "^\\.\\.\\.\\d+$")) || length(col_names) <= 1
+        
+        # Store the first 5 rows' headers as a single string
+        header_as_string <- paste(col_names, collapse = " | ")
+        
+        # Add results to our list
+        all_sheets_summary[[length(all_sheets_summary) + 1]] <- tibble(
+          FileName = file_name,
+          SheetName = sheet_name,
+          Dimensions = true_dims,
+          IsLikelyNonTabular = is_non_tabular,
+          HeaderPreview = header_as_string
+        )
+        
+      }, error = function(e_sheet) {
+        # Handle a single bad sheet
+        message(paste("Error on sheet:", sheet_name, "in file:", file_name, "|", e_sheet$message))
+        all_sheets_summary[[length(all_sheets_summary) + 1]] <- tibble(
+          FileName = file_name,
+          SheetName = sheet_name,
+          Dimensions = "Error",
+          IsLikelyNonTabular = TRUE,
+          HeaderPreview = paste("ERROR:", e_sheet$message)
+        )
+      })
+    }
+    
+  }, error = function(e_file) {
+    # Handle a single bad file
+    message(paste("Error on file:", file_name, "|", e_file$message))
+    all_sheets_summary[[length(all_sheets_summary) + 1]] <- tibble(
+      FileName = file_name,
+      SheetName = "Error",
+      Dimensions = "Error",
+      IsLikelyNonTabular = TRUE,
+      HeaderPreview = paste("ERROR:", e_file$message)
+    )
+  })
+}
+
+# 4. Combine all results into one data frame
+summary_report <- bind_rows(all_sheets_summary)
+
+print("--- Excel Structure Report ---")
+print(summary_report)
+
+# 5. Save the report to a CSV file
+dir.create("Results/OpenFile_xlsx", recursive = TRUE, showWarnings = FALSE)
+write.csv(
+  summary_report,
+  file = paste0("Results/OpenFile_xlsx/Excel_Structure_Report_", Sys.Date(), ".csv"),
+  row.names = FALSE
+)
+
+print("Excel structure report saved.")
+```
+
+---
+
+## Curation Insights
+
+The `summary_report` table provides:
+
+* **`SheetName`**: Scan this column for unexpected names like `"Sheet1"`, `"Chart2"`, or `"DELETE_ME"`. This often reveals which sheets are data and which are artifacts.
+* **`Dimensions`**: Look for sheets with `0 x 0` or `1 x 1` dimensions. These are almost always empty or non-data sheets that can be ignored or flagged.
+* **`IsLikelyNonTabular = TRUE`**: **This is a key flag.** `TRUE` suggests the sheet does not start with a simple, clean table. It could be a chart, a block of text, or have a complex multi-row header (which will require special handling during conversion).
+* **`HeaderPreview`**: This gives you a direct look at the column names. You can quickly see if they make sense or if they are `...1 | ...2 | ...3`, confirming the `IsLikelyNonTabular` flag.
+
+---
+
+## Using the Non-Interactive R Script
+
+For users who want to run this analysis on a server or from the command line, here is a pure R script that performs the same process.
+
+This "hybrid" script will:
+1.  If run **interactively** (e.g., in RStudio), pop up a dialog to select a **directory**.
+2.  If run **non-interactively** (e.g., on an HPC cluster), accept a **directory** path as a command-line argument.
+3.  Process **all** `.xls` and `.xlsx` files found in that directory.
+
+Download the **R Script:** **[`FileOpen_xlsx_Script.R`](Scripts/FileOpen_xlsx_Script.R)**
+
+
+### Example HPC Submission Script (`submit_excel_check.sh`)
+
+```bash
+#!/bin/bash
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=00:20:00 # Excel parsing can be slow
+#SBATCH --job-name=excel_check
+
+# Load R module
+module load R 
+
+# Define the folder containing your Excel files
+DATA_DIR="/scratch/your_user/your_project/excel_data"
+
+# Run the R script, passing the directory as an argument
+Rscript FileOpen_xlsx_Scriptl.R $DATA_DIR
+```

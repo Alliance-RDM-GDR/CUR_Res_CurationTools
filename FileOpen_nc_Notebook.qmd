@@ -1,0 +1,297 @@
+---
+title: "NetCDF Files"
+author: "Natalie Williams"
+date: "2025-10-16"
+format: 
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+params:
+  target_dir: "."
+---
+
+## Overview
+
+This tool provides an automated workflow for extracting and summarizing metadata from a collection of NetCDF (`.nc`) file, a self-describing format common in scientific fields. The workflow performs three main tasks:
+
+1.  **File discovery**: It scans a specified directory for all NetCDF files.
+2.  **Metadata extraction**: It uses the `tidync` package to pull out three fundamental components from each file:
+    * **Dimensions**: The axes of the data grid (e.g., latitude, longitude, time).
+    * **Variables**: The actual data stored in the file (e.g., temperature, pressure).
+    * **Attributes**: Descriptive metadata, which can be global (applying to the whole file) or attached to specific variables (e.g., units).
+3.  **Report generation**: It reshapes this metadata into user-friendly summary tables and saves them as `.csv` files.
+
+------------------------------------------------------------------------
+
+## Setup
+
+Before running this notebook, you need to ensure the required R packages are installed.
+
+### R Packages
+
+The following R packages are required. If you don't have them, run this code once in your R console:
+
+```{r}
+# install.packages(c("tidyverse", "tidync", "rstudioapi"))
+```
+
+------------------------------------------------------------------------
+
+## Load Libraries
+
+This chunk loads all the necessary libraries for the session.
+
+```{r load-libraries}
+#| label: load-libraries
+#| message: false
+
+library(tidyverse)
+library(tidync)
+library(rstudioapi) # Added for interactive selection
+```
+
+------------------------------------------------------------------------
+
+## Select target directory with NetCDF files
+
+This section identifies the directory to be analyzed and finds all `.nc` files within it.
+
+> **Note:** If you are running this interactively in RStudio, a dialog box will appear. If you are rendering this document (where no user interaction is possible), it will default to the `params$target_dir` defined in the YAML header.
+
+```{r select-directory}
+#| label: select-target-dir
+
+# 1. Try to select interactively if in RStudio
+if (interactive() && .Platform$OS.type == "windows") { 
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select NetCDF Directory")
+} else {
+  selected_dir <- NULL
+}
+
+# 2. Logic to determine final directory (Interactive vs Parameter)
+if (!is.null(selected_dir)) {
+  target_dir <- selected_dir
+} else {
+  target_dir <- params$target_dir
+}
+
+print(paste("Analyzing directory:", target_dir))
+```
+
+### Find NetCDF files
+
+Now we scan the selected directory for all `.nc` files.
+
+```{r find-files}
+#| label: find-files
+
+# Find all NetCDF files
+nc_files <- list.files(
+  path = target_dir,
+  pattern = "\\.nc$",
+  recursive = TRUE,
+  full.names = TRUE,
+  ignore.case = TRUE
+)
+
+# Print the number of files found and show the first few paths
+print(paste("Found", length(nc_files), "NetCDF files."))
+head(nc_files)
+```
+
+------------------------------------------------------------------------
+
+## Extract and organize metadata
+
+Here, we will process each NetCDF file using `purrr::map` functions to extract its dimensions, variables, and attributes.
+
+```{r extract-metadata}
+#| label: extract-metadata
+
+# Create a "safely" version of tidync to handle potentially corrupt files
+safe_tidync <- purrr::safely(tidync)
+
+# 1. Process all files, safely handling any errors
+processed_files <- purrr::map(nc_files, ~safe_tidync(.x)) %>% 
+  set_names(nc_files)
+
+# 2. Separate successful results from errors
+successful_results <- purrr::map(processed_files, "result") %>% 
+  purrr::compact()
+
+errors <- purrr::map(processed_files, "error") %>% 
+  purrr::compact()
+
+# Report any files that failed to process
+if (length(errors) > 0) {
+  message("The following files failed to process and were skipped:")
+  walk(names(errors), message)
+}
+
+# 3. Extract and combine dimensions, variables, and attributes
+nc_dimensions <- purrr::map(successful_results, ~.x$dimension) %>% 
+  bind_rows(.id = "FileName")
+
+nc_variables <- purrr::map(successful_results, ~.x$variable) %>% 
+  bind_rows(.id = "FileName")
+
+nc_attributes <- purrr::map(successful_results, ~.x$attribute) %>% 
+  bind_rows(.id = "FileName")
+
+print("Metadata extraction complete.")
+```
+
+------------------------------------------------------------------------
+
+## Reshape metadata for comparison
+
+We reshape the tables to facilitate cross-file comparison. We create two primary summary tables: one for global attributes and another that joins variables with their specific attributes.
+
+### Global attributes summary
+
+This table gives a wide-format overview of the global attributes, with one row per file. It helps checking the consistency at the file-level, including `title`, `history`, or `source`.
+
+```{r reshape-global-attributes}
+#| label: reshape-global-attributes
+
+nc_attributes_global <- nc_attributes %>%
+  filter(variable == "NC_GLOBAL") %>%
+  # Pivot to make each global attribute its own column
+  pivot_wider(
+    id_cols = FileName,
+    names_from = name,
+    values_from = value,
+    values_fn = ~paste(., collapse = "; ")
+  )
+
+print("--- Global Attributes Summary ---")
+glimpse(nc_attributes_global)
+```
+
+### Variables and Attributes Summary
+
+This table provides a detailed, wide-format view of each variable from each file and its associated attributes (like `units` or `long_name`).
+
+```{r reshape-variable-attributes}
+#| label: reshape-variable-attributes
+
+nc_variables_with_attributes <- nc_variables %>%
+  # Join the variables with their non-global attributes
+  left_join(
+    filter(nc_attributes, variable != "NC_GLOBAL"),
+    by = c("name" = "variable", "FileName")
+  ) %>%
+  # Pivot to make each attribute (units, long_name, etc.) its own column
+  pivot_wider(
+    names_from = name.y, # The attribute name
+    values_from = value,
+    values_fn = ~paste(., collapse = "; ")
+  )
+
+print("--- Variables and Attributes Summary ---")
+head(nc_variables_with_attributes)
+```
+
+------------------------------------------------------------------------
+
+## Save Summary Reports
+
+Finally, we save the most useful summary tables to `.csv` files for documentation and further analysis.
+
+```{r write-files}
+#| label: write-files
+
+# Create output directory if it doesn't exist
+dir.create("Results/NCChecker", recursive = TRUE, showWarnings = FALSE)
+
+write.csv(
+  nc_dimensions,
+  file = paste0("Results/NCChecker/NetCDF_Dimensions_", Sys.Date(), ".csv"),
+  row.names = FALSE
+)
+write.csv(
+  nc_attributes_global,
+  file = paste0("Results/NCChecker/NetCDF_Global_Attributes_", Sys.Date(), ".csv"),
+  row.names = FALSE
+)
+write.csv(
+  nc_variables_with_attributes,
+  file = paste0("Results/NCChecker/NetCDF_Variables_with_Attributes_", Sys.Date(), ".csv"),
+  row.names = FALSE
+)
+
+print("Summary reports have been saved to CSV files.")
+```
+
+------------------------------------------------------------------------
+
+## Additional tools
+
+### Verify consistent global attributes
+
+Verify if all files in a dataset have the same `title`, `institution`, `source`, and CF `Conventions`.
+
+```{r curation-check-global}
+#| label: curation-check-global
+#| code-fold: false
+
+if (nrow(nc_attributes_global) > 0) {
+  # Select a few key attributes and count the unique combinations
+  global_consistency_check <- nc_attributes_global %>%
+    select(FileName, contains("title"), contains("institution"), contains("source"), contains("Conventions")) %>%
+    # The line below groups by all columns except FileName
+    group_by(across(-FileName)) %>%
+    summarise(file_count = n(), .groups = "drop")
+  
+  print("Consistency Check of Key Global Attributes:")
+  print(global_consistency_check)
+}
+```
+
+### Check for essential variable attributes
+
+For data to be reusable, variables should always have attributes like `long_name` and `units`. This section allows checking for missing attributes across all variables.
+
+```{r curation-check-var-attr}
+#| label: curation-check-var-attr
+#| code-fold: false
+
+if (nrow(nc_variables_with_attributes) > 0) {
+  missing_attribute_check <- nc_variables_with_attributes %>%
+    # Summarise the number of variables missing these key attributes
+    summarise(
+      missing_long_name = sum(is.na(long_name)),
+      missing_units = sum(is.na(units))
+    )
+  
+  print("Check for Missing Essential Variable Attributes:")
+  print(missing_attribute_check)
+}
+```
+
+
+## Using the Non-Interactive R Script
+
+For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
+
+### The `FileOpen_nc_Script.R` Script
+
+Download the **R Script:** **[`FileOpen_nc_Script.R`](Scripts/FileOpen_nc_Script.R)**
+
+### Example HPC Submission Script (`FileOpen_nc_submit.sh`)
+
+```bash
+#!/bin/bash
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=00:15:00
+#SBATCH --job-name=nc_check
+
+# Load R module (often includes NetCDF/HDF5 libraries)
+module load R 
+
+DATA_DIR="/scratch/your_user/your_project/netcdf_data"
+
+Rscript FileOpen_nc_Script.R $DATA_DIR
+```
