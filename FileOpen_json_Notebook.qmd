@@ -1,0 +1,215 @@
+---
+title: "JSON Files"
+author: "Daniel Manrique-Castano"
+date: "2025-11-19"
+format: 
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+params:
+  target_dir: "."
+---
+
+## Overview
+
+This notebook provides a workflow for inspecting and summarizing **JSON (JavaScript Object Notation)** files. JSON files are flexible and can store anything from simple flat tables to complex, deeply nested hierarchies.
+
+**The process performs four key checks for each file:**
+
+1.  **Validation:** Confirms the file is valid JSON and can be parsed.
+2.  **Structure Identification:** Determines if the file represents a table (data frame), a list (hierarchy), or an array.
+3.  **Top-Level Key Extraction:** Lists the main "branches" or column names to help understand the schema.
+4.  **Dimension Check:** Reports the number of rows/columns (for tables) or the number of elements (for lists).
+
+---
+
+## ⚙️ Setup
+
+This workflow relies on `jsonlite` for parsing and `tidyverse` for data manipulation.
+
+### R Packages
+
+If you don't have these packages installed, run this command once in your R console:
+
+```{r}
+# install.packages(c("tidyverse", "jsonlite", "rstudioapi"))
+
+```
+
+## Load libraries
+
+```{r}
+
+#| label: load-libraries
+#| message: false
+
+library(tidyverse)
+library(jsonlite)
+library(rstudioapi)
+
+```
+
+
+## Select Target Directory
+Select the directory containing your .json files.
+
+Note: Interactive selection works in RStudio. If rendering, it defaults to params$target_dir.
+
+```{r}
+
+#| label: select-target-dir
+
+# 1. Try to select interactively if in RStudio
+if (interactive() && .Platform$OS.type == "windows") { 
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select JSON Directory")
+} else {
+  selected_dir <- NULL
+}
+
+# 2. Logic to determine final directory
+if (!is.null(selected_dir)) {
+  target_dir <- selected_dir
+} else {
+  target_dir <- params$target_dir
+}
+
+print(paste("Analyzing directory:", target_dir))
+```
+
+
+## Find Json files
+
+```{r}
+#| label: find-files
+
+# Find all .json files
+json_files <- list.files(
+  path = target_dir,
+  pattern = "\\.json$", 
+  recursive = TRUE,
+  full.names = TRUE,
+  ignore.case = TRUE
+)
+
+print(paste("Found", length(json_files), "JSON files."))
+head(json_files)
+```
+
+## Generate a Report
+
+This loop reads each file and attempts to summarize its contents. It handles errors gracefully (e.g., malformed syntax).
+
+
+```{r}
+#| label: generate-report
+#| warning: false
+#| message: false
+
+# 1. Initialize results list
+json_summary_list <- list()
+
+# 2. Loop through files
+for (file_path in json_files) {
+  file_name <- basename(file_path)
+  
+  tryCatch({
+    # Attempt to parse the JSON
+    # simplifyVector = TRUE allows R to detect tables automatically
+    json_data <- fromJSON(file_path, simplifyVector = TRUE)
+    
+    # Determine Class (Data Frame, List, or Vector)
+    obj_class <- class(json_data)[1]
+    
+    # Determine Dimensions & Keys based on type
+    if (is.data.frame(json_data)) {
+      dims_str <- paste(dim(json_data), collapse = " x ")
+      keys_str <- paste(head(colnames(json_data), 5), collapse = ", ")
+      if (ncol(json_data) > 5) keys_str <- paste(keys_str, "...")
+      
+    } else if (is.list(json_data)) {
+      dims_str <- paste(length(json_data), "elements")
+      keys_str <- paste(head(names(json_data), 5), collapse = ", ")
+      if (length(json_data) > 5) keys_str <- paste(keys_str, "...")
+      
+    } else {
+      # Atomic vectors or arrays
+      dims_str <- paste(length(json_data), "length")
+      keys_str <- "(No Keys - Flat Array)"
+    }
+    
+    # Store success result
+    json_summary_list[[length(json_summary_list) + 1]] <- tibble(
+      FileName = file_name,
+      IsValid = TRUE,
+      StructureType = obj_class,
+      Dimensions = dims_str,
+      TopLevelKeys = keys_str
+    )
+    
+  }, error = function(e) {
+    # Store error result
+    json_summary_list[[length(json_summary_list) + 1]] <- tibble(
+      FileName = file_name,
+      IsValid = FALSE,
+      StructureType = "Error",
+      Dimensions = "NA",
+      TopLevelKeys = paste("Parse Error:", e$message)
+    )
+  })
+}
+
+# 3. Combine and Print
+json_report <- bind_rows(json_summary_list)
+
+print("--- JSON Structure Report ---")
+print(json_report)
+
+# 4. Save to CSV
+dir.create("Results/FileOpen_json", recursive = TRUE, showWarnings = FALSE)
+write.csv(
+  json_report,
+  file = paste0("Results/FileOpen_json/JSON_Report_", Sys.Date(), ".csv"),
+  row.names = FALSE
+)
+
+print("Report saved.")
+```
+
+
+## Curation Insights
+
+The StructureType column is your primary indicator of the data's shape:
+
+- data.frame: Good news! This JSON is tabular (an array of objects) and acts like a CSV. The Dimensions column tells you how many records it holds.
+
+- list: This indicates a hierarchical or nested JSON. Use the TopLevelKeys to understand what categories of data it holds (e.g., metadata, data, citations).
+
+- IsValid = FALSE: These files are corrupted or contain invalid syntax (like trailing commas). They will break any downstream analysis pipeline and should be flagged immediately.
+
+## Using the Non-Interactive R Script
+
+For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
+
+
+Download the **R Script:** **[`FileOpen_json_Script.R`](Scripts/FileOpen_json_Script.R)**
+
+
+- **For clusters**
+
+Alternatively, adapt the folling code script to match your cluster's environment and your data path, then submit it using `sbatch`.
+
+```bash
+#!/bin/bash
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=00:10:00
+#SBATCH --job-name=json_check
+
+module load R 
+
+DATA_DIR="/scratch/your_user/your_project/json_data"
+
+Rscript check_json.R $DATA_DIR
+```
+

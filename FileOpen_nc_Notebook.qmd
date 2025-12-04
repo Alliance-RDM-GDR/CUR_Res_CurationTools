@@ -17,9 +17,9 @@ This tool provides an automated workflow for extracting and summarizing metadata
 
 1.  **File discovery**: It scans a specified directory for all NetCDF files.
 2.  **Metadata extraction**: It uses the `tidync` package to pull out three fundamental components from each file:
-    * **Dimensions**: The axes of the data grid (e.g., latitude, longitude, time).
-    * **Variables**: The actual data stored in the file (e.g., temperature, pressure).
-    * **Attributes**: Descriptive metadata, which can be global (applying to the whole file) or attached to specific variables (e.g., units).
+    -   **Dimensions**: The axes of the data grid (e.g., latitude, longitude, time).
+    -   **Variables**: The actual data stored in the file (e.g., temperature, pressure).
+    -   **Attributes**: Descriptive metadata, which can be global (applying to the whole file) or attached to specific variables (e.g., units).
 3.  **Report generation**: It reshapes this metadata into user-friendly summary tables and saves them as `.csv` files.
 
 ------------------------------------------------------------------------
@@ -48,7 +48,7 @@ This chunk loads all the necessary libraries for the session.
 
 library(tidyverse)
 library(tidync)
-library(rstudioapi) # Added for interactive selection
+library(rstudioapi)
 ```
 
 ------------------------------------------------------------------------
@@ -203,21 +203,21 @@ Finally, we save the most useful summary tables to `.csv` files for documentatio
 #| label: write-files
 
 # Create output directory if it doesn't exist
-dir.create("Results/NCChecker", recursive = TRUE, showWarnings = FALSE)
+dir.create("Results/FileOpen_nc", recursive = TRUE, showWarnings = FALSE)
 
 write.csv(
   nc_dimensions,
-  file = paste0("Results/NCChecker/NetCDF_Dimensions_", Sys.Date(), ".csv"),
+  file = paste0("Results/FileOpen_nc/NetCDF_Dimensions_", Sys.Date(), ".csv"),
   row.names = FALSE
 )
 write.csv(
   nc_attributes_global,
-  file = paste0("Results/NCChecker/NetCDF_Global_Attributes_", Sys.Date(), ".csv"),
+  file = paste0("Results/FileOpen_nc/NetCDF_Global_Attributes_", Sys.Date(), ".csv"),
   row.names = FALSE
 )
 write.csv(
   nc_variables_with_attributes,
-  file = paste0("Results/NCChecker/NetCDF_Variables_with_Attributes_", Sys.Date(), ".csv"),
+  file = paste0("Results/FileOpen_nc/NetCDF_Variables_with_Attributes_", Sys.Date(), ".csv"),
   row.names = FALSE
 )
 
@@ -270,18 +270,17 @@ if (nrow(nc_variables_with_attributes) > 0) {
 }
 ```
 
-
 ## Using the Non-Interactive R Script
 
 For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
 
 ### The `FileOpen_nc_Script.R` Script
 
-Download the **R Script:** **[`FileOpen_nc_Script.R`](Scripts/FileOpen_nc_Script.R)**
+Download the **R Script:** [**`FileOpen_nc_Script.R`**](Scripts/FileOpen_nc_Script.R)
 
 ### Example HPC Submission Script (`FileOpen_nc_submit.sh`)
 
-```bash
+``` bash
 #!/bin/bash
 #SBATCH --nodes=1
 #SBATCH --ntasks=1

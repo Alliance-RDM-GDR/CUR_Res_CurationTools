@@ -18,10 +18,16 @@ book:
       chapters:
         - FileChecks_csv_Notebook.qmd
         - FileOpen_xlsx_Notebook.qmd
+        - FileOpen_json_notebook.qmd
+        - FileOpen_sav_Notebook.qmd
+        - FileOpen_dta_Notebook.qmd
+        
+    - part: Geospatial.qmd
+      chapters:
+        - FileOpen_gpkg_Notebook.qmd
         
     - part: Data_Scientific.qmd
       chapters:
-        - FileOpen_gpkg_Notebook.qmd
         - FileOpen_nc_Notebook.qmd
         - FileOpen_mat_Notebook.qmd
         
