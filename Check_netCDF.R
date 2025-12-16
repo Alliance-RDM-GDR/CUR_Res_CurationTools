@@ -23,7 +23,7 @@ library("tidync")
 library("dplyr")
 library("tidyr")
 
-files.nc <- list.files(pattern = "*\\.nc",recursive = TRUE,ignore.case = TRUE) #get list of all .nc files in data set 
+files.nc <- list.files(pattern = "*\\.nc$",recursive = TRUE,ignore.case = TRUE) #get list of all .nc files in data set 
 
 #initialize data frames
 nc.dim = data.frame()
