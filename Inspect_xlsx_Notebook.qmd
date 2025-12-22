@@ -8,6 +8,7 @@ format:
     toc-location: left
     code-fold: true
     theme: cosmo
+bibliography: references.bib
 params:
   target_dir: "data/Inspect_xlsx/"
 ---
@@ -297,3 +298,4 @@ Rscript Inspect_xlsx_Script.R "$TARGET_DIR"
 
 ::: {#refs}
 :::
+

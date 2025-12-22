@@ -5,6 +5,7 @@ format:
     toc: true
     toc-location: left
     code-fold: true
+bibliography: references.bib
 params:
   target_dir: "data/Inspect_gpkg"
 ---
@@ -393,3 +394,4 @@ Rscript Inspect_GPKG_Script.R $DATA_DIR $OUTPUT_DIR
 
 ::: {#refs}
 :::
+

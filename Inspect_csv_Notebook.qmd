@@ -7,6 +7,7 @@ editor: visual
 execute:
   echo: true
   warning: false
+bibliography: references.bib
 params:
   target_dir: "data/Inspect_csv/"
 ---
@@ -328,3 +329,4 @@ Rscript Inspect_CSV_Script.R $DATA_DIR $OUTPUT_DIR
 
 ::: {#refs}
 :::
+

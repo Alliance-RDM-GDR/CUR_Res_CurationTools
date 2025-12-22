@@ -8,6 +8,7 @@ format:
     toc-location: left
     code-fold: true
     theme: cosmo
+bibliography: references.bib
 params:
   target_dir: "data/Inspect_sas7bdat/"
 ---
@@ -323,3 +324,4 @@ Rscript Inspect_sas7bdat_Script.R "$TARGET_DIR"
 
 ::: {#refs}
 :::
+

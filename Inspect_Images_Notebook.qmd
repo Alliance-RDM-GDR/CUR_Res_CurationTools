@@ -7,6 +7,7 @@ format:
     toc: true
     toc-location: left
     code-fold: true
+bibliography: references.bib
 params:
   target_dir: "data/Inspect_Images/" 
 ---
@@ -344,3 +345,4 @@ echo "Job finished."
 
 ::: {#refs}
 :::
+
