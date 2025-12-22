@@ -1,0 +1,42 @@
+[
+  {
+    "objectID": "Data_Structured.html",
+    "href": "Data_Structured.html",
+    "title": "Structured & Hierarchical Data",
+    "section": "",
+    "text": "Overview\nUnlike tabular data, structured data formats like JSON and XML allow for complex, nested relationships between elements. These formats are essential for representing objects, configurations, and web-based data exchanges. This section provides tools to navigate and validate these hierarchical structures.\nKey Objectives:",
+    "crumbs": [
+      "Structured & Hierarchical Data"
+    ]
+  },
+  {
+    "objectID": "Data_Structured.html#overview",
+    "href": "Data_Structured.html#overview",
+    "title": "Structured & Hierarchical Data",
+    "section": "",
+    "text": "Hierarchy Visualization: We map the nested structure of the files to understand the depth and complexity of the data.\nSchema Validation: We check if the files conform to a standard structure or if they vary wildly within the dataset.\nMetadata Extraction: We identify key keys, tags, and attributes that define the data’s content.",
+    "crumbs": [
+      "Structured & Hierarchical Data"
+    ]
+  },
+  {
+    "objectID": "Data_Structured.html#supported-formats",
+    "href": "Data_Structured.html#supported-formats",
+    "title": "Structured & Hierarchical Data",
+    "section": "Supported Formats",
+    "text": "Supported Formats\n\nJSON (.json)\nJavaScript Object Notation (JSON) is the de facto standard for modern web APIs and NoSQL databases. - Our Approach: We flatten the nested structure to create a readable summary of keys and data types, making it easier to audit large JSON collections.\n\n\nXML (.xml)\nExtensible Markup Language (XML) is a robust, mature standard used heavily in document storage, scientific metadata, and enterprise systems. - Our Approach: We parse the document tree to identify the root element, count child nodes, and extract attributes. We also check for well-formedness to ensure the files can be processed by standard parsers.",
+    "crumbs": [
+      "Structured & Hierarchical Data"
+    ]
+  },
+  {
+    "objectID": "Data_Structured.html#common-curation-challenges",
+    "href": "Data_Structured.html#common-curation-challenges",
+    "title": "Structured & Hierarchical Data",
+    "section": "Common Curation Challenges",
+    "text": "Common Curation Challenges\n\nDeep Nesting: excessively deep hierarchies can make data difficult to query and analyze. We flag files with unusual depth.\nInconsistent Schemas: In flexible formats like JSON, different records may have different fields. Our tools help identify these inconsistencies.\nSyntax Errors: A single missing bracket or tag can render an entire file unreadable. We verify the basic syntax integrity of every file.",
+    "crumbs": [
+      "Structured & Hierarchical Data"
+    ]
+  }
+]
