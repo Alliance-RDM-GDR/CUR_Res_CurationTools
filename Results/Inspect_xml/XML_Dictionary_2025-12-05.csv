@@ -1,0 +1,4 @@
+"FileName","RootNode","NumChildren","ChildNodes","RootAttributes","Status"
+"Guyana_t2m_ERA5_1km_NearestNeighbour_Daily_19520201.nc.aux.xml","PAMDataset",1,"PAMRasterBand","","Success"
+"LaurentEtAl2025_BG_grid_H3.nc.aux.xml","PAMDataset",31,"Subdataset","","Success"
+"LaurentEtAl2025_BG_H2_addTA_HerringCove_particulate_airsea.nc.aux.xml","PAMDataset",5,"Subdataset","","Success"

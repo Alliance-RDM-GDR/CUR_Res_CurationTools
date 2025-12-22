@@ -1,0 +1,260 @@
+---
+title: "Inspection of SPSS Data Files (.sav)"
+author: "Daniel Manrique-Castano"
+date: "2025-12-18"
+format: 
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+    theme: cosmo
+params:
+  target_dir: "data/Inspect_sav/"
+---
+
+## Overview
+
+Unlike generic formats like CSV, SPSS files (`.sav`) utilize a **"Labelled Data"** paradigm where the codebook is embedded directly within the file [@wickham2023]. This means every variable carries three distinct layers of metadata:
+
+1.  **Variable Label:** The human-readable question text (e.g., "Q1: What is your age?").
+2.  **Value Labels:** The dictionary mapping categorical codes to text (e.g., `1 = "Male"`, `2 = "Female"`).
+3.  **User-Defined Missing Values:** Specific numbers (e.g., `-99`, `999`) that the software explicitly treats as "Null" or "Skipped" rather than valid measurements (see [IBM SPSS statistics 28 brief guide](https://www.ibm.com/docs/en/SSLVMB_28.0.0/pdf/IBM_SPSS_Statistics_Brief_Guide.pdf)).
+
+A critical risk in preserving SPSS data is the accidental loss of these "Missing Value" definitions during conversion to non-proprietary formats. If a researcher calculates a mean age including `-99` (Refused) as a numeric value, the statistical results will be biased (See [SPSS data curation primer](https://github.com/DataCurationNetwork/data-primers/blob/main/SPSS%20Data%20Curation%20Primer/SPSS-data-curation-primer.md)).
+
+This notebook performs a rigorous metadata extraction:
+
+1.  **Dictionary Extraction:** We use the `haven` package, which is designed to preserve the "labelled" attributes of SAS and SPSS data in R [@haven-2].
+2.  **Missing Value Inventory:** We explicitly list defined missing codes so they are not mistaken for real data.
+3.  **Encoding Scan:** We check for non-ASCII characters to flag potential legacy encoding issues (e.g., Windows-1252 vs. UTF-8), which are common in older datasets..
+
+## Setup
+
+We use the `haven` package to read SPSS files. It is specifically designed to handle the "labelled" vectors that are unique to statistical software like SPSS, SAS, and Stata.If you do not have the required packages, run this command once in your R console:
+
+### R Packages
+
+```{r}
+# install.packages(c("tidyverse", "haven", "rstudioapi", "stringr"))
+```
+
+### Load Libraries
+
+```{r}
+#| message: false
+#| 
+library(tidyverse)
+library(haven)      # Primary reader 
+library(rstudioapi) # For directory selection
+library(stringr)    # For encoding checks
+```
+
+## Select Directory
+
+Select the folder containing the SPSS files you wish to inspect.
+
+**Note:** If running interactively (RStudio), a dialog box will appear. If running via command line or rendering, it defaults to the target_dir parameter defined at the top of this file.
+
+```{r}
+#| label: select-target-dir
+if (interactive() && .Platform$OS.type == "windows") { 
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select SPSS Directory")
+} else { selected_dir <- NULL }
+
+target_dir <- if (!is.null(selected_dir)) selected_dir else params$target_dir
+print(paste("Analyzing:", target_dir))
+```
+
+## File inventory
+
+We scan the directory for files ending in .sav.
+
+```{r}
+#| label: find-files
+
+spss_files <- list.files(
+  path = target_dir,
+  pattern = "\\.sav$", 
+  recursive = TRUE, 
+  full.names = TRUE, 
+  ignore.case = TRUE
+)
+
+print(paste("Found", length(spss_files), "SPSS files."))
+head(spss_files)
+```
+
+## Generate Data Dictionary
+
+Here, the code loops through every file found and performs the following:
+
+-   Reads the Header: It reads only the first 100 rows (n_max = 100). This makes the process extremely fast, even for multi-gigabyte files, because we only need the metadata headers, not the full dataset.
+
+-   Extracts Metadata: It uses the attr() function to pull out the hidden "label" and "labels" attributes attached to each column.
+
+-   Formats Output: It creates a tidy table listing every variable, its type, and its definitions.
+
+
+```{r}
+#| label: extraction-logic
+#| warning: false
+#| message: false
+
+message("Generating Data Dictionary...")
+
+# Helper: Check for non-ASCII characters (Encoding Risk)
+check_encoding <- function(col) {
+  # Check if variable is character and has labels
+  if (is.character(col) || is.factor(col)) {
+    # Coerce to character for check
+    txt <- as.character(col)
+    has_special <- any(str_detect(txt, "[^\\x00-\\x7F]"), na.rm = TRUE)
+    return(if (has_special) "Contains Special/Non-ASCII" else "ASCII")
+  }
+  return("N/A")
+}
+
+# Helper: Extract User-Defined Missing Values
+# haven stores these in the 'na_values' or 'na_range' attribute
+get_na_values <- function(col) {
+  na_vals <- attr(col, "na_values", exact = TRUE)
+  na_range <- attr(col, "na_range", exact = TRUE)
+  
+  res <- ""
+  if (!is.null(na_vals)) res <- paste(na_vals, collapse = ", ")
+  if (!is.null(na_range)) {
+    range_str <- paste0(na_range[1], " to ", na_range[2])
+    res <- if(res == "") range_str else paste(res, range_str, sep = "; ")
+  }
+  return(if (res == "") "None" else res)
+}
+
+report <- purrr::map_dfr(spss_files, function(file_path) {
+  
+  fname <- basename(file_path)
+  
+  tryCatch({
+    # Read header only (first 100 rows) for speed
+    data <- read_sav(file_path, n_max = 100)
+    
+    purrr::map_dfr(names(data), function(var) {
+      col <- data[[var]]
+      
+      # 1. Variable Label
+      lbl <- attr(col, "label", exact = TRUE)
+      if (is.null(lbl)) lbl <- "(No Label)"
+      
+      # 2. Value Labels
+      val_lbls <- attr(col, "labels", exact = TRUE)
+      val_str <- if (!is.null(val_lbls)) paste(val_lbls, names(val_lbls), sep="=", collapse="; ") else ""
+      
+      # 3. Measurement Level
+      # 'display_width' or class often indicates scale vs nominal
+      dtype <- class(col)[1]
+      
+      # 4. Create Row
+      tibble(
+        FileName = fname,
+        VariableName = var,
+        VariableLabel = lbl,
+        DataType = dtype,
+        ValueLabels = substr(val_str, 1, 100),
+        MissingValues = get_na_values(col),
+        EncodingCheck = check_encoding(col),
+        Status = "Success"
+      )
+    })
+    
+  }, error = function(e) {
+    tibble(
+      FileName = fname,
+      VariableName = "ERROR",
+      VariableLabel = e$message,
+      DataType = "Error",
+      ValueLabels = "",
+      MissingValues = "",
+      EncodingCheck = "",
+      Status = "Failed"
+    )
+  })
+})
+
+# Display preview
+print("--- SPSS Data Dictionary Preview ---")
+head(report)
+```
+
+## Save the results
+
+We save the resulting table to a CSV file. This CSV acts as the Data Dictionary for the curated deposit.
+
+```{r}
+#| label: save-results
+
+#| label: save-results
+
+output_dir <- "Results/Inspect_sav"
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+output_file <- file.path(output_dir, paste0("SPSS_Dictionary_", format(Sys.Date(), "%Y%m%d"), ".csv"))
+
+write.csv(report, output_file, row.names = FALSE)
+print(paste("Data Dictionary saved to:", output_file))
+```
+
+## Curation Insights
+
+Use the generated CSV to perform these checks:
+
+- **User-Defined Missing Values (MissingValues):** The curator may look for numbers like -9, -99, or 999. Ensure these are documented in the study's metadata. If you convert this file to CSV, these numbers will become regular integers (e.g., Age = 999), invalidating any downstream analysis (see [IBM SPSS statistics 28 brief guide](https://www.ibm.com/docs/en/SSLVMB_28.0.0/pdf/IBM_SPSS_Statistics_Brief_Guide.pdf)). 
+
+- **Missing Value Labels:** Look for variables that are DataType = haven_labelled or numeric but have empty ValueLabels.
+
+- **Encoding Issues (EncodingCheck):** "Contains Special/Non-ASCII" often indicates files created in older localized Windows versions (e.g., French or Spanish SPSS) using the legacy Windows-1252 encoding. If the labels look corrupted (e.g., EncuestÃ³ instead of Encuestó), the data requires character set remediation before long-term storage.
+
+## Additional Tools
+
+- **PSPP:** I is an [open-source alternative](https://www.gnu.org/software/pspp/) to IBM SPSS Statistics. It allows curators to verify .sav files and provides a command-line interface for batch conversion without requiring a proprietary license.
+
+- **StatTransfer:** A [commercial tool](https://stattransfer.com/) for converting between statistical formats (SAS, SPSS, Stata, R). It is effective at preserving missing value definitions and variable labels during migration.
+
+## Using the Non-Interactive R Script
+
+For users who want to run this analysis on a server (HPC), in a batch job, or from the command line, here is the pure R script version.
+
+Download the **R Script:** [**`Inspect_sav_Script.R`**](Scripts/Inspect_sav_Script.R)
+
+### Example HPC Submission Script (`Inspect_sav_submit.sh`)
+
+``` bash
+#!/bin/bash
+#SBATCH --job-name=spss_check
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=00:20:00
+#SBATCH --mem=8G
+#SBATCH --output=logs/spss_check_%j.log
+
+# 1. Load R Module
+# (Adjust version based on your cluster, e.g., 'module load R/4.3.0')
+module load R
+
+# 2. Define Target Directory
+# Replace with the actual path to your SPSS data
+DATA_DIR="/scratch/user/project_data/surveys"
+
+# 3. Prepare Environment
+# Ensure output directories exist
+mkdir -p Results/Inspect_sav
+mkdir -p logs
+
+# 4. Run Analysis
+echo "Starting SPSS Inspection on $DATA_DIR"
+Rscript Inspect_sav_Script.R "$DATA_DIR"
+```
+
+
+## References
+
+::: {#refs}
+:::

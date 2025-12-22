@@ -1,0 +1,636 @@
+---
+title-block-banner: true
+title: "Analysis of PDGFR-β morphology in defined ROIs"
+subtitle: "Data analysis notebook"
+date: today
+date-format: full
+author: 
+  - name: "Daniel Manrique-Castano"
+    orcid: 0000-0002-1912-1764
+    degrees:
+      - PhD
+    affiliation: 
+      - name: Univerisity Laval 
+        department: Psychiatry and Neuroscience
+        group: Laboratory of neurovascular interactions 
+note: "GitHub: https://daniel-manrique.github.io/" 
+keywords: 
+  - PDGFR-β
+  - PCA
+  - Morphological analysis
+  - Brain injury
+  - Bayesian modeling 
+   
+license: "CC BY"
+
+format:
+   pdf: 
+    toc: true
+    number-sections: true
+    colorlinks: true
+   html:
+    code-fold: true
+    embed-resources: true
+    toc: true
+    toc-depth: 2
+    toc-location: left
+    number-sections: true
+    theme: spacelab
+
+knitr:
+  opts_chunk: 
+    warning: false
+    message: false
+
+csl: science.csl
+bibliography: references.bib
+---
+
+# Preview
+
+This notebook reports the morphological analysis of PDGFR-β+ cells in the striatum, cortex and perilesional regions.
+
+**Parent dataset:** PDGFR-β stained ROIs imaged at 40x using confocal microscopy. 
+Animals were grouped at 0 (sham), 3, 7, 14, and 30 days post-ischemia (DPI). The raw images and pre-processing scripts (if applicable) are available at the Zenodo repository (10.5281/zenodo.10553084) under the name `Confocal_40x_ROIs_CD31-Pdgfrb-CD13.zip`.
+
+**Working dataset**: We employed a python-based analysis pipeline to perform image processing, threshold and cell segmentation (`Confocal_40x_ROIs_Pdgfrb-Morpho_Script`). The generated images were exported to ilastik [@berg2019] to perform object classification based on the following parameters (as defined by [ilastk](https://www.ilastik.org/documentation/objects/objectfeatures.html)):
+
+**Standard object features**
+
+Mean intensity: mean intensity inside the object
+
+Variance of intensity: Variance of the intensity distribution inside the object
+
+Size in pixels: Total size of the object in pixels
+
+Principal components of the object: Eigenvectors of the PCA on the coordinates of the object's pixels. Very roughly, this corresponds to the axes of an ellipse fit to the object. The axes are ordered starting from the one with the largest eigenvalue.
+
+Raddi of the object: Eigenvalues of the PCA on the coordinates of the object's pixels. Very roughly, this corresponds to the radii of an ellipse fit to the object. The radii are ordered, with the largest value as first.
+
+**2D convex hull features**
+
+Convexity: The ratio between the areas of the object and its convex hull (<= 1)
+
+Number of defects: Total number of defects, i.e. number of connected components in the area of the convex hull, not covered by the original object.
+
+Convex hull area: Area of the convex hull of this object. The convex hull can be defined as the territory occupy by the cell.
+
+Object area: Area of this object, computed from the interpixel contour (can be slightly larger than simple size of the object in pixels).
+
+
+**2D skeleton features**
+
+Average branch length: Average length of a branch in the skeleton
+
+Number of branches: Total number of branches in the skeleton of this object.
+
+Diameter: The longest path between two endpoints on the skeleton.
+
+Euclidean diameter: The Euclidean distance between the endpoints (terminals) of the longest path on the skeleton
+
+
+# Install and load required packages
+
+Install and load all required packages. Please uncomment (delete #) the line code if installation is required. Load the installed libraries each time you start a new R session.
+
+```{r}
+#| label: Install_Packages
+#| include: true
+#| warning: false
+#| message: false
+
+#install.packages("devtools")
+#library(devtools)
+
+#install.packages(c("bayesplot", "bayestestR", "brms","dplyr", "easystats", "emmeans", "FactoMineR", "factoextra", "ggcorrplot", "ggplot", "gtsummary", "modelr", "modelsummary", "patchwork", "poorman", "tidybayes", "tidyverse", "viridis"))
+
+
+library(bayesplot)
+library(bayestestR)
+library(brms)
+library(dplyr)
+library(easystats)
+library(emmeans)
+library(FactoMineR)
+library(factoextra)
+library(ggcorrplot)
+library(ggplot2)
+library(gtsummary)
+library(modelr)
+library(modelsummary)
+library(patchwork)
+library(poorman)
+library(plyr)
+library(tidybayes)
+library(tidyverse)
+library(viridis)
+
+```
+
+# Visual themes
+
+We create a visual theme to use in our plots (ggplots).
+
+```{r}
+#| label: Plot_Theme
+#| include: true
+#| warning: false
+#| message: false
+  
+Plot_theme <- theme_classic() +
+  theme(
+      plot.title = element_text(size=18, hjust = 0.5, face="bold"),
+      plot.subtitle = element_text(size = 10, color = "black"),
+      plot.caption = element_text(size = 12, color = "black"),
+      axis.line = element_line(colour = "black", size = 1.5, linetype = "solid"),
+      axis.ticks.length=unit(7,"pt"),
+     
+      axis.title.x = element_text(colour = "black", size = 16),
+      axis.text.x = element_text(colour = "black", size = 16, angle = 0, hjust = 0.5),
+      axis.ticks.x = element_line(colour = "black", size = 1),
+      
+      axis.title.y = element_text(colour = "black", size = 16),
+      axis.text.y = element_text(colour = "black", size = 16),
+      axis.ticks.y = element_line(colour = "black", size = 1),
+      
+      legend.position="right",
+      legend.direction="vertical",
+      legend.title = element_text(colour="black", face="bold", size=12),
+      legend.text = element_text(colour="black", size=10),
+      
+      plot.margin = margin(t = 10,  # Top margin
+                             r = 2,  # Right margin
+                             b = 10,  # Bottom margin
+                             l = 10) # Left margin
+      ) 
+```
+
+# Load and prepare the data set
+
+We load and merge the individual files generated by ilastik containing the measured morphological properties of individual cells. The files are stored in a transitory object named `merged_df`.
+
+```{r}
+#| label: Pdgfrb_Morhplogy_Load
+#| include: true
+#| warning: false
+#| message: false
+
+# Set the path to the folder containing the CSV files
+folder_path <- "Data_Raw/Confocal_40x_ROIs_Pdgfrb_Morph"
+
+# Get a list of CSV files in the folder
+csv_files <- list.files(folder_path, pattern = "*.csv", full.names = TRUE)
+
+# Initialize an empty list to store the data
+merged_data <- list()
+
+# Loop through each CSV file
+for (file in csv_files) {
+  # Read the CSV file
+  data <- read.csv(file)
+  
+  # Get the file name without the extension
+  file_name <- tools::file_path_sans_ext(basename(file))
+  
+  # Add the file name as a new column in the data
+  data$File_Name <- file_name
+  
+  # Append the data to the merged_data list
+  merged_data <- c(merged_data, list(data))
+}
+
+# Combine all the data frames into a single data frame
+merged_df <- do.call(rbind, merged_data)
+
+# Print the merged data frame
+print(merged_df)
+
+merged_df$Predicted.Class <- factor(merged_df$Predicted.Class, levels = c("Amoeboid", "Perivascular", "Reticuloparenchymal", "Reticulite"))
+```
+
+Next, we clean the data set by eliminating unwanted (non-informative) columns, extracting metadata from the file name, changing columns names, and setting the data frame factors. Finally, we store the cleaned data set as a .csv file.
+
+```{r}
+#| label: Pdgfrb_Morhplogy_Clean
+#| include: true
+#| warning: false
+#| message: false
+
+# Eliminate unnecessary columns
+Pdgfrb_Morphology <- subset(merged_df, select = c(object_id, Predicted.Class, Variance.of.Intensity, Mean.Intensity, Number.of.Defects, Convexity, Object.Area, Convex.Hull.Area, Average.Branch.Length, Number.of.Branches, Diameter, Euclidean.Diameter, File_Name))
+
+# Extract metadata information from image name
+Pdgfrb_Morphology <- cbind(Pdgfrb_Morphology, do.call(rbind , strsplit(Pdgfrb_Morphology$File_Name, "[_\\.]"))[,1:6])
+
+# Eliminate File_Name column
+Pdgfrb_Morphology <- subset(Pdgfrb_Morphology, select = -c(File_Name))
+
+# Change column names
+colnames(Pdgfrb_Morphology) <- c("ObjectID", "Class", "Intensity_sd", "Intensity_Mean", "Defects", "Convexity", "Area", "ConvexHull", "BranchLenght", "Branches", "Diameter", "EcuclideanDiameter","AnimalID", "DPI", "Condition", "Lesion", "Region", "Marker")
+  
+# Reordering the table
+Pdgfrb_Morphology <- subset(Pdgfrb_Morphology, select = c("AnimalID", "DPI", "Condition", "Lesion", "Region", "Marker", "ObjectID", "Class", "Intensity_sd", "Intensity_Mean", "Defects", "Convexity", "Area", "ConvexHull", "BranchLenght", "Branches", "Diameter", "EcuclideanDiameter"))
+
+# Setting factors
+Pdgfrb_Morphology$DPI <- factor(Pdgfrb_Morphology$DPI, levels = c("3D", "7D", "14D", "30D"))
+
+Pdgfrb_Morphology$Region <- factor(Pdgfrb_Morphology$Region, levels = c("Peri", "Str", "Ctx"))
+
+Pdgfrb_Morphology$Class <- factor(Pdgfrb_Morphology$Class, levels = c("Amoeboid", "Perivascular", "Reticuloparenchymal", "Reticulite"))
+
+write.csv(Pdgfrb_Morphology, "Data_Processed/Confocal_40x_ROIs_Pdgfrb_Morph/Confocal_40x_ROIs_Pdgfrb_Morph.csv", row.names = FALSE)
+
+gt::gt(Pdgfrb_Morphology[1:10,])
+```
+
+# Principal component analysis (PCA)
+
+We perform principal component analysis (PCA) as a a dimensionality reduction method to handle the multiple factors of cell morphology. We use the `factoMineR` [@FactoMineR]and `factoextra` [@factoextra] packages to have access to the PCA and visualization functions.
+
+## Define the PCA variables
+
+Now, we select the columns for PCA.PCA performs exclusively over numeric columns. We specify `center=T` and `scale=T` arguments into the `scale` function for scaling of all variables.
+
+```{r}
+#| label: Pdgfrb_Morhplogy_PCAVariables
+#| include: true
+#| warning: false
+#| message: false
+
+# We load the file in case is not in the environment 
+Pdgfrb_Morphology <- read.csv(file = 'Data_Processed/Confocal_40x_ROIs_Pdgfrb_Morph/Confocal_40x_ROIs_Pdgfrb_Morph.csv', header = TRUE)
+
+# Subset variables from the data set
+Pdgfrb_Morphology_Variables <- data.frame(scale(Pdgfrb_Morphology[, c(9:18)], center=T, scale=T))
+```
+## Obtain a correlation matrix
+
+We obtain a correlation matrix indicating the degree of relation between the different variables. The higher the value, the higher the correlation between two variables. Conversely, the closer is to -1, the most negatively correlated they are.
+
+```{r}
+#| label: fig-Pdgfrb_Morhplogy_Matrix
+#| include: true
+#| warning: false
+#| message: false
+
+# Create the correlation matrix
+Pdgfrb_Morphology_corr <- cor(Pdgfrb_Morphology_Variables)
+
+# Plot and save the correlation matrix
+Pdgfrb_Morphology_corr_fig <- ggcorrplot(Pdgfrb_Morphology_corr)
+
+ggsave(
+  plot     = Pdgfrb_Morphology_corr_fig, 
+  filename = "plots/Confocal_40x_ROIs_Pdgfrb_Morph/Confocal_40x_ROIs_Pdgfrb_Morph_corr.png", 
+  width    = 12, 
+  height   = 10, 
+  units    = "cm")
+
+Pdgfrb_Morphology_corr_fig 
+```
+
+## Run the PCA
+
+After, we perform the principal component analysis using the `princomp` function, using the correlation matrix stored as `Pdgfrb_Morphology_corr`. We print the numerical and graphical summaries of this step
+
+```{r}
+#| label: fig-Pdgfrb_Morhplogy_PCA
+#| include: true
+#| warning: false
+#| message: false
+#| fig-cap: Principal components for PDGFR-β+ morphology
+#| fig-height: 4
+#| fig-width: 5
+
+# Perform the PCA
+Pdgfrb_Morphology_PCA <- princomp(Pdgfrb_Morphology_corr)
+
+# Print the summary
+summary(Pdgfrb_Morphology_PCA)
+
+# Plot the summary
+fviz_eig(Pdgfrb_Morphology_PCA, addlabels = TRUE)
+
+# Print the summary
+Pdgfrb_Morphology_PCA$loadings[, 1:2]
+```
+@fig-Pdgfrb_Morhplogy_PCA The results of `summary(Pdgfr_Morphology_PCA)` show 10 principal components (Comp.1 - Comp.10) that represent the number of variables in our data frame. Each of this components explains the percentage of total variance in the data. In our case, the first component alone explains 82% of the variability. Adding a second component adds to 94%.This can be visualized in the scree plot using the `fviz_eig` function from the `factoextra`package.
+
+On the other hand, `Pdgfr_Morphology_PCA$loadings[, 1:2]` yields the loading of the variable to each component.
+
+## Biplot of the components attributes
+
+We can use a biplot to witness the similarities between the variables and its impact on each component. All the variables grouped are positively correlated. Also, this plot shows the weight of each variable as distance to the point of origin. Finally, negative correlated variables are displayed in the opposite sides of the Cartesian plane. The color depicts the representation of each variable, with green are higher represented variables.
+
+```{r}
+#| label: fig-Pdgfrb_Morhplogy_Biplot
+#| include: true
+#| warning: false
+#| message: false
+#| fig-cap: Biplot for PDGFR-β+ morphology
+#| fig-height: 4
+#| fig-width: 5
+
+Pdgfrb_Morphology_Biplot_fig <- fviz_pca_var(Pdgfrb_Morphology_PCA, col.var = "cos2",
+            gradient.cols = c("black", "orange", "darkgreen"),
+            repel = TRUE) +
+  theme_classic() +
+  labs(title = "") +
+  Plot_theme
+
+ggsave(
+  plot     = Pdgfrb_Morphology_Biplot_fig, 
+  filename = "plots/Confocal_40x_ROIs_Pdgfrb_Morph/Confocal_40x_ROIs_Pdgfrb_Morph_Biplot.png", 
+  width    = 11, 
+  height   = 9, 
+  units    = "cm")
+
+Pdgfrb_Morphology_Biplot_fig
+```
+
+## Sypder plot
+
+To summarize the traits of the evaluated cells, we plot a spyder plot depicting the mean of selected characteristics. Considering the result from the PCA, we will include Area, ConvexHull, BranchLenght, and Intensity_Mean.
+
+To create an sypder plot, we need to prepare the data in tiny format and summarize the variables.
+
+```{r}
+#| label: fig-Pdgfrb_Morhplogy_Spyder
+#| include: true
+#| warning: false
+#| message: false
+#| fig-cap: Spyder plot for PDGFR-β+ morphology
+#| fig-height: 4
+#| fig-width: 5
+
+# Subset the variables of interest
+Pdgfrb_Spyder_Variables <- subset(Pdgfrb_Morphology, select = c(Area, ConvexHull, BranchLenght, Intensity_Mean))
+
+# Select columns containing metadata
+metadata <- Pdgfrb_Morphology[,c(1:8)]
+
+# Center the variables of interest
+Pdgfrb_Spyder_VariablesCentred <- data.frame(scale(Pdgfrb_Spyder_Variables[, c(1:4)], center=T, scale=T))
+
+# Merge the metadata and the variables of interest
+Pdgfrb_Morphology_Spyder <- cbind(metadata, Pdgfrb_Spyder_VariablesCentred)
+
+# Group by class (cell type), summarize and reshape the date set
+Pdgfrb_Morphology_Spyder_Sum <- Pdgfrb_Morphology_Spyder %>%
+   group_by(Class) %>%
+   summarise(across(9:12, mean)) %>%
+  datawizard::reshape_longer(c("Area", "ConvexHull",  "BranchLenght", "Intensity_Mean"))
+
+# Set variables as factors and rename them
+Pdgfrb_Morphology_Spyder_Sum$name <- factor(Pdgfrb_Morphology_Spyder_Sum$name, levels = c("Area", "ConvexHull",  "BranchLenght", "Intensity_Mean"), labels = c("Area", "Convex Hull",  "Branch Lenght", "Mean Intensity"))
+
+Pdgfrb_Morphology_Spyder_Sum$Class <- factor(Pdgfrb_Morphology_Spyder_Sum$Class, levels = c("Perivascular", "Reticuloparenchymal",  "Reticulite", "Amoeboid"))
+
+# Create the graph
+Pdgfrb_Morphology_Spyder_fig <- Pdgfrb_Morphology_Spyder_Sum %>%
+  ggplot(aes(
+    x = name,
+    y = value,
+    color = Class,
+    group = Class,
+    fill = Class
+  )) +
+  geom_polygon(linewidth = 1, alpha = 0.1) +
+  scale_x_discrete(name = "") +
+  scale_y_continuous(name = "Value (scaled)") +
+  coord_radar() +
+  theme_radar() +
+  theme(
+    legend.position="bottom",
+    legend.direction="vertical",
+    legend.title = element_text(colour="black", face="bold", size=10),
+    legend.text = element_text(colour="black", size=8),
+    legend.margin=margin(t = 0, unit='cm'))+
+  
+  guides(fill=guide_legend(nrow=2,byrow=TRUE)) +
+  guides(color=guide_legend(nrow=2,byrow=TRUE)) 
+   
+ 
+# Save the graph 
+ggsave(
+  plot     = Pdgfrb_Morphology_Spyder_fig, 
+  filename = "plots/Confocal_40x_ROIs_Pdgfrb_Morph/Confocal_40x_ROIs_Pdgfrb_Morph_Spyder.png", 
+  width    = 9, 
+  height   = 15, 
+  units    = "cm")
+
+Pdgfrb_Morphology_Spyder_fig
+```
+
+# Statistical modeling
+
+In this case, we perform statistical modeling using a logistic regression in `brms`. The response variable "class" is modeled as a function of Area, Convex Hull, Branch Length, and Mean Intensity. In this case, we set the family to `categorical` for multinomial logistic regression model with a logit link function.
+
+$$
+Class_{i} = logit ^{-1} (\beta_{0} + \beta_{1} * Area_{i} + \beta_{2} * Convex Hull_{i} + \beta_{3} * Branch Lenght_{i} + \beta_{3} * Mean Intensityt_{i} + \epsilon_{i})
+$$
+This model uses the following weakly-informative priors:
+
+$$
+\begin{align}
+\beta_{1} \sim Normal(0, 1) \\
+\alpha \sim normal(0, 1) \\
+\end{align}
+$$
+
+## Fit the model
+
+```{r}
+#| label: PDGFRMorpology_Modeling
+#| include: true
+#| warning: true
+#| message: true
+#| results: false
+#| cache: true
+
+set.seed(8807)
+
+Pdgfrb_Morphology_Spyder$Class <- factor(Pdgfrb_Morphology_Spyder$Class, levels = c("Perivascular", "Reticuloparenchymal", "Reticulite", "Amoeboid"))
+
+Pdgfrb_Morphology_Mdl1 <- bf(Class ~ ConvexHull + BranchLenght + Intensity_Mean)
+
+get_prior(Pdgfrb_Morphology_Mdl1, data = Pdgfrb_Morphology_Spyder)
+
+Pdgfrb_Morphology_prior  <- 
+  c(prior(normal(0, 1), class = "Intercept", lb = 0),
+    prior(normal(0, 1), class = b))
+
+# Fit model 1
+Pdgfrb_Morphology_Fit1 <- 
+  brm(
+    data    = Pdgfrb_Morphology_Spyder,
+    family  = "categorical",
+    formula = Pdgfrb_Morphology_Mdl1,
+    prior   = Pdgfrb_Morphology_prior,
+    chains  = 4,
+    cores   = 4,
+    warmup  = 2500, 
+    iter    = 5000, 
+    seed    = 8807,
+    control = list(adapt_delta = 0.99, max_treedepth = 15),
+    file    = "Models/Confocal_40x_ROIs_Pdgfrb_Morph/Confocal_40x_ROIs_Pdgfrb_Morph_Fit1.rds",
+    file_refit = "never") 
+```
+
+## Model diagnostics
+
+We check the model fitting with `pp_checks`
+
+```{r}
+#| label: fig-Pdgfrb_Morphology_Diagnostics
+#| include: true
+#| warning: false
+#| message: false
+#| fig-cap: Posterior predictive checks for PDGFR-β+ morphology
+#| fig-height: 4
+#| fig-width: 5
+
+set.seed(8807)
+
+color_scheme_set("darkgray")
+
+# Model 1
+Pdgfrb_Morphology_Mdl1_pp <- 
+  brms::pp_check(Pdgfrb_Morphology_Fit1, 
+                 ndraws = 100) +
+  labs(title = "Posterior predictive checks (model 1)",
+  subtitle = "Formula: Class ~ ConvexHull + BranchLenght + Intensity_Mean") +
+  #scale_y_continuous(limits=c(0, 0.15)) +
+  Plot_theme  
+
+Pdgfrb_Morphology_Mdl1_pp
+```
+
+@fig-Pdgfrb_Morphology_Diagnostics displays a good fit between predictions and data. We can explore further the model using `shinystan`.
+
+```{r}
+#| label: Pdgfrb_Shiny
+#| include: true
+#| warning: false
+#| message: false
+#| results: false
+#| cache: true
+
+#launch_shinystan(Pdgfrb_Morphology_Fit1)
+```
+
+## Model results
+
+### Visualize conditional effects
+
+We plot the model using `conditional_effects` from the `brm`s package.
+
+```{r}
+#| label: fig-Pdgfrb_Morphology_CE
+#| include: true
+#| warning: false
+#| message: false
+#| fig-cap: Posterior predictive checks for PDGFR-β+ morphology
+#| fig-height: 5
+#| fig-width: 12
+
+# We create the graph for convex hull
+Pdgfrb_Morphology_Class <- 
+  conditional_effects(Pdgfrb_Morphology_Fit1, categorical = TRUE)
+
+Pdgfrb_Morphology_Convex <- plot(Pdgfrb_Morphology_Class, 
+       plot = FALSE)[[1]]
+
+Pdgfrb_Morphology_Convex_fig <- Pdgfrb_Morphology_Convex  + 
+  scale_y_continuous(name = expression ("P(Cell class)")) +
+  scale_x_continuous(name="Convex hull (scaled)") +
+  Plot_theme +
+  theme(legend.position = "none")
+
+ggsave(
+  plot     = Pdgfrb_Morphology_Convex_fig, 
+  filename = "Plots/Confocal_40x_ROIs_Pdgfrb_Morph/Confocal_40x_ROIs_Pdgfrb_Morph_Fit1_Convex.png", 
+  width    = 12, 
+  height   = 10, 
+  units    = "cm")
+
+
+# We create the graph for Branch length
+Pdgfrb_Morphology_Branch <- plot(Pdgfrb_Morphology_Class, 
+       plot = FALSE)[[2]]
+
+Pdgfrb_Morphology_Branch_fig <- Pdgfrb_Morphology_Branch  + 
+  scale_y_continuous(name = expression ("P(Cell class)")) +
+  scale_x_continuous(name="Branch lenght (scaled)") +
+  Plot_theme +
+  theme(legend.position = "none")
+
+ggsave(
+  plot     = Pdgfrb_Morphology_Branch_fig, 
+  filename = "Plots/Confocal_40x_ROIs_Pdgfrb_Morph/Confocal_40x_ROIs_Pdgfrb_Morph_Fit1_Branch.png", 
+  width    = 12, 
+  height   = 10, 
+  units    = "cm")
+
+
+# We create the graph for Intensity
+Pdgfrb_Morphology_Inten <- plot(Pdgfrb_Morphology_Class, 
+       plot = FALSE)[[3]]
+
+Pdgfrb_Morphology_Inten_fig <- Pdgfrb_Morphology_Inten  + 
+  scale_y_continuous(name = expression ("Pr(Cell class)")) +
+  scale_x_continuous(name="Intensity (scaled)") +
+  Plot_theme +
+  theme(legend.position = "none")
+
+ggsave(
+  plot     = Pdgfrb_Morphology_Inten_fig, 
+  filename = "Plots/Confocal_40x_ROIs_Pdgfrb_Morph/Confocal_40x_ROIs_Pdgfrb_Morph_Fit1_Intensity.png", 
+  width    = 12, 
+  height   = 10, 
+  units    = "cm")
+
+Pdgfrb_Morphology_Convex_fig | Pdgfrb_Morphology_Branch_fig | Pdgfrb_Morphology_Inten_fig
+```
+### Posterior summary
+
+Next, we plot the posterior summary for both models using the `describe_posterior` function:
+
+```{r}
+#| label: Pdgfrb_Morph_Posterior
+#| include: true
+#| warning: false
+#| message: false
+
+describe_posterior(
+  Pdgfrb_Morphology_Fit1,
+  effects = "all",
+  test = c("p_direction", "rope"),
+  component = "all",
+  centrality = "median")
+
+modelsummary(Pdgfrb_Morphology_Fit1, 
+             shape = term ~ model + statistic,
+             centrali2ty = "mean", 
+             title = "Probability of PDGFR-β+ cells types following MCAO",
+             statistic = "conf.int",
+             gof_omit = 'ELPD|ELDP s.e|LOOIC|LOOIC s.e|WAIC|RMSE',
+             output = "Tables/html/Confocal_40x_ROIs_Pdgfrb_Morph_Fit1_Table.html",
+             )
+
+Pdgfrb_Morphology_Fit1_Table <- modelsummary(Pdgfrb_Morphology_Fit1, 
+             shape = term ~ model + statistic,
+             centrality = "mean", 
+             statistic = "conf.int",
+             gof_omit = 'ELPD|ELDP s.e|LOOIC|LOOIC s.e|WAIC|RMSE',
+             output = "gt")
+gt::gtsave (Pdgfrb_Morphology_Fit1_Table, 
+            filename = "Tables/tex/Confocal_40x_ROIs_Pdgfrb_Morph_Fit1_Table.tex")
+
+```
+
+
+# References
+
+::: {#refs}
+:::

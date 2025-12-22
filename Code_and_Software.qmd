@@ -1,0 +1,28 @@
+---
+title: "Code and Software"
+---
+
+## Overview
+
+Research is increasingly defined not just by the data collected, but by the code used to analyze it. Curating code is distinct from curating data; it requires ensuring reproducibility, readability, and security. This section provides tools to inspect code files, whether they are interactive notebooks or standalone scripts.
+
+**Key Objectives:**
+
+1.  **Reproducibility:** We identify dependencies (libraries, packages) to ensure the environment can be recreated.
+2.  **Cleanliness:** We check for absolute paths (e.g., `C:/Users/Daniel/...`) that prevent the code from running on other machines.
+3.  **Security:** We scan for potential leaks of sensitive information, such as API tokens or personal identifiers embedded in the code.
+
+## Supported Formats
+
+### Jupyter Notebooks (`.ipynb`)
+
+Interactive notebooks found in Python, R, and Julia research pipelines. - **Our Approach:** We parse the internal JSON structure to extract kernel information and checking for uncleared output cells that may bloat the file or contain sensitive data.
+
+### R and Quarto Scripts (`.R`, `.qmd`)
+
+The standard for reproducible research in the R ecosystem. - **Our Approach:** We scan the text content to list all loaded packages and verify that file paths are relative, not absolute.
+
+## Common Curation Challenges
+
+-   **"Works on My Machine":** The most common issue in code curation. By flagging absolute paths and listing dependencies, we help bridge the gap between the researcher's environment and the archive.
+-   **Hidden State:** Notebooks often contain variables in memory that aren't explicitly saved. We encourage restarting the kernel and running all cells to ensure the "Code" actually produces the "Output".

@@ -1,3 +1,33 @@
 ---
-title: "Inspecting Scientific Files"
+title: "Scientific & Multidimensional Data"
 ---
+
+## Overview
+
+Scientific research often generates data that is too complex for simple tables. Multidimensional arrays, simulations, and experimental results require specialized binary formats that support high performance and self-description. This section focuses on curating these advanced file types.
+
+**Key Objectives:**
+
+1.  **Dimension Analysis:** We verify the shape and size of the data arrays (e.g., Time x Latitude x Longitude).
+2.  **Attribute Inspection:** We check for "self-describing" metadata—internal attributes that define units, coordinate systems, and experiment parameters.
+3.  **Variable Inventory:** We list all variables stored within the file to ensure completeness.
+
+## Supported Formats
+
+### NetCDF (`.nc`)
+
+Network Common Data Form (NetCDF) is the standard for climate, oceanography, and atmospheric sciences. - **Our Approach:** We extract global attributes and variable dimensions to verify compliance with conventions like CF (Climate and Forecast).
+
+### HDF5 (`.h5`, `.hdf5`)
+
+Hierarchical Data Format version 5 (HDF5) is a high-performance container used in physics, engineering, and genomics. - **Our Approach:** We navigate the internal groups and datasets, reporting on the hierarchy and the properties of the stored data.
+
+### MATLAB (`.mat`)
+
+The standard format for MATLAB workspace variables, widely used in engineering and signal processing. - **Our Approach:** We list the variables saved in the workspace, their classes (e.g., double, struct), and their dimensions, allowing curators to understand the file content without needing a MATLAB license.
+
+## Common Curation Challenges
+
+-   **Missing Metadata:** Binary files are "black boxes" without proper internal documentation. We emphasize the importance of checking for attributes like `units` and `standard_name`.
+-   **Proprietary Dependencies:** While HDF5 and NetCDF are open, MATLAB files can be proprietary. We help identify the version and contents to assess long-term accessibility.
+-   **Large Data Volumes:** These files can be massive. Our tools are designed to inspect headers and metadata without loading the entire dataset into memory.

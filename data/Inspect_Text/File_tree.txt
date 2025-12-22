@@ -1,0 +1,146 @@
+1/unpublished/publication_1519/submitted_data
+├── [ 211G] HCX-IR-BCCAQ_CMIP6
+│   ├── [  11G] CNRM_CM6_1_ssp245
+│   │   ├── [ 3.7G] CNRM_CM6_1_ssp245_pr_BCCAQ.nc
+│   │   ├── [ 3.7G] CNRM_CM6_1_ssp245_tasmax_BCCAQ.nc
+│   │   └── [ 3.7G] CNRM_CM6_1_ssp245_tasmin_BCCAQ.nc
+│   ├── [  11G] CNRM_CM6_1_ssp585
+│   │   ├── [ 3.7G] CNRM_CM6_1_ssp585_pr_BCCAQ.nc
+│   │   ├── [ 3.7G] CNRM_CM6_1_ssp585_tasmax_BCCAQ.nc
+│   │   └── [ 3.7G] CNRM_CM6_1_ssp585_tasmin_BCCAQ.nc
+│   ├── [  11G] CanESM5_ssp245
+│   │   ├── [ 3.7G] CanESM5_ssp245_pr_BCCAQ.nc
+│   │   ├── [ 3.7G] CanESM5_ssp245_tasmax_BCCAQ.nc
+│   │   └── [ 3.7G] CanESM5_ssp245_tasmin_BCCAQ.nc
+│   ├── [  11G] CanESM5_ssp460
+│   │   ├── [ 3.7G] CanESM5_ssp460_pr_BCCAQ.nc
+│   │   ├── [ 3.7G] CanESM5_ssp460_tasmax_BCCAQ.nc
+│   │   └── [ 3.7G] CanESM5_ssp460_tasmin_BCCAQ.nc
+│   ├── [  11G] CanESM5_ssp585
+│   │   ├── [ 3.7G] CanESM5_ssp585_pr_BCCAQ.nc
+│   │   ├── [ 3.7G] CanESM5_ssp585_tasmax_BCCAQ.nc
+│   │   └── [ 3.7G] CanESM5_ssp585_tasmin_BCCAQ.nc
+│   ├── [  11G] GFDL_ESM4_ssp245
+│   │   ├── [ 3.7G] GFDL_ESM4_ssp245_pr_BCCAQ.nc
+│   │   ├── [ 3.7G] GFDL_ESM4_ssp245_tasmax_BCCAQ.nc
+│   │   └── [ 3.7G] GFDL_ESM4_ssp245_tasmin_BCCAQ.nc
+│   ├── [  11G] GFDL_ESM4_ssp585
+│   │   ├── [ 3.7G] GFDL_ESM4_ssp585_pr_BCCAQ.nc
+│   │   ├── [ 3.7G] GFDL_ESM4_ssp585_tasmax_BCCAQ.nc
+│   │   └── [ 3.7G] GFDL_ESM4_ssp585_tasmin_BCCAQ.nc
+│   ├── [ 7.4G] IPSL_CM6A_LR_ssp245
+│   │   ├── [ 3.7G] IPSL_CM6A_LR_ssp245_tasmax_BCCAQ.nc
+│   │   └── [ 3.7G] IPSL_CM6A_LR_ssp245_tasmin_BCCAQ.nc
+│   ├── [ 7.4G] IPSL_CM6A_LR_ssp460
+│   │   ├── [ 3.7G] IPSL_CM6A_LR_ssp460_tasmax_BCCAQ.nc
+│   │   └── [ 3.7G] IPSL_CM6A_LR_ssp460_tasmin_BCCAQ.nc
+│   ├── [ 7.4G] IPSL_CM6A_LR_ssp585
+│   │   ├── [ 3.7G] IPSL_CM6A_LR_ssp585_tasmax_BCCAQ.nc
+│   │   └── [ 3.7G] IPSL_CM6A_LR_ssp585_tasmin_BCCAQ.nc
+│   ├── [  11G] MIROC_ES2L_ssp245
+│   │   ├── [ 3.7G] MIROC_ES2L_ssp245_pr_BCCAQ.nc
+│   │   ├── [ 3.7G] MIROC_ES2L_ssp245_tasmax_BCCAQ.nc
+│   │   └── [ 3.7G] MIROC_ES2L_ssp245_tasmin_BCCAQ.nc
+│   ├── [  11G] MIROC_ES2L_ssp585
+│   │   ├── [ 3.7G] MIROC_ES2L_ssp585_pr_BCCAQ.nc
+│   │   ├── [ 3.7G] MIROC_ES2L_ssp585_tasmax_BCCAQ.nc
+│   │   └── [ 3.7G] MIROC_ES2L_ssp585_tasmin_BCCAQ.nc
+│   ├── [  11G] MPI_ESM1_2_HR_ssp245
+│   │   ├── [ 3.7G] MPI_ESM1_2_HR_ssp245_pr_BCCAQ.nc
+│   │   ├── [ 3.7G] MPI_ESM1_2_HR_ssp245_tasmax_BCCAQ.nc
+│   │   └── [ 3.7G] MPI_ESM1_2_HR_ssp245_tasmin_BCCAQ.nc
+│   ├── [  11G] MPI_ESM1_2_HR_ssp585
+│   │   ├── [ 3.7G] MPI_ESM1_2_HR_ssp585_pr_BCCAQ.nc
+│   │   ├── [ 3.7G] MPI_ESM1_2_HR_ssp585_tasmax_BCCAQ.nc
+│   │   └── [ 3.7G] MPI_ESM1_2_HR_ssp585_tasmin_BCCAQ.nc
+│   ├── [  11G] MPI_ESM1_2_LR_ssp245
+│   │   ├── [ 3.7G] MPI_ESM1_2_LR_ssp245_pr_BCCAQ.nc
+│   │   ├── [ 3.7G] MPI_ESM1_2_LR_ssp245_tasmax_BCCAQ.nc
+│   │   └── [ 3.7G] MPI_ESM1_2_LR_ssp245_tasmin_BCCAQ.nc
+│   ├── [  11G] MPI_ESM1_2_LR_ssp585
+│   │   ├── [ 3.7G] MPI_ESM1_2_LR_ssp585_pr_BCCAQ.nc
+│   │   ├── [ 3.7G] MPI_ESM1_2_LR_ssp585_tasmax_BCCAQ.nc
+│   │   └── [ 3.7G] MPI_ESM1_2_LR_ssp585_tasmin_BCCAQ.nc
+│   ├── [  11G] NorESM2_LM_ssp245
+│   │   ├── [ 3.7G] NorESM2_LM_ssp245_pr_BCCAQ.nc
+│   │   ├── [ 3.7G] NorESM2_LM_ssp245_tasmax_BCCAQ.nc
+│   │   └── [ 3.7G] NorESM2_LM_ssp245_tasmin_BCCAQ.nc
+│   ├── [  11G] NorESM2_LM_ssp585
+│   │   ├── [ 3.7G] NorESM2_LM_ssp585_pr_BCCAQ.nc
+│   │   ├── [ 3.7G] NorESM2_LM_ssp585_tasmax_BCCAQ.nc
+│   │   └── [ 3.7G] NorESM2_LM_ssp585_tasmin_BCCAQ.nc
+│   ├── [  11G] UKESM1_0_LL_ssp245
+│   │   ├── [ 3.6G] UKESM1_0_LL_ssp245_pr_BCCAQ.nc
+│   │   ├── [ 3.6G] UKESM1_0_LL_ssp245_tasmax_BCCAQ.nc
+│   │   └── [ 3.6G] UKESM1_0_LL_ssp245_tasmin_BCCAQ.nc
+│   └── [  11G] UKESM1_0_LL_ssp585
+│       ├── [ 3.6G] UKESM1_0_LL_ssp585_pr_BCCAQ.nc
+│       ├── [ 3.6G] UKESM1_0_LL_ssp585_tasmax_BCCAQ.nc
+│       └── [ 3.6G] UKESM1_0_LL_ssp585_tasmin_BCCAQ.nc
+├── [ 320G] HCX-IR-MBC_CMIP6
+│   ├── [  40G] CNRM_CM6_1
+│   │   ├── [  20G] ssp245
+│   │   │   ├── [  11G] Biascorrected_CNRM_CM6_1_ssp245_pr_tasmax_tasmin.nc
+│   │   │   └── [ 8.9G] CNRM-CM6-1_ssp245.nc
+│   │   └── [  20G] ssp585
+│   │       ├── [  11G] Biascorrected_CNRM_CM6_1_ssp585_pr_tasmax_tasmin.nc
+│   │       └── [ 8.9G] CNRM-CM6-1_ssp585.nc
+│   ├── [  40G] CanESM5
+│   │   ├── [  20G] ssp245
+│   │   │   ├── [  11G] Biascorrected_CanESM5_ssp245_pr_tasmax_tasmin.nc
+│   │   │   ├── [ 8.9G] CanESM5_ssp245.nc
+│   │   │   └── [ 0.0 ] filename
+│   │   └── [  20G] ssp585
+│   │       ├── [  11G] Biascorrected_CanESM5_ssp585_pr_tasmax_tasmin.nc
+│   │       └── [ 8.9G] CanESM5_ssp585.nc
+│   ├── [  40G] GFDL_ESM4
+│   │   ├── [  20G] ssp245
+│   │   │   ├── [  11G] Biascorrected_GFDL_ESM4_ssp245_pr_tasmax_tasmin.nc
+│   │   │   └── [ 8.9G] GFDL-ESM4_ssp245.nc
+│   │   └── [  20G] ssp585
+│   │       ├── [  11G] Biascorrected_GFDL_ESM4_ssp585_pr_tasmax_tasmin.nc
+│   │       └── [ 8.9G] GFDL-ESM4_ssp585.nc
+│   ├── [  40G] IPSL_CM6A_LR
+│   │   ├── [  20G] ssp245
+│   │   │   ├── [  11G] Biascorrected_IPSL_CM6A_LR_ssp245_pr_tasmax_tasmin.nc
+│   │   │   └── [ 8.9G] IPSL-CM6A-LR_ssp245.nc
+│   │   └── [  20G] ssp585
+│   │       ├── [  11G] Biascorrected_IPSL_CM6A_LR_ssp585_pr_tasmax_tasmin.nc
+│   │       └── [ 8.9G] IPSL-CM6A-LR_ssp585.nc
+│   ├── [  40G] MIROC_ES2L
+│   │   ├── [  20G] ssp245
+│   │   │   ├── [  11G] Biascorrected_MIROC_ES2L_ssp245_pr_tasmax_tasmin.nc
+│   │   │   └── [ 8.9G] MIROC-ES2L_ssp245.nc
+│   │   └── [  20G] ssp585
+│   │       ├── [  11G] Biascorrected_MIROC_ES2L_ssp585_pr_tasmax_tasmin.nc
+│   │       └── [ 8.9G] MIROC-ES2L_ssp585.nc
+│   ├── [  40G] MPI_ESM1_2_HR
+│   │   ├── [  20G] ssp245
+│   │   │   ├── [  11G] Biascorrected_MPI_ESM1_2_HR_ssp245_pr_tasmax_tasmin.nc
+│   │   │   └── [ 8.9G] MPI-ESM1-2-HR_ssp245.nc
+│   │   └── [  20G] ssp585
+│   │       ├── [  11G] Biascorrected_MPI_ESM1_2_HR_ssp585_pr_tasmax_tasmin.nc
+│   │       └── [ 8.9G] MPI-ESM1-2-HR_ssp585.nc
+│   ├── [  40G] MPI_ESM1_2_LR
+│   │   ├── [  20G] ssp245
+│   │   │   ├── [  11G] Biascorrected_MPI_ESM1_2_LR_ssp245_pr_tasmax_tasmin.nc
+│   │   │   └── [ 8.9G] MPI-ESM1-2-LR_ssp245.nc
+│   │   └── [  20G] ssp585
+│   │       ├── [  11G] Biascorrected_MPI_ESM1_2_LR_ssp585_pr_tasmax_tasmin.nc
+│   │       └── [ 8.9G] MPI-ESM1-2-LR_ssp585.nc
+│   ├── [  40G] NorESM2_LM
+│   │   ├── [  20G] ssp245
+│   │   │   ├── [  11G] Biascorrected_NorESM2_LM_ssp245_pr_tasmax_tasmin.nc
+│   │   │   └── [ 8.9G] NorESM2-LM_ssp245.nc
+│   │   └── [  20G] ssp585
+│   │       ├── [  11G] Biascorrected_NorESM2_LM_ssp585_pr_tasmax_tasmin.nc
+│   │       └── [ 8.9G] NorESM2-LM_ssp585.nc
+│   └── [ 1.6K] log.txt
+├── [ 2.4G] HCX-IR-obs
+│   └── [ 2.4G] HCX-IR-Obs_daily_1980-2012.nc
+└── [ 5.0K] README.txt
+
+  47  directories
+  93  files
+ 533G total size
+

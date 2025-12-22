@@ -1,0 +1,330 @@
+---
+title: "CSV Files"
+author: "Natalie Williams"
+date: "2025-10-10"
+format: html
+editor: visual
+execute:
+  echo: true
+  warning: false
+params:
+  target_dir: "data/Inspect_csv/"
+---
+
+## Overview
+
+This notebook provides a comprehensive toolkit for inspecting tabular data stored in **Comma Separated Values (CSV)** format.While seemingly simple, CSVs are the backbone of long-term data preservation due to their text-based, human-readable nature.
+
+However, a "valid" CSV file is not necessarily a "usable" one. To ensure data reuse, datasets should adhere to **Tidy Data** principles, where variables are columns, observations are rows, and each observational unit forms a table [@wickham2014]. Common structural errors—such as "ragged" rows, empty header cells, or mixed data types—can severely hinder downstream analysis [@broman2018].
+
+**Curation Objectives:**
+
+1.  **Format Compliance:** Verify files use standard UTF-8 encoding to prevent character corruption (e.g., replacement characters like \`\`).
+2.  **Structural Integrity:** Detect "dirty" data patterns such as duplicate rows or irregular shapes (non-rectangular data).
+3.  **Content Profiling:** Automatically generate a statistical dictionary (Mean, Min, Max, Nulls) for every variable to validate the semantic meaning of the data.
+4.  **Privacy Screening:** Scan for Personally Identifiable Information (PII) embedded within text fields.
+
+------------------------------------------------------------------------
+
+## Setup
+
+We utilize `tidyverse` for data manipulation, `skimr` for detailed profiling, and `DT` for interactive result exploration.
+
+### R Packages
+
+If you do not have the required packages, run this command once in your R console:
+
+```{r}
+# install.packages(c("tidyverse", "rstudioapi", "skimr", "DT", "tools"))
+```
+
+### Load libraries
+
+```{r}
+#| label: load-libraries
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(skimr)
+library(DT)
+library(tools)
+library(rstudioapi)
+```
+
+------------------------------------------------------------------------
+
+## Select target directory
+
+First, we select the directory to analyze and find `.csv` files within it.
+
+```{r select-directory}
+#| label: select-target-dir
+
+# 1. Attempt interactive selection (Windows/RStudio)
+if (interactive() && .Platform$OS.type == "windows") { 
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select Data Directory")
+} else {
+  selected_dir <- NULL
+}
+
+# 2. Fallback to parameter
+target_dir <- if (!is.null(selected_dir)) selected_dir else params$target_dir
+
+message("Analyzing directory: ", target_dir)
+```
+
+### Inventory Files
+
+We locate all .csv files and extract basic filesystem metadata (size, modification date).
+
+```{r get-files}
+#| label: find-files
+
+csv_files <- list.files(
+  path = target_dir,
+  pattern = "\\.csv$", 
+  recursive = TRUE, 
+  full.names = TRUE, 
+  ignore.case = TRUE
+)
+
+message("Found ", length(csv_files), " CSV files.")
+```
+
+------------------------------------------------------------------------
+
+## Batch Health Check
+
+This section assesses the "Archival Readiness" of the files. We perform a high-level scan to detect structural defects that might prevent the file from being opened or interpreted correctly [@broman2018].
+
+Metrics Calculated:
+
+-   Encoding: Non-UTF-8 encodings (like Latin-1 or Windows-1252) are a major source of data loss when moving between operating systems.
+
+-   Completeness: The percentage of non-null cells. High missingness often indicates data entry errors or improper formatting (e.g., blank rows).
+
+-   Duplication: Exact duplicate rows often signal version control errors (e.g., pasting data twice).
+
+-   PII Flag: Detection of potential email addresses in text columns.
+
+```{r initialize-df}
+#| label: batch-health-check
+#| message: false
+#| warning: false
+
+analyze_csv_health <- function(file_path) {
+  
+  fname <- basename(file_path)
+  file_info <- file.info(file_path)
+  
+  # 1. Detect Encoding
+  guess <- readr::guess_encoding(file_path, n_max = 1000)
+  likely_encoding <- if (nrow(guess) > 0) guess$encoding[1] else "Unknown"
+  
+  tryCatch({
+    # 2. Safe Read
+    df <- read_csv(file_path, locale = locale(encoding = likely_encoding), 
+                   show_col_types = FALSE, progress = FALSE)
+    
+    # 3. Structural Metrics
+    n_rows <- nrow(df)
+    n_cols <- ncol(df)
+    n_missing <- sum(is.na(df))
+    total_cells <- n_rows * n_cols
+    pct_complete <- if (total_cells > 0) round(100 * (1 - n_missing / total_cells), 2) else 0
+    n_duplicates <- sum(duplicated(df))
+    
+    # 4. Privacy Scan (PII - Email Regex)
+    char_cols <- select(df, where(is.character))
+    email_pattern <- "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
+    pii_found <- FALSE
+    
+    if (ncol(char_cols) > 0) {
+      sample_size <- min(n_rows, 1000)
+      pii_check <- char_cols %>%
+        slice_head(n = sample_size) %>%
+        summarise(across(everything(), ~ any(str_detect(., email_pattern), na.rm = TRUE)))
+      pii_found <- any(unlist(pii_check))
+    }
+    
+    tibble(
+      FileName = fname,
+      Size_MB = round(file_info$size / 1024^2, 2),
+      Encoding = likely_encoding,
+      Rows = n_rows,
+      Cols = n_cols,
+      Pct_Complete = pct_complete,
+      Duplicate_Rows = n_duplicates,
+      PII_Risk = pii_found,
+      Status = "Success"
+    )
+    
+  }, error = function(e) {
+    tibble(
+      FileName = fname,
+      Size_MB = round(file_info$size / 1024^2, 2),
+      Encoding = likely_encoding,
+      Rows = NA, Cols = NA, Pct_Complete = NA, Duplicate_Rows = NA, PII_Risk = NA,
+      Status = paste("Read Failed:", e$message)
+    )
+  })
+}
+
+if (length(csv_files) > 0) {
+  health_report <- purrr::map_dfr(csv_files, analyze_csv_health)
+  datatable(health_report, 
+            caption = "Table 1: CSV Health Check Summary",
+            options = list(scrollX = TRUE))
+} else {
+  message("No CSV files found.")
+}
+```
+
+## Visualization: Structural Overview
+
+We visualize the dimensions of the datasets. This helps identify outliers (e.g., empty files or unexpectedly small files in a time series).
+
+```{r}
+#| label: viz-structure
+#| fig-cap: "Dataset Dimensions (Rows vs Columns)"
+#| warning: false
+
+ggplot(health_report, aes(x = Cols, y = Rows, size = Size_MB, color = Status)) +
+  geom_point(alpha = 0.7) +
+  scale_y_log10() + # Log scale for rows as they can vary wildly
+  labs(
+    title = "Dataset Dimensions",
+    subtitle = "Log Scale on Y-Axis (Rows)",
+    x = "Number of Columns",
+    y = "Number of Rows (Log)"
+  ) +
+  theme_minimal()
+```
+
+## Detailed Batch Profiling
+
+Here, we generate a "Master Data Dictionary" that characterizes every variable in the dataset. This allows curators to spot Type Inconsistency (e.g., a "Weight" column that is numeric in one file but character in another due to "N/A" strings).
+
+-   Numeric: Mean, SD, quartiles, histograms (as text).
+
+-   Character: Unique counts, whitespace checks.
+
+-   Missing: NA counts per column.
+
+```{r}
+#| label: batch-profiling
+#| message: false
+#| warning: false
+
+message("Generating detailed profiles...")
+
+safe_skim <- function(file_path) {
+  tryCatch({
+    df <- read_csv(file_path, show_col_types = FALSE)
+    skim(df) %>% 
+      as_tibble() %>% 
+      mutate(FileName = basename(file_path)) %>%
+      select(FileName, everything())
+  }, error = function(e) NULL)
+}
+
+if (length(csv_files) > 0) {
+  full_profile_data <- map_dfr(csv_files, safe_skim)
+  
+  datatable(head(full_profile_data, 50), 
+            caption = "Table 2: Master Data Dictionary (Preview)",
+            options = list(scrollX = TRUE))
+}
+```
+
+------------------------------------------------------------------------
+
+## Save Results
+
+We export two reports:
+
+-   Health Check: The high-level summary of file validity and risks.
+
+-   Detailed Profile: The granular statistics for every variable.
+
+```{r write-files}
+#| label: save-results
+
+output_dir <- file.path("Results", "Inspect_CSV")
+if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
+
+# File names
+health_file <- file.path(output_dir, paste0("CSV_Health_Check_", Sys.Date(), ".csv"))
+profile_file <- file.path(output_dir, paste0("CSV_Full_Profile_", Sys.Date(), ".csv"))
+
+# Save
+write_csv(health_report, health_file)
+write_csv(full_profile_data, profile_file)
+
+message("Reports saved:")
+message("1. ", health_file)
+message("2. ", profile_file)
+```
+
+------------------------------------------------------------------------
+
+## Curation Insights
+
+-   **Rectangularity:** If Read Failed occurs in Table 1, the file may have "ragged rows" (varying numbers of columns per row). This violates the Tidy Data principle that "each type of observational unit forms a table".
+
+-   **Encoding Hygiene:** Files with encodings like ISO-8859-1 should be converted to UTF-8 to ensure long-term accessibility.
+
+-   **Privacy:** If PII_Risk is TRUE, the file requires manual review. Publishing raw PII (like email addresses) is a severe ethical and legal violation.
+
+## Additional Tools for Researchers
+
+R is an excellent tool for data curation, but other tools are also available for cleaning messy tabular data.
+
+-   **OpenRefine:** The industry standard for cleaning messy data. It excels at standardizing inconsistent text (e.g., "USA", "U.S.A.", "United States") via clustering algorithms [@dewilde2013] (https://openrefine.org).
+
+-   **Frictionless Data (Table Schema):** A specification for defining a schema (types, constraints) for CSV files. It allows you to validate data automatically against a defined structure [\@fowler2018](https://frictionlessdata.io/).
+
+-   csvkit / xsv: Command-line utilities for slicing, dicing, and analyzing massive CSV files that are too large to open in Excel or R (https://csvkit.readthedocs.io).
+
+## Using the Non-Interactive R Script
+
+For users who want to run this analysis on a server or from the command line, a non-interactive version of this script is available.
+
+-   **R Script:** [**`Inspect_csv_Script.R`**](Scripts/Inspect_csv_Script.R)
+-   **Example SLURM Submission Script:** [**`FileCkecks_csv.sh`**](Scrum/FileCkecks_csv.sh)
+
+### How to Use
+
+-   **For RStudio:**
+
+1.  Download the `Inspect_csv_Script.R` script.
+2.  Open in Rstudio and run the whole script. or run it from your terminal, passing the path to your data folder as an argument:
+
+-   **For clusters**
+
+Alternatively, adapt the `FileCkecks_csv.sh` script to match your cluster's environment and your data path, then submit it using `sbatch`.
+
+```bash
+#!/bin/bash
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=00:30:00
+#SBATCH --job-name=csv_check
+
+# Load R module
+module load R
+
+# Define directories
+DATA_DIR="/scratch/your_user/data_folder"
+OUTPUT_DIR="/scratch/your_user/csv_results"
+
+# Run Script
+Rscript Inspect_CSV_Script.R $DATA_DIR $OUTPUT_DIR
+```
+
+
+## References
+
+::: {#refs}
+:::

@@ -1,3 +1,26 @@
 ---
-title: "Inspecting Image Files"
+title: "Image Data"
 ---
+
+## Overview
+
+Images are a primary data source in fields ranging from digital humanities to microscopy. Curating images involves more than just viewing them; it requires managing technical metadata, ensuring quality, and checking for privacy concerns.
+
+**Key Objectives:**
+
+1.  **Metadata Extraction (EXIF/XMP):** We extract embedded metadata such as camera settings, dates, and geolocation tags.
+2.  **Technical Properties:** We verify dimensions (width x height), color space (RGB, CMYK), and resolution.
+3.  **Privacy Screening:** We check for potentially sensitive metadata, such as GPS coordinates in field photos, which may need to be removed before publication.
+
+## Supported Formats
+
+We support a wide range of standard image formats including:
+-   **JPEG (`.jpg`):** Standard for photography.
+-   **TIFF (`.tif`):** Standard for archival and high-quality imaging.
+-   **PNG (`.png`):** Standard for lossless web graphics.
+
+## Common Curation Challenges
+
+-   **Hidden Metadata:** Images often contain embedded information (EXIF) that the creator is unaware of. This can pose privacy risks (e.g., GPS tags) or provide valuable context (e.g., capture date). We make this invisible data visible.
+-   **Compression Artifacts:** Repeated saving in lossy formats like JPEG degrades quality. We help identify the file format and properties to assess suitability for preservation.
+-   **Color Profiles:** Missing color profiles can lead to inconsistent display across devices. We check for the presence of ICC profiles.

@@ -10,34 +10,48 @@ book:
   chapters:
     - index.qmd
 
+    - part: Code_and_Software.qmd
+      chapters:
+        - Inspect_ipynb_Notebook.qmd
+        - Inspect_Code_Notebook.qmd
+
+    - part: Documents.qmd
+      chapters:
+        - Inspect_PDF_Notebook.qmd
+        - Inspect_Text_Notebook.qmd
+        - Inspect_OCR_Notebook.qmd
+
+
     - part: Data_General.qmd
       chapters:
-        - FileChecks_Extensions_Notebook.qmd
+        - Inspect_Extensions_Notebook.qmd
 
     - part: Data_Tabular.qmd
       chapters:
-        - FileChecks_csv_Notebook.qmd
-        - FileOpen_xlsx_Notebook.qmd
-        - FileOpen_json_notebook.qmd
-        - FileOpen_sav_Notebook.qmd
-        - FileOpen_dta_Notebook.qmd
+        - Inspect_csv_Notebook.qmd
+        - Inspect_xlsx_Notebook.qmd
+        - Inspect_sav_Notebook.qmd
+        - Inspect_dta_Notebook.qmd
+        - Inspect_sas7bdat_Notebook.qmd
         
-    - part: Geospatial.qmd
+    - part: Data_Structured.qmd
       chapters:
-        - FileOpen_gpkg_Notebook.qmd
-        
+        - Inspect_json_Notebook.qmd
+        - Inspect_xml_Notebook.qmd
+
     - part: Data_Scientific.qmd
       chapters:
-        - FileOpen_nc_Notebook.qmd
-        - FileOpen_mat_Notebook.qmd
+        - Inspect_nc_Notebook.qmd
+        - Inspect_hdf5_Notebook.qmd
+        - Inspect_mat_Notebook.qmd
         
+    - part: Data_Geospatial.qmd
+      chapters:
+        - Inspect_gpkg_Notebook.qmd
         
     - part: Data_Image.qmd
       chapters:
-        - FileChecks_Images_Notebook.qmd
-
-
-
+        - Inspect_Images_Notebook.qmd
 
 bibliography: references.bib
 format:

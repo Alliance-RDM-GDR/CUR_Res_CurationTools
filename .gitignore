@@ -2,5 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
-
 /.quarto/
+service-account.json
+
+archive/

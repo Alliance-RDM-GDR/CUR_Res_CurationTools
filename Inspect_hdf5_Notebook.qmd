@@ -1,0 +1,336 @@
+---
+title: "HDF5 File Inspection"
+author: "Daniel Manrique-Castano"
+date: "2025-12-05"
+format: 
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+params:
+  target_dir: "data/Inspect_hdf5/"
+---
+
+## Overview
+
+This notebook audits **Hierarchical Data Format version 5 (HDF5)** files (`.h5`, `.hdf5`). Unlike flat text files (CSV), [HDF5](https://support.hdfgroup.org/documentation/hdf5/latest/_h5_d_m__u_g.html) is a binary container that functions like a hard drive, capable of storing complex hierarchies of "Groups" (folders) and "Datasets" (files) within a single object.
+
+**Preservation Risks:**
+
+1.  **Opacity:** HDF5 is a "Black Box." Without specific software, the internal structure is invisible.
+2.  **Proprietary Filters:** Data can be compressed using custom algorithms (e.g., LZF, SZIP). If the archive lacks the specific decoding plugin, the data is technically preserved but practically unreadable.
+3.  **Broken Links:** HDF5 supports "External Links," where a file points to data stored in *another* file. If the linked file is missing from the transfer, the data is lost.
+
+**Curation Objectives:**
+
+1.  **Inventory:** Map the internal directory structure (Groups vs. Datasets).
+2.  **Dependencies:** Detect required compression libraries (e.g., GZIP vs. Proprietary).
+3.  **Integrity:** Identify external links that may break if files are moved.
+4.  **Metadata:** Extract attributes (units, descriptions) to verify the data is self-describing.
+
+
+------------------------------------------------------------------------
+
+## Setup
+
+We use the `hdf5r` package, which provides an object-oriented interface to the HDF5 library.
+
+### R Packages
+
+If you do not have the required packages, run this command once in your R console:
+
+```{r}
+# install.packages(c("tidyverse", "hdf5r", "rstudioapi"))
+```
+
+### Load libraries
+
+```{r}
+#| label: load-libraries
+#| message: false
+
+library(tidyverse)
+library(hdf5r)      # Interface to HDF5 library
+library(DT)         # Interactive tables
+library(rstudioapi) # Directory selection
+
+# Validation: Check if hdf5r loaded correctly
+if (!require("hdf5r", quietly = TRUE)) {
+  stop("The 'hdf5r' package is missing. Please install it to proceed.")
+}
+```
+
+## Select Target Directory
+
+We select the folder containing the HDF5 files.
+
+**Note:** If running interactively, a dialog box will appear. Otherwise, it defaults to the target_dir parameter.
+
+```{r}
+#| label: select-target-dir
+
+# 1. Try to select interactively if in RStudio
+if (interactive() && .Platform$OS.type == "windows") { 
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select HDF5 Directory")
+} else {
+  selected_dir <- NULL
+}
+
+# 2. Logic to determine final directory
+if (!is.null(selected_dir)) {
+  target_dir <- selected_dir
+} else {
+  target_dir <- params$target_dir
+}
+
+print(paste("Analyzing directory:", target_dir))
+
+```
+
+## Find HDF5 Files
+
+We scan the directory for files ending in .h5 or .hdf5.
+
+```{r}
+#| label: find-files
+
+hdf5_files <- list.files(
+  path = target_dir,
+  pattern = "\\.(h5|hdf5)$", 
+  recursive = TRUE, 
+  full.names = TRUE, 
+  ignore.case = TRUE
+)
+
+print(paste("Found", length(hdf5_files), "HDF5 files."))
+head(hdf5_files)
+```
+
+## File Inspection
+
+We iterate through each file to map its internal contents. This routine extracts not just dimensions, but also storage layouts and compression filters.
+
+**Key Technical Checks:**
+
+- **Filters:** We check the "creation property list" of every dataset to see if compression (e.g., GZIP, SZIP) is active.
+
+- **Link Type:** We flag H5L_TYPE_EXTERNAL to warn about potential missing dependencies.
+
+```{r}
+#| label: generate-dictionary
+#| warning: false
+#| message: false
+
+message("Generating Data Dictionary...")
+
+analyze_hdf5_structure <- function(file_path) {
+  fname <- basename(file_path)
+  
+  tryCatch({
+    # Open File (Read-Only)
+    h5f <- H5File$new(file_path, mode = "r")
+    on.exit(h5f$close_all()) # Ensure closure even if errors occur
+    
+    # 1. List all objects recursively
+    # The 'ls' function returns a dataframe with columns: name, link.type, obj.type, etc.
+    contents <- h5f$ls(recursive = TRUE)
+    
+    # 2. Iterate through objects to extract deep metadata
+    purrr::map_dfr(seq_len(nrow(contents)), function(i) {
+      
+      obj_path <- contents$name[i]
+      obj_type <- contents$obj_type[i] # H5I_GROUP or H5I_DATASET
+      link_type <- contents$link.type[i] # H5L_TYPE_HARD, H5L_TYPE_EXTERNAL
+      
+      # Defaults
+      dims <- NA_character_
+      dtype <- NA_character_
+      compression <- "None"
+      layout <- NA_character_
+      attrs_str <- ""
+      
+      # CASE A: External Link (Risk!)
+      if (link_type == "H5L_TYPE_EXTERNAL") {
+        return(tibble(
+          FileName = fname, Path = obj_path, Type = "EXTERNAL_LINK",
+          Dimensions = NA, DataType = NA, Compression = NA, 
+          Attributes = "Warning: Points to external file", Status = "Risk: External Dependency"
+        ))
+      }
+      
+      # CASE B: Dataset (The actual data)
+      if (obj_type == "H5I_DATASET") {
+        tryCatch({
+          dset <- h5f[[obj_path]]
+          
+          # Dimensions & Type
+          dims <- paste(dset$dims, collapse = " x ")
+          dtype <- dset$get_type()$to_text()
+          
+          # Advanced: Compression & Layout (Creation Properties)
+          dcpl <- dset$create_plist
+          layout <- dcpl$get_layout() # e.g., H5D_CHUNKED
+          
+          # Filters (Compression)
+          n_filters <- dcpl$get_nfilters()
+          if (n_filters > 0) {
+            filters <- map_chr(0:(n_filters - 1), ~ dcpl$get_filter(.x)$name)
+            compression <- paste(filters, collapse = ", ")
+          }
+          
+          # Attributes
+          attr_list <- names(h5attributes(dset))
+          if (length(attr_list) > 0) attrs_str <- paste(head(attr_list, 5), collapse = "; ")
+          
+        }, error = function(e) {
+          dims <<- "Error reading dataset"
+        })
+      }
+      
+      # CASE C: Group (Folder)
+      if (obj_type == "H5I_GROUP") {
+         tryCatch({
+          grp <- h5f[[obj_path]]
+          attr_list <- names(h5attributes(grp))
+          if (length(attr_list) > 0) attrs_str <- paste(head(attr_list, 5), collapse = "; ")
+         }, error = function(e) {})
+      }
+      
+      tibble(
+        FileName = fname,
+        Path = obj_path,
+        Type = obj_type,
+        Dimensions = dims,
+        DataType = dtype,
+        Compression = compression,
+        Attributes = substr(attrs_str, 1, 100),
+        Status = "Success"
+      )
+    })
+    
+  }, error = function(e) {
+    tibble(
+      FileName = fname, Path = "ROOT", Type = "ERROR", 
+      Dimensions = NA, DataType = NA, Compression = NA, Attributes = NA,
+      Status = paste("File Read Failed:", e$message)
+    )
+  })
+}
+
+if (length(hdf5_files) > 0) {
+  report <- purrr::map_dfr(hdf5_files, analyze_hdf5_structure)
+  
+  datatable(report, 
+            caption = "Table 1: HDF5 Internal Structure & Metadata",
+            options = list(scrollX = TRUE, pageLength = 15))
+} else {
+  message("No HDF5 files found.")
+}
+```
+## Visualization
+
+Understanding how the data is stored (Compressed vs. Uncompressed) helps assess software dependencies.
+
+```{r}
+#| label: viz-compression
+#| fig-cap: "Figure 1: Compression Methods Used. Proprietary filters pose preservation risks."
+
+if (exists("report") && nrow(report) > 0) {
+  
+  # Filter only for Datasets (exclude Groups)
+  dataset_info <- report %>% filter(Type == "H5I_DATASET")
+  
+  if (nrow(dataset_info) > 0) {
+    ggplot(dataset_info, aes(x = Compression)) +
+      geom_bar(fill = "#4C78A8") +
+      labs(
+        title = "Compression Filters in Use",
+        subtitle = "'None' or 'GZIP' are preferred. Custom filters (e.g., LZF) require plugins.",
+        x = "Compression Filter",
+        y = "Number of Datasets"
+      ) +
+      theme_minimal()
+  } else {
+    message("No datasets found to visualize.")
+  }
+}
+```
+
+## Save Results
+
+Save the dictionary to a CSV file for review.
+
+```{r}
+#| label: save-results
+
+# Define output directory
+output_dir <- file.path("Results", "Inspect_hdf5")
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+# Define filename
+output_file <- file.path(output_dir, paste0("HDF5_Dictionary_", Sys.Date(), ".csv"))
+
+# Write CSV
+write.csv(report, output_file, row.names = FALSE)
+
+print(paste("Data Dictionary saved to:", output_file))
+```
+## Curation Insights
+
+Use the generated CSV to perform these checks:
+
+- **Proprietary Compression:** If the Compression column lists "SZIP" (Science Data Process) or "LZF," standard tools may fail to open the file in the future. GZIP (Deflate) is the safest standard.
+
+- **External Links:** If Type is EXTERNAL_LINK, the file is not self-contained. It relies on a "target file" that must also be present in the directory. If missing, the link is broken.
+
+- **Attribute Metadata:** HDF5 is "Self-Describing" only if the researcher adds attributes. If the Attributes column is empty for major datasets, the data units (e.g., "Meters" vs "Feet") are unknown.
+
+## Additional Tools & Resources
+
+While R is excellent for scripted inspection, visual tools are often better for exploratory curation.
+
+- **HDFView:** The official Java-based visual browser maintained by The HDF Group. It allows you to click through the hierarchy, plot simple graphs, and edit attributes manually (see https://hdfgroup.org/downloads/hdfview/).
+
+- **h5dump (Command Line):** A [utility](https://support.hdfgroup.org/documentation/hdf5/latest/_h5_t_o_o_l__d_p__u_g.html) that converts binary HDF5 content into human-readable text (ASCII or XML). It is essential for generating archival "dumps" of metadata.
+
+- **Panoply:** A cross-platform [data viewer](https://www.giss.nasa.gov/tools/panoply/) specifically for HDF5/NetCDF files that adhere to climate standards (CF Conventions).
+
+
+## Using the Non-Interactive R Script
+
+For users who want to run this analysis on a server (HPC), in a batch job, or from the command line, here is the pure R script version.
+
+### The `Inspect_hdf5_Script.R` Script
+
+Download the **R Script:** [**`Inspect_hdf5_Script.R`**](Scripts/Inspect_hdf5_Script.R)
+
+### Example HPC Submission Script (`Inspect_hdf5_submit.sh`)
+
+``` bash
+#!/bin/bash
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=00:20:00
+#SBATCH --job-name=hdf5_check
+
+# Load R module
+module load R
+
+# IMPORTANT: The 'hdf5r' package relies on the HDF5 system library.
+# On many clusters, this must be loaded explicitly.
+# Check your cluster docs (e.g. 'module avail hdf5')
+module load hdf5 
+
+# Define directories
+DATA_DIR="/scratch/your_user/scientific_data"
+OUTPUT_DIR="/scratch/your_user/hdf5_results"
+
+# Run Script
+Rscript Inspect_hdf5_Script.R $DATA_DIR $OUTPUT_DIR
+```
+
+
+## References
+
+::: {#refs}
+:::

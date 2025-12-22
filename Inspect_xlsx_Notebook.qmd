@@ -1,0 +1,299 @@
+---
+title: "Inspection of Excel Files (.xls, .xlsx)"
+author: "Daniel Manrique-Castano"
+date: "2025-12-18"
+format: 
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+    theme: cosmo
+params:
+  target_dir: "data/Inspect_xlsx/"
+---
+
+## Overview
+
+Excel files are complex "containers" (OLE Compound Documents or Zip-compressed XML) that hold much more than data. They are considered high-risk for preservation due to:
+
+- **Hidden Content:** Users often "hide" sheets containing scratch work or PII (Personally Identifiable Information) instead of deleting them.
+- **External Dependencies:** Cells can link to external files (e.g., `C:\Users\John\Budget.xlsx`). When the file is moved to an archive, these links break, creating "reference errors."
+* **Macros (VBA):** Automation scripts (Visual Basic for Applications) can pose security risks and are difficult to preserve.
+
+This notebook combines two approaches:
+
+1.  **Structure Scan:** Checks for macros, external links, and hidden sheets (using `tidyxl` for `.xlsx` and file attributes for `.xls`).
+
+2.  **Content Preview:** Reads the actual data dimensions and headers to assess if the file is a clean table or a messy report (using `readxl`).
+------------------------------------------------------------------------
+
+## Setup
+
+We use `readxl` for data reading and `tidyxl` for deep structural inspection of modern Excel files.
+
+### R Packages
+
+If you don't have these packages installed, run this command once in your R console:
+
+```{r}
+# install.packages(c("tidyverse", "readxl", "rstudioapi", "tidyxl"))
+```
+
+------------------------------------------------------------------------
+
+## Load Libraries
+
+This chunk loads all the necessary libraries for the session.
+
+```{r load-libraries}
+#| label: load-libraries
+#| message: false
+
+library(tidyverse)
+library(readxl)     # Standard data reader
+library(tidyxl)     # Structural inspector (Hidden sheets, formatting)
+library(rstudioapi) # For directory selection
+```
+
+------------------------------------------------------------------------
+
+## Select Target Directory
+
+This section identifies the directory to be analyzed and finds all Excel files within it.
+
+> **Note:** If you are running this interactively in RStudio, a dialog box will appear. If you are rendering this document (where no user interaction is possible), it will default to the `params$target_dir` defined in the YAML header.
+
+```{r select-directory}
+#| label: select-target-dir
+
+# 1. Try to select interactively if in RStudio
+if (interactive() && .Platform$OS.type == "windows") { 
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select Excel Directory")
+} else {
+  selected_dir <- NULL
+}
+
+# 2. Logic to determine final directory (Interactive vs Parameter)
+if (!is.null(selected_dir)) {
+  target_dir <- selected_dir
+} else {
+  target_dir <- params$target_dir
+}
+
+print(paste("Analyzing directory:", target_dir))
+```
+
+### Find Excel Files
+
+Now we scan the selected directory for all `.xls` and `.xlsx` files.
+
+```{r find-files}
+#| label: find-files
+
+# Find all Excel files using a regex pattern
+excel_files <- list.files(
+  path = target_dir,
+  pattern = "\\.xlsx?$", # Matches .xls or .xlsx
+  recursive = TRUE,
+  full.names = TRUE,
+  ignore.case = TRUE
+)
+
+# Print the number of files found and show the first few paths
+print(paste("Found", length(excel_files), "Excel files."))
+head(excel_files)
+```
+
+------------------------------------------------------------------------
+
+## Structural and content inspection
+
+In this section, we iterate through each file. For .xlsx files, we perform a deep scan for hidden content. For legacy .xls, we rely on basic extraction.
+
+```{r generate-report}
+#| label: inspection-logic
+#| warning: false
+#| message: false
+
+message("Generating Excel Structure Report...")
+
+# Helper: Analyze Structure (Hidden Sheets, Links)
+analyze_structure <- function(fp) {
+  is_modern <- grepl("\\.xlsx$|\\.xlsm$", fp, ignore.case = TRUE)
+  is_macro  <- grepl("\\.xlsm$", fp, ignore.case = TRUE)
+  
+  hidden_sheets <- "Unknown (Legacy)"
+  has_ext_links <- "Unknown (Legacy)"
+  
+  if (is_modern) {
+    tryCatch({
+      # tidyxl allows us to see sheet state (visible/hidden)
+      sheet_meta <- tidyxl::xlsx_sheet_names(fp)
+      hidden_count <- sum(sheet_meta$state != "visible")
+      hidden_sheets <- if (hidden_count > 0) paste0(hidden_count, " Hidden") else "None"
+      
+      # Check for external links (naive check in cells is slow, sticking to sheets/macros)
+      # We could scan formulas, but for speed we focus on sheets here.
+    }, error = function(e) {
+      hidden_sheets <- "Scan Failed"
+    })
+  }
+  
+  return(list(
+    Macros = is_macro,
+    Hidden = hidden_sheets,
+    Format = if (is_modern) "XML (Modern)" else "Binary (Legacy)"
+  ))
+}
+
+# Main Loop
+all_sheets_summary <- list()
+
+for (file_path in excel_files) {
+  file_name <- basename(file_path)
+  
+  # 1. Structural Scan
+  struct <- analyze_structure(file_path)
+  
+  tryCatch({
+    sheet_names <- readxl::excel_sheets(file_path)
+    
+    if (length(sheet_names) == 0) {
+      all_sheets_summary[[length(all_sheets_summary) + 1]] <- tibble(
+        FileName = file_name, SheetName = "(No Sheets)", Dimensions = "0 x 0",
+        HeaderPreview = "(Empty)", IsMacro = struct$Macros, 
+        HiddenSheets = struct$Hidden, Format = struct$Format, Status = "Empty"
+      )
+      next
+    }
+    
+    # 2. Content Scan (Sheet by Sheet)
+    for (sheet in sheet_names) {
+      tryCatch({
+        # Read minimal data for dimensions
+        # Suppress messages about 'new names'
+        full_data <- suppressMessages(read_excel(file_path, sheet = sheet, .name_repair = "minimal"))
+        dims <- paste(dim(full_data), collapse = " x ")
+        
+        # Read header for preview
+        preview <- suppressMessages(read_excel(file_path, sheet = sheet, n_max = 5, .name_repair = "minimal"))
+        col_names <- colnames(preview)
+        
+        # Heuristic: Is it non-tabular? (Default columns ...1, ...2 or single column)
+        is_messy <- any(grepl("^\\.\\.\\.\\d+$", col_names)) || length(col_names) <= 1
+        
+        header_str <- paste(head(col_names, 5), collapse = " | ")
+        if (length(col_names) > 5) header_str <- paste(header_str, "...")
+        
+        all_sheets_summary[[length(all_sheets_summary) + 1]] <- tibble(
+          FileName = file_name,
+          SheetName = sheet,
+          Dimensions = dims,
+          HeaderPreview = header_str,
+          IsMacro = struct$Macros,
+          HiddenSheets = struct$Hidden,
+          Format = struct$Format,
+          LikelyNonTabular = is_messy,
+          Status = "Success"
+        )
+        
+      }, error = function(e) {
+        all_sheets_summary[[length(all_sheets_summary) + 1]] <- tibble(
+          FileName = file_name, SheetName = sheet, Dimensions = "Error",
+          HeaderPreview = e$message, IsMacro = struct$Macros, 
+          HiddenSheets = struct$Hidden, Format = struct$Format, 
+          LikelyNonTabular = TRUE, Status = "Read Failed"
+        )
+      })
+    }
+  }, error = function(e) {
+     all_sheets_summary[[length(all_sheets_summary) + 1]] <- tibble(
+        FileName = file_name, SheetName = "Error", Dimensions = "Error",
+        HeaderPreview = e$message, IsMacro = struct$Macros, 
+        HiddenSheets = struct$Hidden, Format = struct$Format, 
+        LikelyNonTabular = TRUE, Status = "File Failed"
+      )
+  })
+}
+
+summary_report <- bind_rows(all_sheets_summary)
+
+# Display preview
+print("--- Excel Structure Report ---")
+head(summary_report)
+```
+
+## Save results
+
+```{r}
+#| label: save-results
+
+output_dir <- "Results/Inspect_xlsx"
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+output_file <- file.path(output_dir, paste0("Excel_Structure_", format(Sys.Date(), "%Y%m%d"), ".csv"))
+
+write.csv(summary_report, output_file, row.names = FALSE)
+print(paste("Report saved to:", output_file))
+```
+------------------------------------------------------------------------
+
+## Curation Insights
+
+Use the generated report to identify high-risk files:
+
+- **Macros (IsMacro = TRUE):** Macros are a risk for security and prone to obsolescence. .xlsm files contain code that may not run in the future or may be blocked by security software. Curators can ask depositors to remove macros and save as .xlsx unless the code is essential (in which case, the code can be archived as text).
+
+- **Hidden Sheets:** Hidden data often contains PII, messy scratchpads, or deprecated versions of the data. Curators can inspect these sheets manually, and if they are not needed, delete them to clean the dataset.
+
+- **Likely Non-Tabular (LikelyNonTabular = TRUE):** This implies that thw sheet is likely a report, chart, or form, not a raw data table. These sheets generally cannot be converted to CSV automatically and require manual review. To keep tabular data tidy, graphs and images must be removed and saved apart.
+
+------------------------------------------------------------------------
+
+## Additional Tools 
+
+- **LibreOffice Calc:** Excellent [open-source tool](https://www.libreoffice.org/discover/calc/) for batch converting legacy .xls files to modern open formats (.ods or .xlsx) via command line.
+
+- **OpenRefine:** is a [tool](https://openrefine.org/) for cleaning messy tabular data (e.g., untangling merged cells or fixing inconsistent headers) before archiving.
+
+- **VBA Remover:** These are a set of different tools to strip VBA from Excel files to sanitize them for preservation. Several are available on-line.
+
+
+## Using the Non-Interactive R Script
+
+For users who want to run this analysis on a server or from the command line, here is a pure R script that performs the same process.
+
+This "hybrid" script will: 1. If run **interactively** (e.g., in RStudio), pop up a dialog to select a **directory**. 2. If run **non-interactively** (e.g., on an HPC cluster), accept a **directory** path as a command-line argument. 3. Process **all** `.xls` and `.xlsx` files found in that directory.
+
+Download the **R Script:** [**`Inspect_xlsx_Script.R`**](Scripts/Inspect_xlsx_Script.R)
+
+### Example HPC Submission Script (`submit_excel_check.sh`)
+
+``` bash
+#!/bin/bash
+#SBATCH --job-name=excel_check
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=00:30:00
+#SBATCH --mem=8G
+#SBATCH --output=logs/excel_check_%j.log
+
+module load R
+
+# Define target directory
+TARGET_DIR="/scratch/user/project_data/financials"
+
+# Prepare folders
+mkdir -p Results/Inspect_xlsx
+mkdir -p logs
+
+# Run
+echo "Starting Excel Inspection on $TARGET_DIR"
+Rscript Inspect_xlsx_Script.R "$TARGET_DIR"
+```
+
+
+## References
+
+::: {#refs}
+:::

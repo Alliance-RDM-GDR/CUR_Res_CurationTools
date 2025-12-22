@@ -1,0 +1,236 @@
+---
+title: "Inspection of PDF Documents (.pdf)"
+author: "Daniel Manrique-Castano"
+date: "2025-12-18"
+format: 
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+    theme: cosmo
+params:
+  target_dir: "data/Inspect_pdf/"
+---
+
+## Overview
+
+PDF is considered the standard for fixed-layout documents. However, not all PDFs are created in the same manner. The archival gold standard is **PDF/A (ISO 19005)**, which prohibits features that impede long-term preservation, such as encryption, audio/video content, and external font dependencies (see [PDF/A in a Nutshell 2.0](https://pdfa.org/resource/pdfa-in-a-nutshell-2-0/)).
+
+A major curation challenge is the distinction between documents created directly from a word processor, which are fully searchable and accessible to screen readers; and Image-Only PDFs, which contain only raster images of text. These are invisible to search engines and accessibility tools unless **OCR (Optical Character Recognition)** has been applied.
+
+This notebook evaluates PDF files on three critical dimensions:
+
+1.  **Security:** Detecting **Encryption** or password protection, which effectively "locks" the content away from future researchers.
+2.  **Accessibility:** Categorizing files as Searchable or Image-Only document.
+3.  **Metadata Quality:** Checking for embedded title and suthor fields, which are often lost during export.
+
+------------------------------------------------------------------------
+
+## Setup
+
+We use `pdftools` for PDF analysis and `tidyverse` for reporting.
+
+### R Packages
+
+```{r}
+# install.packages(c("tidyverse", "pdftools", "rstudioapi"))
+```
+
+### Load libraries
+
+```{r}
+#| label: load-libraries
+#| message: false
+
+library(tidyverse)
+library(pdftools)
+library(rstudioapi)
+```
+
+## Select Target Directory
+
+```{r}
+#| label: select-target-dir
+
+if (interactive() && .Platform$OS.type == "windows") { 
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select PDF Directory")
+} else {
+  selected_dir <- NULL
+}
+
+if (!is.null(selected_dir)) {
+  target_dir <- selected_dir
+} else {
+  target_dir <- params$target_dir
+}
+
+print(paste("Analyzing directory:", target_dir))
+```
+
+## Find PDF Files
+
+```{r}
+#| label: find-files
+
+pdf_files <- list.files(
+  path = target_dir,
+  pattern = "\\.pdf$", 
+  recursive = TRUE, 
+  full.names = TRUE, 
+  ignore.case = TRUE
+)
+
+print(paste("Found", length(pdf_files), "PDF files."))
+```
+
+## File inventory and inspection
+
+We iterate through the files to extract metadata, check for encryption, and sample the text content to determine its accessibility status.
+
+```{r}
+#| label: generate-report
+#| warning: false
+#| message: false
+
+message("Generating PDF Report...")
+
+results_list <- lapply(pdf_files, function(file_path) {
+  fname <- basename(file_path)
+  
+  tryCatch({
+    # 1. Metadata & Security
+    info <- pdftools::pdf_info(file_path)
+    
+    # NEW: Capture Encryption Status explicitly
+    is_encrypted <- isTRUE(info$encrypted)
+    
+    # 2. Text Extraction
+    # If encrypted, text extraction might fail, so we wrap it or handle it
+    first_page_text <- tryCatch(pdftools::pdf_text(file_path)[1], error = function(e) "")
+    
+    # Handle NA/NULL text
+    if(is.na(first_page_text) || is.null(first_page_text)) first_page_text <- ""
+    
+    char_count <- nchar(trimws(first_page_text))
+    has_text <- char_count > 10 
+    
+    # 3. Fonts
+    fonts <- tryCatch(pdftools::pdf_fonts(file_path), error = function(e) NULL)
+    font_names <- if (!is.null(fonts)) paste(head(unique(fonts$name), 5), collapse = ", ") else "Unknown"
+    
+    # Helper for metadata
+    get_meta <- function(x) {
+      if (is.null(x) || length(x) == 0 || x == "") return("Unknown")
+      return(as.character(x))
+    }
+
+    # Return valid tibble with explicit types
+    tibble(
+      FileName = fname,
+      Pages = as.integer(info$pages),
+      Encrypted = as.logical(is_encrypted), # <--- NEW COLUMN
+      Author = get_meta(info$keys$Author),
+      Title = get_meta(info$keys$Title),
+      Creator = get_meta(info$keys$Creator),
+      Created = as.character(info$created),
+      HasText = as.logical(has_text),
+      FirstPageChars = as.integer(char_count),
+      Fonts = as.character(font_names),
+      Status = "Success"
+    )
+    
+  }, error = function(e) {
+    tibble(
+      FileName = fname,
+      Pages = as.integer(NA),
+      Encrypted = as.logical(NA),
+      Author = as.character(NA),
+      Title = as.character(NA),
+      Creator = as.character(NA),
+      Created = as.character(NA),
+      HasText = as.logical(NA),
+      FirstPageChars = as.integer(NA),
+      Fonts = as.character(NA),
+      Status = paste("Failed:", e$message)
+    )
+  })
+})
+
+report <- bind_rows(results_list)
+
+# Display preview
+print("--- PDF Report Preview ---")
+print(head(report))
+```
+
+## Save Results
+
+```{r}
+#| label: save-results
+
+output_dir <- file.path("Results", "Inspect_pdf")
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+output_file <- file.path(output_dir, paste0("PDF_Report_", Sys.Date(), ".csv"))
+
+write.csv(report, output_file, row.names = FALSE)
+
+print(paste("Report saved to:", output_file))
+```
+
+## Curation Insights
+
+Use the generated CSV report to guide your preservation actions:
+
+-   **Encryption (Encrypted = TRUE):** Encrypted files cannot be migrated, indexed, or arguably "preserved." Curators must contact the depositor immediately to remove the password. If the password is lost, the file cannot be reused.
+
+-   **Accessibility (TextStatus = "Image-Only"):** These are scanned images. They are readable by humans but invisible to search engines and screen readers (accessibility violation). You can run these files through an OCR tool (like Tesseract or Adobe Acrobat) to generate a text layer.
+
+-   **Font Embedding (Fonts):** If Fonts is empty or lists generic names like "Helvetica" without embedding, the layout may break on future systems. the curator can convert the file to PDF/A-1b or PDF/A-2b, which forces font embedding.
+
+## Additional Tools
+
+-   **VeraPDF:** This is the standard open-source validator for PDF/A compliance. It checks if fonts are embedded and if multimedia is excluded (see https://verapdf.org).
+
+-   **Tesseract OCR:** Is an [open-source engine](https://github.com/tesseract-ocr/tesseract) for optical character recognition . It can take an "Image-Only" PDF and output a searchable text file or a new PDF with a text layer.
+
+-   **Google AI:** Extractd text and data from images and documents using [AI capabilities](https://cloud.google.com/use-cases/ocr). See a use case in another [chapter of this book](/Inspect_OCR_Notebook.qmd).
+
+-   **Ghostscript:** This is a [command-line interpreter](https://ghostscript.com/) often used to repair corrupted PDFs or convert standard PDFs into PDF/A format.
+
+## Using the Non-Interactive R Script
+
+For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
+
+Download the **R Script:** [**`Inspect_PDF_Script.R`**](Scripts/Inspect_PDF_Script.R)
+
+### Example HPC Submission Script
+
+``` bash
+#!/bin/bash
+#SBATCH --job-name=pdf_inspect
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=00:30:00
+#SBATCH --mem=8G
+#SBATCH --output=logs/pdf_inspect_%j.log
+
+module load R
+
+# Define target directory
+TARGET_DIR="/scratch/user/project_data/documents"
+
+# Prepare output folders
+mkdir -p Results/Inspect_pdf
+mkdir -p logs
+
+# Run
+echo "Starting PDF Inspection on $TARGET_DIR"
+Rscript Inspect_PDF_Script.R "$TARGET_DIR"
+```
+
+
+## References
+
+::: {#refs}
+:::

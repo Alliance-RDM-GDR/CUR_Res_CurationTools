@@ -1,0 +1,29 @@
+---
+title: "Structured & Hierarchical Data"
+---
+
+## Overview
+
+Unlike tabular data, structured data formats like JSON and XML allow for complex, nested relationships between elements. These formats are essential for representing objects, configurations, and web-based data exchanges. This section provides tools to navigate and validate these hierarchical structures.
+
+**Key Objectives:**
+
+1.  **Hierarchy Visualization:** We map the nested structure of the files to understand the depth and complexity of the data.
+2.  **Schema Validation:** We check if the files conform to a standard structure or if they vary wildly within the dataset.
+3.  **Metadata Extraction:** We identify key keys, tags, and attributes that define the data's content.
+
+## Supported Formats
+
+### JSON (`.json`)
+
+JavaScript Object Notation (JSON) is the de facto standard for modern web APIs and NoSQL databases. - **Our Approach:** We flatten the nested structure to create a readable summary of keys and data types, making it easier to audit large JSON collections.
+
+### XML (`.xml`)
+
+Extensible Markup Language (XML) is a robust, mature standard used heavily in document storage, scientific metadata, and enterprise systems. - **Our Approach:** We parse the document tree to identify the root element, count child nodes, and extract attributes. We also check for well-formedness to ensure the files can be processed by standard parsers.
+
+## Common Curation Challenges
+
+-   **Deep Nesting:** excessively deep hierarchies can make data difficult to query and analyze. We flag files with unusual depth.
+-   **Inconsistent Schemas:** In flexible formats like JSON, different records may have different fields. Our tools help identify these inconsistencies.
+-   **Syntax Errors:** A single missing bracket or tag can render an entire file unreadable. We verify the basic syntax integrity of every file.
