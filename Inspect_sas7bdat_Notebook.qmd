@@ -1,5 +1,5 @@
 ---
-title: "Inspection of SAS Data Files (.sas7bdat)"
+title: "SAS Data (.sas7bdat) Files"
 author: "Daniel Manrique-Castano"
 date: "2025-12-18"
 format: 
@@ -22,7 +22,7 @@ Distinguishing between SAS Transport (XPORT) and Catalog Port (CPORT) is a criti
 This notebook performs a rigorous inventory:
 
 1.  **Catalog Check:** Scans specifically for `.sas7bcat` files to ensure metadata isn't missing.
-2.  **Robust Extraction:** Uses a multi-strategy approach (Haven -> sas7bdat -> Fallback) to read files even if they are slightly corrupted or old versions.
+2.  **Robust Extraction:** Uses a multi-strategy approach (Haven -\> sas7bdat -\> Fallback) to read files even if they are slightly corrupted or old versions.
 3.  **Encoding Scan:** Checks for non-ASCII characters to flag potential encoding errors (e.g., "Mojibake") common in older Windows-1252 datasets.
 
 ------------------------------------------------------------------------
@@ -277,16 +277,15 @@ Use the generated CSV to perform these checks:
 
 -   **CPORT Detection:** Files flagged as Failed (XPORT/CPORT) are likely CPORT files. These are proprietary and the depositor needs to re-export them as standard XPORT (.xpt) or .sas7bdat using SAS.
 
--  **Missing Catalogs:** If you see categorical variables (e.g., Treatment values 1, 2) with empty ValueLabels and NO .sas7bcat files were found in the inventory step. In this case, the metadata is incomplete and a request for the missing .sas7bcat file must be done.
+-   **Missing Catalogs:** If you see categorical variables (e.g., Treatment values 1, 2) with empty ValueLabels and NO .sas7bcat files were found in the inventory step. In this case, the metadata is incomplete and a request for the missing .sas7bcat file must be done.
 
-- **Encoding Issues:** Check the EncodingCheck column. If it says "Contains Special/Non-ASCII", verify the text. If the text renders unreadable characters (e.g., Ã± instead of ñ), the file was likely saved in WINDOWS-1252 but read as UTF-8. You may need to use read_sas(..., encoding = "latin1") to fix it.
+-   **Encoding Issues:** Check the EncodingCheck column. If it says "Contains Special/Non-ASCII", verify the text. If the text renders unreadable characters (e.g., Ã± instead of ñ), the file was likely saved in WINDOWS-1252 but read as UTF-8. You may need to use read_sas(..., encoding = "latin1") to fix it.
 
 ## Additional Tools
 
-- **SAS Universal Viewer:** It is a [free tool](https://support.sas.com/en/software/universal-viewer-support.html) from SAS Institute that allows you to view (but not edit) SAS datasets and catalogs without a full SAS license. It can be used to verify CPORT files.
+-   **SAS Universal Viewer:** It is a [free tool](https://support.sas.com/en/software/universal-viewer-support.html) from SAS Institute that allows you to view (but not edit) SAS datasets and catalogs without a full SAS license. It can be used to verify CPORT files.
 
-- **StatTransfer:** is a [commercial tool](https://stattransfer.com/) for converting between statistical formats (SAS, SPSS, Stata, R). This tool can handle effective CPORT conversion.
-
+-   **StatTransfer:** is a [commercial tool](https://stattransfer.com/) for converting between statistical formats (SAS, SPSS, Stata, R). This tool can handle effective CPORT conversion.
 
 ## Using the Non-Interactive R Script
 
@@ -319,9 +318,7 @@ echo "Starting SAS Inspection on $TARGET_DIR"
 Rscript Inspect_sas7bdat_Script.R "$TARGET_DIR"
 ```
 
-
 ## References
 
 ::: {#refs}
 :::
-

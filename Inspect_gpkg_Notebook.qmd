@@ -1,5 +1,5 @@
 ---
-title: "GeoPackage (.gpkg) files"
+title: "GeoPackage (.gpkg) Files"
 format:
   html:
     toc: true
@@ -389,9 +389,7 @@ OUTPUT_DIR="/scratch/your_user/spatial_results"
 Rscript Inspect_GPKG_Script.R $DATA_DIR $OUTPUT_DIR
 ```
 
-
 ## References
 
 ::: {#refs}
 :::
-

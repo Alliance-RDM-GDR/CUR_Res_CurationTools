@@ -1,5 +1,5 @@
 ---
-title: "Inspection of XML Files"
+title: "XML Files"
 author: "Daniel Manrique-Castano"
 date: "2025-12-18"
 format: 
@@ -23,7 +23,7 @@ This notebook performs a rigorous structure analysis:
 
 1.  **Parse Check:** Verifies well-formedness using `xml2` .
 2.  **Schema Validation:** If an `.xsd` file is found in the directory, it validates the XMLs against it .
-3.  **Complexity Scan:** Calculates the **Max Nesting Depth**. Excessive depth (>50 levels) can indicate "XML Bombs" or poor design.
+3.  **Complexity Scan:** Calculates the **Max Nesting Depth**. Excessive depth (\>50 levels) can indicate "XML Bombs" or poor design.
 4.  **Namespace Inventory:** Extracts all declared namespaces.
 
 ------------------------------------------------------------------------
@@ -185,7 +185,6 @@ print("--- XML Structure Report ---")
 head(report)
 ```
 
-
 ## Save Results
 
 Save the dictionary to a CSV file for review.
@@ -206,17 +205,17 @@ print(paste("Report saved to:", output_file))
 
 Use the generated CSV to guide your preservation actions:
 
-- **Status ("Parsing Failed"):** If the parsing fails, it may implicate the files are corrupted or contain syntax errors (e.g., unclosed tags). Curators may need to discuss with depositors the validity of these files. 
+-   **Status ("Parsing Failed"):** If the parsing fails, it may implicate the files are corrupted or contain syntax errors (e.g., unclosed tags). Curators may need to discuss with depositors the validity of these files.
 
-- **Namespaces (Namespaces):** It is avisable to look for standard prefixes like dc (Dublin Core) or mods. If a specific standard is detected, verify if the file strictly adheres to it (Schema Validation) .
+-   **Namespaces (Namespaces):** It is avisable to look for standard prefixes like dc (Dublin Core) or mods. If a specific standard is detected, verify if the file strictly adheres to it (Schema Validation) .
 
-- **Complexity (MaxDepth > 50):** Deeply nested XMLs can be difficult to process with standard XSLT tools. Curators can investigate these files manually.
+-   **Complexity (MaxDepth \> 50):** Deeply nested XMLs can be difficult to process with standard XSLT tools. Curators can investigate these files manually.
 
 ## Additional Tools
 
-- **Oxygen XML Editor:** It is a [standard IDE](https://www.oxygenxml.com/) for XML development. It provides visual schema validation and XSLT debugging.
+-   **Oxygen XML Editor:** It is a [standard IDE](https://www.oxygenxml.com/) for XML development. It provides visual schema validation and XSLT debugging.
 
-- **xmllint:** It is a a [command-line tool](https://xmllint.com/), also part of [libxml2](https://gitlab.gnome.org/GNOME/libxml2), for checking syntax and validating against schemas in batch.
+-   **xmllint:** It is a a [command-line tool](https://xmllint.com/), also part of [libxml2](https://gitlab.gnome.org/GNOME/libxml2), for checking syntax and validating against schemas in batch.
 
 ## Using the Non-Interactive R Script
 
@@ -249,9 +248,7 @@ echo "Starting XML Inspection on $TARGET_DIR"
 Rscript Inspect_xml_Script.R "$TARGET_DIR"
 ```
 
-
 ## References
 
 ::: {#refs}
 :::
-

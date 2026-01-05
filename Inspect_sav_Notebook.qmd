@@ -1,5 +1,5 @@
 ---
-title: "Inspection of SPSS Data Files (.sav)"
+title: "SPSS Data (.sav) Files"
 author: "Daniel Manrique-Castano"
 date: "2025-12-18"
 format: 
@@ -94,7 +94,6 @@ Here, the code loops through every file found and performs the following:
 -   Extracts Metadata: It uses the attr() function to pull out the hidden "label" and "labels" attributes attached to each column.
 
 -   Formats Output: It creates a tidy table listing every variable, its type, and its definitions.
-
 
 ```{r}
 #| label: extraction-logic
@@ -207,17 +206,17 @@ print(paste("Data Dictionary saved to:", output_file))
 
 Use the generated CSV to perform these checks:
 
-- **User-Defined Missing Values (MissingValues):** The curator may look for numbers like -9, -99, or 999. Ensure these are documented in the study's metadata. If you convert this file to CSV, these numbers will become regular integers (e.g., Age = 999), invalidating any downstream analysis (see [IBM SPSS statistics 28 brief guide](https://www.ibm.com/docs/en/SSLVMB_28.0.0/pdf/IBM_SPSS_Statistics_Brief_Guide.pdf)). 
+-   **User-Defined Missing Values (MissingValues):** The curator may look for numbers like -9, -99, or 999. Ensure these are documented in the study's metadata. If you convert this file to CSV, these numbers will become regular integers (e.g., Age = 999), invalidating any downstream analysis (see [IBM SPSS statistics 28 brief guide](https://www.ibm.com/docs/en/SSLVMB_28.0.0/pdf/IBM_SPSS_Statistics_Brief_Guide.pdf)).
 
-- **Missing Value Labels:** Look for variables that are DataType = haven_labelled or numeric but have empty ValueLabels.
+-   **Missing Value Labels:** Look for variables that are DataType = haven_labelled or numeric but have empty ValueLabels.
 
-- **Encoding Issues (EncodingCheck):** "Contains Special/Non-ASCII" often indicates files created in older localized Windows versions (e.g., French or Spanish SPSS) using the legacy Windows-1252 encoding. If the labels look corrupted (e.g., EncuestÃ³ instead of Encuestó), the data requires character set remediation before long-term storage.
+-   **Encoding Issues (EncodingCheck):** "Contains Special/Non-ASCII" often indicates files created in older localized Windows versions (e.g., French or Spanish SPSS) using the legacy Windows-1252 encoding. If the labels look corrupted (e.g., EncuestÃ³ instead of Encuestó), the data requires character set remediation before long-term storage.
 
 ## Additional Tools
 
-- **PSPP:** I is an [open-source alternative](https://www.gnu.org/software/pspp/) to IBM SPSS Statistics. It allows curators to verify .sav files and provides a command-line interface for batch conversion without requiring a proprietary license.
+-   **PSPP:** I is an [open-source alternative](https://www.gnu.org/software/pspp/) to IBM SPSS Statistics. It allows curators to verify .sav files and provides a command-line interface for batch conversion without requiring a proprietary license.
 
-- **StatTransfer:** A [commercial tool](https://stattransfer.com/) for converting between statistical formats (SAS, SPSS, Stata, R). It is effective at preserving missing value definitions and variable labels during migration.
+-   **StatTransfer:** A [commercial tool](https://stattransfer.com/) for converting between statistical formats (SAS, SPSS, Stata, R). It is effective at preserving missing value definitions and variable labels during migration.
 
 ## Using the Non-Interactive R Script
 
@@ -254,9 +253,7 @@ echo "Starting SPSS Inspection on $DATA_DIR"
 Rscript Inspect_sav_Script.R "$DATA_DIR"
 ```
 
-
 ## References
 
 ::: {#refs}
 :::
-

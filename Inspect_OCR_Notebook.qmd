@@ -1,5 +1,5 @@
 ---
-title: "OCR & Document Intelligence using `daiR` and Google AI"
+title: "OCR and Document Intelligence using `daiR` and Google AI"
 author: "Daniel Manrique-Castano"
 date: "2025-12-16"
 format: 
@@ -427,7 +427,7 @@ Download the **R Script:** [**`Inspect_OCR_Script.R`**](Scripts/Inspect_OCR_Scri
 
 ### Example HPC Submission Script
 
-```bash
+``` bash
 #!/bin/bash
 #SBATCH --job-name=ocr_curation
 #SBATCH --nodes=1
@@ -446,7 +446,6 @@ TARGET_DIR="/scratch/user/project_data/documents"
 echo "Starting OCR Curation Pipeline..."
 Rscript OCR_Curator_Script_Robust.R "$TARGET_DIR"
 ```
-
 
 ## References
 

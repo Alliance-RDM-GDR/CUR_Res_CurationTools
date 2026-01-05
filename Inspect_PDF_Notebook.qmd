@@ -1,5 +1,5 @@
 ---
-title: "Inspection of PDF Documents (.pdf)"
+title: "PDF (.pdf) Documents"
 author: "Daniel Manrique-Castano"
 date: "2025-12-18"
 format: 
@@ -230,9 +230,7 @@ echo "Starting PDF Inspection on $TARGET_DIR"
 Rscript Inspect_PDF_Script.R "$TARGET_DIR"
 ```
 
-
 ## References
 
 ::: {#refs}
 :::
-

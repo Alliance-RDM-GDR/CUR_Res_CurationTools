@@ -302,9 +302,7 @@ OUTPUT_DIR="/scratch/your_user/dta_results"
 Rscript Inspect_dta_Script $DATA_DIR
 ```
 
-
 ## References
 
 ::: {#refs}
 :::
-

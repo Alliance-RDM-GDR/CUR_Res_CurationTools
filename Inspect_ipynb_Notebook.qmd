@@ -1,5 +1,5 @@
 ---
-title: "Inspection of Jupyter Notebooks (.ipynb)"
+title: "Jupyter Notebooks (.ipynb) Files"
 author: "Daniel Manrique-Castano"
 date: "2025-12-08"
 format: 
@@ -346,9 +346,7 @@ echo "Starting Notebook Inspection on $TARGET_DIR"
 Rscript Scripts/Inspect_ipynb_Script.R "$TARGET_DIR"
 ```
 
-
 ## References
 
 ::: {#refs}
 :::
-

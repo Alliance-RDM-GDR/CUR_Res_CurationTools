@@ -1,5 +1,5 @@
 ---
-title: "File extensions and format inspector"
+title: "File extensions and formats"
 author: "Natalie Williams"
 date: "2025-11-13"
 format: 
@@ -320,7 +320,7 @@ Download the **R Script:** [**`Inspect_Extensions_Script.R`**](Scripts/Inspect_E
 
 ### Example HPC Submission Script
 
-```bash
+``` bash
 #!/bin/bash
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
@@ -341,9 +341,7 @@ OUTPUT_DIR="/scratch/your_user/inventory_results"
 Rscript Inspect_Extensions_Script.R $DATA_DIR $OUTPUT_DIR
 ```
 
-
 ## References
 
 ::: {#refs}
 :::
-

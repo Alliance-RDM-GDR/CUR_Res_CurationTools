@@ -306,7 +306,7 @@ For users who want to run this analysis on a server or from the command line, a 
 
 Alternatively, adapt the `FileCkecks_csv.sh` script to match your cluster's environment and your data path, then submit it using `sbatch`.
 
-```bash
+``` bash
 #!/bin/bash
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
@@ -324,9 +324,7 @@ OUTPUT_DIR="/scratch/your_user/csv_results"
 Rscript Inspect_CSV_Script.R $DATA_DIR $OUTPUT_DIR
 ```
 
-
 ## References
 
 ::: {#refs}
 :::
-

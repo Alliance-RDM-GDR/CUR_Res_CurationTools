@@ -25,6 +25,7 @@ book:
     - part: Data_General.qmd
       chapters:
         - Inspect_Extensions_Notebook.qmd
+        - Inspect_Containers_Notebook.qmd
 
     - part: Data_Tabular.qmd
       chapters:
@@ -52,6 +53,7 @@ book:
     - part: Data_Image.qmd
       chapters:
         - Inspect_Images_Notebook.qmd
+        - Inspect_Tiff_Notebook.qmd
 
 bibliography: references.bib
 format:

@@ -1,5 +1,5 @@
 ---
-title: "Inspection of Excel Files (.xls, .xlsx)"
+title: "Excel (.xls, .xlsx) Files"
 author: "Daniel Manrique-Castano"
 date: "2025-12-18"
 format: 
@@ -17,16 +17,17 @@ params:
 
 Excel files are complex "containers" (OLE Compound Documents or Zip-compressed XML) that hold much more than data. They are considered high-risk for preservation due to:
 
-- **Hidden Content:** Users often "hide" sheets containing scratch work or PII (Personally Identifiable Information) instead of deleting them.
-- **External Dependencies:** Cells can link to external files (e.g., `C:\Users\John\Budget.xlsx`). When the file is moved to an archive, these links break, creating "reference errors."
-* **Macros (VBA):** Automation scripts (Visual Basic for Applications) can pose security risks and are difficult to preserve.
+-   **Hidden Content:** Users often "hide" sheets containing scratch work or PII (Personally Identifiable Information) instead of deleting them.
+-   **External Dependencies:** Cells can link to external files (e.g., `C:\Users\John\Budget.xlsx`). When the file is moved to an archive, these links break, creating "reference errors."
+-   **Macros (VBA):** Automation scripts (Visual Basic for Applications) can pose security risks and are difficult to preserve.
 
 This notebook combines two approaches:
 
 1.  **Structure Scan:** Checks for macros, external links, and hidden sheets (using `tidyxl` for `.xlsx` and file attributes for `.xls`).
 
-2.  **Content Preview:** Reads the actual data dimensions and headers to assess if the file is a clean table or a messy report (using `readxl`).
-------------------------------------------------------------------------
+2.  
+
+    ## **Content Preview:** Reads the actual data dimensions and headers to assess if the file is a clean table or a messy report (using `readxl`).
 
 ## Setup
 
@@ -237,28 +238,28 @@ output_file <- file.path(output_dir, paste0("Excel_Structure_", format(Sys.Date(
 write.csv(summary_report, output_file, row.names = FALSE)
 print(paste("Report saved to:", output_file))
 ```
+
 ------------------------------------------------------------------------
 
 ## Curation Insights
 
 Use the generated report to identify high-risk files:
 
-- **Macros (IsMacro = TRUE):** Macros are a risk for security and prone to obsolescence. .xlsm files contain code that may not run in the future or may be blocked by security software. Curators can ask depositors to remove macros and save as .xlsx unless the code is essential (in which case, the code can be archived as text).
+-   **Macros (IsMacro = TRUE):** Macros are a risk for security and prone to obsolescence. .xlsm files contain code that may not run in the future or may be blocked by security software. Curators can ask depositors to remove macros and save as .xlsx unless the code is essential (in which case, the code can be archived as text).
 
-- **Hidden Sheets:** Hidden data often contains PII, messy scratchpads, or deprecated versions of the data. Curators can inspect these sheets manually, and if they are not needed, delete them to clean the dataset.
+-   **Hidden Sheets:** Hidden data often contains PII, messy scratchpads, or deprecated versions of the data. Curators can inspect these sheets manually, and if they are not needed, delete them to clean the dataset.
 
-- **Likely Non-Tabular (LikelyNonTabular = TRUE):** This implies that thw sheet is likely a report, chart, or form, not a raw data table. These sheets generally cannot be converted to CSV automatically and require manual review. To keep tabular data tidy, graphs and images must be removed and saved apart.
+-   **Likely Non-Tabular (LikelyNonTabular = TRUE):** This implies that thw sheet is likely a report, chart, or form, not a raw data table. These sheets generally cannot be converted to CSV automatically and require manual review. To keep tabular data tidy, graphs and images must be removed and saved apart.
 
 ------------------------------------------------------------------------
 
-## Additional Tools 
+## Additional Tools
 
-- **LibreOffice Calc:** Excellent [open-source tool](https://www.libreoffice.org/discover/calc/) for batch converting legacy .xls files to modern open formats (.ods or .xlsx) via command line.
+-   **LibreOffice Calc:** Excellent [open-source tool](https://www.libreoffice.org/discover/calc/) for batch converting legacy .xls files to modern open formats (.ods or .xlsx) via command line.
 
-- **OpenRefine:** is a [tool](https://openrefine.org/) for cleaning messy tabular data (e.g., untangling merged cells or fixing inconsistent headers) before archiving.
+-   **OpenRefine:** is a [tool](https://openrefine.org/) for cleaning messy tabular data (e.g., untangling merged cells or fixing inconsistent headers) before archiving.
 
-- **VBA Remover:** These are a set of different tools to strip VBA from Excel files to sanitize them for preservation. Several are available on-line.
-
+-   **VBA Remover:** These are a set of different tools to strip VBA from Excel files to sanitize them for preservation. Several are available on-line.
 
 ## Using the Non-Interactive R Script
 
@@ -293,9 +294,7 @@ echo "Starting Excel Inspection on $TARGET_DIR"
 Rscript Inspect_xlsx_Script.R "$TARGET_DIR"
 ```
 
-
 ## References
 
 ::: {#refs}
 :::
-

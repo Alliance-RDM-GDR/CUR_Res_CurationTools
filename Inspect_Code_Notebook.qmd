@@ -1,5 +1,5 @@
 ---
-title: "Code Inspection (R/Quarto)"
+title: "R/Quarto Code"
 author: "Daniel Manrique-Castano"
 date: "2025-12-08"
 format: 
@@ -326,9 +326,7 @@ DATA_DIR="/scratch/your_user/your_project/code_dir"
 Rscript Scripts/Inspect_Code_Script.R $DATA_DIR
 ```
 
-
 ## References
 
 ::: {#refs}
 :::
-

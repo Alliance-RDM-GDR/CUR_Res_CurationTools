@@ -1,5 +1,5 @@
 ---
-title: "Inspection of Text (.txt) and Markdown (.md) Files"
+title: "Text (.txt) and Markdown (.md) Files"
 author: "Data Curation Team"
 date: "2025-12-18"
 format: 
@@ -17,7 +17,7 @@ params:
 
 Text files are the simplest form of documentation. Howver, they are often prone to **Encoding** issues, specially when dealing with other languages or symbols other then English. The archival standard for text files is **UTF-8** (defined in ISO/IEC 10646). Legacy encodings (like **Windows-1252**) map bytes to characters differently. If a file saved in Windows-1252 is read as UTF-8, characters like "é" turn into garbage symbols ("Mojibake"), rendering the data unreadable (see https://www.unicode.org/versions/Unicode15.0.0/).
 
-Some editors add a hidden signature (`U+FEFF`, BOM) at the start of UTF-8 files. This "invisible" character often breaks scripts and parsers. Also, ***Line Endings (EOL):** Windows uses `CRLF` (`\r\n`), while Linux/Unix uses `LF` (`\n`). "Mixed" line endings often cause version control conflicts. Text documents often include external resources via URLs, which are often found to be broken, and are common places for accidental PII leaks, such as personal email addresses.
+Some editors add a hidden signature (`U+FEFF`, BOM) at the start of UTF-8 files. This "invisible" character often breaks scripts and parsers. Also, \***Line Endings (EOL):** Windows uses `CRLF` (`\r\n`), while Linux/Unix uses `LF` (`\n`). "Mixed" line endings often cause version control conflicts. Text documents often include external resources via URLs, which are often found to be broken, and are common places for accidental PII leaks, such as personal email addresses.
 
 **Key Curation Objectives:**
 
@@ -200,19 +200,19 @@ print(paste("Report saved to:", output_file))
 
 Use the generated CSV to perform these checks:
 
-- **PII Check (Email_Count > 0):** Text files (especially Readmes) often contain developer contact info.Verify if these emails are personal (e.g., gmail.com) or professional. 
+-   **PII Check (Email_Count \> 0):** Text files (especially Readmes) often contain developer contact info.Verify if these emails are personal (e.g., gmail.com) or professional.
 
-- **Encoding (Encoding != UTF-8):** Legacy files (Windows-1252) or other encodings may display corrupted characters on the web. It is recommended to convert them to UTF-8 using procedures like `iconv` (see below).
+-   **Encoding (Encoding != UTF-8):** Legacy files (Windows-1252) or other encodings may display corrupted characters on the web. It is recommended to convert them to UTF-8 using procedures like `iconv` (see below).
 
-- **BOM (HasBOM = TRUE):** The Byte Order Mark (BOM) is often unnecessary for UTF-8 and can break some scripts (e.g., shebang lines in bash). Curators can remove the BOM if the file is intended for code execution.
+-   **BOM (HasBOM = TRUE):** The Byte Order Mark (BOM) is often unnecessary for UTF-8 and can break some scripts (e.g., shebang lines in bash). Curators can remove the BOM if the file is intended for code execution.
 
 ## Additional Tools
 
-- **iconv:** The standard [command-line tool](https://pubs.opengroup.org/onlinepubs/007904975/functions/iconv.html) for converting text encodings (e.g., iconv -f WINDOWS-1252 -t UTF-8 in.txt > out.txt).
+-   **iconv:** The standard [command-line tool](https://pubs.opengroup.org/onlinepubs/007904975/functions/iconv.html) for converting text encodings (e.g., iconv -f WINDOWS-1252 -t UTF-8 in.txt \> out.txt).
 
-- **dos2unix:** A [tool](https://linux.die.net/man/1/dos2unix) to normalize line endings (converting Windows CRLF to Unix LF). This may be useful for ensuring scripts run correctly on Linux clusters.
+-   **dos2unix:** A [tool](https://linux.die.net/man/1/dos2unix) to normalize line endings (converting Windows CRLF to Unix LF). This may be useful for ensuring scripts run correctly on Linux clusters.
 
-- **Internet Archive Wayback Machine:** Use this [website](https://web.archive.org/) to find live versions of broken URLs.
+-   **Internet Archive Wayback Machine:** Use this [website](https://web.archive.org/) to find live versions of broken URLs.
 
 ## Using the Non-Interactive R Script
 
@@ -222,7 +222,7 @@ Download the **R Script:** [**`Inspect_Text_Script.R`**](Scripts/Inspect_Text_Sc
 
 ### Example HPC Submission Script (`Inspect_Text_submit.sh`)
 
-```bash
+``` bash
 #!/bin/bash
 #SBATCH --job-name=text_check
 #SBATCH --nodes=1
@@ -245,10 +245,7 @@ echo "Starting Text Inspection on $TARGET_DIR"
 Rscript Inspect_Text_Script.R "$TARGET_DIR"
 ```
 
-
-
 ## References
 
 ::: {#refs}
 :::
-

@@ -1,5 +1,5 @@
 ---
-title: "HDF5 File Inspection"
+title: "HDF5 Files"
 author: "Daniel Manrique-Castano"
 date: "2025-12-05"
 format: 
@@ -28,7 +28,6 @@ This notebook audits **Hierarchical Data Format version 5 (HDF5)** files (`.h5`,
 2.  **Dependencies:** Detect required compression libraries (e.g., GZIP vs. Proprietary).
 3.  **Integrity:** Identify external links that may break if files are moved.
 4.  **Metadata:** Extract attributes (units, descriptions) to verify the data is self-describing.
-
 
 ------------------------------------------------------------------------
 
@@ -113,9 +112,9 @@ We iterate through each file to map its internal contents. This routine extracts
 
 **Key Technical Checks:**
 
-- **Filters:** We check the "creation property list" of every dataset to see if compression (e.g., GZIP, SZIP) is active.
+-   **Filters:** We check the "creation property list" of every dataset to see if compression (e.g., GZIP, SZIP) is active.
 
-- **Link Type:** We flag H5L_TYPE_EXTERNAL to warn about potential missing dependencies.
+-   **Link Type:** We flag H5L_TYPE_EXTERNAL to warn about potential missing dependencies.
 
 ```{r}
 #| label: generate-dictionary
@@ -228,6 +227,7 @@ if (length(hdf5_files) > 0) {
   message("No HDF5 files found.")
 }
 ```
+
 ## Visualization
 
 Understanding how the data is stored (Compressed vs. Uncompressed) helps assess software dependencies.
@@ -276,26 +276,26 @@ write.csv(report, output_file, row.names = FALSE)
 
 print(paste("Data Dictionary saved to:", output_file))
 ```
+
 ## Curation Insights
 
 Use the generated CSV to perform these checks:
 
-- **Proprietary Compression:** If the Compression column lists "SZIP" (Science Data Process) or "LZF," standard tools may fail to open the file in the future. GZIP (Deflate) is the safest standard.
+-   **Proprietary Compression:** If the Compression column lists "SZIP" (Science Data Process) or "LZF," standard tools may fail to open the file in the future. GZIP (Deflate) is the safest standard.
 
-- **External Links:** If Type is EXTERNAL_LINK, the file is not self-contained. It relies on a "target file" that must also be present in the directory. If missing, the link is broken.
+-   **External Links:** If Type is EXTERNAL_LINK, the file is not self-contained. It relies on a "target file" that must also be present in the directory. If missing, the link is broken.
 
-- **Attribute Metadata:** HDF5 is "Self-Describing" only if the researcher adds attributes. If the Attributes column is empty for major datasets, the data units (e.g., "Meters" vs "Feet") are unknown.
+-   **Attribute Metadata:** HDF5 is "Self-Describing" only if the researcher adds attributes. If the Attributes column is empty for major datasets, the data units (e.g., "Meters" vs "Feet") are unknown.
 
 ## Additional Tools & Resources
 
 While R is excellent for scripted inspection, visual tools are often better for exploratory curation.
 
-- **HDFView:** The official Java-based visual browser maintained by The HDF Group. It allows you to click through the hierarchy, plot simple graphs, and edit attributes manually (see https://hdfgroup.org/downloads/hdfview/).
+-   **HDFView:** The official Java-based visual browser maintained by The HDF Group. It allows you to click through the hierarchy, plot simple graphs, and edit attributes manually (see https://hdfgroup.org/downloads/hdfview/).
 
-- **h5dump (Command Line):** A [utility](https://support.hdfgroup.org/documentation/hdf5/latest/_h5_t_o_o_l__d_p__u_g.html) that converts binary HDF5 content into human-readable text (ASCII or XML). It is essential for generating archival "dumps" of metadata.
+-   **h5dump (Command Line):** A [utility](https://support.hdfgroup.org/documentation/hdf5/latest/_h5_t_o_o_l__d_p__u_g.html) that converts binary HDF5 content into human-readable text (ASCII or XML). It is essential for generating archival "dumps" of metadata.
 
-- **Panoply:** A cross-platform [data viewer](https://www.giss.nasa.gov/tools/panoply/) specifically for HDF5/NetCDF files that adhere to climate standards (CF Conventions).
-
+-   **Panoply:** A cross-platform [data viewer](https://www.giss.nasa.gov/tools/panoply/) specifically for HDF5/NetCDF files that adhere to climate standards (CF Conventions).
 
 ## Using the Non-Interactive R Script
 
@@ -330,9 +330,7 @@ OUTPUT_DIR="/scratch/your_user/hdf5_results"
 Rscript Inspect_hdf5_Script.R $DATA_DIR $OUTPUT_DIR
 ```
 
-
 ## References
 
 ::: {#refs}
 :::
-

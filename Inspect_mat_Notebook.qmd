@@ -1,5 +1,5 @@
 ---
-title: "Inspection of MATLAB Files (.mat)"
+title: "MATLAB (.mat) Files"
 author: "Daniel Manrique-Castano"
 date: "2025-12-18"
 format: 
@@ -248,10 +248,9 @@ MATLAB .mat files can vary significantly in format and complexity. We have some 
 
 -   **rhdf5 (Bioconductor):** This [library](https://bioconductor.org/packages/release/bioc/html/rhdf5.html) allows R users to browse and read v7.3 MAT-files as if they were standard HDF5 archives.
 
-- **GNU Octave:** Is an [open-source](https://octave.org/) high-level language, largely compatible with MATLAB. It can read and write most MAT-files without a MATLAB license.
+-   **GNU Octave:** Is an [open-source](https://octave.org/) high-level language, largely compatible with MATLAB. It can read and write most MAT-files without a MATLAB license.
 
-- **HDFView:** This is a [visual tool](https://www.hdfgroup.org/download-hdfview/) to browse the contents of v7.3 MAT-files without needing code.
-
+-   **HDFView:** This is a [visual tool](https://www.hdfgroup.org/download-hdfview/) to browse the contents of v7.3 MAT-files without needing code.
 
 ## Using the Non-Interactive R Script
 
@@ -280,9 +279,7 @@ Rscript matlab_inspector.R \
   
 ```
 
-
 ## References
 
 ::: {#refs}
 :::
-
