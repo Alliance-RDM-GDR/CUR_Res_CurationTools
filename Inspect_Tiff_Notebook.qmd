@@ -1,0 +1,259 @@
+---
+title: "TIFF (.tif, .tiff) Images"
+author: "Data Curation Team"
+date: "2025-12-18"
+format: 
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+    theme: cosmo
+params:
+  target_dir: "data/Inspect_tiff/"
+bibliography: references.bib
+---
+
+## Overview
+
+The **Tag Image File Format (TIFF)** is the [dominant format](https://www.loc.gov/preservation/digital/formats/fdd/fdd000022.shtml) for scientific imaging (microscopy, astronomy, geospatial). Different to other image formats, TIFF images can hold:
+
+-   **High Bit-Depths:** 16-bit or 32-bit floating-point data (common in sensors), which often appears "black" on standard monitors.
+-   **Multi-Page Stacks:** A single `.tif` file can contain hundreds of individual images (e.g., a time-lapse recording or a 3D scan).
+-   **Geo-Metadata:** Embedded coordinates (GeoTIFF) for satellite imagery.
+
+**Hidden Compression** is a major preservation risk for TIFF images. While rhis format is generally considered lossless, it allows different internal compressions like the **JPEG compression**. This implies that a curator might archive a `.tif` file thinking it is pristine, only to discover later it contains lossy artifacts. In the same vein, "Multi-page" TIFFs can be often mistaken for single images if not properly inspected.
+
+Furthermore, scientific software (like ImageJ/Fiji) often stores critical metadata (like "slices" or "physical pixel size") in generic "Description" tags rather than standard fields, making it invisible to standard photo viewers.
+
+This notebook employs a **"Nuclear" Multi-Strategy** approach to ensure no metadata is missed:
+
+1.  **LibTIFF Extraction:** Queries the raw C-level file header (IFD) for standard tags like Compression Code.
+2.  **ImageMagick Fallback:** Uses the robust ImageMagick engine to infer properties when headers are non-standard.
+3.  **Text Mining:** Scans the generic "Description" fields using Regular Expressions to find hidden ImageJ metadata (e.g., `slices=50`).
+
+------------------------------------------------------------------------
+
+## Setup
+
+We use the `ijtiff` package, which is designed for scientific image handling and correctly processes multi-page and high-bit-depth files.
+
+### R Packages
+
+If you do not have the required packages, run this command once in your R console:
+
+```{r}
+# install.packages(c("tidyverse", "tiff", "magick", "stringr", "rstudioapi"))
+```
+
+### Load libraries
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(tiff)       # Raw LibTIFF
+library(magick)     # ImageMagick
+library(stringr)    # Text Mining
+library(rstudioapi) # UI interaction
+```
+
+## Select Target Directory
+
+Select the folder containing the TiFF files.
+
+**Note:** If running interactively, a dialog box will appear. Otherwise, it defaults to the target_dir parameter.
+
+```{r}
+#| label: select-target-dir
+
+if (interactive() && .Platform$OS.type == "windows") {
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select TIFF Directory")
+} else {
+  selected_dir <- NULL
+}
+
+if (!is.null(selected_dir)) {
+  target_dir <- selected_dir
+} else {
+  target_dir <- params$target_dir
+}
+
+print(paste("Analyzing directory:", target_dir))
+
+```
+
+## Inventory of files
+
+We scan for `.tif` and `.tiff` files.
+
+```{r}
+#| label: inventory
+
+tiff_files <- list.files(
+  path = target_dir,
+  pattern = "\\.tiff?$", 
+  recursive = TRUE, 
+  full.names = TRUE, 
+  ignore.case = TRUE
+)
+
+print(paste("Found", length(tiff_files), "TIFF files."))
+```
+
+## Deep Header Inspection
+
+This function scans all file attributes for keywords (e.g., "depth", "compression") to find metadata even if it uses non-standard tag names.
+
+```{r}
+#| label: inspection-logic
+#| warning: false
+#| message: false
+
+message("Generating Deep Inspection Report...")
+
+inspect_tiff_fuzzy <- function(fp) {
+  fname <- basename(fp)
+  
+  tryCatch({
+    # Read Image Header
+    img <- image_read(fp)
+    info <- image_info(img)
+    attrs <- image_attributes(img)
+    
+    # Fuzzy Extraction: Bit Depth
+    # Find ANY attribute containing "depth" or "bits" (case insensitive)
+    depth_check <- attrs %>% 
+      filter(grepl("depth|bits", property, ignore.case = TRUE)) %>% 
+      pull(value)
+    
+    # Logic: Use found attribute, or fallback to info$depth, or "Unknown"
+    final_depth <- if(length(depth_check) > 0) {
+      paste(unique(depth_check), collapse = "/") 
+    } else if ("depth" %in% names(info)) {
+      as.character(info$depth[1])
+    } else {
+      "Unknown"
+    }
+
+    # Fuzzy Extraction: Compression
+    # Find ANY attribute containing "compression"
+    comp_check <- attrs %>% 
+      filter(grepl("compression", property, ignore.case = TRUE)) %>% 
+      pull(value)
+      
+    final_comp <- if(length(comp_check) > 0) comp_check[1] else "Unknown"
+
+    # Fuzzy Extraction: Resolution
+    res_check <- attrs %>% 
+      filter(grepl("resolution|density", property, ignore.case = TRUE)) %>% 
+      pull(value)
+      
+    final_res <- if(length(res_check) > 0) paste(res_check[1], "DPI") else paste(info$density[1], "DPI")
+
+    # Build Row
+    tibble(
+      FileName = fname,
+      Dimensions = paste(info$width[1], "x", info$height[1]),
+      BitDepth = final_depth,
+      Compression = final_comp,
+      ColorSpace = info$colorspace[1],
+      Resolution = final_res,
+      FileSize_MB = round(file.size(fp) / 1024^2, 2),
+      Status = "Success"
+    )
+    
+  }, error = function(e) {
+    # Error Handling
+    message(paste("Failed on:", fname, "-", e$message))
+    tibble(
+      FileName = fname, Dimensions = NA, BitDepth = NA, Compression = NA, 
+      ColorSpace = NA, Resolution = NA, FileSize_MB = NA,
+      Status = paste("Error:", e$message)
+    )
+  })
+}
+
+# Execute Analysis
+report <- map_dfr(tiff_files, inspect_tiff_fuzzy)
+
+# Display
+print("--- Deep Inspection Preview ---")
+print(head(report))
+```
+
+## Save Results
+
+Save the report to a CSV file for review.
+
+```{r}
+#| label: save-results
+
+output_dir <- "Results/Inspect_tiff"
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+output_file <- file.path(output_dir, paste0("TIFF_DeepScan_", format(Sys.Date(), "%Y%m%d"), ".csv"))
+
+write.csv(report, output_file, row.names = FALSE)
+print(paste("Report saved to:", output_file))
+```
+
+## Curation Insights
+
+Use this report to verify scientific integrity:
+
+-   **Bit Depth (16 or 32):** These are true scientific images. Do not convert them to JPG or PNG, as those formats are typically limited to 8-bit and will discard data precision. If BitDepth remains "Unknown", the file likely lacks a proper header.
+
+-   **Compression:** Recommended (Uncompressed, LZW, Deflate, Packbits); Not recommended (JPEG, OldJPEG). If you see JPEG compression inside a TIFF, the data integrity for pixel-based analysis is compromised.
+
+-   **Color Space (Gray vs sRGB):** Scientific microscopy data is typically Gray (intensity only). If a raw microscope file is sRGB, it may have been converted or screenshotted, potentially losing its dynamic range.
+
+## Additional Tools
+
+-   **ImageJ / Fiji:** The absolute standard [open-source software](https://imagej.net/software/fiji/downloads) for viewing and analyzing scientific TIFFs (microscopy, astronomy). It handles multi-page stacks and high-bit-depth data that confuse standard viewers [@schindelin2012].
+
+-   **Bio-Formats:** A [library](https://www.openmicroscopy.org/bio-formats/) specifically designed to read proprietary life sciences image formats (e.g., .czi, .lif) and convert them to standard OME-TIFF (see the [Bio-Formats](https://bio-formats.readthedocs.io/en/v8.3.0/about/index.html) documentation).
+
+-   **ExifTool:** A robust [command-line tool](https://exiftool.org/) for reading and writing embedded metadata (EXIF, IPTC, XMP) in images (see the [documentation](https://exiftool.org/exiftool_pod.html)).
+
+## Using the Non-Interactive R Script
+
+For users who want to run this analysis on a server (HPC), in a batch job, or from the command line, here is the pure R script version.
+
+Download the **R Script:** [**`Inspect_tiff_Script.R`**](Scripts/Inspect_tiff_Script.R)
+
+### Example HPC Submission Script (`Inspect_tiff_submit.sh`)
+
+``` bash
+#!/bin/bash
+#SBATCH --job-name=tiff_check
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=00:30:00
+#SBATCH --mem=16G
+#SBATCH --output=logs/tiff_check_%j.log
+
+# Load R Module
+# Note: ImageMagick is often a system library, but some clusters require a module.
+# Check with 'module avail imagemagick' if the script fails.
+module load R
+module load imagemagick/7.1  # Adjust version as needed for your cluster
+
+# Define Target Directory
+# Replace with the actual path to your microscopy/image data
+DATA_DIR="/scratch/user/project_data/microscopy"
+
+# Prepare Environment
+mkdir -p Results/Inspect_tiff
+mkdir -p logs
+
+# Run Analysis
+echo "Starting TIFF Deep Scan on $DATA_DIR"
+Rscript Inspect_tiff_Script.R "$DATA_DIR"
+```
+
+## References
+
+::: {#refs}
+:::
