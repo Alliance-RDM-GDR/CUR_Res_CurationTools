@@ -1,0 +1,8 @@
+FullPath,FileName,RelativePath,Extension,Size_Bytes,Size_MB,Risk_Flag,MIMEType,FileType,ImageSize
+data/Inspect_Extensions/CHIRPS_precipitation_1981-01-01.tif,CHIRPS_precipitation_1981-01-01.tif,CHIRPS_precipitation_1981-01-01.tif,.tif,1880,0.0018,Clean,image/tiff,TIFF,110 164
+data/Inspect_Extensions/CHIRPS_precipitation_1981-01-03.tif,CHIRPS_precipitation_1981-01-03.tif,CHIRPS_precipitation_1981-01-03.tif,.tif,9648,0.0092,Clean,image/tiff,TIFF,110 164
+data/Inspect_Extensions/CHIRTS_maximum_temperature_1983-01-07.tif,CHIRTS_maximum_temperature_1983-01-07.tif,CHIRTS_maximum_temperature_1983-01-07.tif,.tif,30646,0.0292,Clean,image/tiff,TIFF,110 164
+data/Inspect_Extensions/CHIRTS_maximum_temperature_1983-01-09.tif,CHIRTS_maximum_temperature_1983-01-09.tif,CHIRTS_maximum_temperature_1983-01-09.tif,.tif,30777,0.0294,Clean,image/tiff,TIFF,110 164
+data/Inspect_Extensions/Guyana_t2m_ERA5_1km_NearestNeighbour_Daily_19520201.nc,Guyana_t2m_ERA5_1km_NearestNeighbour_Daily_19520201.nc,Guyana_t2m_ERA5_1km_NearestNeighbour_Daily_19520201.nc,.nc,3631101,3.4629,Clean,NA,NA,NA
+data/Inspect_Extensions/Guyana_t2m_ERA5_1km_NearestNeighbour_Daily_19520201.nc.aux.xml,Guyana_t2m_ERA5_1km_NearestNeighbour_Daily_19520201.nc.aux.xml,Guyana_t2m_ERA5_1km_NearestNeighbour_Daily_19520201.nc.aux.xml,.xml,332,3e-4,Clean,text/plain,TXT,NA
+data/Inspect_Extensions/README.txt,README.txt,README.txt,.txt,7240,0.0069,Clean,text/plain,TXT,NA

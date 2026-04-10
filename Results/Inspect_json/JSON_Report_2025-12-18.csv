@@ -1,0 +1,4 @@
+"FileName","IsValid","StructureType","Dimensions","TopLevelKeys"
+"chunks.json",TRUE,"list","2 elements","chunk_definitions, doc_write_time"
+"Code_and_Software.qmd.json",TRUE,"list","4 elements","title, markdown, formats, projectFormats"
+"Documents.qmd.json",TRUE,"list","4 elements","title, markdown, formats, projectFormats"

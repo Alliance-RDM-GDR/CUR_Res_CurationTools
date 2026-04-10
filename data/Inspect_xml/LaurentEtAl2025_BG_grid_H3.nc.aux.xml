@@ -1,0 +1,552 @@
+<PAMDataset>
+  <Subdataset name="angle">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="angle#long_names">angle between XI-axis and EAST</MDI>
+        <MDI key="angle#units">radians</MDI>
+        <MDI key="angle#_FillValue">nan</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MINIMUM">0.61072219362942</MDI>
+          <MDI key="STATISTICS_MAXIMUM">0.61100819431713</MDI>
+          <MDI key="STATISTICS_MEAN">0.61086523733527</MDI>
+          <MDI key="STATISTICS_STDDEV">9.9281367807867e-06</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="dmde">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="dmde#long_names">eta derivative of inverse metric factor pm</MDI>
+        <MDI key="dmde#units">meter-2</MDI>
+        <MDI key="dmde#_FillValue">nan</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MINIMUM">-0.00031906283653882</MDI>
+          <MDI key="STATISTICS_MAXIMUM">-0.00030560984396288</MDI>
+          <MDI key="STATISTICS_MEAN">-0.00031873022158684</MDI>
+          <MDI key="STATISTICS_STDDEV">1.4402319141838e-06</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="dndx">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="dndx#long_names">xi derivative of inverse metric factor pn</MDI>
+        <MDI key="dndx#units">meter-2</MDI>
+        <MDI key="dndx#_FillValue">nan</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MINIMUM">-0.00022341068617138</MDI>
+          <MDI key="STATISTICS_MAXIMUM">-0.00020444870672875</MDI>
+          <MDI key="STATISTICS_MEAN">-0.00022268962585066</MDI>
+          <MDI key="STATISTICS_STDDEV">3.2968890049408e-06</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="f">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="f#long_names">Coriolis parameter at RHO-points</MDI>
+        <MDI key="f#units">second-1</MDI>
+        <MDI key="f#_FillValue">nan</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MINIMUM">0.00010238787315305</MDI>
+          <MDI key="STATISTICS_MAXIMUM">0.00010266477479353</MDI>
+          <MDI key="STATISTICS_MEAN">0.00010252648536738</MDI>
+          <MDI key="STATISTICS_STDDEV">6.5578906734303e-08</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="h">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="h#long_names">bathymetry at RHO-points</MDI>
+        <MDI key="h#units">meter</MDI>
+        <MDI key="h#_FillValue">nan</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MINIMUM">5</MDI>
+          <MDI key="STATISTICS_MAXIMUM">71.741158229492</MDI>
+          <MDI key="STATISTICS_MEAN">11.597376947057</MDI>
+          <MDI key="STATISTICS_STDDEV">13.216155820785</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="hraw">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="hraw#long_names">Working bathymetry at RHO-points</MDI>
+        <MDI key="hraw#units">meter</MDI>
+        <MDI key="hraw#_FillValue">nan</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MINIMUM">9.9692099683869e+36</MDI>
+          <MDI key="STATISTICS_MAXIMUM">9.9692099683869e+36</MDI>
+          <MDI key="STATISTICS_MEAN">9.9692099683869e+36</MDI>
+          <MDI key="STATISTICS_STDDEV">0</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="lat">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="lat#long_names">latitude of RHO-points</MDI>
+        <MDI key="lat#units">degree_north</MDI>
+        <MDI key="lat#_FillValue">nan</MDI>
+      </Metadata>
+      <Metadata domain="GEOLOCATION">
+        <MDI key="SRS">GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST],AUTHORITY["EPSG","4326"]]</MDI>
+        <MDI key="X_DATASET">NETCDF:"D:/Alliance/FRDR/Curation/2025/1520/Files/LaurentEtAl2025_BG_grid_H3.nc":lon</MDI>
+        <MDI key="X_BAND">1</MDI>
+        <MDI key="Y_DATASET">NETCDF:"D:/Alliance/FRDR/Curation/2025/1520/Files/LaurentEtAl2025_BG_grid_H3.nc":lat</MDI>
+        <MDI key="Y_BAND">1</MDI>
+        <MDI key="PIXEL_OFFSET">0</MDI>
+        <MDI key="PIXEL_STEP">1</MDI>
+        <MDI key="LINE_OFFSET">0</MDI>
+        <MDI key="LINE_STEP">1</MDI>
+        <MDI key="GEOREFERENCING_CONVENTION">PIXEL_CENTER</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MINIMUM">44.592205399663</MDI>
+          <MDI key="STATISTICS_MAXIMUM">44.745169497953</MDI>
+          <MDI key="STATISTICS_MEAN">44.668737479786</MDI>
+          <MDI key="STATISTICS_STDDEV">0.036226679912249</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="lat_psi">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="lat_psi#long_names">latitude of PSI-points</MDI>
+        <MDI key="lat_psi#units">degree_north</MDI>
+        <MDI key="lat_psi#_FillValue">nan</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MINIMUM">44.592519398504</MDI>
+          <MDI key="STATISTICS_MAXIMUM">44.744856257067</MDI>
+          <MDI key="STATISTICS_MEAN">44.668737452579</MDI>
+          <MDI key="STATISTICS_STDDEV">0.036104664283563</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="lat_rho">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="lat_rho#long_names">latitude of RHO-points</MDI>
+        <MDI key="lat_rho#units">degree_north</MDI>
+        <MDI key="lat_rho#_FillValue">nan</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MINIMUM">44.592205399663</MDI>
+          <MDI key="STATISTICS_MAXIMUM">44.745169497953</MDI>
+          <MDI key="STATISTICS_MEAN">44.668737479786</MDI>
+          <MDI key="STATISTICS_STDDEV">0.036226679912249</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="lat_u">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="lat_u#long_names">latitude of U-points</MDI>
+        <MDI key="lat_u#units">degree_north</MDI>
+        <MDI key="lat_u#_FillValue">nan</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MINIMUM">44.592334877866</MDI>
+          <MDI key="STATISTICS_MAXIMUM">44.745040297114</MDI>
+          <MDI key="STATISTICS_MEAN">44.668737455225</MDI>
+          <MDI key="STATISTICS_STDDEV">0.03620751102303</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="lat_v">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="lat_v#long_names">latitude of V-points</MDI>
+        <MDI key="lat_v#units">degree_north</MDI>
+        <MDI key="lat_v#_FillValue">nan</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MINIMUM">44.592389920712</MDI>
+          <MDI key="STATISTICS_MAXIMUM">44.744985458316</MDI>
+          <MDI key="STATISTICS_MEAN">44.668737477139</MDI>
+          <MDI key="STATISTICS_STDDEV">0.036123887747399</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="lon">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="lon#long_names">longitude of RHO-points</MDI>
+        <MDI key="lon#units">degree_east</MDI>
+        <MDI key="lon#_FillValue">nan</MDI>
+      </Metadata>
+      <Metadata domain="GEOLOCATION">
+        <MDI key="SRS">GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST],AUTHORITY["EPSG","4326"]]</MDI>
+        <MDI key="X_DATASET">NETCDF:"D:/Alliance/FRDR/Curation/2025/1520/Files/LaurentEtAl2025_BG_grid_H3.nc":lon</MDI>
+        <MDI key="X_BAND">1</MDI>
+        <MDI key="Y_DATASET">NETCDF:"D:/Alliance/FRDR/Curation/2025/1520/Files/LaurentEtAl2025_BG_grid_H3.nc":lat</MDI>
+        <MDI key="Y_BAND">1</MDI>
+        <MDI key="PIXEL_OFFSET">0</MDI>
+        <MDI key="PIXEL_STEP">1</MDI>
+        <MDI key="LINE_OFFSET">0</MDI>
+        <MDI key="LINE_STEP">1</MDI>
+        <MDI key="GEOREFERENCING_CONVENTION">PIXEL_CENTER</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MINIMUM">-63.697496068169</MDI>
+          <MDI key="STATISTICS_MAXIMUM">-63.514060648173</MDI>
+          <MDI key="STATISTICS_MEAN">-63.605788210468</MDI>
+          <MDI key="STATISTICS_STDDEV">0.039230782119836</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="lon_psi">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="lon_psi#long_names">longitude of PSI-points</MDI>
+        <MDI key="lon_psi#units">degree_east</MDI>
+        <MDI key="lon_psi#_FillValue">nan</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MINIMUM">-63.69705496278</MDI>
+          <MDI key="STATISTICS_MAXIMUM">-63.514501876563</MDI>
+          <MDI key="STATISTICS_MEAN">-63.605788217762</MDI>
+          <MDI key="STATISTICS_STDDEV">0.039067195918311</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="lon_rho">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="lon_rho#long_names">longitude of RHO-points</MDI>
+        <MDI key="lon_rho#units">degree_east</MDI>
+        <MDI key="lon_rho#_FillValue">nan</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MINIMUM">-63.697496068169</MDI>
+          <MDI key="STATISTICS_MAXIMUM">-63.514060648173</MDI>
+          <MDI key="STATISTICS_MEAN">-63.605788210468</MDI>
+          <MDI key="STATISTICS_STDDEV">0.039230782119836</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="lon_u">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="lon_u#long_names">longitude of U-points</MDI>
+        <MDI key="lon_u#units">degree_east</MDI>
+        <MDI key="lon_u#_FillValue">nan</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MINIMUM">-63.697236336364</MDI>
+          <MDI key="STATISTICS_MAXIMUM">-63.514320377447</MDI>
+          <MDI key="STATISTICS_MEAN">-63.605788218638</MDI>
+          <MDI key="STATISTICS_STDDEV">0.039159355071349</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="lon_v">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="lon_v#long_names">longitude of V-points</MDI>
+        <MDI key="lon_v#units">degree_east</MDI>
+        <MDI key="lon_v#_FillValue">nan</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MINIMUM">-63.697314694586</MDI>
+          <MDI key="STATISTICS_MAXIMUM">-63.514242147289</MDI>
+          <MDI key="STATISTICS_MEAN">-63.605788209592</MDI>
+          <MDI key="STATISTICS_STDDEV">0.039138791154695</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="mask_psi">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="mask_psi#long_names">mask on psi-points</MDI>
+        <MDI key="mask_psi#units" />
+        <MDI key="mask_psi#_FillValue">nan</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MINIMUM">0</MDI>
+          <MDI key="STATISTICS_MAXIMUM">1</MDI>
+          <MDI key="STATISTICS_MEAN">0.30384539732494</MDI>
+          <MDI key="STATISTICS_STDDEV">0.45991670098985</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="mask_rho">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="mask_rho#long_names">mask on RHO-points</MDI>
+        <MDI key="mask_rho#units" />
+        <MDI key="mask_rho#_FillValue">nan</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MINIMUM">0</MDI>
+          <MDI key="STATISTICS_MAXIMUM">1</MDI>
+          <MDI key="STATISTICS_MEAN">0.3260547112462</MDI>
+          <MDI key="STATISTICS_STDDEV">0.46876757195902</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="mask_u">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="mask_u#long_names">mask on U-points</MDI>
+        <MDI key="mask_u#units" />
+        <MDI key="mask_u#_FillValue">nan</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MINIMUM">0</MDI>
+          <MDI key="STATISTICS_MAXIMUM">1</MDI>
+          <MDI key="STATISTICS_MEAN">0.31378076281988</MDI>
+          <MDI key="STATISTICS_STDDEV">0.46402844277485</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="mask_v">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="mask_v#long_names">mask on V-points</MDI>
+        <MDI key="mask_v#units" />
+        <MDI key="mask_v#_FillValue">nan</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MINIMUM">0</MDI>
+          <MDI key="STATISTICS_MAXIMUM">1</MDI>
+          <MDI key="STATISTICS_MEAN">0.31646341463415</MDI>
+          <MDI key="STATISTICS_STDDEV">0.46509603506399</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="pm">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="pm#long_names">curvilinear coordinate metric in XI</MDI>
+        <MDI key="pm#units">meter-1</MDI>
+        <MDI key="pm#_FillValue">nan</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MINIMUM">0.019912675445617</MDI>
+          <MDI key="STATISTICS_MAXIMUM">0.019967254387823</MDI>
+          <MDI key="STATISTICS_MEAN">0.019939940284201</MDI>
+          <MDI key="STATISTICS_STDDEV">1.2623998190949e-05</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="pn">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="pn#long_names">curvilinear coordinate metric in ETA</MDI>
+        <MDI key="pn#units">meter-1</MDI>
+        <MDI key="pn#_FillValue">nan</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MINIMUM">0.019950402653747</MDI>
+          <MDI key="STATISTICS_MAXIMUM">0.020023833376163</MDI>
+          <MDI key="STATISTICS_MEAN">0.019987085327642</MDI>
+          <MDI key="STATISTICS_STDDEV">1.8385858907593e-05</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="wtype_grid">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="wtype_grid#regrid_method">bilinear</MDI>
+        <MDI key="wtype_grid#_FillValue">nan</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MINIMUM">7</MDI>
+          <MDI key="STATISTICS_MAXIMUM">9</MDI>
+          <MDI key="STATISTICS_MEAN">8.679367781155</MDI>
+          <MDI key="STATISTICS_STDDEV">0.59350370847287</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="x_psi">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="x_psi#long_names">longitude of V-points</MDI>
+        <MDI key="x_psi#units">degree_east</MDI>
+        <MDI key="x_psi#_FillValue">nan</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MINIMUM">1e+37</MDI>
+          <MDI key="STATISTICS_MAXIMUM">1e+37</MDI>
+          <MDI key="STATISTICS_MEAN">1e+37</MDI>
+          <MDI key="STATISTICS_STDDEV">0</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="x_rho">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="x_rho#long_names">longitude of RHO-points</MDI>
+        <MDI key="x_rho#units">degree_east</MDI>
+        <MDI key="x_rho#_FillValue">nan</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MINIMUM">1e+37</MDI>
+          <MDI key="STATISTICS_MAXIMUM">1e+37</MDI>
+          <MDI key="STATISTICS_MEAN">1e+37</MDI>
+          <MDI key="STATISTICS_STDDEV">0</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="x_u">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="x_u#long_names">longitude of U-points</MDI>
+        <MDI key="x_u#units">degree_east</MDI>
+        <MDI key="x_u#_FillValue">nan</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MINIMUM">1e+37</MDI>
+          <MDI key="STATISTICS_MAXIMUM">1e+37</MDI>
+          <MDI key="STATISTICS_MEAN">1e+37</MDI>
+          <MDI key="STATISTICS_STDDEV">0</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="x_v">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="x_v#long_names">longitude of V-points</MDI>
+        <MDI key="x_v#units">degree_east</MDI>
+        <MDI key="x_v#_FillValue">nan</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MINIMUM">1e+37</MDI>
+          <MDI key="STATISTICS_MAXIMUM">1e+37</MDI>
+          <MDI key="STATISTICS_MEAN">1e+37</MDI>
+          <MDI key="STATISTICS_STDDEV">0</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="y_psi">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="y_psi#long_names">latitude of V-points</MDI>
+        <MDI key="y_psi#units">degree_north</MDI>
+        <MDI key="y_psi#_FillValue">nan</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MINIMUM">1e+37</MDI>
+          <MDI key="STATISTICS_MAXIMUM">1e+37</MDI>
+          <MDI key="STATISTICS_MEAN">1e+37</MDI>
+          <MDI key="STATISTICS_STDDEV">0</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="y_rho">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="y_rho#long_names">latitude of RHO-points</MDI>
+        <MDI key="y_rho#units">degree_north</MDI>
+        <MDI key="y_rho#_FillValue">nan</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MINIMUM">1e+37</MDI>
+          <MDI key="STATISTICS_MAXIMUM">1e+37</MDI>
+          <MDI key="STATISTICS_MEAN">1e+37</MDI>
+          <MDI key="STATISTICS_STDDEV">0</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="y_u">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="y_u#long_names">latitude of U-points</MDI>
+        <MDI key="y_u#units">degree_north</MDI>
+        <MDI key="y_u#_FillValue">nan</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MINIMUM">1e+37</MDI>
+          <MDI key="STATISTICS_MAXIMUM">1e+37</MDI>
+          <MDI key="STATISTICS_MEAN">1e+37</MDI>
+          <MDI key="STATISTICS_STDDEV">0</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="y_v">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="y_v#long_names">latitude of V-points</MDI>
+        <MDI key="y_v#units">degree_north</MDI>
+        <MDI key="y_v#_FillValue">nan</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MINIMUM">1e+37</MDI>
+          <MDI key="STATISTICS_MAXIMUM">1e+37</MDI>
+          <MDI key="STATISTICS_MEAN">1e+37</MDI>
+          <MDI key="STATISTICS_STDDEV">0</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+</PAMDataset>

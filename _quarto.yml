@@ -1,0 +1,81 @@
+project:
+  type: book
+  output-dir: _book
+
+book:
+  title: "Tools for Research Data Management and curation"
+  subtitle: "A Practical Guide for Data Curators"
+  author: "Curation services team of the Digital Research Alliance of Canada"
+  date: today
+  chapters:
+    - index.qmd
+
+    - part: Code_and_Software.qmd
+      chapters:
+        - Inspect_ipynb_Notebook.qmd
+        - Inspect_Code_Notebook.qmd
+
+    - part: Documents.qmd
+      chapters:
+        - Inspect_PDF_Notebook.qmd
+        - Inspect_Text_Notebook.qmd
+        - Inspect_OCR_Notebook.qmd
+
+
+    - part: Data_General.qmd
+      chapters:
+        - Inspect_Extensions_Notebook.qmd
+        - Inspect_Containers_Notebook.qmd
+
+    - part: Data_Tabular.qmd
+      chapters:
+        - Inspect_csv_Notebook.qmd
+        - Inspect_xlsx_Notebook.qmd
+        - Inspect_sav_Notebook.qmd
+        - Inspect_dta_Notebook.qmd
+        - Inspect_sas7bdat_Notebook.qmd
+        
+    - part: Data_Structured.qmd
+      chapters:
+        - Inspect_json_Notebook.qmd
+        - Inspect_xml_Notebook.qmd
+
+    - part: Data_Scientific.qmd
+      chapters:
+        - Inspect_nc_Notebook.qmd
+        - Inspect_hdf5_Notebook.qmd
+        - Inspect_mat_Notebook.qmd
+        
+    - part: Data_Geospatial.qmd
+      chapters:
+        - Inspect_gpkg_Notebook.qmd
+        
+    - part: Data_Image.qmd
+      chapters:
+        - Inspect_Images_Notebook.qmd
+        - Inspect_Tiff_Notebook.qmd
+
+bibliography: references.bib
+format:
+  html:
+    theme:
+      - cosmo
+    css: styles/styles.css
+    toc-depth: 3
+    code-copy: true
+    code-tools: true
+  pdf:
+    documentclass: scrbook
+    geometry:
+      - margin=1in
+      - heightrounded
+  docx:
+    toc: true
+
+execute:
+  echo: true
+  warning: false
+  message: false
+  freeze: auto
+
+editor: visual

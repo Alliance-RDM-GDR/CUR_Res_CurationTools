@@ -1,0 +1,24 @@
+FileName,Variable,Label,Type,Value_Examples
+DATASET_KE.dta,EpidNo,EpidNo,character,NA
+DATASET_KE.dta,state,State,double,Adamawa; Anambra; Bauchi
+DATASET_KE.dta,epiweek,WkOnset,double,Missing; W01; W02
+DATASET_KE.dta,season,Season,double,dry season; rainy season
+DATASET_KE.dta,setting,Cholera case setting,double,rural; peri-urban; urban
+DATASET_KE.dta,healthfac_type,Type of health facility,double,Primary; Secondary; Tertiary
+DATASET_KE.dta,geo,Geopolitical zone,double,south-east; north-central; north-west
+DATASET_KE.dta,sex,Gender,double,female; male
+DATASET_KE.dta,age,Age Continuous,double,NA
+DATASET_KE.dta,age_cat,Age categorical,double,Less than 2 yrs; 2-4 yrs; 5-10 yrs
+DATASET_KE.dta,age_cat2,Age childn vs adults,double,Less than 5 years; 5-17 years; >=18 years
+DATASET_KE.dta,rdt_cat,RDT categorical,double,negative; positive; pending
+DATASET_KE.dta,rdt_bin,RDT binary,double,negative; positive; pending
+DATASET_KE.dta,cult_cat,Culture categorical,double,negative; positive; pending
+DATASET_KE.dta,cult_bin,Culture binary,double,negative; positive
+DATASET_KE.dta,outcome,Clinical outcome,double,alive; dead
+DATASET_KE.dta,heathfac_presn,Did patient present to a health facility?,double,no; yes
+DATASET_KE.dta,sample_tak,Was stool taken for test?,double,no; yes
+DATASET_KE.dta,tested,Was sample tested?,double,no; yes
+DATASET_KE.dta,sec,Insurgency activities,double,No insurgency; insurgency
+DATASET_KE.dta,flood,Flooding in 2018,double,no flooding in 2018; reported flooding i 2018
+DATASET_KE.dta,flood_cat,Severity of flooding in 2018,double,no flooding in 2018; mild flooding in 2018; severe flooding in 2018
+DATASET_KE.dta,lga_new,LGA,double,ANKA; ASKIRA UBA; Ajaokuta

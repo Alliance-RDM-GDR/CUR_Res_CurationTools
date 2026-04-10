@@ -1,0 +1,453 @@
+---
+title: "OCR and Document Intelligence using `daiR` and Google AI"
+author: "Daniel Manrique-Castano"
+date: "2025-12-16"
+format: 
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+    theme: cosmo
+params:
+  target_dir: "data/Inspect_OCR/" 
+bibliography: references.bib
+---
+
+## Overview
+
+Optical Character Recognition (OCR) is the process of converting images of text (typed, handwritten, or printed) into machine-encoded text. In data curation, OCR is the bridge between "dark data" (unsearchable scanned PDFs/images) and "FAIR data" (Findable, Accessible, Interoperable, Reusable).
+
+**Why Google Document AI?**
+
+While standard OCR reads text line-by-line, **Document AI** uses deep learning to understand the *structure* of a document. It can distinguish between a form field (Key: "Date", Value: "2023-01-01") and a paragraph of text. The `daiR` package provides an R interface to this API [@daiR].
+
+### Curation Goals
+
+1.  **Digitization:** Extract text from static images/PDFs.
+2.  **Quality Assessment:** Use "Confidence Scores" to flag poor scans that need manual transcription.
+3.  **Privacy Screening:** Automatically scan extracted text for PII (emails, phone numbers).
+
+## Setup
+
+**Prerequisite:** To use `daiR`[@daiR-2], you must have a Google Cloud Project with the **Document AI API** enabled and a Service Account JSON key.
+
+### R Packages
+
+If you do not have the required packages, run this command once in your R console:
+
+```{r}
+# install.packages(c("tidyverse", "daiR", "magick", "jsonlite", "rstudioapi"))
+```
+
+::: {.callout-note title="How to Setup Google Document AI"}
+To run this notebook, you need a Google Cloud Platform (GCP) account and a Service Account key. Follow these steps:
+
+**Step 1:** Create a Google Cloud Project
+
+1.  **Create a Project:** Go to the [Google Cloud Console](https://console.cloud.google.com/) and create a new project (e.g., "OCR-Curation").
+2.  **Enable the API:** In the search bar, type **"Document AI API"** and click **Enable**.
+3.  **Create a Service Account:**
+    -   Navigate to **IAM & Admin \> Service Accounts**.
+    -   Click **+ Create Service Account**, give it a name (e.g., "ocr-bot"), and click **Create**.
+    -   **Role:** Assign the role **"Document AI API User"** or **"Owner"** (for testing).
+4.  **Download JSON Key:**
+    -   Click on your new service account email in the list.
+    -   Go to the **Keys** tab -\> **Add Key** -\> **Create new key**.
+    -   Select **JSON**. This will download a file (e.g., `project-id-12345.json`) to your computer.
+5.  **Authenticate in R:** Rename this file to `service-account.json` and place it in your project folder, or set the path via `Sys.setenv(GCS_AUTH_FILE = "path/to/key.json")`.
+
+**Step 2:** Get the Processor ID
+
+1.  Go to the Google Cloud Console \> Document AI.
+
+2.  Click "Explore Processors" and choose "Document Parser" (General text) or "Form Parser" (if you have forms). Click Create Processor.
+
+3.  Give it a name (e.g., my-ocr-tool) and select a region (usually US or EU).
+
+Once created, copy the Processor ID (it looks like a1b2c3d4e5f6).
+:::
+
+### Load libraries
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(daiR)
+library(magick)
+library(jsonlite)
+library(pdftools) # NEW: For reading digital PDFs for free
+
+# --- CONFIGURATION ---
+# 1. Google Cloud Project ID (from your error log)
+my_proj_id <- "YOUR PROJECT KEY"  
+# 2. Processor ID (from your error log)
+my_proc_id <- "YOUR PROCESSOR ID"           
+# 3. Location
+my_loc <- "us"
+# 4. JSON Key File
+key_path <- "service-account.json" 
+
+# --- AUTHENTICATION ---
+# We use a flag 'run_ocr' to control execution. 
+# If the key is missing (e.g. on GitHub), we skip the API calls.
+run_ocr <- FALSE
+
+if (file.exists(key_path)) {
+  message("Key file found. Authenticating...")
+  
+  # 1. Set the environment variable explicitly
+  Sys.setenv(GCS_AUTH_FILE = key_path)
+  
+  tryCatch({
+    # 2. Authenticate
+    dai_auth()
+    
+    # 3. Verify: Check if we can get an access token
+    token <- dai_token()
+    if (!is.null(token)) {
+      message("✅ Authentication Successful! Token acquired.")
+      run_ocr <- TRUE
+    }
+  }, error = function(e) {
+    warning("❌ Authentication Failed: Could not get API token. Check your JSON key permissions.")
+    run_ocr <- FALSE
+  })
+  
+} else {
+  message("⚠️ BIO: Service account key not found.")
+  message("Running in DEMO MODE. No calls to Google Cloud will be made.")
+  run_ocr <- FALSE
+}
+```
+
+## Select Target Directory
+
+We select the folder we want to apply OCR.
+
+```{r}
+#| label: select-directory
+
+# Interactive selection logic (same as previous notebooks)
+if (interactive() && .Platform$OS.type == "windows") { 
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select Document Directory")
+} else {
+  selected_dir <- NULL
+}
+
+if (!is.null(selected_dir)) {
+  target_dir <- selected_dir
+} else {
+  target_dir <- params$target_dir
+}
+
+print(paste("Analyzing directory:", target_dir))
+```
+
+## Inventory and Pre-processing
+
+We identify PDF and Image files. Note: Google Document AI has file size limits (usually 20MB for synchronous processing). We filter out overly large files to prevent API errors.
+
+```{r}
+#| label: inventory
+
+files <- list.files(
+  path = target_dir,
+  pattern = "\\.(pdf|jpg|png|jpeg|tif|tiff)$",
+  recursive = TRUE,
+  full.names = TRUE,
+  ignore.case = TRUE
+)
+
+inventory <- tibble(file_path = files) %>%
+  mutate(
+    filename = basename(file_path),
+    filesize_mb = file.size(file_path) / 1024^2,
+    # We must explicitly create this column for the filter to work later
+    is_large = filesize_mb > 20
+  )
+
+print(paste("Found", nrow(inventory), "documents."))
+head(inventory)
+```
+
+## OCR Extraction (Processing)
+
+We iterate through the files and send them to the API.
+
+::: callout-warning
+This step consumes Google Cloud credits.
+:::
+
+```{r}
+#| label: ocr-processing
+#| message: false
+
+# Helper: Layout-Aware Digital Extraction (Fixes Truncation)
+extract_digital_robust <- function(fp) {
+  tryCatch({
+    # pdf_data returns the X/Y coordinates of every word
+    data_pages <- pdftools::pdf_data(fp)
+    
+    # We reconstruct the text line-by-line based on these coordinates
+    full_text <- map_chr(data_pages, function(page_df) {
+      if (nrow(page_df) == 0) return("")
+      page_df %>%
+        arrange(y, x) %>% # Sort by vertical (Y) then horizontal (X) position
+        group_by(y) %>%
+        summarise(line_text = paste(text, collapse = " "), .groups = "drop") %>%
+        pull(line_text) %>%
+        paste(collapse = "\n")
+    }) %>% paste(collapse = "\n\n")
+    
+    return(full_text)
+  }, error = function(e) return(""))
+}
+
+# Main Processing Function
+process_doc_robust <- function(fp) {
+  
+  # --- STEP 1: Try Local Digital Extraction ---
+  if (str_detect(fp, "(?i)\\.pdf$")) {
+    digital_text <- extract_digital_robust(fp)
+    
+    # Validation: If we found substantial text, we trust it.
+    if (nchar(digital_text) > 500) {
+      return(tibble(
+        file_path = fp,
+        extracted_text = digital_text,
+        ocr_confidence = 1.0, 
+        source = "LOCAL_PDF_LAYOUT",
+        status = "SUCCESS"
+      ))
+    }
+  }
+  
+  # --- STEP 2: Google Cloud OCR (Fallback) ---
+  tryCatch({
+    # 1. API Call
+    raw_response <- dai_sync(fp, proc_id = my_proc_id, proj_id = my_proj_id, loc = my_loc)
+    
+    # 2. Parse Content
+    data <- httr::content(raw_response, as = "parsed")
+    
+    # 3. Get Text
+    txt <- data$document$text
+    if (is.null(txt)) txt <- ""
+    
+    # 4. Get Confidence
+    confs <- tryCatch({
+      data$document$pages %>% map(~ .x$blocks) %>% flatten() %>% map(~ .x$layout$confidence) %>% unlist()
+    }, error = function(e) NULL)
+    
+    avg_conf <- if (is.numeric(confs) && length(confs) > 0) mean(confs, na.rm=TRUE) else 0
+    
+    tibble(
+      file_path = fp,
+      extracted_text = txt,
+      ocr_confidence = round(avg_conf, 4),
+      source = "GOOGLE_DOC_AI",
+      status = "SUCCESS"
+    )
+  }, error = function(e) {
+    tibble(
+      file_path = fp,
+      extracted_text = NA_character_,
+      ocr_confidence = NA_real_,
+      source = "FAILED",
+      status = paste("ERROR:", e$message)
+    )
+  })
+}
+
+# Run Analysis
+if (run_ocr) {
+  ocr_results_raw <- inventory %>%
+    filter(!is_large) %>% 
+    pull(file_path) %>%
+    map_dfr(process_doc_robust)
+  
+  # Join back to inventory
+  ocr_results <- inventory %>%
+    inner_join(ocr_results_raw, by = "file_path")
+  
+  print("Processing complete.")
+  ocr_results %>% select(filename, source, ocr_confidence, status)
+} else {
+  message("Skipping OCR processing (Demo Mode).")
+}
+```
+
+## Curation and PII identification
+
+Now that we have extracted the text, we must analyze it for preservation risks. We will perform Content Analysis to:
+
+-   **Detect PII:** Automatically scan for sensitive patterns like Email Addresses or Social Security Numbers.
+
+-   **Assess Quality:** Flag documents with low confidence scores (\< 85%), which usually indicate blurry scans or faint handwriting that require manual review.
+
+-   **Identify Empty Files:** Flag files where the extraction resulted in empty strings, indicating potential errors or blank pages.
+
+```{r}
+#| label: curation-logic
+
+if (run_ocr && exists("ocr_results")) {
+  curated_data <- ocr_results %>%
+    mutate(
+      # 1. PII Regex Patterns (Emails and SSN-like formats)
+      has_email = str_detect(extracted_text, "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"),
+      has_ssn = str_detect(extracted_text, "\\b\\d{3}-\\d{2}-\\d{4}\\b"),
+      
+      # 2. Apply Curation Flags
+      flag_low_conf = ifelse(ocr_confidence < 0.85, "LOW_CONFIDENCE", NA),
+      flag_pii = ifelse(has_email | has_ssn, "POSSIBLE_PII", NA),
+      # Flag if the extracted text is suspiciously short (under 10 chars)
+      flag_empty = ifelse(nchar(extracted_text) < 10, "NO_TEXT_EXTRACTED", NA)
+    ) %>%
+    # Combine flags into a single readable column
+    unite("curation_flags", starts_with("flag_"), sep = "; ", na.rm = TRUE, remove = FALSE)
+  
+  # Preview files that need attention
+  curated_data %>% 
+    select(filename, ocr_confidence, curation_flags)
+} else {
+  message("Skipping Curation Logic (Demo Mode).")
+}
+```
+
+## Export the results
+
+The following chunck performs\_
+
+-   **Saves Sidecar Files:** It creates a separate .txt file for every document containing its full extracted text. This is the archival best practice you asked for.
+
+-   **Saves the Metadata Report:** It saves the CSV with all the flags and confidence scores, but excludes the massive text blocks to keep the CSV clean and usable.
+
+```{r}
+#| label: save-results
+
+if (run_ocr && exists("curated_data")) {
+  # 1. Setup Output Directory
+  output_dir <- "Results/Inspect_OCR"
+  dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+  
+  # 2. Save Individual Text Files (Sidecars)
+  # This loops through every file and writes its content to a matching .txt file
+  curated_data %>%
+    filter(!is.na(extracted_text) & extracted_text != "") %>%
+    pwalk(function(filename, extracted_text, ...) {
+      # Create a txt filename (e.g., "document.pdf.txt")
+      txt_name <- paste0(output_dir, "/", filename, ".txt")
+      writeLines(extracted_text, txt_name)
+    })
+  
+  # 3. Save Administrative Metadata (CSV)
+  # We exclude the full text from the CSV to keep it clean, now that we have .txt files
+  timestamp <- format(Sys.Date(), "%Y%m%d")
+  csv_file <- paste0(output_dir, "/Curation_Report_OCR_", timestamp, ".csv")
+  
+  final_export <- curated_data %>%
+    select(filename, ocr_confidence, source, curation_flags, status) # Removed 'extracted_text'
+  
+  write.csv(final_export, csv_file, row.names = FALSE)
+  
+  print(paste("Process Complete."))
+  print(paste("1. Metadata saved to:", csv_file))
+  print(paste("2. Text files saved to:", output_dir))
+} else {
+  message("Skipping Save Results (Demo Mode).")
+}
+```
+
+## Curation Insights
+
+Use the curation_flags and source columns in the generated CSV to guide your preservation actions:
+
+-   **NO_TEXT_EXTRACTED:** This implies the file was successfully processed, but no readable text characters were found. The curator can visually verify the file. If it is a blank page, it can be excluded from the archival package to save storage. If it is an image without text (e.g., a photo of a landscape): This is expected; no action needed. If it contains text that was missed, it is likely that the image resolution is too low for OCR.
+
+-   **LOW_CONFIDENCE (\< 0.85):** The AI was unsure about the character shapes. This is common in documents with artifacts, faint handwriting, or complex multi-column layouts. These files are "High Risk" for searchability and should not be rely on for indexing without human review.
+
+-   **POSSIBLE_PII (Privacy Risk):** The script detected patterns matching Email Addresses or Social Security Numbers. This files must be quarantined immediately. Open the original PDF to verify if the data is sensitive and create a redacted derivative before making the dataset public.
+
+-   **Source Check (LOCAL_PDF_LAYOUT vs GOOGLE_DOC_AI):** Files marked LOCAL_PDF_LAYOUT were read directly from the digital layer. These are usually 100% accurate. Focus your manual QC efforts on the files marked GOOGLE_DOC_AI, as these relied on visual pattern recognition and are more prone to "typos."
+
+Here are the Curation Insights and Additional Tools & Resources sections, tailored specifically for the results generated by this hybrid OCR notebook. You can copy and paste this directly at the end of your .qmd file.
+
+Curation Insights Use the curation_flags and source columns in the generated CSV to guide your preservation actions:
+
+NO_TEXT_EXTRACTED:
+
+Context: The file was successfully processed, but no readable text characters were found.
+
+Action: Visually verify the file.
+
+If it is a blank page: Exclude it from the archival package to save storage.
+
+If it is an image without text (e.g., a photo of a landscape): This is expected; no action needed.
+
+If it contains text that was missed: The image resolution may be too low for OCR. Flag for manual transcription.
+
+LOW_CONFIDENCE (\< 0.85):
+
+Context: The AI was unsure about the character shapes. This is common in documents with coffee stains, faint handwriting, or complex multi-column layouts.
+
+Action: These files are "High Risk" for searchability. Do not rely on this text for indexing without human review.
+
+POSSIBLE_PII (Privacy Risk):
+
+Context: The script detected patterns matching Email Addresses or Social Security Numbers.
+
+Action: Quarantine these files immediately. Open the original PDF to verify if the data is sensitive. If so, you must create a redacted derivative before making the dataset public.
+
+Source Check (LOCAL_PDF_LAYOUT vs GOOGLE_DOC_AI):
+
+Context: Files marked LOCAL_PDF_LAYOUT were read directly from the digital layer.
+
+Action: These are usually 100% accurate. Focus your manual QC efforts on the files marked GOOGLE_DOC_AI, as these relied on visual pattern recognition and are more prone to "typos."
+
+## Additional Tools & Resources
+
+While daiR provides state-of-the-art accuracy, other tools may be better suited for specific constraints (e.g., cost or data sovereignty).
+
+-   **Tesseract OCR:** Is an optical [character recognition engine](https://github.com/tesseract-ocr/tesseract). It is essential for "Content Analysis." It can scan thousands of images to detect text, helping curators flag files that contain sensitive documents (PII) which might have been mixed into a photo dataset.
+
+-   **Apache Tika:** Is a [toolkit](https://tika.apache.org/) that detects and extracts metadata and text from over a thousand different file types (such as PPT, XLS, PDF). It is excellent for extracting text from "born-digital" files without OCR.
+
+-   **Label Studio:** This [utility](https://labelstud.io/) assists curators with "Low Confidence" scans, this open-source tool allows the set up a "Human-in-the-Loop" workflow to manually correct the OCR output.
+
+## Using the Non-Interactive R Script
+
+For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
+
+**Prerequisites:** Set up the Google Cloud and account and corresponding OCR Document AI.
+
+Download the **R Script:** [**`Inspect_OCR_Script.R`**](Scripts/Inspect_OCR_Script.R)
+
+### Example HPC Submission Script
+
+``` bash
+#!/bin/bash
+#SBATCH --job-name=ocr_curation
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=8G
+#SBATCH --time=02:00:00
+#SBATCH --output=logs/ocr_%j.log
+
+module load R
+
+# Define the target directory containing your documents
+TARGET_DIR="/scratch/user/project_data/documents"
+
+# Ensure service-account.json is in the current folder!
+echo "Starting OCR Curation Pipeline..."
+Rscript OCR_Curator_Script_Robust.R "$TARGET_DIR"
+```
+
+## References
+
+::: {#refs}
+:::

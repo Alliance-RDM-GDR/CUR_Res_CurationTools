@@ -1,0 +1,34 @@
+---
+title: "Tabular Data"
+---
+
+## Overview
+
+Tabular data is one of the most common forms of research data, organizing information into rows and columns. This section covers tools for inspecting and curating tabular data across a variety of formats, from open standards like CSV to proprietary formats used by statistical software.
+
+**Key Objectives:**
+
+1.  **Structure Verification:** We ensure that the data is truly tabular, with consistent numbers of columns per row.
+2.  **Metadata Extraction:** We extract variable names, labels, and types to understand the dataset's schema.
+3.  **Interoperability Checks:** We identify potential barriers to reuse, such as missing header rows, encoding issues, or proprietary dependencies.
+
+## Supported Formats
+
+We provide specialized notebooks for the following formats:
+
+### Open Standards
+
+-   **CSV (`.csv`):** The most widely used format for exchange. We check for encoding (UTF-8), delimiters, and header consistency.
+-   **Excel (`.xlsx`, `.xls`):** Ubiquitous in business and research. We inspect multiple sheets, hidden columns, and potential formatting issues.
+
+### Statistical Software
+
+-   **SPSS (`.sav`):** Common in social sciences. We extract variable and value labels to preserve the semantic meaning of the data.
+-   **Stata (`.dta`):** widely used in economics and epidemiology. We check for version compatibility and label integrity.
+-   **SAS (`.sas7bdat`):** Standard in clinical trials and large-scale analytics. We handle the complexities of catalog files and format variations (XPORT/CPORT).
+
+## Common Curation Challenges
+
+-   **Missing Labels:** In statistical formats, numeric codes (e.g., 1, 2) are meaningless without their corresponding labels (e.g., "Yes", "No"). Our tools explicitly check for these definitions.
+-   **Encoding Errors:** Special characters in text fields can be corrupted if the file encoding is not properly declared. We prioritize UTF-8 detection.
+-   **Proprietary Lock-in:** Data stored in older proprietary formats may become unreadable. We assess the risk and recommend conversion to open formats where necessary.

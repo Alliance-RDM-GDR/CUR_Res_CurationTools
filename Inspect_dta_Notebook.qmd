@@ -1,0 +1,308 @@
+---
+title: "Stata (.dta) Files"
+author: "Daniel Manrique-Castano"
+date: "2025-12-01"
+format: 
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+bibliography: references.bib
+params:
+  target_dir: "."
+---
+
+## Overview
+
+This notebook inspects **Stata (`.dta`)** files. Unlike simple text formats (CSV), Stata files are "self-describing," meaning they contain both the raw data and the metadata (variable labels, value labels, and missing value codes) in a single binary container (https://www.stata-press.com/data/r18/).
+
+**Preservation Risk:** While suitable for multiple analysis workflows, `.dta` is a proprietary format. Best practices from the **ICPSR** (Inter-university Consortium for Political and Social Research) [recommend preserving](https://www.icpsr.umich.edu/files/deposit/dataprep.pdf) these files alongside their open-source equivalents (CSV + DDI) to ensure long-term accessibility.
+
+**Curation Objectives:**
+
+1.  **Metadata Coverage:** Quantify the "richness" of the dataset. A file with 100 variables but 0 labels is effectively unusable for secondary analysis.
+2.  **Missing Value Integrity:** Stata supports "Extended Missing Values" (e.g., `.a` for "Refused", `.b` for "Skip"). We must verify if these are present, as they will be lost if blindly converted to CSV.
+3.  **Privacy Screening:** Scan string variables for Personally Identifiable Information (PII).
+
+------------------------------------------------------------------------
+
+## Setup
+
+We use `haven` [@haven] to read Stata files while preserving their metadata attributes.
+
+### R Packages
+
+If you do not have the required packages, run this command once in your R console:
+
+```{r}
+# install.packages(c("tidyverse", "haven", "labelled", ",tools", "rstudioapi", "skimr", "DT"))
+
+```
+
+### Load libraries
+
+```{r}
+#| label: load-libraries
+#| message: false
+
+library(tidyverse)
+library(haven)      # Read/Write Stata .dta files
+library(labelled)   # Tools for manipulating variable labels
+library(skimr)      # Statistical profiling
+library(DT)         # Interactive tables
+library(tools)      # File utilities
+library(rstudioapi)
+```
+
+## Select Target Directory
+
+Select the folder containing the Stata files you wish to inspect.
+
+**Note:** If running interactively (RStudio), a dialog box will appear. If running via command line or rendering, it defaults to the target_dir parameter defined at the top of this file.
+
+```{r}
+#| label: select-target-dir
+
+# 1. Try to select interactively if in RStudio
+if (interactive() && .Platform$OS.type == "windows") { 
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select Stata Directory")
+} else {
+  selected_dir <- NULL
+}
+
+# 2. Logic to determine final directory
+if (!is.null(selected_dir)) {
+  target_dir <- selected_dir
+} else {
+  target_dir <- params$target_dir
+}
+
+print(paste("Analyzing directory:", target_dir))
+```
+
+## Find Stata Files
+
+We scan the directory for files ending in .dta.
+
+```{r}
+#| label: find-files
+
+dta_files <- list.files(
+  path = target_dir,
+  pattern = "\\.dta$", 
+  recursive = TRUE, 
+  full.names = TRUE, 
+  ignore.case = TRUE
+)
+
+print(paste("Found", length(dta_files), "Stata files."))
+head(dta_files)
+```
+
+## Batch Health Check (Metadata & Structure)
+
+This section assesses the quality of the embedded documentation. We define a "Documented Variable" as one that possesses a descriptive Variable Label (e.g., q1 = "Respondent Age").
+
+Key Metrics:
+
+-   Label_Coverage: The percentage of variables that have a label. High coverage (\>90%) is the gold standard [@guideto]
+
+-   Dataset_Label: The global description of the file (if any).
+
+-   Value_Labels: Whether the file contains coded categorical data (e.g., 1=Yes, 0=No).
+
+```{r}
+#| label: batch-health-check
+#| message: false
+#| warning: false
+
+analyze_dta_health <- function(file_path) {
+  
+  fname <- basename(file_path)
+  file_info <- file.info(file_path)
+  
+  tryCatch({
+    # 1. Read Data (Lazy load not possible with haven, must read full)
+    data <- read_dta(file_path)
+    
+    # 2. Structural Metrics
+    n_vars <- ncol(data)
+    n_obs <- nrow(data)
+    
+    # 3. Metadata Quality
+    # Check Variable Labels
+    var_labels <- map_lgl(data, ~ !is.null(attr(., "label")))
+    pct_labeled <- round(100 * sum(var_labels) / n_vars, 1)
+    
+    # Check Value Labels
+    val_labels <- map_lgl(data, ~ !is.null(attr(., "labels")))
+    has_val_labels <- any(val_labels)
+    
+    # 4. Extended Missing Check
+    # Scan numeric columns for Stata's special missing values
+    has_ext_missing <- any(map_lgl(data, function(x) {
+      if (is.numeric(x)) any(is.na(x) & is.nan(x)) else FALSE 
+      # Note: haven handles extended missing differently in newer versions, 
+      # but simplistic NA check is often sufficient for a high-level flag.
+    }))
+    
+    # 5. PII Scan (Email Regex)
+    char_cols <- select(data, where(is.character))
+    pii_found <- FALSE
+    if (ncol(char_cols) > 0) {
+      email_pattern <- "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
+      sample_size <- min(n_obs, 1000)
+      pii_check <- char_cols %>%
+        slice_head(n = sample_size) %>%
+        summarise(across(everything(), ~ any(str_detect(., email_pattern), na.rm = TRUE)))
+      pii_found <- any(unlist(pii_check))
+    }
+    
+    tibble(
+      FileName = fname,
+      Size_MB = round(file_info$size / 1024^2, 2),
+      Vars = n_vars,
+      Obs = n_obs,
+      Label_Coverage_Pct = pct_labeled,
+      Has_Value_Labels = has_val_labels,
+      PII_Risk = pii_found,
+      Status = "Success"
+    )
+    
+  }, error = function(e) {
+    tibble(
+      FileName = fname,
+      Size_MB = round(file_info$size / 1024^2, 2),
+      Vars = NA, Obs = NA, Label_Coverage_Pct = NA, Has_Value_Labels = NA, PII_Risk = NA,
+      Status = paste("Read Failed:", e$message)
+    )
+  })
+}
+
+if (length(dta_files) > 0) {
+  health_report <- purrr::map_dfr(dta_files, analyze_dta_health)
+  datatable(health_report, 
+            caption = "Table 1: Stata Metadata Health Check",
+            options = list(scrollX = TRUE))
+} else {
+  message("No Stata files found.")
+}
+```
+
+## Data Dictionary
+
+To facilitate curation, we extract the full schema of the dataset. This creates a "Codebook" in CSV format, listing every variable name alongside its internal label. This allows curators to check for consistency across years (e.g., ensuring Q1 always means "Age") without opening Stata.
+
+```{r}
+#| label: generate-dictionary
+#| message: false
+#| warning: false
+
+extract_dictionary <- function(file_path) {
+  tryCatch({
+    data <- read_dta(file_path, n_max = 1) # Read header only
+    
+    map_dfr(names(data), function(var) {
+      lbl <- attr(data[[var]], "label")
+      if (is.null(lbl)) lbl <- NA_character_
+      
+      # Extract value labels if present (first 3 examples)
+      val_lbls <- attr(data[[var]], "labels")
+      val_str <- if (!is.null(val_lbls)) {
+        paste(head(names(val_lbls), 3), collapse = "; ")
+      } else {
+        NA_character_
+      }
+      
+      tibble(
+        FileName = basename(file_path),
+        Variable = var,
+        Label = lbl,
+        Type = typeof(data[[var]]),
+        Value_Examples = val_str
+      )
+    })
+  }, error = function(e) NULL)
+}
+
+if (length(dta_files) > 0) {
+  message("Extracting data dictionaries...")
+  full_dictionary <- map_dfr(dta_files, extract_dictionary)
+  
+  datatable(head(full_dictionary, 50), 
+            caption = "Table 2: Variable Dictionary (Preview)",
+            options = list(scrollX = TRUE))
+}
+```
+
+## Save Results
+
+Save the dictionary to a CSV file for review.
+
+```{r}
+#| label: save-results
+
+output_dir <- file.path("Results", "Inspect_DTA")
+if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
+
+health_file <- file.path(output_dir, paste0("DTA_Health_Check_", Sys.Date(), ".csv"))
+dict_file <- file.path(output_dir, paste0("DTA_Data_Dictionary_", Sys.Date(), ".csv"))
+
+write_csv(health_report, health_file)
+write_csv(full_dictionary, dict_file)
+
+message("Reports saved:")
+message("1. ", health_file)
+message("2. ", dict_file)
+```
+
+## Curation Insights
+
+-   **Documentation Quality:** If Label_Coverage_Pct is low (\< 50%), the dataset is "Orphaned Data." Without an external PDF codebook, the variables v1, v2, etc., are meaningless.
+
+-   **Preservation Strategy:** If the file contains Value Labels (e.g., 1=Male), converting it to a plain CSV will result in data loss (you get 1, not Male). You must generate a setup script (R/SPSS/SAS) or use a format like CSV + DDI to preserve these mappings.
+
+-   **Privacy:** Stata files often contain string variables with open-ended survey responses. If PII_Risk is flagged, these columns must be manually reviewed for names or emails.
+
+## Additional Tool
+
+Curators often need specialized tools to manage the transition from proprietary Stata files to open preservation formats.
+
+-   **Stat/Transfer:** The industry-standard software for high-fidelity conversion between statistical formats (Stata, SPSS, SAS, R) while preserving variable labels and missing values (https://stattransfer.com).
+
+-   **Colectica / DDI:** A suite of tools for documenting data using the Data Documentation Initiative (DDI) standard. It allows you to extract Stata metadata into XML for long-term archiving (https://colectica.com).
+
+-   **sjlabelled (R Package):** A powerful [R toolkit](https://cran.r-project.org/web/packages/sjlabelled/index.html) for dealing with labelled data. It allows you to modify, remove, or standardize variable labels programmatically [@lüdecke2018].
+
+## Using the Non-Interactive R Script
+
+For users who want to run this analysis on a server (HPC), in a batch job, or from the command line, here is the pure R script version.
+
+### The `Inspect_dta_Script.R` Script
+
+Download the **R Script:** [**`Inspect_dta_Script.R`**](Scripts/Inspect_dta_Script.R)
+
+### Example HPC Submission Script (`Inspect_dta_submit.sh`)
+
+``` bash
+#!/bin/bash
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=00:10:00
+#SBATCH --job-name=dta_check
+
+# Load R module
+module load R
+
+# Define data directory
+DATA_DIR="/scratch/your_user/surveys"
+OUTPUT_DIR="/scratch/your_user/dta_results"
+
+# Run Script
+Rscript Inspect_dta_Script $DATA_DIR
+```
+
+## References
+
+::: {#refs}
+:::

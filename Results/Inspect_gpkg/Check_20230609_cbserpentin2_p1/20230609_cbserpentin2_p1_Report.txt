@@ -1,0 +1,189 @@
+REPORT FOR: D:/Alliance/RDM/CUR_Res_CurationTools/data/FileOpen_gpkg/20230609_cbserpentin2_p1.gpkg 
+DATE: 2025-11-13 16:18:06.365109 
+--------------------------------------------------------
+
+Driver: GPKG 
+Available layers:
+                              layer_name geometry_type features fields              crs_name
+1 20230609_cbserpentin2_p1_labels_points         Point       26     18 WGS 84 / UTM zone 19N
+2  20230609_cbserpentin2_p1_labels_masks       Polygon       39      3 WGS 84 / UTM zone 19N
+
+--------------------------------------------------------
+
+LAYER: 20230609_cbserpentin2_p1_labels_points 
+GEOMETRY TYPE: Point 
+
+--- CRS INFO ---
+Coordinate Reference System:
+  User input: WGS 84 / UTM zone 19N 
+  wkt:
+PROJCRS["WGS 84 / UTM zone 19N",
+    BASEGEOGCRS["WGS 84",
+        ENSEMBLE["World Geodetic System 1984 ensemble",
+            MEMBER["World Geodetic System 1984 (Transit)"],
+            MEMBER["World Geodetic System 1984 (G730)"],
+            MEMBER["World Geodetic System 1984 (G873)"],
+            MEMBER["World Geodetic System 1984 (G1150)"],
+            MEMBER["World Geodetic System 1984 (G1674)"],
+            MEMBER["World Geodetic System 1984 (G1762)"],
+            MEMBER["World Geodetic System 1984 (G2139)"],
+            ELLIPSOID["WGS 84",6378137,298.257223563,
+                LENGTHUNIT["metre",1]],
+            ENSEMBLEACCURACY[2.0]],
+        PRIMEM["Greenwich",0,
+            ANGLEUNIT["degree",0.0174532925199433]],
+        ID["EPSG",4326]],
+    CONVERSION["UTM zone 19N",
+        METHOD["Transverse Mercator",
+            ID["EPSG",9807]],
+        PARAMETER["Latitude of natural origin",0,
+            ANGLEUNIT["degree",0.0174532925199433],
+            ID["EPSG",8801]],
+        PARAMETER["Longitude of natural origin",-69,
+            ANGLEUNIT["degree",0.0174532925199433],
+            ID["EPSG",8802]],
+        PARAMETER["Scale factor at natural origin",0.9996,
+            SCALEUNIT["unity",1],
+            ID["EPSG",8805]],
+        PARAMETER["False easting",500000,
+            LENGTHUNIT["metre",1],
+            ID["EPSG",8806]],
+        PARAMETER["False northing",0,
+            LENGTHUNIT["metre",1],
+            ID["EPSG",8807]]],
+    CS[Cartesian,2],
+        AXIS["(E)",east,
+            ORDER[1],
+            LENGTHUNIT["metre",1]],
+        AXIS["(N)",north,
+            ORDER[2],
+            LENGTHUNIT["metre",1]],
+    USAGE[
+        SCOPE["Navigation and medium accuracy spatial referencing."],
+        AREA["Between 72°W and 66°W, northern hemisphere between equator and 84°N, onshore and offshore. Aruba. Bahamas. Brazil. Canada - New Brunswick (NB); Labrador; Nunavut; Nova Scotia (NS); Quebec. Colombia. Dominican Republic. Greenland. Netherlands Antilles. Puerto Rico. Turks and Caicos Islands. United States. Venezuela."],
+        BBOX[0,-72,84,-66]],
+    ID["EPSG",32619]]
+
+--- STRUCTURE (str) ---
+Classes ‘sf’ and 'data.frame':	26 obs. of  19 variables:
+ $ plot               : chr  "553" "553" "553" "553" ...
+ $ class_code         : chr  "pigl" "pigl" "pigl" "pigl" ...
+ $ scientific_name    : chr  "Picea glauca" "Picea glauca" "Picea glauca" "Picea glauca" ...
+ $ taxon_id           : chr  "https://www.gbif.org/species/5284745" "https://www.gbif.org/species/5284745" "https://www.gbif.org/species/5284745" "https://www.gbif.org/species/5284745" ...
+ $ planted_natural    : chr  "planted" "planted" "planted" "planted" ...
+ $ instrument         : chr  "tape" "laser" "laser" "laser" ...
+ $ height1_no_shoot_cm: num  400 250 410 430 300 250 420 201 260 300 ...
+ $ height2_no_shoot_cm: num  400 230 400 430 290 300 410 203 230 300 ...
+ $ height3_no_shoot_cm: num  390 240 390 420 270 270 410 207 240 320 ...
+ $ total_height1_cm   : num  490 280 480 480 340 330 470 0 330 390 ...
+ $ total_height2_cm   : num  490 260 470 480 340 370 460 0 340 370 ...
+ $ total_height3_cm   : num  470 280 460 470 300 330 460 0 340 360 ...
+ $ diameter_type      : chr  "dbh" "dbh" "dbh" "dbh" ...
+ $ diameter1_mm       : num  56 20 53 60 42 15 60 19 22 19 ...
+ $ diameter2_mm       : num  56 21 51 64 42 11 64 20 17 19 ...
+ $ diameter3_mm       : num  56 21 52 60 41 14 63 20 20 19 ...
+ $ comments           : chr  NA NA NA NA ...
+ $ date_mesured       : chr  "Wed, 26 Jul 2023 20:23:51 GMT" "Wed, 26 Jul 2023 20:25:59 GMT" "Wed, 26 Jul 2023 20:21:16 GMT" "Wed, 26 Jul 2023 20:05:52 GMT" ...
+ $ geom               :sfc_POINT of length 26; first list element:  'XY' num  291332 5369002
+ - attr(*, "sf_column")= chr "geom"
+ - attr(*, "agr")= Factor w/ 3 levels "constant","aggregate",..: NA NA NA NA NA NA NA NA NA NA ...
+  ..- attr(*, "names")= chr [1:18] "plot" "class_code" "scientific_name" "taxon_id" ...
+
+--- SUMMARY STATS ---
+     plot            class_code        scientific_name      taxon_id         planted_natural     instrument        height1_no_shoot_cm height2_no_shoot_cm
+ Length:26          Length:26          Length:26          Length:26          Length:26          Length:26          Min.   :201.0       Min.   :203.0      
+ Class :character   Class :character   Class :character   Class :character   Class :character   Class :character   1st Qu.:265.0       1st Qu.:290.0      
+ Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character   Median :395.0       Median :395.0      
+                                                                                                                   Mean   :361.2       Mean   :361.7      
+                                                                                                                   3rd Qu.:430.0       3rd Qu.:430.0      
+                                                                                                                   Max.   :500.0       Max.   :500.0      
+ height3_no_shoot_cm total_height1_cm total_height2_cm total_height3_cm diameter_type       diameter1_mm    diameter2_mm    diameter3_mm     comments        
+ Min.   :170.0       Min.   :  0.0    Min.   :  0.0    Min.   :  0.0    Length:26          Min.   :14.00   Min.   :11.00   Min.   :12.00   Length:26         
+ 1st Qu.:270.0       1st Qu.:332.5    1st Qu.:340.0    1st Qu.:332.5    Class :character   1st Qu.:37.50   1st Qu.:35.00   1st Qu.:36.00   Class :character  
+ Median :390.0       Median :460.0    Median :455.0    Median :455.0    Mode  :character   Median :55.50   Median :56.50   Median :58.00   Mode  :character  
+ Mean   :355.7       Mean   :409.2    Mean   :412.7    Mean   :401.5                       Mean   :51.54   Mean   :51.31   Mean   :50.88                     
+ 3rd Qu.:417.5       3rd Qu.:490.0    3rd Qu.:490.0    3rd Qu.:470.0                       3rd Qu.:70.00   3rd Qu.:69.00   3rd Qu.:68.00                     
+ Max.   :490.0       Max.   :570.0    Max.   :560.0    Max.   :540.0                       Max.   :88.00   Max.   :90.00   Max.   :89.00                     
+ date_mesured                  geom   
+ Length:26          POINT        :26  
+ Class :character   epsg:32619   : 0  
+ Mode  :character   +proj=utm ...: 0  
+                                      
+                                      
+                                      
+
+--------------------------------------------------------
+
+LAYER: 20230609_cbserpentin2_p1_labels_masks 
+GEOMETRY TYPE: Polygon 
+
+--- CRS INFO ---
+Coordinate Reference System:
+  User input: WGS 84 / UTM zone 19N 
+  wkt:
+PROJCRS["WGS 84 / UTM zone 19N",
+    BASEGEOGCRS["WGS 84",
+        ENSEMBLE["World Geodetic System 1984 ensemble",
+            MEMBER["World Geodetic System 1984 (Transit)"],
+            MEMBER["World Geodetic System 1984 (G730)"],
+            MEMBER["World Geodetic System 1984 (G873)"],
+            MEMBER["World Geodetic System 1984 (G1150)"],
+            MEMBER["World Geodetic System 1984 (G1674)"],
+            MEMBER["World Geodetic System 1984 (G1762)"],
+            MEMBER["World Geodetic System 1984 (G2139)"],
+            ELLIPSOID["WGS 84",6378137,298.257223563,
+                LENGTHUNIT["metre",1]],
+            ENSEMBLEACCURACY[2.0]],
+        PRIMEM["Greenwich",0,
+            ANGLEUNIT["degree",0.0174532925199433]],
+        ID["EPSG",4326]],
+    CONVERSION["UTM zone 19N",
+        METHOD["Transverse Mercator",
+            ID["EPSG",9807]],
+        PARAMETER["Latitude of natural origin",0,
+            ANGLEUNIT["degree",0.0174532925199433],
+            ID["EPSG",8801]],
+        PARAMETER["Longitude of natural origin",-69,
+            ANGLEUNIT["degree",0.0174532925199433],
+            ID["EPSG",8802]],
+        PARAMETER["Scale factor at natural origin",0.9996,
+            SCALEUNIT["unity",1],
+            ID["EPSG",8805]],
+        PARAMETER["False easting",500000,
+            LENGTHUNIT["metre",1],
+            ID["EPSG",8806]],
+        PARAMETER["False northing",0,
+            LENGTHUNIT["metre",1],
+            ID["EPSG",8807]]],
+    CS[Cartesian,2],
+        AXIS["(E)",east,
+            ORDER[1],
+            LENGTHUNIT["metre",1]],
+        AXIS["(N)",north,
+            ORDER[2],
+            LENGTHUNIT["metre",1]],
+    USAGE[
+        SCOPE["Navigation and medium accuracy spatial referencing."],
+        AREA["Between 72°W and 66°W, northern hemisphere between equator and 84°N, onshore and offshore. Aruba. Bahamas. Brazil. Canada - New Brunswick (NB); Labrador; Nunavut; Nova Scotia (NS); Quebec. Colombia. Dominican Republic. Greenland. Netherlands Antilles. Puerto Rico. Turks and Caicos Islands. United States. Venezuela."],
+        BBOX[0,-72,84,-66]],
+    ID["EPSG",32619]]
+
+--- STRUCTURE (str) ---
+Classes ‘sf’ and 'data.frame':	39 obs. of  4 variables:
+ $ scientific_name: chr  NA "Picea glauca" NA "Picea glauca" ...
+ $ class_code     : chr  "other" "pigl" "other" "pigl" ...
+ $ taxon_id       : chr  NA "https://www.gbif.org/species/5284745" NA "https://www.gbif.org/species/5284745" ...
+ $ geom           :sfc_POLYGON of length 39; first list element: List of 1
+  ..$ : num [1:107, 1:2] 291330 291330 291330 291330 291330 ...
+  ..- attr(*, "class")= chr [1:3] "XY" "POLYGON" "sfg"
+ - attr(*, "sf_column")= chr "geom"
+ - attr(*, "agr")= Factor w/ 3 levels "constant","aggregate",..: NA NA NA
+  ..- attr(*, "names")= chr [1:3] "scientific_name" "class_code" "taxon_id"
+
+--- SUMMARY STATS ---
+ scientific_name     class_code          taxon_id                    geom   
+ Length:39          Length:39          Length:39          POLYGON      :39  
+ Class :character   Class :character   Class :character   epsg:32619   : 0  
+ Mode  :character   Mode  :character   Mode  :character   +proj=utm ...: 0  
+
+--------------------------------------------------------

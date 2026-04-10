@@ -1,0 +1,332 @@
+---
+title: "R/Quarto Code"
+author: "Daniel Manrique-Castano"
+date: "2025-12-08"
+format: 
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+bibliography: references.bib
+params:
+  target_dir: "."
+---
+
+## Overview
+
+This notebook provides a static analysis framework for auditing R code (`.R`) and literate programming documents (`.qmd`, `.Rmd`).
+
+**Static analysis** refers to the examination of source code without executing it. This approach is essential for data curation as it allows for the safe assessment of code quality, reproducibility, and security risks.
+
+**Computational Reproducibility** is defined as the ability to re-run the exact same code on the exact same data to generate the exact same results [@stodden2010]. However, "code rot" is a pervasive issue in research curation. Scripts that run perfectly on the researcher's laptop often fail in archival environments due to three primary causes:
+
+**Key Curation Objectives:**
+
+1.  **Structural/syntax Validation:** Verify that script files contain syntactically valid R code, identifying files that are corrupted or incomplete.
+2.  **Dependency Mapping:** Extract both explicit package loading (e.g., `library(dplyr)`) and implicit calls (e.g., `dplyr::filter`) to assist in reconstructing software environments.
+3.  **Risk Assessment:** Detect commands that threaten reproducibility (e.g., absolute paths, `setwd()`) or security (e.g., system calls, potential API tokens).
+
+------------------------------------------------------------------------
+
+## Setup
+
+We utilize **`tidyverse`** for data manipulation and **`rstudioapi`** for interactive directory selection.
+
+### Load Libraries
+
+If you do not have the required packages, run this command once in your R console:
+
+```{r}
+# install.packages(c("DT", "tidyverse", "rstudioapi", "readr", "tools"))
+```
+
+### Load libraries
+
+```{r}
+#| label: load-libraries
+#| message: false
+
+library(tidyverse)
+library(DT)
+library(rstudioapi)
+library(readr)
+library(tools)
+```
+
+## Select Target Directory
+
+Select the directory containing the code files to be analyzed. If running interactively, a dialog box will appear; otherwise, the script defaults to the parameter defined in the YAML header.
+
+```{r}
+#| label: select-target-dir
+
+# 1. Try to select interactively if in RStudio
+if (interactive() && .Platform$OS.type == "windows") { 
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select Code Directory")
+} else {
+  selected_dir <- NULL
+}
+
+# 2. Logic to determine final directory
+if (!is.null(selected_dir)) {
+  target_dir <- selected_dir
+} else {
+  target_dir <- params$target_dir
+}
+
+print(paste("Analyzing directory:", target_dir))
+
+```
+
+## Find Code Files
+
+We scan the directory for `.R`, `.qmd`, and `.Rmd` files.
+
+```{r}
+#| label: find-files
+
+code_files <- list.files(
+  path = target_dir,
+  pattern = "\\.(R|qmd|Rmd)$", 
+  recursive = TRUE, 
+  full.names = TRUE, 
+  ignore.case = TRUE
+)
+
+print(paste("Found", length(code_files), "code files."))
+head(code_files)
+```
+
+## Code Analysis Function
+
+Static Analysis involves examining the source code without executing it. This is safer for curators than running untrusted scripts. We parse the code to check for syntax errors and use Regular Expressions (Regex) to identify dependencies and risks.This function performs four checks per file:
+
+-   Safe Reading: Uses readr::read_lines to handle encoding nuances.
+
+-   Syntax Checking: Uses R's `parse()` function to verify structural integrity..
+
+-   Comment Stripping: Removes comments to prevent false positives (e.g., commented-out libraries).
+
+-   Pattern Matching: Scans for dependencies, risky commands, and secrets.
+
+```{r}
+#| label: define-analysis-function
+
+analyze_r_file <- function(file_path) {
+  
+  fname <- basename(file_path)
+  
+  # Regex Patterns
+  patterns <- list(
+    # Explicit loading: library(pkg), require(pkg), p_load(pkg)
+    library_call = "(?:library|require|p_load)\\s*\\(\\s*[\"']?([a-zA-Z0-9\\.]+)[\"']?\\s*\\)",
+    # Implicit loading: package::function
+    implicit_call = "([a-zA-Z0-9\\.]+)::[a-zA-Z0-9_\\.]+",
+    # API Tokens (Heuristics for GitHub, Slack, etc.)
+    tokens = "(?:ghp_|sk-|xoxb-|xoxp-)[a-zA-Z0-9]+"
+  )
+  
+  # Risk Patterns (Bryan, 2017)
+  risk_patterns <- list(
+    "Hard Setwd"    = "setwd\\s*\\(",
+    "System Call"   = "(?:system|shell|system2)\\s*\\(",
+    "Web Download"  = "(?:download\\.file|curl_download)\\s*\\(",
+    "Source File"   = "source\\s*\\("
+  )
+  
+  # Absolute Path Pattern (Windows/Unix roots)
+  abs_path_pattern <- "(?:[a-zA-Z]:\\\\|/Users/|/home/|/scratch/)"
+
+  tryCatch({
+    # 1. Read File Content
+    raw_lines <- readr::read_lines(file_path, lazy = FALSE)
+    
+    # 2. Syntax Validation
+    syntax_status <- "Valid"
+    tryCatch({
+      parse(file = file_path, keep.source = FALSE)
+    }, error = function(e) {
+      clean_msg <- gsub("[\r\n]+", " ", e$message)
+      syntax_status <<- paste("Error:", clean_msg)
+    })
+    
+    # 3. Strip Comments for Analysis
+    clean_lines <- gsub("#.*", "", raw_lines)
+    content_str <- paste(clean_lines, collapse = "\n")
+    
+    # 4. Extract Dependencies
+    lib_matches <- str_match_all(content_str, patterns$library_call)[[1]]
+    explicit_pkgs <- if (length(lib_matches) > 0) lib_matches[, 2] else character(0)
+    
+    colon_matches <- str_match_all(content_str, patterns$implicit_call)[[1]]
+    implicit_pkgs <- if (length(colon_matches) > 0) colon_matches[, 2] else character(0)
+    
+    all_pkgs <- unique(c(explicit_pkgs, implicit_pkgs))
+    all_pkgs <- setdiff(all_pkgs, "base") # Exclude base R
+    packages_str <- paste(sort(all_pkgs), collapse = ", ")
+    
+    # 5. Identify Risks
+    risks_found <- names(risk_patterns) %>% 
+      map_chr(function(risk_name) {
+        if (any(str_detect(clean_lines, risk_patterns[[risk_name]]))) return(risk_name) else return(NA)
+      }) %>% 
+      discard(is.na) %>% 
+      paste(collapse = "; ")
+      
+    # 6. Count Absolute Paths
+    num_abs_paths <- sum(str_count(clean_lines, abs_path_pattern))
+    
+    # 7. Scan for Secrets (on raw lines)
+    num_tokens <- sum(str_count(raw_lines, patterns$tokens))
+    
+    tibble(
+      FileName = fname,
+      FileType = tools::file_ext(fname),
+      Syntax_Check = syntax_status,
+      Packages = substr(packages_str, 1, 150),
+      AbsPathsFound = num_abs_paths,
+      Other_Risks = risks_found,
+      Potential_Secrets = num_tokens,
+      Status = "Success"
+    )
+    
+  }, error = function(e) {
+    tibble(
+      FileName = fname,
+      FileType = tools::file_ext(fname),
+      Syntax_Check = paste("Read Failed:", e$message),
+      Packages = "", AbsPathsFound = NA, Other_Risks = "", Potential_Secrets = NA,
+      Status = "Failed"
+    )
+  })
+}
+```
+
+## Execute Analysis
+
+We map the analysis function over the list of files detected in the previous step.
+
+```{r}
+#| label: run-analysis
+#| message: false
+#| warning: false
+
+if (length(code_files) > 0) {
+  report <- purrr::map_dfr(code_files, analyze_r_file)
+  
+  datatable(report, 
+            caption = "Table 1: Code Inspection Report",
+            options = list(scrollX = TRUE))
+} else {
+  message("No code files found.")
+}
+```
+
+## Visualization: Dependency Ecosystem
+
+Understanding the software environment is critical for long-term preservation. This chart illustrates the most frequently used packages across the analyzed codebase, helping curators prioritize which libraries to document in renv.lock or DESCRIPTION files.
+
+```{r}
+#| label: viz-dependencies
+#| fig-cap: "Top 10 Package Dependencies in Project"
+#| warning: false
+
+if (nrow(report) > 0 && any(report$Packages != "")) {
+  
+  dependency_counts <- report %>%
+    filter(Packages != "") %>%
+    separate_rows(Packages, sep = ", ") %>%
+    count(Packages, sort = TRUE) %>%
+    head(10)
+  
+  ggplot(dependency_counts, aes(x = reorder(Packages, n), y = n)) +
+    geom_col(fill = "#4C78A8") + # Standard formal blue
+    coord_flip() +
+    labs(
+      title = "Most Frequent Package Dependencies",
+      x = "Package Name",
+      y = "Frequency (Script Count)"
+    ) +
+    theme_minimal() +
+    theme(
+      panel.grid.major.y = element_blank(),
+      axis.text = element_text(size = 10)
+    )
+} else {
+  message("No packages detected to visualize.")
+}
+```
+
+## Save Results
+
+The full analysis report is exported to a CSV file for auditing and distribution
+
+```{r}
+#| label: save-results
+
+#| label: save-results
+
+output_dir <- file.path("Results", "Inspect_rCode")
+if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
+
+output_file <- file.path(output_dir, paste0("Code_Inspection_", Sys.Date(), ".csv"))
+write_csv(report, output_file)
+
+message("Report successfully saved to: ", output_file)
+```
+
+## Curation Insights
+
+Use the report to prioritize fixes:
+
+-   Reproducibility (Packages): If Packages is empty for a script, verify if it relies on base R only or if the researcher assumes packages are pre-loaded.
+
+-   Portability (AbsPathsFound): Any file with AbsPathsFound \> 0 requires attention. Ask the researcher to replace paths like C:/Users/Dan/Project/Data with relative paths like ./Data or use the here package.
+
+-   Security (PotentialTokens): If Potential_Secrets \> 0, MANUALLY inspect the file. Do not publish code with active API keys or credentials.
+
+-   Syntax Integrity (Syntax_Check): If the column contains an error message (e.g., "unexpected symbol"), the script is broken and will not run. These files should be flagged for immediate correction by the author.
+
+-   Environment Reconstruction: The Packages column provides the raw material for building a DESCRIPTION file or renv.lock. Without this list, future users must guess which software versions to install.
+
+## Additional Tools for Researchers
+
+To prevent these issues before curation, researchers may consider adopting the following tools:
+
+-   `renv` (Package Management): A tool for creating reproducible environments. It generates a lockfile (renv.lock) recording the exact version of every package used, ensuring the project can be restored on another machine [@renv] .
+
+-   `lintr` (Static Analysis): A package that automatically checks code for syntax errors, style violations, and potential bugs as you write it [@lintr].
+
+-   Docker (Containerization): A technology that packages the entire operating system, code, and data into a single executable unit, providing the gold standard for reproducibility [@boettiger2015].
+
+## Using the Non-Interactive R Script
+
+For users who want to run this analysis on a server (HPC), in a batch job, or from the command line, here is the pure R script version.
+
+### The `Inspect_Code_Script.R` Script
+
+Download the **R Script:** [**`Inspect_Code_Script.R`**](Scripts/Inspect_Code_Script.R)
+
+### Example HPC Submission Script (`Inspect_Code_submit.sh`)
+
+``` bash
+#!/bin/bash
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=00:10:00
+#SBATCH --job-name=code_check
+
+# Load R module
+module load R
+
+# Define data directory
+DATA_DIR="/scratch/your_user/your_project/code_dir"
+
+# Run Script
+Rscript Scripts/Inspect_Code_Script.R $DATA_DIR
+```
+
+## References
+
+::: {#refs}
+:::

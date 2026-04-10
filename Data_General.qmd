@@ -1,0 +1,26 @@
+---
+title: "General Data Curation"
+---
+
+## Overview
+
+In this section, we address the fundamental first steps of data curation that apply to all datasets, regardless of their specific domain or file format. Before diving into the complexities of specific data types, we must ensure the basic integrity and accessibility of the files.
+
+**Key Objectives:**
+
+1.  **File Inventory:** We verify that all files listed in the metadata are present and that there are no unexpected files.
+2.  **File Naming:** We check for consistent, descriptive, and compatible file names (avoiding special characters or spaces).
+3.  **Format Validation:** We confirm that file extensions match their actual content (e.g., a `.csv` file is truly a comma-separated text file, not an Excel file renamed).
+
+## Why This Matters
+
+Data curation is built on a foundation of trust. If the basic file inventory is incorrect or if files are corrupted, any subsequent analysis or preservation effort is compromised. By standardizing these initial checks, we save time and prevent errors downstream.
+
+## Tools in This Section
+
+We provide tools to automate these essential checks:
+
+-   **File Extension Validation:** Scans the directory to identify mismatches between file extensions and their detected MIME types.
+-   **File Naming Checks:** Identifies files with potentially problematic characters that could hinder cross-platform compatibility.
+
+By starting here, we ensure a clean and stable dataset ready for deeper inspection.

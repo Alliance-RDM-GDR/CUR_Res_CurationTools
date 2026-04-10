@@ -1,0 +1,5 @@
+"format","width","height","colorspace","matte","filesize","density","SourceFile"
+"TIFF",110,164,"Gray",FALSE,1880,"72x72","data/Inspect_Images/CHIRPS_precipitation_1981-01-01.tif"
+"TIFF",110,164,"Gray",FALSE,9648,"72x72","data/Inspect_Images/CHIRPS_precipitation_1981-01-03.tif"
+"TIFF",110,164,"Gray",FALSE,30646,"72x72","data/Inspect_Images/CHIRTS_maximum_temperature_1983-01-07.tif"
+"TIFF",110,164,"Gray",FALSE,30777,"72x72","data/Inspect_Images/CHIRTS_maximum_temperature_1983-01-09.tif"

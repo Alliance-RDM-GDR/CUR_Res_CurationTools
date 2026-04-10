@@ -1,0 +1,324 @@
+---
+title: "SAS Data (.sas7bdat) Files"
+author: "Daniel Manrique-Castano"
+date: "2025-12-18"
+format: 
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+    theme: cosmo
+bibliography: references.bib
+params:
+  target_dir: "data/Inspect_sas7bdat/"
+---
+
+## Overview
+
+SAS files (`.sas7bdat`) are a standard for clinical and statistical data. However, unlike modern self-contained formats, SAS often splits data and metadata into two files: a **Data File (`.sas7bdat`)** containing rows and columns and a **Catalog File (`.sas7bcat`):** containing the "Formats" (Value Labels), such as defining that `1 = "Placebo"` and `2 = "Treatment"`. Thus, If the catalog file is lost, the data file contains only cryptic codes (1, 2) without their meaning.
+
+Distinguishing between SAS Transport (XPORT) and Catalog Port (CPORT) is a critical triage step in data curation.XPORT (.xpt) is an open, documented standard mandated by the US Food and Drug Administration (FDA) for regulatory submissions. Since the specification is public, it can be reliably read by non-SAS open-source tools like R (haven) and Python (pandas). This make this format the preferred format for digital preservation. In contrast, CPORT is a proprietary, version-dependent format originally designed to move entire SAS libraries (including catalogs). CPORT files are not readable by standard open-source libraries. they require a licensed installation of SAS to "unpack" or convert. This consititutes a preservation risk, given that if the depositor does not provide a converted version, the data is locked behind a proprietary software paywall.
+
+This notebook performs a rigorous inventory:
+
+1.  **Catalog Check:** Scans specifically for `.sas7bcat` files to ensure metadata isn't missing.
+2.  **Robust Extraction:** Uses a multi-strategy approach (Haven -\> sas7bdat -\> Fallback) to read files even if they are slightly corrupted or old versions.
+3.  **Encoding Scan:** Checks for non-ASCII characters to flag potential encoding errors (e.g., "Mojibake") common in older Windows-1252 datasets.
+
+------------------------------------------------------------------------
+
+## Setup
+
+We use the `haven` package. It is the gold standard for reading SAS files in R and can handle both the data files and, if available, the catalog files.
+
+### R Packages
+
+If you do not have the required packages, run this command once in your R console:
+
+```{r}
+# install.packages(c("tidyverse", "haven", "sas7bdat", "rstudioapi", "stringr"))
+```
+
+### Load libraries
+
+```{r}
+#| label: load-libraries
+#| message: false
+
+library(tidyverse)
+library(haven)      # Primary reader (Gold Standard)
+library(sas7bdat)   # Fallback reader
+library(rstudioapi) # For directory selection
+library(stringr)    # For encoding checks
+```
+
+## Select Target Directory
+
+We select the folder containing the SAS files.
+
+Note: If running interactively, a dialog box will appear. Otherwise, it defaults to the target_dir parameter.
+
+```{r}
+#| label: select-target-dir
+
+# 1. Try to select interactively if in RStudio
+if (interactive() && .Platform$OS.type == "windows") { 
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select SAS Directory")
+} else {
+  selected_dir <- NULL
+}
+
+# 2. Logic to determine final directory
+if (!is.null(selected_dir)) {
+  target_dir <- selected_dir
+} else {
+  target_dir <- params$target_dir
+}
+
+print(paste("Analyzing directory:", target_dir))
+
+```
+
+## Find SAS Files
+
+We scan the directory for files ending in .sas7bdat.
+
+```{r}
+#| label: find-files
+
+# 1. Find Data Files
+sas_files <- list.files(
+  path = target_dir,
+  pattern = "\\.sas7bdat$|\\.xpt$", 
+  recursive = TRUE, 
+  full.names = TRUE, 
+  ignore.case = TRUE
+)
+
+# 2. Find Catalog Files
+cat_files <- list.files(
+  path = target_dir,
+  pattern = "\\.sas7bcat$", 
+  recursive = TRUE, 
+  full.names = TRUE, 
+  ignore.case = TRUE
+)
+
+print(paste("Found", length(sas_files), "SAS Data files."))
+print(paste("Found", length(cat_files), "SAS Catalog files (.sas7bcat)."))
+
+if (length(cat_files) == 0) {
+  message("⚠️ Warning: No Catalog files found. Categorical variables may lack value labels.")
+} else {
+  print(basename(cat_files))
+}
+```
+
+## Generate Data Dictionary
+
+We iterate through the files to extract metadata. We read only the first 100 rows to extract the metadata without processing the full dataset volume.
+
+```{r}
+#| label: extraction-logic
+#| warning: false
+#| message: false
+
+message("Generating Data Dictionary...")
+
+# Helper: Check for non-ASCII characters (Encoding Risk)
+check_encoding <- function(col) {
+  if (is.character(col)) {
+    # Check if any character in the vector is non-ASCII
+    # This often reveals if special characters (accents) are present
+    has_special <- any(str_detect(col, "[^\\x00-\\x7F]"), na.rm = TRUE)
+    return(if (has_special) "Contains Special/Non-ASCII" else "ASCII")
+  }
+  return("N/A")
+}
+
+report <- purrr::map_dfr(sas_files, function(file_path) {
+  
+  fname <- basename(file_path)
+  
+  # --- STRATEGY 0: DETECT FORMAT ---
+  # Read first 80 bytes to check for "SAS FILE" signature common in Transport files
+  header_check <- tryCatch({
+    con <- file(file_path, "rb")
+    on.exit(close(con))
+    raw_header <- readBin(con, "raw", n = 80)
+    rawToChar(raw_header)
+  }, error = function(e) "")
+  
+  is_transport <- grepl("SAS FILE", header_check, fixed = TRUE)
+  
+  if (is_transport) {
+    # --- STRATEGY 1A: HAVEN (XPORT) ---
+    tryCatch({
+      data <- read_xpt(file_path, n_max = 100)
+      
+      purrr::map_dfr(names(data), function(var) {
+        col <- data[[var]]
+        lbl <- attr(col, "label", exact = TRUE)
+        if (is.null(lbl)) lbl <- "(No Label)"
+        
+        val_lbls <- attr(col, "labels", exact = TRUE)
+        val_str <- if (!is.null(val_lbls)) paste(val_lbls, names(val_lbls), sep="=", collapse="; ") else ""
+        
+        tibble(
+          FileName = fname, VariableName = var, VariableLabel = lbl, 
+          DataType = class(col)[1], ValueLabels = substr(val_str, 1, 100),
+          EncodingCheck = check_encoding(col),
+          Method = "Haven (XPORT)"
+        )
+      })
+    }, error = function(e_xpt) {
+       tibble(
+        FileName = fname, 
+        VariableName = "ERROR", 
+        VariableLabel = paste("Detected SAS Transport but failed to read (likely CPORT format):", e_xpt$message), 
+        DataType = "Error", 
+        ValueLabels = "Requires SAS to convert CPORT to XPORT/SAS7BDAT",
+        EncodingCheck = "NA",
+        Method = "Failed (XPORT/CPORT)"
+      )
+    })
+    
+  } else {
+    # --- STRATEGY 1B: HAVEN (SAS7BDAT) ---
+    tryCatch({
+      # Attempt to read with Haven
+      data <- read_sas(file_path, n_max = 100)
+      
+      # If successful, extract metadata
+      purrr::map_dfr(names(data), function(var) {
+        col <- data[[var]]
+        lbl <- attr(col, "label", exact = TRUE)
+        if (is.null(lbl)) lbl <- "(No Label)"
+        
+        val_lbls <- attr(col, "labels", exact = TRUE)
+        val_str <- if (!is.null(val_lbls)) paste(val_lbls, names(val_lbls), sep="=", collapse="; ") else ""
+        
+        tibble(
+          FileName = fname, VariableName = var, VariableLabel = lbl, 
+          DataType = class(col)[1], ValueLabels = substr(val_str, 1, 100),
+          EncodingCheck = check_encoding(col),
+          Method = "Haven"
+        )
+      })
+      
+    }, error = function(e_haven) {
+      
+      # --- STRATEGY 2: SAS7BDAT (Fallback) ---
+      tryCatch({
+        # Haven failed, so try the pure-R sas7bdat package
+        data_fallback <- read.sas7bdat(file_path, debug = FALSE) 
+        
+        col_info <- attr(data_fallback, "column.info")
+        
+        if (!is.null(col_info)) {
+          purrr::map_dfr(col_info, function(col) {
+            tibble(
+              FileName = fname,
+              VariableName = col$name,
+              VariableLabel = if(!is.null(col$label) && col$label != "") col$label else "(No Label)",
+              DataType = col$type,
+              ValueLabels = "(Check Catalog)", 
+              EncodingCheck = "Unknown",
+              Method = "Fallback (sas7bdat)"
+            )
+          })
+        } else {
+          purrr::map_dfr(names(data_fallback), function(var) {
+               tibble(FileName = fname, VariableName = var, VariableLabel = "-", 
+                      DataType = "-", ValueLabels = "-", EncodingCheck = "Unknown", Method = "Fallback (Basic)")
+          })
+        }
+        
+      }, error = function(e_fallback) {
+        # --- BOTH FAILED ---
+        tibble(
+          FileName = fname, 
+          VariableName = "ERROR", 
+          VariableLabel = paste("Haven:", e_haven$message, "| Fallback:", e_fallback$message), 
+          DataType = "Error", 
+          ValueLabels = "",
+          EncodingCheck = "NA",
+          Method = "Failed"
+        )
+      })
+    })
+  }
+})
+
+# Display preview
+print("--- SAS Data Dictionary Preview ---")
+head(report)
+```
+
+## Save Results
+
+Save the dictionary to a CSV file for review.
+
+```{r}
+#| label: save-results
+
+output_dir <- "Results/Inspect_sas7bdat"
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+output_file <- file.path(output_dir, paste0("SAS_Dictionary_", format(Sys.Date(), "%Y%m%d"), ".csv"))
+
+write.csv(report, output_file, row.names = FALSE)
+print(paste("Data Dictionary saved to:", output_file))
+```
+
+## Curation Insights
+
+Use the generated CSV to perform these checks:
+
+-   **CPORT Detection:** Files flagged as Failed (XPORT/CPORT) are likely CPORT files. These are proprietary and the depositor needs to re-export them as standard XPORT (.xpt) or .sas7bdat using SAS.
+
+-   **Missing Catalogs:** If you see categorical variables (e.g., Treatment values 1, 2) with empty ValueLabels and NO .sas7bcat files were found in the inventory step. In this case, the metadata is incomplete and a request for the missing .sas7bcat file must be done.
+
+-   **Encoding Issues:** Check the EncodingCheck column. If it says "Contains Special/Non-ASCII", verify the text. If the text renders unreadable characters (e.g., Ã± instead of ñ), the file was likely saved in WINDOWS-1252 but read as UTF-8. You may need to use read_sas(..., encoding = "latin1") to fix it.
+
+## Additional Tools
+
+-   **SAS Universal Viewer:** It is a [free tool](https://support.sas.com/en/software/universal-viewer-support.html) from SAS Institute that allows you to view (but not edit) SAS datasets and catalogs without a full SAS license. It can be used to verify CPORT files.
+
+-   **StatTransfer:** is a [commercial tool](https://stattransfer.com/) for converting between statistical formats (SAS, SPSS, Stata, R). This tool can handle effective CPORT conversion.
+
+## Using the Non-Interactive R Script
+
+For users who want to run this analysis on a server (HPC), in a batch job, or from the command line, here is the pure R script version.
+
+Download the **R Script:** [**`Inspect_sas7bdat_Script.R`**](Scripts/Inspect_sas7bdat_Script.R)
+
+### Example HPC Submission Script (`Inspect_sas7bdat_submit.sh`)
+
+``` bash
+#!/bin/bash
+#SBATCH --job-name=sas_check
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=00:20:00
+#SBATCH --mem=8G
+#SBATCH --output=logs/sas_check_%j.log
+
+module load R
+
+# Define target directory
+TARGET_DIR="/scratch/user/project_data/clinical_trials"
+
+# Prepare folders
+mkdir -p Results/Inspect_sas7bdat
+mkdir -p logs
+
+# Run
+echo "Starting SAS Inspection on $TARGET_DIR"
+Rscript Inspect_sas7bdat_Script.R "$TARGET_DIR"
+```
+
+## References
+
+::: {#refs}
+:::

@@ -1,0 +1,683 @@
+---
+title-block-banner: true
+title: "FACS analysis of PDGFR-β+ live/deat cells"
+subtitle: "FACS processing notebook"
+date: today
+date-format: full
+author: 
+  - name: "Daniel Manrique-Castano"
+    orcid: 0000-0002-1912-1764
+    degrees:
+      - PhD
+    affiliation: 
+      - name: Univerisity Laval 
+        department: Psychiatry and Neuroscience
+        group: Laboratory of neurovascular interactions 
+note: "GitHub: https://daniel-manrique.github.io/"
+keywords: 
+  - PDGFR-β
+  - FACS
+  - Brain injury
+  - Bayesian modeling 
+  
+license: "CC BY"
+format:
+   pdf: 
+    toc: true
+    number-sections: true
+    colorlinks: true
+   html:
+    code-fold: true
+    embed-resources: true
+    toc: true
+    toc-depth: 2
+    toc-location: left
+    number-sections: true
+    theme: spacelab
+knitr:
+  opts_chunk: 
+    warning: false
+    message: false
+csl: science.csl
+bibliography: references.bib
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+# Preview
+
+In this notebook, we process the FACS files of PDGFR-β+ cells sorted from
+the ipsilateral and contralateral hemispheres of ischemic
+PDGFR-β-TdTomato mice.
+
+**Parent dataset:** We sorted PDGFR-β+ from ischemic PDGFR-β-TdTomato
+animals at 14 DPI. We took coronal \~2 mm-tick sections of the
+ipsilateral hemisphere comprising the injured areas exclusively. We took
+analogous tissue from the contralateral hemisphere as a baseline control
+for the mortality of cells.The raw FACS files (including compensation
+controls) are available at the OSF repository in
+['Datasets/FACS'](https://osf.io/zvnxa/).
+
+We perform scientific inference based on the percentage of Death
+PDGFR-β+ cells.
+
+# Install and load required packages
+
+Install and load all required packages. Please uncomment (delete #) the
+line code if installation is required. Load the installed libraries each
+time you start a new R session.
+
+The tools for flow cytometry analysis are from
+[bioconductor](https://bioconductor.org/):
+
+```{r}
+#| label: Facs_InstallPackages
+#| include: true
+#| warning: false
+#| message: false
+
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+#BiocManager::install("flowCore")
+#BiocManager::install("flowWorkspace")
+#BiocManager::install("openCyto")
+#BiocManager::install("flowAI")
+#BiocManager::install("ggcyto")
+#BiocManager::install("CytoML")
+
+
+#install.packages(c("dplyr", "brms", "kableExtra", "tidyverse", "patchwork"))
+```
+
+Next, we load the packages
+
+```{r}
+#| label: Facs_LoadPackages
+#| include: true
+#| warning: false
+#| message: false
+
+library(flowCore)
+library(CytoML)
+library(flowAI)
+library(flowWorkspace)
+library(ggcyto)
+library(tidyverse)
+#library(CytoExploreR) used to explore FACS results manually
+library(openCyto)
+#library(CytoExploreRData)
+library(knitr)
+library(kableExtra)
+library(dplyr)
+```
+
+# Visual themes
+
+```{r}
+#| label: Plot_Theme
+#| include: true
+#| warning: false
+#| message: false
+  
+Plot_theme <- theme_classic() +
+  theme(
+      plot.title = element_text(size=18, hjust = 0.5, face="bold"),
+      plot.subtitle = element_text(size = 10, color = "black"),
+      plot.caption = element_text(size = 12, color = "black"),
+      axis.line = element_line(colour = "black", size = 1.5, linetype = "solid"),
+      axis.ticks.length=unit(7,"pt"),
+     
+      axis.title.x = element_text(colour = "black", size = 16),
+      axis.text.x = element_text(colour = "black", size = 16, angle = 0, hjust = 0.5),
+      axis.ticks.x = element_line(colour = "black", size = 1),
+      
+      axis.title.y = element_text(colour = "black", size = 16),
+      axis.text.y = element_text(colour = "black", size = 16),
+      axis.ticks.y = element_line(colour = "black", size = 1),
+      
+      legend.position="right",
+      legend.direction="vertical",
+      legend.title = element_text(colour="black", face="bold", size=12),
+      legend.text = element_text(colour="black", size=10),
+      
+      plot.margin = margin(t = 10,  # Top margin
+                             r = 2,  # Right margin
+                             b = 10,  # Bottom margin
+                             l = 10) # Left margin
+      ) 
+```
+
+# Load the full dataset
+
+We load the full dataset (all FACS files) by specifying a folder and a
+pattern (.fcs).
+
+```{r}
+#| label: FACS_Load
+#| include: true
+#| warning: false
+#| message: false
+
+Facs <- read.flowSet(path = "FACS/Pdgfrb_TdTomato/", pattern = ".fcs", truncate_max_range.names = TRUE)
+
+# We check the number of files
+Facs
+
+# and the files columns
+colnames(Facs)
+```
+
+# Compensation
+
+We compensated the samples during the cells reading/sorting. Here, we
+generate a Spillover Spreading Matrix (SSM) and apply it to the whole
+dataset.
+
+```{r}
+#| label: FACS_Compensation
+#| include: true
+#| warning: false
+#| message: false
+
+# We use the unstained sample as reference
+spillover <- (Facs[[11]])
+
+Facs_comp <- compensate(Facs, spillover (Facs[[11]])$SPILL)
+Facs_comp[[1]]@parameters@data
+```
+
+# Quality check
+
+We perform a quality check using the `flowAI` package [@monaco2016;
+@giannimonaco2017]. This is an automated quality control based on the
+flow rate, signal acquisition and dynamic range.
+
+```{r}
+#| label: FACS_qc
+#| include: true
+#| warning: false
+#| message: false
+
+Facs_qc <- flow_auto_qc(Facs_comp, folder_results = "FACS/Pdgfrb_TdTomato/resultsQC")
+```
+
+# Transform flow cytometry data
+
+Next, we transform the data to correct the spectral overlap between the
+fluorochromes. I our case, we do not expect major deviations given the
+use of only two fluorochromes: the endogenous TdTomato signal and
+live/dead stain.
+
+```{r}
+#| label: FACS_Transform
+#| include: true
+#| warning: false
+#| message: false
+
+Facs_qc [[11]]@parameters@data
+
+Facs_transformation <- estimateLogicle(Facs_qc[[11]], colnames(Facs_qc[[1]][, 7:8]))
+Facs_clean <- transform(Facs_qc, Facs_transformation)
+Facs_clean[[1]]@parameters@data
+```
+
+# Visualize the results using ggCyto
+
+Now, we visualize our samples using `ggcyto`[@van2018] and its `autoplot` function. 
+
+```{r}
+#| label: fig-Facs_ScatterPlot
+#| include: true
+#| warning: false
+#| message: false
+#| results: false
+#| fig-cap: FSC-A / SSC-A plots for all samples
+#| fig-height: 20
+#| fig-width: 20
+
+Facs_Scatter <- autoplot(Facs_clean,
+         x="FSC-A", 
+         y="SSC-A", 
+         bins = 200)+
+        facet_wrap(~ name, ncol = 3) +
+        geom_density2d(colour = "black") +
+        ggtitle("Root population") +
+        Plot_theme +
+        theme(legend.position = c(0.85, 0.1))
+
+ggsave(
+  plot     = Facs_Scatter, 
+  filename = "Plots/FACS_Pdgfrb/Pdgfrb_FSCA-SSC-A.png", 
+  width    = 25, 
+  height   = 25, 
+  units    = "cm")
+
+Facs_Scatter
+```
+
+We see the scatter for all the samples.
+
+
+# Gating
+
+Now, we perform the gating of our samples. Given the objectives, we aim to achieve two gating steps. To select singlets, and PDGFR-β+ cells. After, w-ll obtain the percentage of dead cells in each brain. Given that our PDGFR-β signal is endogenous (not antibody-mediated) we do not deal with unspecific signal/staining of the samples. 
+
+## Singlets gating
+
+```{r}
+#| label: fig-Facs_SingletGating
+#| include: true
+#| warning: false
+#| message: false
+#| results: false
+#| fig-cap: Singlets gating
+#| fig-height: 4
+#| fig-width: 6
+
+gs <- GatingSet(Facs_clean)
+
+g_singlets <- polygonGate(filterId = "Singlets","FSC-A"=c(1e4,25e4,25e4,2e4),"FSC-H"=c(0e4,12e4,18e4,6e4)) 
+
+# define gate
+Facs_Singlets <- ggcyto(gs[[1]],
+                        aes(x="FSC-A",y="FSC-H"), 
+                        subset="root") +
+geom_hex(bins = 200)+
+ggtitle("") +
+geom_gate(g_singlets)+
+ggcyto_par_set(limits = "instrument") +
+Plot_theme +
+theme(legend.position = "none")
+
+ggsave(
+  plot     = Facs_Singlets, 
+  filename = "Plots/FACS_Pdgfrb/Pdgfrb_Facs_Singlets.png", 
+  width    = 9, 
+  height   = 9, 
+  units    = "cm")
+
+Facs_Singlets 
+```
+We plot an example to verify the gating. After verify it is coherent, we add the gates to the dataset.
+```{r}
+#| label: fig-Facs_AddSingletGating
+#| include: true
+#| warning: false
+#| message: false
+#| results: false
+
+add(gs,g_singlets) # add gate to GatingSet
+recompute(gs) 
+```
+Now, we plot the full set of singlet gatings.
+```{r}
+#| label: fig-Facs_SingletGatingAll
+#| include: true
+#| warning: false
+#| message: false
+#| results: false
+#| fig-cap: Singlets gating
+#| fig-height: 20
+#| fig-width: 20
+
+Facs_Singlets <- ggcyto(gs,aes(x="FSC-A",y="FSC-H"),subset="root")+
+  geom_hex(bins = 100)+
+  geom_gate("Singlets")+
+  geom_stats(adjust = 0.8)+
+  ggcyto_par_set(limits = "instrument")+
+  facet_wrap(~name,ncol = 3) +
+  ggtitle("Parent population: root") +
+  Plot_theme +
+  theme(legend.position = c(0.85, 0.1))
+
+ggsave(
+  plot     = Facs_Singlets, 
+  filename = "Plots/FACS_Pdgfrb/Facs_Singlets_All.png", 
+  width    = 25, 
+  height   = 25, 
+  units    = "cm")
+```
+
+## PDGFR-β gating
+
+```{r}
+#| label: fig-Facs_PdgfrbGating
+#| include: true
+#| warning: false
+#| message: false
+#| results: false
+#| fig-cap: PDGFR-β gating
+#| fig-height: 4
+#| fig-width: 6
+
+g_pdgfrb <- polygonGate(filterId = "Pdgfrb",
+                        "SSC-A"=c(0,0,2.7e5,2.7e5),
+                        "Yellow Green E 582/15-A"=c(2,4.5,4.5,2)) 
+
+Facs_Pdgfrb_Unstained <- ggcyto(gs[[11]],aes(
+  x="Yellow Green E 582/15-A",
+  y= "SSC-A"),
+  subset="Singlets")+
+  geom_hex(bins = 150)+
+  geom_density2d(colour = "black") +
+  geom_gate(g_pdgfrb)+
+  geom_stats(adjust = 0.8)+
+  ggcyto_par_set(limits = "instrument") +
+  ggtitle("") +
+  scale_x_continuous(name = "TdTomato") +
+  Plot_theme +
+  theme(legend.position = "none")
+
+ggsave(
+  plot     = Facs_Pdgfrb_Unstained, 
+  filename = "Plots/FACS_Pdgfrb/Facs_Pdgfrb_Unstained.png", 
+  width    = 9, 
+  height   = 9, 
+  units    = "cm")
+
+Facs_Pdgfrb_Contra<- ggcyto(gs[[5]],aes(
+  x="Yellow Green E 582/15-A",
+  y= "SSC-A"),
+  subset="Singlets")+
+  geom_hex(bins = 150)+
+  geom_density2d(colour = "black") +
+  geom_gate(g_pdgfrb)+
+  geom_stats(adjust = 0.8)+
+  ggcyto_par_set(limits = "instrument") +
+  ggtitle("") +
+  scale_x_continuous(name = "TdTomato") +
+  Plot_theme+
+  theme(legend.position = "none")
+
+ggsave(
+  plot     = Facs_Pdgfrb_Contra, 
+  filename = "Plots/FACS_Pdgfrb/Facs_Pdgfrb_Contra.png", 
+  width    = 9, 
+  height   = 9, 
+  units    = "cm")
+
+
+Facs_Pdgfrb_Ipsi <- ggcyto(gs[[6]],aes(
+  x="Yellow Green E 582/15-A",
+  y= "SSC-A"),
+  subset="Singlets")+
+  geom_hex(bins = 150)+
+  geom_density2d(colour = "black") +
+  geom_gate(g_pdgfrb)+
+  geom_stats(adjust = 0.8)+
+  ggcyto_par_set(limits = "instrument") +
+  ggtitle("") +
+  scale_x_continuous(name = "TdTomato") +
+  Plot_theme+
+  theme(legend.position = "none")
+
+ggsave(
+  plot     = Facs_Pdgfrb_Ipsi, 
+  filename = "Plots/FACS_Pdgfrb/Facs_Pdgfrb_Ipsi.png", 
+  width    = 9, 
+  height   = 9, 
+  units    = "cm")
+
+Facs_Pdgfrb_Unstained
+Facs_Pdgfrb_Contra
+Facs_Pdgfrb_Ipsi
+
+```
+Once satisfied with the gates, we add them to the dataset structure
+
+
+```{r}
+#| label: fig-Facs_AddPdgfrbGating
+#| include: true
+#| warning: false
+#| message: false
+#| results: false
+
+add(gs,g_pdgfrb,parent="Singlets") # add gate to GatingSet
+recompute(gs) # recompute GatingSet
+```
+
+Now, we plot all our samples
+```{r}
+#| label: fig-Facs_PdgfrbGatingAll
+#| include: true
+#| warning: false
+#| message: false
+#| results: false
+#| fig-cap: PDGFR-β gating
+#| fig-height: 20
+#| fig-width: 20
+
+Facs_Pdgfrb <- ggcyto(gs,
+       aes(x="Yellow Green E 582/15-A",
+           y="SSC-A"),
+           subset="Singlets")+
+  geom_hex(bins = 100)+
+  geom_gate("Pdgfrb")+
+  geom_stats(adjust = 0.8)+
+  geom_density2d(colour = "black") +
+  ggtitle("Parent population: singlets") +
+  scale_x_continuous(name = "TdTomato") +
+  ggcyto_par_set(limits = "instrument")+
+  facet_wrap(~ name, ncol = 3) +
+  Plot_theme +
+  theme(legend.position = c(0.85, 0.1))
+
+ggsave(
+  plot     = Facs_Pdgfrb, 
+  filename = "Plots/FACS_Pdgfrb/Facs_Pdgfrb_All.png", 
+  width    = 25, 
+  height   = 25, 
+  units    = "cm")
+```
+
+## Dead cells gating
+
+We perform the same gating procedure for the dead (staining positive) cells
+
+```{r}
+#| label: fig-Facs_LiveDeadGating
+#| include: true
+#| warning: false
+#| message: false
+#| results: false
+#| fig-cap: Live/Dead gating
+#| fig-height: 4
+#| fig-width: 6
+
+g_dead <- polygonGate(filterId = "Dead",
+                      "SSC-A"=c(0,0,2.7e5,2.7e5),
+                      "Red A 780/60 755 LP-A"=c(2.2,4.5,4.5,2.2)) # define gate
+
+Facs_Dead_Unstained <- ggcyto(gs[[11]],
+       aes(x="Red A 780/60 755 LP-A",
+           y= "SSC-A"),
+           subset="Pdgfrb")+
+  geom_hex(bins = 200)+
+  geom_stats(adjust = 0.8)+
+  geom_gate(g_dead)+
+  geom_density2d(colour = "black") +
+  ggcyto_par_set(limits = "instrument") +
+  ggtitle("") +
+  scale_x_continuous(name = "Live/dead") +
+  Plot_theme +
+  theme(legend.position = "none")
+
+ggsave(
+  plot     = Facs_Dead_Unstained, 
+  filename = "Plots/FACS_Pdgfrb/Facs_Dead_Unstained.png", 
+  width    = 9, 
+  height   = 9, 
+  units    = "cm")
+
+Facs_Dead_Contra <- ggcyto(gs[[9]],
+       aes(x="Red A 780/60 755 LP-A",
+           y= "SSC-A"),
+           subset="Pdgfrb")+
+  geom_hex(bins = 200)+
+  geom_stats(adjust = 0.8)+
+  geom_density2d(colour = "black") +
+  geom_gate(g_dead)+
+  ggcyto_par_set(limits = "instrument") +
+  ggtitle("") +
+  scale_x_continuous(name = "Live/dead") +
+  Plot_theme +
+  theme(legend.position = "none")
+
+ggsave(
+  plot     = Facs_Dead_Contra, 
+  filename = "Plots/FACS_Pdgfrb/Facs_Dead_Contra.png", 
+  width    = 9, 
+  height   = 9, 
+  units    = "cm")
+
+
+Facs_Dead_Ipsi <- ggcyto(gs[[10]],
+       aes(x="Red A 780/60 755 LP-A",
+           y= "SSC-A"),
+           subset="Pdgfrb")+
+  geom_hex(bins = 200)+
+  geom_stats(adjust = 0.8)+
+  geom_density2d(colour = "black") +
+  geom_gate(g_dead)+
+  ggcyto_par_set(limits = "instrument") +
+  ggtitle("") +
+  scale_x_continuous(name = "Live/dead") +
+  Plot_theme +
+  theme(legend.position = "none")
+
+ggsave(
+  plot     = Facs_Dead_Ipsi, 
+  filename = "Plots/FACS_Pdgfrb/Facs_Dead_Ipsi.png", 
+  width    = 9, 
+  height   = 9, 
+  units    = "cm")
+
+Facs_Dead_Unstained
+Facs_Dead_Contra
+Facs_Dead_Ipsi
+```
+Satisfied with the gating, we add it to the dataset tree.
+
+```{r}
+#| label: fig-Facs_AddLiveDeadGating
+#| include: true
+#| warning: false
+#| message: false
+#| results: false
+
+add(gs,g_dead,parent="Pdgfrb") # add gate to GatingSet
+recompute(gs) # recalculate Gatingset
+```
+Next, we pot all the samples
+```{r}
+#| label: fig-Facs_LiveDeadGatingAll
+#| include: true
+#| warning: false
+#| message: false
+#| results: false
+#| fig-cap: PDGFR-β gating
+#| fig-height: 20
+#| fig-width: 20
+
+Facs_Dead <- ggcyto(gs,
+       aes(x="Red A 780/60 755 LP-A",
+           y="SSC-A"),
+           subset="Pdgfrb")+
+  geom_hex(bins = 100)+
+  geom_gate("Dead")+
+  geom_stats(adjust = 0.8)+
+  geom_density2d(colour = "black") +
+  ggcyto_par_set(limits = "instrument")+
+  scale_x_continuous(name = "Live/dead") +
+  ggtitle("Parent population: PDGFR-β+") +
+  facet_wrap(~ name, ncol = 3) +
+  Plot_theme +
+  theme(legend.position = c(0.85, 0.1))
+
+ggsave(
+  plot     = Facs_Dead, 
+  filename = "Plots/FACS_Pdgfrb/Facs_Dead_All.png", 
+  width    = 25, 
+  height   = 25, 
+  units    = "cm")
+```
+
+
+# Get summary table
+
+Now, we get a summary table to perform scientific inference. 
+
+```{r}
+#| label: fig-Facs_SummaryTable
+#| include: true
+#| warning: false
+#| message: false
+#| results: false
+
+# We create a gating-based data frame
+Summary <- gs_pop_get_count_with_meta(gs)
+
+# We generate the proportion parent/child popualtion
+Summary <- Summary %>% mutate(percent_of_parent=Count/ParentCount)
+```
+Now, we subset further the table to obtain the rows of interest (PDGFR-B and Dead cells)
+```{r}
+#| label: fig-Facs_Tables
+#| include: true
+#| warning: false
+#| message: false
+#| results: false
+
+# For PDGFR-B cells
+Facs_Pdgfrb <- subset(Summary, Population == "/Singlets/Pdgfrb")
+Facs_Pdgfrb <- subset(Facs_Pdgfrb, select = c("sampleName", "percent_of_parent"))
+# Extract metadata information from image name
+Facs_Pdgfrb <- cbind(Facs_Pdgfrb, do.call(rbind, strsplit(Facs_Pdgfrb$sampleName, "[_\\.]"))[,1:2])
+
+# Eliminate File_Name column
+Facs_Pdgfrb  <- subset(Facs_Pdgfrb , select = -c(sampleName))
+
+# Change column names
+colnames(Facs_Pdgfrb ) <- c("Cells", "AnimalID", "Hemisphere")
+
+# Finally, we exclude the unstained control
+Facs_Pdgfrb <- subset(Facs_Pdgfrb, AnimalID != "Unstained")
+
+# Set factors
+Facs_Pdgfrb$Hemisphere <- factor(Facs_Pdgfrb$Hemisphere, levels = c("Contra", "Ipsi"))
+
+
+# For dead cells
+Facs_Dead <- subset(Summary, Population == "/Singlets/Pdgfrb/Dead")
+Facs_Dead <- subset(Facs_Dead, select = c("sampleName", "percent_of_parent"))
+# Extract metadata information from image name
+Facs_Dead <- cbind(Facs_Dead, do.call(rbind, strsplit(Facs_Dead$sampleName, "[_\\.]"))[,1:2])
+
+# Eliminate File_Name column
+Facs_Dead  <- subset(Facs_Dead , select = -c(sampleName))
+
+# Change column names
+colnames(Facs_Dead) <- c("Dead", "AnimalID", "Hemisphere")
+
+# Finally, we exclude the unstained control
+Facs_Dead <- subset(Facs_Dead, AnimalID != "Unstained")
+
+
+Facs_Dataset <- cbind(Facs_Pdgfrb, Facs_Dead$Dead)
+colnames(Facs_Dataset) <- c("Cells", "AnimalID", "Hemisphere", "Dead")
+
+write.csv(Facs_Dataset, "Data_Processed/Facs_Pdgfrb/Fcas_Pdgfrb_Cells-Dead.csv")
+```
+We save the results for further processing. We do the analysis in another notebook given that there is a conflict between R 4.4.1 (which is required to successfully use the `autoplot` function) and `brms`. Fitting `brms` models in R 4.4.1 lead R-studio to crash. For that reason, we use R 4.1.2 to fit models with `brms`. 
+
+# References
+
+::: {#refs}
+:::
+
+```{r}
+sessionInfo()
+```

@@ -1,0 +1,348 @@
+---
+title: "Image Quality Control"
+author: "Natalie Williams"
+date: "2025-10-14"
+format: 
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+bibliography: references.bib
+params:
+  target_dir: "data/Inspect_Images/" 
+---
+
+## Overview
+
+This notebook provides a workflow for performing standardized quality control checks on image files. It automatically scans a directory for common image formats (`.jpg`, `.jpeg`, `.png`, `.tiff`), extracts comprehensive metadata, and generates summary reports. In digital preservation, images are more than just visual content; they are complex digital objects composed of **technical properties** (file format, compression, dimensions) and **embedded metadata** (EXIF/IPTC data).
+
+This notebook automates the quality control (QC) process by integrating three specialized R packages:
+
+-   **`digest`**: Calculates MD5 checksums for fixity and duplicate detection [@digest].
+-   **`magick`**: Validates file headers and extracts elemental properties (Dimensions, Colorspace) [@magick].
+-   **`exiftoolr`**: Harvests deep archival metadata (Camera Model, GPS, Software) [@exiftoolr].
+
+Finally, we offer a guide on how to use the extracted metadata to identify common curation issues, such as inconsistent image dimensions, missing location data, or potential privacy concerns.
+
+------------------------------------------------------------------------
+
+## One-time setup
+
+Before running this notebook, ensure the required R packages and the `ExifTool` command-line software are installed.
+
+### R Packages
+
+The following R packages are required. If you don't have them, uncomment this code and run it once in your R console:
+
+```{r}
+# install.packages(c("tidyverse", "digest", "magick", "exiftoolr", "rstudioapi"))
+```
+
+### ExifTool software
+
+The `exiftoolr` package is a wrapper around a command-line tool called **ExifTool**. You must install this tool for the detailed metadata extraction to work. **Run the following command *once* in your console to install the software.**
+
+```{r}
+# exiftoolr::install_exiftool()
+```
+
+------------------------------------------------------------------------
+
+## Load libraries
+
+Load all the necessary libraries for the session.
+
+```{r load-libraries}
+#| label: load-libraries
+#| message: false
+#| 
+library(tidyverse)
+library(digest)
+library(magick)
+library(exiftoolr)
+library(rstudioapi)
+```
+
+------------------------------------------------------------------------
+
+## Select a target directory
+
+This block allows for interactive selection of the image directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.
+
+```{r select-directory}
+#| label: select-target-dir
+
+# 1. Try to select interactively if in RStudio
+if (interactive() && .Platform$OS.type == "windows") { 
+  # .Platform check helps avoid errors in some non-interactive rendering contexts
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select Image Directory")
+} else {
+  selected_dir <- NULL
+}
+
+# 2. Logic to determine final directory (Interactive vs Parameter)
+if (!is.null(selected_dir)) {
+  target_dir <- selected_dir
+} else {
+  target_dir <- params$target_dir
+}
+
+print(paste("Analyzing directory:", target_dir))
+```
+
+### Find Image Files
+
+Here, we calculate an MD5 Checksum for every file. This alphanumeric string acts as a unique fingerprint. If a single bit of the file changes in the future (due to disk failure or accidental modification) [@rosenthal2010], this checksum will change, alerting the curator to corruption.
+
+```{r find-files}
+#| label: inventory-fixity
+
+# Find all image files recursively using Regex for extensions
+image_files <- list.files(
+  path = target_dir,
+  pattern = "\\.(jpg|jpeg|png|tiff|tif)$",
+  recursive = TRUE,
+  full.names = TRUE,
+  ignore.case = TRUE
+)
+
+print(paste("Found", length(image_files), "potential image files. Calculating checksums..."))
+
+# Inventory and Checksum Calculation
+file_inventory <- tibble(file_path = image_files) %>%
+  mutate(
+    filename = basename(file_path),
+    # Calculate MD5 hash for fixity
+    md5_checksum = map_chr(file_path, digest::digest, file = TRUE, algo = "md5")
+  )
+
+head(file_inventory)
+```
+
+------------------------------------------------------------------------
+
+## Technical Validation using `magick`
+
+The `magick` package allow us to confirm these files are readable and for extracting basic technical properties. This step loops through each file, reads its information, and collects it into a single table.
+
+```{r magick-summary}
+#| label: magick-analysis
+#| message: false
+#| warning: false
+
+magick_results <- purrr::map_dfr(image_files, function(fp) {
+  tryCatch({
+    img <- image_read(fp)
+    info <- image_info(img)
+    
+    # Return a clean row of data
+    tibble(
+      file_path = fp,
+      format_magick = info$format,
+      width = info$width,
+      height = info$height,
+      colorspace = info$colorspace,
+      filesize_mb = round(info$filesize / 1024^2, 2),
+      valid_image = TRUE
+    )
+  }, error = function(e) {
+    # Log corrupt files
+    tibble(
+      file_path = fp,
+      valid_image = FALSE,
+      error_msg = e$message
+    )
+  })
+})
+
+print("Technical validation complete.")
+```
+
+------------------------------------------------------------------------
+
+## Detailed EXIF Metadata with `exiftoolr`
+
+This step uses `exiftoolr` to extract all available embedded metadata from the image files. This can include hundreds of fields detailing everything from the camera settings and lens information to GPS coordinates and software versions. Please note that the output can have many columns.
+
+```{r exiftool-summary}
+#| label: exif-extraction
+#| results: 'hide'
+
+# Run ExifTool on all files at once
+exif_results <- tryCatch({
+  exif_read(image_files) %>%
+    mutate(SourceFile = image_files) # Ensure joining key exists
+}, error = function(e) {
+  message("ExifTool warning: ", e$message)
+  return(data.frame(SourceFile = image_files))
+})
+
+# Select high-value columns for the report (customizable)
+common_cols <- intersect(names(exif_results), c("SourceFile", "Make", "Model", "Software", "DateTimeOriginal", "GPSLatitude", "GPSLongitude", "Megapixels"))
+
+if(length(common_cols) > 0) {
+  exif_subset <- exif_results %>% select(all_of(common_cols))
+} else {
+  exif_subset <- exif_results
+}
+```
+
+------------------------------------------------------------------------
+
+## Curation Intelligence
+
+We now merge the three data streams (Inventory, Magick, Exif) to perform automated quality control. We apply logic to "flag" files that deviate from the norm or pose risks.
+
+The Flagging Logic:
+
+- **Duplicate_File:** Files sharing the exact same MD5 checksum (Redundant storage).
+
+- **Privacy_Risk:** Files containing GPSLatitude data (requires review).
+
+- **Dimension_Outlier:** Images that do not match the Mode (most common) width/height of the dataset.
+
+- **Corrupt:** Files that magick failed to read.
+
+```{r}
+#| label: merge-and-flag
+
+# 1. Merge all data sources
+full_report <- file_inventory %>%
+  left_join(magick_results, by = "file_path") %>%
+  left_join(exif_subset, by = c("file_path" = "SourceFile"))
+
+# 2. Defensive Step: Ensure critical columns exist
+# If no files have GPS, these columns won't exist. We create them as NA to prevent errors.
+cols_to_ensure <- c("GPSLatitude", "width", "height")
+
+for (col in cols_to_ensure) {
+  if (!col %in% names(full_report)) {
+    full_report[[col]] <- NA
+  }
+}
+
+# 3. Calculate the "Mode" (most common) dimensions for outlier detection
+get_mode <- function(v) {
+  # Remove NAs before calculating mode to avoid errors
+  v <- na.omit(v)
+  if (length(v) == 0) return(NA)
+  uniqv <- unique(v)
+  uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+
+mode_width <- get_mode(full_report$width)
+mode_height <- get_mode(full_report$height)
+
+# 4. Apply Curation Flags
+curated_data <- full_report %>%
+  group_by(md5_checksum) %>%
+  mutate(is_duplicate = n() > 1) %>%
+  ungroup() %>%
+  mutate(
+    flag_duplicate = ifelse(is_duplicate, "DUPLICATE", NA),
+    # Check if valid_image exists; if not, assume FALSE (safety check)
+    flag_corrupt = ifelse(exists("valid_image") & !valid_image, "CORRUPT", NA),
+    # Safe check for GPS: if it was missing, we made it NA above, so this just returns NA
+    flag_privacy_gps = ifelse(!is.na(GPSLatitude), "HAS_GPS_DATA", NA),
+    # Safe check for outliers: handles cases where width/height might be NA
+    flag_outlier = ifelse(
+      !is.na(width) & !is.na(height) & (width != mode_width | height != mode_height), 
+      "DIMENSION_OUTLIER", 
+      NA
+    )
+  ) %>%
+  # Combine flags into a single readable column
+  unite("curation_flags", starts_with("flag_"), sep = "; ", na.rm = TRUE, remove = FALSE)
+
+# Preview flagged issues
+print("--- Flagged Issues for Review ---")
+curated_data %>% 
+  filter(curated_data$curation_flags != "") %>%
+  select(filename, curation_flags) %>%
+  head()
+```
+
+```{r}
+#| label: save-results
+
+output_dir <- "Results/Inspect_Images"
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+timestamp <- format(Sys.Date(), "%Y%m%d")
+output_file <- paste0(output_dir, "/Curation_Report_Images_", timestamp, ".csv")
+
+write.csv(curated_data, output_file, row.names = FALSE)
+
+print(paste("Curation report saved to:", output_file))
+```
+------------------------------------------------------------------------
+
+## Curation Insights
+
+Use the generated CSV to perform these checks:
+
+- **Privacy Risks (GPS):** Filter the CSV for flag_privacy_gps == "HAS_GPS_DATA". These images contain embedded location coordinates (Latitude/Longitude). If the dataset involves human subjects or protected species, these coordinates must be scrubbed using ExifTool (-gps:all=) before publication to prevent "mosaic effect" re-identification.
+
+- **Format Obsolescence:** Check the format_magick column. While .jpg and .tiff are standard, proprietary raw formats (e.g., .CR2, .NEF, .ARW) are less stable for long-term preservation. It is recommended to retain the raw file for the "preservation master" but generate a standard TIFF or JPEG 2000 copy for the "access derivative."
+
+- **Digital Fixity (Duplicates):** Filter for flag_duplicate == "DUPLICATE". These files share the exact same MD5 hash, meaning they are bit-for-bit identical, even if they have different filenames.
+
+
+## Additional Tools & Resources
+
+While R is excellent for batch processing and statistical summaries, visual and command-line tools are often required for deep analysis or manual correction.
+
+- **ExifTool (Command Line): **The industry standard for reading, writing, and editing metadata. Unlike the R wrapper, the direct command line allows you to write data (e.g., scrubbing GPS tags) (see https://https://exiftool.org/).
+
+- **JHOVE (JSTOR/Harvard Object Validation Environment):** A widely used [digital preservation tool](https://jhove.openpreservation.org/). It performs stricter format validation than magick. It can verify if a file claims to be a TIFF but violates the specific version 6.0 specification.
+
+- **Tesseract OCR:** Is an optical [character recognition engine](https://github.com/tesseract-ocr/tesseract). It is essential for "Content Analysis." It can scan thousands of images to detect text, helping curators flag files that contain sensitive documents (PII) which might have been mixed into a photo dataset.
+
+- **ImageMagick (GUI/CLI):** It is a [tool](ImageMagick.org) Useful for batch converting proprietary raw formats into preservation-ready TIFFs.
+
+
+## Using the Non-Interactive R Script
+
+For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
+
+**Prerequisites:** \* R with `tidyverse`, `magick`, and `exiftoolr` installed. \* **ExifTool** command-line software must be installed on the system.
+
+Download the **R Script:** [**`Inspect_Images_Script.R`**](Scripts/Inspect_Images_Script.R)
+
+### Example HPC Submission Script
+
+``` bash
+#!/bin/bash
+#SBATCH --job-name=img_curation     
+#SBATCH --nodes=1                   
+#SBATCH --ntasks=1                  
+#SBATCH --cpus-per-task=4           
+#SBATCH --mem=16G                  
+#SBATCH --time=01:00:00             
+#SBATCH --output=logs/img_qc_%j.log 
+#SBATCH --error=logs/img_qc_%j.err  
+
+# 1. Load Modules
+# Adjust these based on your specific cluster's environment
+module load R/4.2.0           
+module load exiftool          
+
+# 2. Define Variables
+# Point this to the folder containing your images
+TARGET_DIR="/scratch/user/project_data/images_raw"
+
+# 3. Run the R Script
+# We pass the target directory as the first argument ($1)
+echo "Starting Image Curation Pipeline on $TARGET_DIR"
+
+Rscript Inspect_Images_Script.R "$TARGET_DIR"
+
+echo "Job finished."
+```
+
+
+## References
+
+::: {#refs}
+:::
+
