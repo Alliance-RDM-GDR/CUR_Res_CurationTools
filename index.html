@@ -586,9 +586,22 @@ Research Data Curator’s Toolbox
 Expert Workflows for Digital Curation &amp; Preservation
 </p>
 </div>
+<div class="callout callout-style-default callout-important callout-titled" title="Work in Progress">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Work in Progress
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This resource is currently under development. Please note that the French version is pending. For feedback, questions, or suggestions, please contact us at <a href="mailto:curators@frdr-dfdr.ca">curators@frdr-dfdr.ca</a>.</p>
+</div>
+</div>
 <section id="welcome" class="level2" data-number="0.1">
 <h2 data-number="0.1" class="anchored" data-anchor-id="welcome"><span class="header-section-number">0.1</span> Welcome</h2>
-<p>This guide provides a collection of robust, documented R workflows to support Research Data Management (RDM) — from the moment data is ingested to its final archival reporting. Our goal is to empower curators to transform raw submissions into FAIR (Findable, Accessible, Interoperable, Reusable) research objects.</p>
+<p>This guide provides a collection of documented R workflows to support Research Data Management (RDM) from the moment data is ingested to its final archival reporting. Our goal is to empower curators to transform raw submissions into FAIR (Findable, Accessible, Interoperable, Reusable) research objects.</p>
 <div class="grid">
 <div class="g-col-12 g-col-md-4 nav-card p-3">
 <h3 class="nav-card-title anchored">
@@ -1127,46 +1140,50 @@ Expert Workflows for Digital Curation &amp; Preservation
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">p</span><span class="ot"> style</span><span class="op">=</span><span class="st">"font-size: 1.5rem; opacity: 0.9; font-family: 'Montserrat', sans-serif;"</span><span class="dt">&gt;</span>Expert Workflows for Digital Curation &amp; Preservation<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## Welcome</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>This guide provides a collection of robust, documented R workflows to support Research Data Management (RDM) — from the moment data is ingested to its final archival reporting. Our goal is to empower curators to transform raw submissions into FAIR (Findable, Accessible, Interoperable, Reusable) research objects.</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>::: {.callout-important title="Work in Progress"}</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>This resource is currently under development. Please note that the French version is pending. For feedback, questions, or suggestions, please contact us at <span class="co">[</span><span class="ot">curators@frdr-dfdr.ca</span><span class="co">](mailto:curators@frdr-dfdr.ca)</span>.</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>:::::: grid</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>::: {.g-col-12 .g-col-md-4 .nav-card .p-3}</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">h3</span><span class="ot"> class</span><span class="op">=</span><span class="st">"nav-card-title"</span><span class="dt">&gt;</span>🛠️ Triage &amp; Inspect<span class="dt">&lt;/</span><span class="kw">h3</span><span class="dt">&gt;</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">## Welcome</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>This guide provides a collection of documented R workflows to support Research Data Management (RDM) from the moment data is ingested to its final archival reporting. Our goal is to empower curators to transform raw submissions into FAIR (Findable, Accessible, Interoperable, Reusable) research objects.</span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>Automated analysis of file extensions, formats, and basic integrity to identify immediate risks.</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>::: {.g-col-12 .g-col-md-4 .nav-card .p-3}</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">h3</span><span class="ot"> class</span><span class="op">=</span><span class="st">"nav-card-title"</span><span class="dt">&gt;</span>🔍 Deep Validation<span class="dt">&lt;/</span><span class="kw">h3</span><span class="dt">&gt;</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>Specialized inspection for Tabular, Spatial, and Scientific data to ensure internal consistency.</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>::: {.g-col-12 .g-col-md-4 .nav-card .p-3}</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">h3</span><span class="ot"> class</span><span class="op">=</span><span class="st">"nav-card-title"</span><span class="dt">&gt;</span>📊 Archival Reporting<span class="dt">&lt;/</span><span class="kw">h3</span><span class="dt">&gt;</span></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>Generation of standardized curation reports, metadata summaries, and risk logs for depositors.</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>::::::</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>:::::: grid</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>::: {.g-col-12 .g-col-md-4 .nav-card .p-3}</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">h3</span><span class="ot"> class</span><span class="op">=</span><span class="st">"nav-card-title"</span><span class="dt">&gt;</span>🛠️ Triage &amp; Inspect<span class="dt">&lt;/</span><span class="kw">h3</span><span class="dt">&gt;</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>Automated analysis of file extensions, formats, and basic integrity to identify immediate risks.</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>::: {.g-col-12 .g-col-md-4 .nav-card .p-3}</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">h3</span><span class="ot"> class</span><span class="op">=</span><span class="st">"nav-card-title"</span><span class="dt">&gt;</span>🔍 Deep Validation<span class="dt">&lt;/</span><span class="kw">h3</span><span class="dt">&gt;</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>Specialized inspection for Tabular, Spatial, and Scientific data to ensure internal consistency.</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>::: {.g-col-12 .g-col-md-4 .nav-card .p-3}</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">h3</span><span class="ot"> class</span><span class="op">=</span><span class="st">"nav-card-title"</span><span class="dt">&gt;</span>📊 Archival Reporting<span class="dt">&lt;/</span><span class="kw">h3</span><span class="dt">&gt;</span></span>
 <span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="fu">### How to use this Guide</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>Generation of standardized curation reports, metadata summaries, and risk logs for depositors.</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>::::::</span>
 <span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>Each chapter introduces a specific curation task or file format. Within each notebook, you will find:</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
 <span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**Curation Objectives**: What we are looking for and why it matters for preservation.</span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**Automated Checks**: R code snippets that perform technical inspection.</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**Curation Insights**: Guidance on how to interpret flags and risks.</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**Non-Interactive Scripts**: Standalone R scripts for batch processing in HPC or server environments.</span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>::: callout-note</span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="fu">## Preservation First</span></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>This toolbox prioritizes long-term accessibility. We emphasize detecting proprietary lock-ins, zero-byte files, and privacy risks (PII) before data is published.</span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="fu">### How to use this Guide</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>Each chapter introduces a specific curation task or file format. Within each notebook, you will find:</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**Curation Objectives**: What we are looking for and why it matters for preservation.</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**Automated Checks**: R code snippets that perform technical inspection.</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**Curation Insights**: Guidance on how to interpret flags and risks.</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**Non-Interactive Scripts**: Standalone R scripts for batch processing in HPC or server environments.</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>::: callout-note</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="fu">## Preservation First</span></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>This toolbox prioritizes long-term accessibility. We emphasize detecting proprietary lock-ins, zero-byte files, and privacy risks (PII) before data is published.</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

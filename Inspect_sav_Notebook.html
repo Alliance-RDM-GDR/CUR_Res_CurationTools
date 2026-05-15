@@ -555,8 +555,8 @@ div.csl-indent {
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(spss_files)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "data/Inspect_sav/GovernanceSurvey.sav"     
-[2] "data/Inspect_sav/GovernanceSurvey_Data.sav"</code></pre>
+<pre><code>[1] "data/Inspect_sav//GovernanceSurvey_Data.sav"
+[2] "data/Inspect_sav//GovernanceSurvey.sav"     </code></pre>
 </div>
 </div>
 </section>
@@ -747,7 +747,7 @@ div.csl-indent {
 <h2 data-number="11.10" class="anchored" data-anchor-id="references"><span class="header-section-number">11.10</span> References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-wickham2023" class="csl-entry" role="listitem">
-Wickham, Hadley, Mine Çetinkaya-Rundel, and Grolemund Garret. 2023. <em>R for Data Science</em>. O’Reilly Media, Inc. <a href="https://r4ds.hadley.nz/">https://r4ds.hadley.nz/</a>.
+Wickham, Hadley, Mine Ã‡etinkaya-Rundel, and Grolemund Garret. 2023. <em>R for Data Science</em>. O’Reilly Media, Inc. <a href="https://r4ds.hadley.nz/">https://r4ds.hadley.nz/</a>.
 </div>
 </div>
 
@@ -1237,7 +1237,7 @@ Wickham, Hadley, Mine Çetinkaya-Rundel, and Grolemund Garret. 2023. <em>R for D
 <span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## Overview</span></span>
 <span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>Unlike generic formats like CSV, SPSS files (<span class="in">`.sav`</span>) utilize a **"Labelled Data"** paradigm where the codebook is embedded directly within the file <span class="co">[</span><span class="ot">@wickham2023</span><span class="co">]</span>. </span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>Unlike generic formats like CSV, SPSS files (<span class="in">`.sav`</span>) utilize a **"Labelled Data"** paradigm where the codebook is embedded directly within the file <span class="co">[</span><span class="ot">@wickham2023</span><span class="co">]</span>.</span>
 <span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Curation Goal"}</span>
 <span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>Extract and preserve the embedded codebook. Our objective is to inventory variable labels, value mappings, and missing value definitions to ensure the data's semantic meaning is not lost during long-term preservation.</span>

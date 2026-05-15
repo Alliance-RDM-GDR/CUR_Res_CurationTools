@@ -951,7 +951,7 @@ div.csl-indent {
 <h2 data-number="21.9" class="anchored" data-anchor-id="additional-tools-resources"><span class="header-section-number">21.9</span> Additional Tools &amp; Resources</h2>
 <p>While R is excellent for batch processing and statistical summaries, visual and command-line tools are often required for deep analysis or manual correction.</p>
 <ul>
-<li><p><strong>ExifTool (Command Line): </strong>The industry standard for reading, writing, and editing metadata. Unlike the R wrapper, the direct command line allows you to write data (e.g., scrubbing GPS tags) (see https://https://exiftool.org/).</p></li>
+<li><p><strong>ExifTool (Command Line):</strong> The industry standard for reading, writing, and editing metadata. Unlike the R wrapper, the direct command line allows you to write data (e.g., scrubbing GPS tags) (see https://https://exiftool.org/).</p></li>
 <li><p><strong>JHOVE (JSTOR/Harvard Object Validation Environment):</strong> A widely used <a href="https://jhove.openpreservation.org/">digital preservation tool</a>. It performs stricter format validation than magick. It can verify if a file claims to be a TIFF but violates the specific version 6.0 specification.</p></li>
 <li><p><strong>Tesseract OCR:</strong> Is an optical <a href="https://github.com/tesseract-ocr/tesseract">character recognition engine</a>. It is essential for “Content Analysis.” It can scan thousands of images to detect text, helping curators flag files that contain sensitive documents (PII) which might have been mixed into a photo dataset.</p></li>
 <li><p><strong>ImageMagick (GUI/CLI):</strong> It is a <a href="ImageMagick.org">tool</a> Useful for batch converting proprietary raw formats into preservation-ready TIFFs.</p></li>
@@ -1693,13 +1693,13 @@ Rosenthal, David S. H. 2010. <span>“Bit Preservation: A Solved Problem?”</sp
 <span id="cb20-214"><a href="#cb20-214" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-215"><a href="#cb20-215" aria-hidden="true" tabindex="-1"></a>The Flagging Logic:</span>
 <span id="cb20-216"><a href="#cb20-216" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-217"><a href="#cb20-217" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Duplicate_File:** Files sharing the exact same MD5 checksum (Redundant storage).</span>
+<span id="cb20-217"><a href="#cb20-217" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Duplicate_File:** Files sharing the exact same MD5 checksum (Redundant storage).</span>
 <span id="cb20-218"><a href="#cb20-218" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-219"><a href="#cb20-219" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Privacy_Risk:** Files containing GPSLatitude data (requires review).</span>
+<span id="cb20-219"><a href="#cb20-219" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Privacy_Risk:** Files containing GPSLatitude data (requires review).</span>
 <span id="cb20-220"><a href="#cb20-220" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-221"><a href="#cb20-221" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Dimension_Outlier:** Images that do not match the Mode (most common) width/height of the dataset.</span>
+<span id="cb20-221"><a href="#cb20-221" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Dimension_Outlier:** Images that do not match the Mode (most common) width/height of the dataset.</span>
 <span id="cb20-222"><a href="#cb20-222" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-223"><a href="#cb20-223" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Corrupt:** Files that magick failed to read.</span>
+<span id="cb20-223"><a href="#cb20-223" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Corrupt:** Files that magick failed to read.</span>
 <span id="cb20-224"><a href="#cb20-224" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-227"><a href="#cb20-227" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb20-228"><a href="#cb20-228" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: merge-and-flag</span></span>
@@ -1773,76 +1773,74 @@ Rosenthal, David S. H. 2010. <span>“Bit Preservation: A Solved Problem?”</sp
 <span id="cb20-298"><a href="#cb20-298" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-299"><a href="#cb20-299" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Curation report saved to:"</span>, output_file))</span>
 <span id="cb20-300"><a href="#cb20-300" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb20-301"><a href="#cb20-301" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
-<span id="cb20-302"><a href="#cb20-302" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-303"><a href="#cb20-303" aria-hidden="true" tabindex="-1"></a><span class="fu">## Curation Insights</span></span>
-<span id="cb20-304"><a href="#cb20-304" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-305"><a href="#cb20-305" aria-hidden="true" tabindex="-1"></a>Use the generated CSV to perform these checks:</span>
-<span id="cb20-306"><a href="#cb20-306" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-307"><a href="#cb20-307" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Privacy Risks (GPS):** Filter the CSV for flag_privacy_gps == "HAS_GPS_DATA". These images contain embedded location coordinates (Latitude/Longitude). If the dataset involves human subjects or protected species, these coordinates must be scrubbed using ExifTool (-gps:all=) before publication to prevent "mosaic effect" re-identification.</span>
-<span id="cb20-308"><a href="#cb20-308" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-309"><a href="#cb20-309" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Format Obsolescence:** Check the format_magick column. While .jpg and .tiff are standard, proprietary raw formats (e.g., .CR2, .NEF, .ARW) are less stable for long-term preservation. It is recommended to retain the raw file for the "preservation master" but generate a standard TIFF or JPEG 2000 copy for the "access derivative."</span>
-<span id="cb20-310"><a href="#cb20-310" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-311"><a href="#cb20-311" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Digital Fixity (Duplicates):** Filter for flag_duplicate == "DUPLICATE". These files share the exact same MD5 hash, meaning they are bit-for-bit identical, even if they have different filenames.</span>
-<span id="cb20-312"><a href="#cb20-312" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-301"><a href="#cb20-301" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-302"><a href="#cb20-302" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb20-303"><a href="#cb20-303" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-304"><a href="#cb20-304" aria-hidden="true" tabindex="-1"></a><span class="fu">## Curation Insights</span></span>
+<span id="cb20-305"><a href="#cb20-305" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-306"><a href="#cb20-306" aria-hidden="true" tabindex="-1"></a>Use the generated CSV to perform these checks:</span>
+<span id="cb20-307"><a href="#cb20-307" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-308"><a href="#cb20-308" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Privacy Risks (GPS):** Filter the CSV for flag_privacy_gps == "HAS_GPS_DATA". These images contain embedded location coordinates (Latitude/Longitude). If the dataset involves human subjects or protected species, these coordinates must be scrubbed using ExifTool (-gps:all=) before publication to prevent "mosaic effect" re-identification.</span>
+<span id="cb20-309"><a href="#cb20-309" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-310"><a href="#cb20-310" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Format Obsolescence:** Check the format_magick column. While .jpg and .tiff are standard, proprietary raw formats (e.g., .CR2, .NEF, .ARW) are less stable for long-term preservation. It is recommended to retain the raw file for the "preservation master" but generate a standard TIFF or JPEG 2000 copy for the "access derivative."</span>
+<span id="cb20-311"><a href="#cb20-311" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-312"><a href="#cb20-312" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Digital Fixity (Duplicates):** Filter for flag_duplicate == "DUPLICATE". These files share the exact same MD5 hash, meaning they are bit-for-bit identical, even if they have different filenames.</span>
 <span id="cb20-313"><a href="#cb20-313" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-314"><a href="#cb20-314" aria-hidden="true" tabindex="-1"></a><span class="fu">## Additional Tools &amp; Resources</span></span>
 <span id="cb20-315"><a href="#cb20-315" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-316"><a href="#cb20-316" aria-hidden="true" tabindex="-1"></a>While R is excellent for batch processing and statistical summaries, visual and command-line tools are often required for deep analysis or manual correction.</span>
 <span id="cb20-317"><a href="#cb20-317" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-318"><a href="#cb20-318" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**ExifTool (Command Line): **The industry standard for reading, writing, and editing metadata. Unlike the R wrapper, the direct command line allows you to write data (e.g., scrubbing GPS tags) (see https://https://exiftool.org/).</span>
+<span id="cb20-318"><a href="#cb20-318" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**ExifTool (Command Line):** The industry standard for reading, writing, and editing metadata. Unlike the R wrapper, the direct command line allows you to write data (e.g., scrubbing GPS tags) (see https://https://exiftool.org/).</span>
 <span id="cb20-319"><a href="#cb20-319" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-320"><a href="#cb20-320" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**JHOVE (JSTOR/Harvard Object Validation Environment):** A widely used <span class="co">[</span><span class="ot">digital preservation tool</span><span class="co">](https://jhove.openpreservation.org/)</span>. It performs stricter format validation than magick. It can verify if a file claims to be a TIFF but violates the specific version 6.0 specification.</span>
+<span id="cb20-320"><a href="#cb20-320" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**JHOVE (JSTOR/Harvard Object Validation Environment):** A widely used <span class="co">[</span><span class="ot">digital preservation tool</span><span class="co">](https://jhove.openpreservation.org/)</span>. It performs stricter format validation than magick. It can verify if a file claims to be a TIFF but violates the specific version 6.0 specification.</span>
 <span id="cb20-321"><a href="#cb20-321" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-322"><a href="#cb20-322" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Tesseract OCR:** Is an optical <span class="co">[</span><span class="ot">character recognition engine</span><span class="co">](https://github.com/tesseract-ocr/tesseract)</span>. It is essential for "Content Analysis." It can scan thousands of images to detect text, helping curators flag files that contain sensitive documents (PII) which might have been mixed into a photo dataset.</span>
+<span id="cb20-322"><a href="#cb20-322" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Tesseract OCR:** Is an optical <span class="co">[</span><span class="ot">character recognition engine</span><span class="co">](https://github.com/tesseract-ocr/tesseract)</span>. It is essential for "Content Analysis." It can scan thousands of images to detect text, helping curators flag files that contain sensitive documents (PII) which might have been mixed into a photo dataset.</span>
 <span id="cb20-323"><a href="#cb20-323" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-324"><a href="#cb20-324" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**ImageMagick (GUI/CLI):** It is a <span class="co">[</span><span class="ot">tool</span><span class="co">](ImageMagick.org)</span> Useful for batch converting proprietary raw formats into preservation-ready TIFFs.</span>
+<span id="cb20-324"><a href="#cb20-324" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**ImageMagick (GUI/CLI):** It is a <span class="co">[</span><span class="ot">tool</span><span class="co">](ImageMagick.org)</span> Useful for batch converting proprietary raw formats into preservation-ready TIFFs.</span>
 <span id="cb20-325"><a href="#cb20-325" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-326"><a href="#cb20-326" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-327"><a href="#cb20-327" aria-hidden="true" tabindex="-1"></a><span class="fu">## Using the Non-Interactive R Script</span></span>
-<span id="cb20-328"><a href="#cb20-328" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-329"><a href="#cb20-329" aria-hidden="true" tabindex="-1"></a>For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.</span>
-<span id="cb20-330"><a href="#cb20-330" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-331"><a href="#cb20-331" aria-hidden="true" tabindex="-1"></a>**Prerequisites:** \* R with `tidyverse`, `magick`, and `exiftoolr` installed. \* **ExifTool** command-line software must be installed on the system.</span>
-<span id="cb20-332"><a href="#cb20-332" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-333"><a href="#cb20-333" aria-hidden="true" tabindex="-1"></a>Download the **R Script:** [**`Inspect_Images_Script.R`**](Scripts/Inspect_Images_Script.R)</span>
-<span id="cb20-334"><a href="#cb20-334" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-335"><a href="#cb20-335" aria-hidden="true" tabindex="-1"></a><span class="fu">### Example HPC Submission Script</span></span>
-<span id="cb20-336"><a href="#cb20-336" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-337"><a href="#cb20-337" aria-hidden="true" tabindex="-1"></a><span class="in">``` bash</span></span>
-<span id="cb20-338"><a href="#cb20-338" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb20-339"><a href="#cb20-339" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=img_curation     </span></span>
-<span id="cb20-340"><a href="#cb20-340" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --nodes=1                   </span></span>
-<span id="cb20-341"><a href="#cb20-341" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --ntasks=1                  </span></span>
-<span id="cb20-342"><a href="#cb20-342" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=4           </span></span>
-<span id="cb20-343"><a href="#cb20-343" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mem=16G                  </span></span>
-<span id="cb20-344"><a href="#cb20-344" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=01:00:00             </span></span>
-<span id="cb20-345"><a href="#cb20-345" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=logs/img_qc_%j.log </span></span>
-<span id="cb20-346"><a href="#cb20-346" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --error=logs/img_qc_%j.err  </span></span>
-<span id="cb20-347"><a href="#cb20-347" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-348"><a href="#cb20-348" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Load Modules</span></span>
-<span id="cb20-349"><a href="#cb20-349" aria-hidden="true" tabindex="-1"></a><span class="co"># Adjust these based on your specific cluster's environment</span></span>
-<span id="cb20-350"><a href="#cb20-350" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load R/4.2.0           </span>
-<span id="cb20-351"><a href="#cb20-351" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load exiftool          </span>
-<span id="cb20-352"><a href="#cb20-352" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-353"><a href="#cb20-353" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Define Variables</span></span>
-<span id="cb20-354"><a href="#cb20-354" aria-hidden="true" tabindex="-1"></a><span class="co"># Point this to the folder containing your images</span></span>
-<span id="cb20-355"><a href="#cb20-355" aria-hidden="true" tabindex="-1"></a><span class="va">TARGET_DIR</span><span class="op">=</span><span class="st">"/scratch/user/project_data/images_raw"</span></span>
-<span id="cb20-356"><a href="#cb20-356" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-357"><a href="#cb20-357" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Run the R Script</span></span>
-<span id="cb20-358"><a href="#cb20-358" aria-hidden="true" tabindex="-1"></a><span class="co"># We pass the target directory as the first argument ($1)</span></span>
-<span id="cb20-359"><a href="#cb20-359" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Starting Image Curation Pipeline on </span><span class="va">$TARGET_DIR</span><span class="st">"</span></span>
-<span id="cb20-360"><a href="#cb20-360" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-361"><a href="#cb20-361" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> Inspect_Images_Script.R <span class="st">"</span><span class="va">$TARGET_DIR</span><span class="st">"</span></span>
-<span id="cb20-362"><a href="#cb20-362" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-363"><a href="#cb20-363" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Job finished."</span></span>
-<span id="cb20-364"><a href="#cb20-364" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb20-365"><a href="#cb20-365" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-326"><a href="#cb20-326" aria-hidden="true" tabindex="-1"></a><span class="fu">## Using the Non-Interactive R Script</span></span>
+<span id="cb20-327"><a href="#cb20-327" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-328"><a href="#cb20-328" aria-hidden="true" tabindex="-1"></a>For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.</span>
+<span id="cb20-329"><a href="#cb20-329" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-330"><a href="#cb20-330" aria-hidden="true" tabindex="-1"></a>**Prerequisites:** \* R with `tidyverse`, `magick`, and `exiftoolr` installed. \* **ExifTool** command-line software must be installed on the system.</span>
+<span id="cb20-331"><a href="#cb20-331" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-332"><a href="#cb20-332" aria-hidden="true" tabindex="-1"></a>Download the **R Script:** [**`Inspect_Images_Script.R`**](Scripts/Inspect_Images_Script.R)</span>
+<span id="cb20-333"><a href="#cb20-333" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-334"><a href="#cb20-334" aria-hidden="true" tabindex="-1"></a><span class="fu">### Example HPC Submission Script</span></span>
+<span id="cb20-335"><a href="#cb20-335" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-336"><a href="#cb20-336" aria-hidden="true" tabindex="-1"></a><span class="in">``` bash</span></span>
+<span id="cb20-337"><a href="#cb20-337" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb20-338"><a href="#cb20-338" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=img_curation     </span></span>
+<span id="cb20-339"><a href="#cb20-339" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --nodes=1                   </span></span>
+<span id="cb20-340"><a href="#cb20-340" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --ntasks=1                  </span></span>
+<span id="cb20-341"><a href="#cb20-341" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=4           </span></span>
+<span id="cb20-342"><a href="#cb20-342" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mem=16G                  </span></span>
+<span id="cb20-343"><a href="#cb20-343" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=01:00:00             </span></span>
+<span id="cb20-344"><a href="#cb20-344" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=logs/img_qc_%j.log </span></span>
+<span id="cb20-345"><a href="#cb20-345" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --error=logs/img_qc_%j.err  </span></span>
+<span id="cb20-346"><a href="#cb20-346" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-347"><a href="#cb20-347" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Load Modules</span></span>
+<span id="cb20-348"><a href="#cb20-348" aria-hidden="true" tabindex="-1"></a><span class="co"># Adjust these based on your specific cluster's environment</span></span>
+<span id="cb20-349"><a href="#cb20-349" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load R/4.2.0           </span>
+<span id="cb20-350"><a href="#cb20-350" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load exiftool          </span>
+<span id="cb20-351"><a href="#cb20-351" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-352"><a href="#cb20-352" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Define Variables</span></span>
+<span id="cb20-353"><a href="#cb20-353" aria-hidden="true" tabindex="-1"></a><span class="co"># Point this to the folder containing your images</span></span>
+<span id="cb20-354"><a href="#cb20-354" aria-hidden="true" tabindex="-1"></a><span class="va">TARGET_DIR</span><span class="op">=</span><span class="st">"/scratch/user/project_data/images_raw"</span></span>
+<span id="cb20-355"><a href="#cb20-355" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-356"><a href="#cb20-356" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Run the R Script</span></span>
+<span id="cb20-357"><a href="#cb20-357" aria-hidden="true" tabindex="-1"></a><span class="co"># We pass the target directory as the first argument ($1)</span></span>
+<span id="cb20-358"><a href="#cb20-358" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Starting Image Curation Pipeline on </span><span class="va">$TARGET_DIR</span><span class="st">"</span></span>
+<span id="cb20-359"><a href="#cb20-359" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-360"><a href="#cb20-360" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> Inspect_Images_Script.R <span class="st">"</span><span class="va">$TARGET_DIR</span><span class="st">"</span></span>
+<span id="cb20-361"><a href="#cb20-361" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-362"><a href="#cb20-362" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Job finished."</span></span>
+<span id="cb20-363"><a href="#cb20-363" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-364"><a href="#cb20-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-365"><a href="#cb20-365" aria-hidden="true" tabindex="-1"></a><span class="fu">## References</span></span>
 <span id="cb20-366"><a href="#cb20-366" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-367"><a href="#cb20-367" aria-hidden="true" tabindex="-1"></a><span class="fu">## References</span></span>
-<span id="cb20-368"><a href="#cb20-368" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-369"><a href="#cb20-369" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
-<span id="cb20-370"><a href="#cb20-370" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb20-367"><a href="#cb20-367" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
+<span id="cb20-368"><a href="#cb20-368" aria-hidden="true" tabindex="-1"></a>:::</span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

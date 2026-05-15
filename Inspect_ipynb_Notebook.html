@@ -626,13 +626,37 @@ div.csl-indent {
 <section id="overview" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">2.1</span> Overview</h2>
 <p>Jupyter Notebooks are <strong>Literate Programming</strong>, a paradigm introduced by Donald Knuth (1984), where code and natural language documentation are interwoven to create a “computational narrative.” In data curation, preserving this narrative is as important as preserving the raw data.</p>
-<p>However, notebooks pose specific challenges for long-term preservation. Pimentel et al.&nbsp;(2019) analyzed over 1 million notebooks and found that <strong>only 24%</strong> could be re-executed without errors and only <strong>4%</strong> produced the same results <span class="citation" data-cites="pimentel2019">(<a href="Inspect_ipynb_Notebook.html#ref-pimentel2019" role="doc-biblioref">Pimentel et al. 2019</a>)</span>. Therefore, it is desirable to verify the <strong>computational reproducibility</strong> and <strong>structural integrity</strong> of jupyter notebooks.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Curation Goal">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Curation Goal
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Preserve the computational narrative. Our objective is to assess the structural integrity and documentation quality of notebooks to ensure they remain understandable and potentially reproducible for future researchers.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled" title="Preservation Risk">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Preservation Risk
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Notebooks are notoriously difficult to re-execute. Studies show that as few as 4% of notebooks produce identical results over time due to non-linear execution, hidden state, and undocumented software environments <span class="citation" data-cites="pimentel2019">(<a href="Inspect_ipynb_Notebook.html#ref-pimentel2019" role="doc-biblioref">Pimentel et al. 2019</a>)</span>.</p>
+</div>
+</div>
 <p><strong>Key Curation Objectives:</strong></p>
-<p>This notebook inspects the JSON structure of <code>.ipynb</code> files to assess three dimensions of quality:</p>
 <ol type="1">
-<li><strong>Format Obsolescence:</strong> Checking <code>nbformat</code> versions to ensure compatibility with modern interfaces.</li>
-<li><strong>Documentation Quality:</strong> Calculating the ratio of Markdown (text) to Code cells. A low ratio indicates “spaghetti code” that will be difficult for future researchers to understand <span class="citation" data-cites="rule2018">(<a href="Inspect_ipynb_Notebook.html#ref-rule2018" role="doc-biblioref">Rule et al. 2018</a>)</span>.</li>
-<li><strong>Dependency Awareness:</strong> Scanning imports to identify the software environment (e.g., <code>pandas</code>, <code>tidyverse</code>) required for re-execution.</li>
+<li><strong>Format Obsolescence:</strong> Checking <code>nbformat</code> versions to ensure compatibility.</li>
+<li><strong>Documentation Quality:</strong> Calculating the ratio of Markdown to Code cells. A low ratio indicates poor explainability <span class="citation" data-cites="rule2018">(<a href="Inspect_ipynb_Notebook.html#ref-rule2018" role="doc-biblioref">Rule et al. 2018</a>)</span>.</li>
+<li><strong>Dependency Awareness:</strong> Scanning imports to identify the software environment required for re-execution.</li>
 </ol>
 <hr>
 </section>
@@ -714,8 +738,8 @@ div.csl-indent {
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ipynb_files)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "data/Inspect_ipynb/Widefield_10x_ROIs_KO_Pdgfrb_TDA.ipynb"
-[2] "data/Inspect_ipynb/Widefield_20x_ROIs_Pdgfrb_TDA.ipynb"   </code></pre>
+<pre><code>[1] "data/Inspect_ipynb//Widefield_10x_ROIs_KO_Pdgfrb_TDA.ipynb"
+[2] "data/Inspect_ipynb//Widefield_20x_ROIs_Pdgfrb_TDA.ipynb"   </code></pre>
 </div>
 </div>
 </section>
@@ -997,6 +1021,10 @@ Broman, Karl W., and Kara H. Woo. 2018. <span>“Data Organization in
 Spreadsheets.”</span> <em>The American Statistician</em> 72 (1): 2–10.
 <a href="https://doi.org/10.1080/00031305.2017.1375989">https://doi.org/10.1080/00031305.2017.1375989</a>.
 </div>
+<div id="ref-brown2013" class="csl-entry" role="listitem">
+Brown, Adrian. 2013. <em>Practical Digital Preservation: A How-to Guide
+for Organizations of Any Size</em>. Facet Publishing.
+</div>
 <div id="ref-leaflet" class="csl-entry" role="listitem">
 Cheng, Joe, Barret Schloerke, Bhaskar Karambelkar, and Yihui Xie. 2024.
 <em>Leaflet: Create Interactive Web Maps with the JavaScript ’Leaflet’
@@ -1024,9 +1052,9 @@ AI API</em>. <a href="https://CRAN.R-project.org/package=daiR">https://CRAN.R-pr
 Hester, Jim, Florent Angly, Russ Hyde, et al. 2025. <em>Lintr: A
 ’Linter’ for r Code</em>. <a href="https://CRAN.R-project.org/package=lintr">https://CRAN.R-project.org/package=lintr</a>.
 </div>
-<div id="ref-lüdecke2018" class="csl-entry" role="listitem">
-Lüdecke, Daniel. 2018. <em>Sjlabelled: Labelled Data Utility
-Functions</em>. Zenodo. <a href="https://doi.org/10.5281/ZENODO.1249215">https://doi.org/10.5281/ZENODO.1249215</a>.
+<div id="ref-RSQLite" class="csl-entry" role="listitem">
+Müller, Kirill, Hadley Wickham, David A. James, and Seth Falcon. 2024.
+<em>RSQLite: ’SQLite’ Interface for r</em>. <a href="https://CRAN.R-project.org/package=RSQLite">https://CRAN.R-project.org/package=RSQLite</a>.
 </div>
 <div id="ref-exiftoolr" class="csl-entry" role="listitem">
 O’Brien, Joshua. 2025. <em>Exiftoolr: ExifTool Functionality from
@@ -1053,7 +1081,7 @@ Pebesma, Edzer, and Roger Bivand. 2023. <em><span></span>Spatial Data
 Science: With Applications in r<span></span></em>. <a href="https://doi.org/10.1201/9780429459016">https://doi.org/10.1201/9780429459016</a>.
 </div>
 <div id="ref-pezoa2016" class="csl-entry" role="listitem">
-Pezoa, Felipe, Juan L. Reutter, Fernando Suarez, Martín Ugarte, and
+Pezoa, Felipe, Juan L. Reutter, Fernando Suarez, MartÃ­n Ugarte, and
 Domagoj Vrgoč. 2016. <span>“Foundations of JSON Schema.”</span>
 <em>Proceedings of the 25th International Conference on World Wide
 Web</em>, April 11, 263–73. <a href="https://doi.org/10.1145/2872427.2883029">https://doi.org/10.1145/2872427.2883029</a>.
@@ -1075,7 +1103,7 @@ Problem?”</span> <em>International Journal of Digital Curation</em> 5
 (1): 134–48. <a href="https://doi.org/10.2218/ijdc.v5i1.148">https://doi.org/10.2218/ijdc.v5i1.148</a>.
 </div>
 <div id="ref-rule2018" class="csl-entry" role="listitem">
-Rule, Adam, Aurélien Tabard, and James D. Hollan. 2018.
+Rule, Adam, AurÃ©lien Tabard, and James D. Hollan. 2018.
 <span>“Exploration and Explanation in Computational Notebooks.”</span>
 <em>Proceedings of the 2018 CHI Conference on Human Factors in Computing
 Systems</em>, April 19, 1–12. <a href="https://doi.org/10.1145/3173574.3173606">https://doi.org/10.1145/3173574.3173606</a>.
@@ -1111,13 +1139,13 @@ Springer Berlin Heidelberg. <a href="https://doi.org/10.1007/978-3-540-74831-1_5
 Wickham, Hadley. 2014. <span>“Tidy Data.”</span> <em>Journal of
 Statistical Software</em> 59 (10). <a href="https://doi.org/10.18637/jss.v059.i10">https://doi.org/10.18637/jss.v059.i10</a>.
 </div>
+<div id="ref-wickham2023" class="csl-entry" role="listitem">
+Wickham, Hadley, Mine Ã‡etinkaya-Rundel, and Grolemund Garret. 2023.
+<em>R for Data Science</em>. O’Reilly Media, Inc. <a href="https://r4ds.hadley.nz/">https://r4ds.hadley.nz/</a>.
+</div>
 <div id="ref-tidyverse" class="csl-entry" role="listitem">
 Wickham, Hadley, Mara Averick, Jennifer Bryan, et al. 2019. <em>Welcome
 to the <span></span>Tidyverse<span></span></em>. 4: 1686. <a href="https://doi.org/10.21105/joss.01686">https://doi.org/10.21105/joss.01686</a>.
-</div>
-<div id="ref-wickham2023" class="csl-entry" role="listitem">
-Wickham, Hadley, Mine Çetinkaya-Rundel, and Grolemund Garret. 2023.
-<em>R for Data Science</em>. O’Reilly Media, Inc. <a href="https://r4ds.hadley.nz/">https://r4ds.hadley.nz/</a>.
 </div>
 <div id="ref-haven" class="csl-entry" role="listitem">
 Wickham, Hadley, Evan Miller, and Danny Smith. 2023. <em>Haven: Import
