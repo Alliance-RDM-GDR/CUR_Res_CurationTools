@@ -3,9 +3,9 @@ project:
   output-dir: _book
 
 book:
-  title: "Tools for Research Data Management and Curation"
-  subtitle: "A Practical Guide for Data Curators"
-  author: "Curation services team of the Digital Research Alliance of Canada"
+  title: "Research Data Curator’s Toolbox"
+  subtitle: "Expert Workflows for Digital Curation & Preservation"
+  author: "Curation Services Team | Digital Research Alliance of Canada"
   date: today
   chapters:
     - index.qmd
@@ -68,13 +68,6 @@ format:
     toc-depth: 3
     code-copy: true
     code-tools: true
-  pdf:
-    documentclass: scrbook
-    geometry:
-      - margin=1in
-      - heightrounded
-  docx:
-    toc: true
 
 execute:
   echo: true
