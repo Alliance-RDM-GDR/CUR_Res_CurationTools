@@ -28,7 +28,7 @@ Archives are prone to bit-rot; a single corrupted bit in a solid archive can ren
 **This notebook uses the `archive` package to assess:**
 
 1.  **Integrity:** Can the file be read? (Basic corruption check).
-2.  **Expansion Ratio:** Identifying potential "Zip Bombs" (Expansion > 100x).
+2.  **Expansion Ratio:** Identifying potential "Zip Bombs" (Expansion \> 100x).
 3.  **Manifest:** Generating a detailed summary of contents.
 
 ------------------------------------------------------------------------

@@ -14,7 +14,7 @@ params:
 
 ## Overview
 
-[NetCDF](https://www.ogc.org/standards/netcdf/) (Network Common Data Form) is the OGC standard for storing multidimensional scientific data. 
+[NetCDF](https://www.ogc.org/standards/netcdf/) (Network Common Data Form) is the OGC standard for storing multidimensional scientific data.
 
 ::: {.callout-note title="Curation Goal"}
 Validate the self-describing nature of scientific data. Our objective is to ensure NetCDF files follow community conventions (CF Conventions) and contain sufficient metadata (units, dimensions, and CRS) for reliable future reuse.
@@ -398,9 +398,7 @@ echo "Starting NetCDF Inspection on $TARGET_DIR"
 Rscript Inspect_nc_Script.R "$TARGET_DIR"
 ```
 
-
 ## References
 
 ::: {#refs}
 :::
-

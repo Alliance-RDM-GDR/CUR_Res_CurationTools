@@ -12,9 +12,13 @@ format:
 <p style="font-size: 1.5rem; opacity: 0.9; font-family: 'Montserrat', sans-serif;">Expert Workflows for Digital Curation & Preservation</p>
 :::
 
+::: {.callout-important title="Work in Progress"}
+This resource is currently under development. Please note that the French version is pending. For feedback, questions, or suggestions, please contact us at [curators@frdr-dfdr.ca](mailto:curators@frdr-dfdr.ca).
+:::
+
 ## Welcome
 
-This guide provides a collection of robust, documented R workflows to support Research Data Management (RDM) — from the moment data is ingested to its final archival reporting. Our goal is to empower curators to transform raw submissions into FAIR (Findable, Accessible, Interoperable, Reusable) research objects.
+This guide provides a collection of documented R workflows to support Research Data Management (RDM) from the moment data is ingested to its final archival reporting. Our goal is to empower curators to transform raw submissions into FAIR (Findable, Accessible, Interoperable, Reusable) research objects.
 
 :::::: grid
 ::: {.g-col-12 .g-col-md-4 .nav-card .p-3}

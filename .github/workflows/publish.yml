@@ -24,7 +24,7 @@ jobs:
             libgdal-dev libproj-dev libgeos-dev libudunits2-dev \
             libhdf5-dev libmagick++-dev libpoppler-cpp-dev \
             libxml2-dev libssl-dev libcurl4-openssl-dev \
-            libimage-exiftool-perl libarchive-dev
+            libimage-exiftool-perl libarchive-dev libnetcdf-dev
 
       - name: Set up R
         uses: r-lib/actions/setup-r@v2

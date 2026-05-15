@@ -15,7 +15,7 @@ params:
 
 ## Overview
 
-Unlike generic formats like CSV, SPSS files (`.sav`) utilize a **"Labelled Data"** paradigm where the codebook is embedded directly within the file [@wickham2023]. 
+Unlike generic formats like CSV, SPSS files (`.sav`) utilize a **"Labelled Data"** paradigm where the codebook is embedded directly within the file [@wickham2023].
 
 ::: {.callout-note title="Curation Goal"}
 Extract and preserve the embedded codebook. Our objective is to inventory variable labels, value mappings, and missing value definitions to ensure the data's semantic meaning is not lost during long-term preservation.

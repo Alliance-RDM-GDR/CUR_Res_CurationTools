@@ -15,7 +15,7 @@ bibliography: references.bib
 
 ## Overview
 
-Optical Character Recognition (OCR) is the process of converting images of text (typed, handwritten, or printed) into machine-encoded text. 
+Optical Character Recognition (OCR) is the process of converting images of text (typed, handwritten, or printed) into machine-encoded text.
 
 ::: {.callout-note title="Curation Goal"}
 Bridge the gap between "dark data" (unsearchable scanned PDFs) and FAIR data. Our objective is to extract text and structure from image-based documents, ensuring they become indexable and accessible for future research.

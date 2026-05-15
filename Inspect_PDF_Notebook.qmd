@@ -15,7 +15,7 @@ params:
 
 ## Overview
 
-PDF is considered the standard for fixed-layout documents. However, not all PDFs are created in the same manner. 
+PDF is considered the standard for fixed-layout documents. However, not all PDFs are created in the same manner.
 
 ::: {.callout-note title="Curation Goal"}
 Validate the archival suitability of PDF documents. Our objective is to distinguish between high-quality PDF/A files and "Image-Only" scans, ensuring content is searchable, accessible, and free from encryption that would lock data away.

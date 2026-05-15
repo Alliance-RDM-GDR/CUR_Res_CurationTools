@@ -14,7 +14,7 @@ params:
 
 ## 1. Overview
 
-**SQLite** is the most widely deployed database engine in the world (see [SQLite.org](https://sqlite.org/about.html)). Unlike client-server database management systems (DBMS) like PostgreSQL or Oracle, an SQLite database is a single, self-contained disk file. 
+**SQLite** is the most widely deployed database engine in the world (see [SQLite.org](https://sqlite.org/about.html)). Unlike client-server database management systems (DBMS) like PostgreSQL or Oracle, an SQLite database is a single, self-contained disk file.
 
 ::: {.callout-note title="Curation Goal"}
 From a curation perspective, SQLite is a highly sustainable format. [The Library of Congress](https://www.loc.gov/preservation/digital/formats/fdd/fdd000461.shtml) lists it as a preferred format for datasets due to its open specification and long-term stability. Our goal is to "unbox" the database to ensure all tables are documented and accessible.
@@ -126,4 +126,3 @@ if (exists("db_inventory")) {
 
 ::: {#refs}
 :::
-

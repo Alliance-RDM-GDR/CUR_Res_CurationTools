@@ -14,7 +14,7 @@ params:
 
 ## Overview
 
-**JSON (JavaScript Object Notation)** has become the de facto standard for data interchange, replacing XML in many research workflows due to its lightweight and human-readable nature. 
+**JSON (JavaScript Object Notation)** has become the de facto standard for data interchange, replacing XML in many research workflows due to its lightweight and human-readable nature.
 
 ::: {.callout-note title="Curation Goal"}
 Validate syntactic integrity and structural complexity. Our objective is to ensure JSON files are free from trailing commas or encoding errors and to document their hierarchical depth to facilitate future data flattening and analysis.
@@ -279,9 +279,7 @@ echo "Starting JSON Inspection on $TARGET_DIR"
 Rscript Scripts/Inspect_json_Script.R "$TARGET_DIR"
 ```
 
-
 ## References
 
 ::: {#refs}
 :::
-

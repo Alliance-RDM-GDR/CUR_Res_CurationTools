@@ -14,7 +14,7 @@ params:
 
 ## Overview
 
-This notebook performs the initial "Triage" of a data package by inventorying file extensions. 
+This notebook performs the initial "Triage" of a data package by inventorying file extensions.
 
 ::: {.callout-note title="Curation Goal"}
 Establish an initial inventory of all file types within a submission. Our objective is to distinguish between extension-based labels and internal format signatures to identify mislabeled, obsolete, or high-risk files.

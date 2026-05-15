@@ -200,13 +200,13 @@ We now merge the three data streams (Inventory, Magick, Exif) to perform automat
 
 The Flagging Logic:
 
-- **Duplicate_File:** Files sharing the exact same MD5 checksum (Redundant storage).
+-   **Duplicate_File:** Files sharing the exact same MD5 checksum (Redundant storage).
 
-- **Privacy_Risk:** Files containing GPSLatitude data (requires review).
+-   **Privacy_Risk:** Files containing GPSLatitude data (requires review).
 
-- **Dimension_Outlier:** Images that do not match the Mode (most common) width/height of the dataset.
+-   **Dimension_Outlier:** Images that do not match the Mode (most common) width/height of the dataset.
 
-- **Corrupt:** Files that magick failed to read.
+-   **Corrupt:** Files that magick failed to read.
 
 ```{r}
 #| label: merge-and-flag
@@ -280,31 +280,30 @@ write.csv(curated_data, output_file, row.names = FALSE)
 
 print(paste("Curation report saved to:", output_file))
 ```
+
 ------------------------------------------------------------------------
 
 ## Curation Insights
 
 Use the generated CSV to perform these checks:
 
-- **Privacy Risks (GPS):** Filter the CSV for flag_privacy_gps == "HAS_GPS_DATA". These images contain embedded location coordinates (Latitude/Longitude). If the dataset involves human subjects or protected species, these coordinates must be scrubbed using ExifTool (-gps:all=) before publication to prevent "mosaic effect" re-identification.
+-   **Privacy Risks (GPS):** Filter the CSV for flag_privacy_gps == "HAS_GPS_DATA". These images contain embedded location coordinates (Latitude/Longitude). If the dataset involves human subjects or protected species, these coordinates must be scrubbed using ExifTool (-gps:all=) before publication to prevent "mosaic effect" re-identification.
 
-- **Format Obsolescence:** Check the format_magick column. While .jpg and .tiff are standard, proprietary raw formats (e.g., .CR2, .NEF, .ARW) are less stable for long-term preservation. It is recommended to retain the raw file for the "preservation master" but generate a standard TIFF or JPEG 2000 copy for the "access derivative."
+-   **Format Obsolescence:** Check the format_magick column. While .jpg and .tiff are standard, proprietary raw formats (e.g., .CR2, .NEF, .ARW) are less stable for long-term preservation. It is recommended to retain the raw file for the "preservation master" but generate a standard TIFF or JPEG 2000 copy for the "access derivative."
 
-- **Digital Fixity (Duplicates):** Filter for flag_duplicate == "DUPLICATE". These files share the exact same MD5 hash, meaning they are bit-for-bit identical, even if they have different filenames.
-
+-   **Digital Fixity (Duplicates):** Filter for flag_duplicate == "DUPLICATE". These files share the exact same MD5 hash, meaning they are bit-for-bit identical, even if they have different filenames.
 
 ## Additional Tools & Resources
 
 While R is excellent for batch processing and statistical summaries, visual and command-line tools are often required for deep analysis or manual correction.
 
-- **ExifTool (Command Line): **The industry standard for reading, writing, and editing metadata. Unlike the R wrapper, the direct command line allows you to write data (e.g., scrubbing GPS tags) (see https://https://exiftool.org/).
+-   **ExifTool (Command Line):** The industry standard for reading, writing, and editing metadata. Unlike the R wrapper, the direct command line allows you to write data (e.g., scrubbing GPS tags) (see https://https://exiftool.org/).
 
-- **JHOVE (JSTOR/Harvard Object Validation Environment):** A widely used [digital preservation tool](https://jhove.openpreservation.org/). It performs stricter format validation than magick. It can verify if a file claims to be a TIFF but violates the specific version 6.0 specification.
+-   **JHOVE (JSTOR/Harvard Object Validation Environment):** A widely used [digital preservation tool](https://jhove.openpreservation.org/). It performs stricter format validation than magick. It can verify if a file claims to be a TIFF but violates the specific version 6.0 specification.
 
-- **Tesseract OCR:** Is an optical [character recognition engine](https://github.com/tesseract-ocr/tesseract). It is essential for "Content Analysis." It can scan thousands of images to detect text, helping curators flag files that contain sensitive documents (PII) which might have been mixed into a photo dataset.
+-   **Tesseract OCR:** Is an optical [character recognition engine](https://github.com/tesseract-ocr/tesseract). It is essential for "Content Analysis." It can scan thousands of images to detect text, helping curators flag files that contain sensitive documents (PII) which might have been mixed into a photo dataset.
 
-- **ImageMagick (GUI/CLI):** It is a [tool](ImageMagick.org) Useful for batch converting proprietary raw formats into preservation-ready TIFFs.
-
+-   **ImageMagick (GUI/CLI):** It is a [tool](ImageMagick.org) Useful for batch converting proprietary raw formats into preservation-ready TIFFs.
 
 ## Using the Non-Interactive R Script
 
@@ -345,9 +344,7 @@ Rscript Inspect_Images_Script.R "$TARGET_DIR"
 echo "Job finished."
 ```
 
-
 ## References
 
 ::: {#refs}
 :::
-
