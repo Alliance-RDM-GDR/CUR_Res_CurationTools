@@ -4,7 +4,7 @@ subtitle: "A Practical Guide"
 format: html
 ---
 
-::: {.lead}
+::: lead
 This book collects well-documented R functions and hands-on workflows to support research data management (RDM) in practice — from ingest and validation to metadata enrichment, curation, and reporting.
 :::
 
@@ -17,6 +17,6 @@ This book collects well-documented R functions and hands-on workflows to support
 
 > **How to read this book:** Each chapter introduces a task area (e.g., ingest, quality control). For each function, you’ll find its purpose, arguments, return value, examples, tests, and references. Copy/paste-ready snippets are provided in callouts.
 
-:::{.callout-tip}
+::: callout-tip
 **Reproducibility first.** All examples rely on versioned functions in `R/` with deterministic behavior and unit tests where applicable.
 :::

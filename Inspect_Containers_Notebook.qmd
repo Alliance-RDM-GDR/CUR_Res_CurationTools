@@ -17,16 +17,16 @@ bibliography: references.bib
 
 Curators often receive data packaged in containers like **ZIP**, **TAR**, or **7-Zip**. While convenient for transfer, these formats are "black boxes" that hide potential preservation risks:
 
-- **Corruption:** Archives are prone to bit-rot. A single corrupted bit in a solid archive (like `.7z`) can render the entire dataset unreadable.
+-   **Corruption:** Archives are prone to bit-rot. A single corrupted bit in a solid archive (like `.7z`) can render the entire dataset unreadable.
 
-- **"Zip Bombs" (Decompression Bombs):** Malicious or accidentally created files that are small when compressed (e.g., 42 KB) but expand to petabytes (4.5 PB) when opened, crashing the curation workstation.
+-   **"Zip Bombs" (Decompression Bombs):** Malicious or accidentally created files that are small when compressed (e.g., 42 KB) but expand to petabytes (4.5 PB) when opened, crashing the curation workstation.
 
-- **Nested Archives:** Archives inside archives (e.g., `data.zip` containing `backup.tar.gz`) create "Russian Doll" problems for preservation systems.
+-   **Nested Archives:** Archives inside archives (e.g., `data.zip` containing `backup.tar.gz`) create "Russian Doll" problems for preservation systems.
 
 This notebook uses the `archive` package (based on `libarchive`) to "peek" inside the container without fully extracting it. We assess:
 
 1.  **Integrity:** Can the file be read? (Basic corruption check).
-2.  **Expansion Ratio:** We calculate the **Compression Ratio**. If the extracted size is >100x the file size, it is flagged as a potential Zip Bomb.
+2.  **Expansion Ratio:** We calculate the **Compression Ratio**. If the extracted size is \>100x the file size, it is flagged as a potential Zip Bomb.
 3.  **Manifest:** We generate a summary of contents (e.g., "Contains 500 .csv files and 2 .exe files").
 
 ------------------------------------------------------------------------
@@ -171,6 +171,7 @@ report <- map_dfr(archive_files, inspect_archive)
 print("--- Archive Safety Report ---")
 print(head(report))
 ```
+
 ## Expansion Risk
 
 We visualize the difference between the Compressed Size (Storage) and Extracted Size (Risk). Huge discrepancies indicate potential decompression issues.
@@ -220,17 +221,17 @@ print(paste("Manifest saved to:", output_file))
 
 Use this report to ensure safety before ingesting:
 
-- **Compression Ratio > 100:** This is a potential Zip Bomb. A 500 MB file turning into 500 GB can fill a hard drive instantly. Inspect these files cautiously. 
+-   **Compression Ratio \> 100:** This is a potential Zip Bomb. A 500 MB file turning into 500 GB can fill a hard drive instantly. Inspect these files cautiously.
 
-- **Status "Corrupt/Unreadable":** This implies the container header may be  broken and the data inside is likely lost. Request a re-transfer from the depositor.
+-   **Status "Corrupt/Unreadable":** This implies the container header may be broken and the data inside is likely lost. Request a re-transfer from the depositor.
 
-- **HasNestedArchives = TRUE:** Preservation tools often fail to index "Zip inside a Zip." In this case, the curator must unpack the outer layer and archive the inner files directly to ensure discoverability.
+-   **HasNestedArchives = TRUE:** Preservation tools often fail to index "Zip inside a Zip." In this case, the curator must unpack the outer layer and archive the inner files directly to ensure discoverability.
 
 ## Additional Tools
 
-- **7-Zip:** The [open-source standard](https://www.7-zip.org/) for handling high-compression archives. It supports almost every format.
+-   **7-Zip:** The [open-source standard](https://www.7-zip.org/) for handling high-compression archives. It supports almost every format.
 
-- **Droid (Digital Record Object Identification):** A [tool](https://github.com/digital-preservation/droid) from The National Archives (UK) to profile file formats inside archives without full extraction.
+-   **Droid (Digital Record Object Identification):** A [tool](https://github.com/digital-preservation/droid) from The National Archives (UK) to profile file formats inside archives without full extraction.
 
 ## Using the Non-Interactive R Script
 
