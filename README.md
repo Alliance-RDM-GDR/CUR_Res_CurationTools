@@ -45,3 +45,4 @@ Please see [CONTRIBUTING.md](CONTRIBUTING.md) for documentation standards and br
 
 ## 📜 License
 This project is maintained by the Curation Services Team of the **Digital Research Alliance of Canada**.
+
