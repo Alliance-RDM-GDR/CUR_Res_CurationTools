@@ -17,15 +17,40 @@ jobs:
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
-      - name: Install R
+      - name: Install System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libgdal-dev libproj-dev libgeos-dev libudunits2-dev \
+            libhdf5-dev libmagick++-dev libpoppler-cpp-dev \
+            libxml2-dev libssl-dev libcurl4-openssl-dev
+
+      - name: Set up R
         uses: r-lib/actions/setup-r@v2
         with:
-          r-version: '4.3.0'
+          use-public-rspm: true
 
-      - name: Install R Dependencies
-        uses: r-lib/actions/setup-renv@v2
+      - name: Install R Packages
+        uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          cache-version: 1
+          packages: |
+            any::tidyverse
+            any::sf
+            any::haven
+            any::jsonlite
+            any::hdf5r
+            any::xml2
+            any::magick
+            any::digest
+            any::exiftoolr
+            any::rstudioapi
+            any::DT
+            any::tiff
+            any::readxl
+            any::tidyxl
+            any::pdftools
+            any::daiR
+            any::RSQLite
 
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
