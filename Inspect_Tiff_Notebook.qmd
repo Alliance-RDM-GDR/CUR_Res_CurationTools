@@ -15,21 +15,21 @@ bibliography: references.bib
 
 ## Overview
 
-The **Tag Image File Format (TIFF)** is the [dominant format](https://www.loc.gov/preservation/digital/formats/fdd/fdd000022.shtml) for scientific imaging (microscopy, astronomy, geospatial). Different to other image formats, TIFF images can hold:
+The **Tag Image File Format (TIFF)** is the standard for scientific imaging (microscopy, astronomy, geospatial). Unlike standard photos, TIFFs can hold high bit-depths and multi-page stacks.
 
--   **High Bit-Depths:** 16-bit or 32-bit floating-point data (common in sensors), which often appears "black" on standard monitors.
--   **Multi-Page Stacks:** A single `.tif` file can contain hundreds of individual images (e.g., a time-lapse recording or a 3D scan).
--   **Geo-Metadata:** Embedded coordinates (GeoTIFF) for satellite imagery.
+::: {.callout-note title="Curation Goal"}
+Validate scientific integrity and technical metadata. Our objective is to detect hidden lossy compression (e.g., JPEG inside TIFF), inventory multi-page stacks, and extract embedded metadata (ImageJ tags) that are crucial for pixel-based analysis.
+:::
 
-**Hidden Compression** is a major preservation risk for TIFF images. While rhis format is generally considered lossless, it allows different internal compressions like the **JPEG compression**. This implies that a curator might archive a `.tif` file thinking it is pristine, only to discover later it contains lossy artifacts. In the same vein, "Multi-page" TIFFs can be often mistaken for single images if not properly inspected.
+::: {.callout-warning title="Preservation Risk"}
+Hidden lossy compression and the loss of proprietary metadata during format conversion are primary risks. Scientific TIFFs often appear "black" or empty in standard viewers, leading to accidental deletion or incorrect processing if not properly inspected.
+:::
 
-Furthermore, scientific software (like ImageJ/Fiji) often stores critical metadata (like "slices" or "physical pixel size") in generic "Description" tags rather than standard fields, making it invisible to standard photo viewers.
+**This notebook employs a multi-strategy approach to inspection:**
 
-This notebook employs a **"Nuclear" Multi-Strategy** approach to ensure no metadata is missed:
-
-1.  **LibTIFF Extraction:** Queries the raw C-level file header (IFD) for standard tags like Compression Code.
-2.  **ImageMagick Fallback:** Uses the robust ImageMagick engine to infer properties when headers are non-standard.
-3.  **Text Mining:** Scans the generic "Description" fields using Regular Expressions to find hidden ImageJ metadata (e.g., `slices=50`).
+1.  **LibTIFF Extraction:** Querying raw IFD headers for standard tags like compression.
+2.  **ImageMagick Fallback:** Inferring properties for non-standard headers.
+3.  **Text Mining:** Scanning generic "Description" fields for hidden scientific metadata.
 
 ------------------------------------------------------------------------
 

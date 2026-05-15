@@ -14,20 +14,22 @@ params:
 
 ## Overview
 
-This notebook audits **Hierarchical Data Format version 5 (HDF5)** files (`.h5`, `.hdf5`). Unlike flat text files (CSV), [HDF5](https://support.hdfgroup.org/documentation/hdf5/latest/_h5_d_m__u_g.html) is a binary container that functions like a hard drive, capable of storing complex hierarchies of "Groups" (folders) and "Datasets" (files) within a single object.
+This notebook audits **Hierarchical Data Format version 5 (HDF5)** files (`.h5`, `.hdf5`). Unlike flat text files, [HDF5](https://support.hdfgroup.org/documentation/hdf5/latest/_h5_d_m__u_g.html) is a binary container that functions like a hard drive, capable of storing complex hierarchies of data within a single object.
 
-**Preservation Risks:**
+::: {.callout-note title="Curation Goal"}
+Map the internal "filesystem-like" structure. Our objective is to inventory groups, datasets, and attributes, ensuring that the internal hierarchy is well-documented and remains navigable for future research.
+:::
 
-1.  **Opacity:** HDF5 is a "Black Box." Without specific software, the internal structure is invisible.
-2.  **Proprietary Filters:** Data can be compressed using custom algorithms (e.g., LZF, SZIP). If the archive lacks the specific decoding plugin, the data is technically preserved but practically unreadable.
-3.  **Broken Links:** HDF5 supports "External Links," where a file points to data stored in *another* file. If the linked file is missing from the transfer, the data is lost.
+::: {.callout-warning title="Preservation Risk"}
+HDF5 is a "Black Box." Data can be locked behind proprietary compression filters or rely on external links that break when files are moved. Without specific documentation, the internal layout is effectively invisible to standard archival tools.
+:::
 
 **Curation Objectives:**
 
 1.  **Inventory:** Map the internal directory structure (Groups vs. Datasets).
 2.  **Dependencies:** Detect required compression libraries (e.g., GZIP vs. Proprietary).
 3.  **Integrity:** Identify external links that may break if files are moved.
-4.  **Metadata:** Extract attributes (units, descriptions) to verify the data is self-describing.
+4.  **Metadata Extraction:** Verify that the data is self-describing through internal attributes.
 
 ------------------------------------------------------------------------
 

@@ -9,7 +9,7 @@
 <meta name="author" content="Daniel Manrique-Castano">
 <meta name="dcterms.date" content="2025-12-18">
 
-<title>18&nbsp; MATLAB (.mat) Files – Tools for Research Data Management and curation</title>
+<title>19&nbsp; MATLAB (.mat) Files – Tools for Research Data Management and Curation</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -60,7 +60,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -93,10 +92,12 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d166b450ba5a8e9f7a0ab969bf6592c1.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-542cf50e1f395a1c6267587cc8cc3ecf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-542cf50e1f395a1c6267587cc8cc3ecf.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-449b49f15f060f871489bcfd4a9f82ff.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -138,7 +139,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Data_Scientific.html">Scientific &amp; Multidimensional Data</a></li><li class="breadcrumb-item"><a href="./Inspect_mat_Notebook.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">MATLAB (.mat) Files</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Data_Scientific.html">Scientific &amp; Multidimensional Data</a></li><li class="breadcrumb-item"><a href="./Inspect_mat_Notebook.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">MATLAB (.mat) Files</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -153,7 +154,10 @@ div.csl-indent {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Tools for Research Data Management and curation</a> 
+      <a href="./">Tools for Research Data Management and Curation</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -166,7 +170,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Research data curators toolbox</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Research Data Curator’s Toolbox</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -283,6 +287,12 @@ div.csl-indent {
  <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">SAS Data (.sas7bdat) Files</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Inspect_sqlite_Notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">SQLite Databases (.sqlite, .db)</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -297,13 +307,13 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_json_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">JSON Files</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">JSON Files</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_xml_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">XML Files</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">XML Files</span></span></a>
   </div>
 </li>
       </ul>
@@ -320,19 +330,19 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_nc_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">NetCDF Files</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">NetCDF Files</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_hdf5_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">HDF5 Files</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">HDF5 Files</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_mat_Notebook.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">MATLAB (.mat) Files</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">MATLAB (.mat) Files</span></span></a>
   </div>
 </li>
       </ul>
@@ -349,7 +359,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_gpkg_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">GeoPackage (.gpkg) Files</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">GeoPackage (.gpkg) Files</span></span></a>
   </div>
 </li>
       </ul>
@@ -366,13 +376,13 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_Images_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Image Quality Control</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Image Quality Control</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_Tiff_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">TIFF (.tif, .tiff) Images</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">TIFF (.tif, .tiff) Images</span></span></a>
   </div>
 </li>
       </ul>
@@ -383,29 +393,26 @@ div.csl-indent {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">18.1</span> Overview</a>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">19.1</span> Overview</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup"><span class="header-section-number">19.2</span> Setup</a>
   <ul class="collapse">
-  <li><a href="#the-version-challenge-v5-vs.-v7.3" id="toc-the-version-challenge-v5-vs.-v7.3" class="nav-link" data-scroll-target="#the-version-challenge-v5-vs.-v7.3"><span class="header-section-number">18.1.1</span> The Version Challenge (v5 vs.&nbsp;v7.3)</a></li>
+  <li><a href="#r-packages" id="toc-r-packages" class="nav-link" data-scroll-target="#r-packages"><span class="header-section-number">19.2.1</span> R Packages</a></li>
+  <li><a href="#load-libraries" id="toc-load-libraries" class="nav-link" data-scroll-target="#load-libraries"><span class="header-section-number">19.2.2</span> Load libraries</a></li>
   </ul></li>
-  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup"><span class="header-section-number">18.2</span> Setup</a>
+  <li><a href="#select-target-directory" id="toc-select-target-directory" class="nav-link" data-scroll-target="#select-target-directory"><span class="header-section-number">19.3</span> Select Target Directory</a></li>
+  <li><a href="#find-matlab-files" id="toc-find-matlab-files" class="nav-link" data-scroll-target="#find-matlab-files"><span class="header-section-number">19.4</span> Find MATLAB files</a></li>
+  <li><a href="#generate-metadata-report" id="toc-generate-metadata-report" class="nav-link" data-scroll-target="#generate-metadata-report"><span class="header-section-number">19.5</span> Generate Metadata Report</a></li>
+  <li><a href="#exports-results" id="toc-exports-results" class="nav-link" data-scroll-target="#exports-results"><span class="header-section-number">19.6</span> Exports results</a></li>
+  <li><a href="#curation-insights" id="toc-curation-insights" class="nav-link" data-scroll-target="#curation-insights"><span class="header-section-number">19.7</span> Curation Insights</a>
   <ul class="collapse">
-  <li><a href="#r-packages" id="toc-r-packages" class="nav-link" data-scroll-target="#r-packages"><span class="header-section-number">18.2.1</span> R Packages</a></li>
-  <li><a href="#load-libraries" id="toc-load-libraries" class="nav-link" data-scroll-target="#load-libraries"><span class="header-section-number">18.2.2</span> Load libraries</a></li>
+  <li><a href="#notes-and-limitations" id="toc-notes-and-limitations" class="nav-link" data-scroll-target="#notes-and-limitations"><span class="header-section-number">19.7.1</span> Notes and limitations</a></li>
   </ul></li>
-  <li><a href="#select-target-directory" id="toc-select-target-directory" class="nav-link" data-scroll-target="#select-target-directory"><span class="header-section-number">18.3</span> Select Target Directory</a></li>
-  <li><a href="#find-matlab-files" id="toc-find-matlab-files" class="nav-link" data-scroll-target="#find-matlab-files"><span class="header-section-number">18.4</span> Find MATLAB files</a></li>
-  <li><a href="#generate-metadata-report" id="toc-generate-metadata-report" class="nav-link" data-scroll-target="#generate-metadata-report"><span class="header-section-number">18.5</span> Generate Metadata Report</a></li>
-  <li><a href="#exports-results" id="toc-exports-results" class="nav-link" data-scroll-target="#exports-results"><span class="header-section-number">18.6</span> Exports results</a></li>
-  <li><a href="#curation-insights" id="toc-curation-insights" class="nav-link" data-scroll-target="#curation-insights"><span class="header-section-number">18.7</span> Curation Insights</a>
+  <li><a href="#additional-tools" id="toc-additional-tools" class="nav-link" data-scroll-target="#additional-tools"><span class="header-section-number">19.8</span> Additional Tools</a></li>
+  <li><a href="#using-the-non-interactive-r-script" id="toc-using-the-non-interactive-r-script" class="nav-link" data-scroll-target="#using-the-non-interactive-r-script"><span class="header-section-number">19.9</span> Using the Non-Interactive R Script</a>
   <ul class="collapse">
-  <li><a href="#notes-and-limitations" id="toc-notes-and-limitations" class="nav-link" data-scroll-target="#notes-and-limitations"><span class="header-section-number">18.7.1</span> Notes and limitations</a></li>
+  <li><a href="#example-hpc-submission-script-inspect_mat_script.sh" id="toc-example-hpc-submission-script-inspect_mat_script.sh" class="nav-link" data-scroll-target="#example-hpc-submission-script-inspect_mat_script.sh"><span class="header-section-number">19.9.1</span> Example HPC Submission Script (<code>Inspect_mat_Script.sh</code>)</a></li>
   </ul></li>
-  <li><a href="#additional-tools" id="toc-additional-tools" class="nav-link" data-scroll-target="#additional-tools"><span class="header-section-number">18.8</span> Additional Tools</a></li>
-  <li><a href="#using-the-non-interactive-r-script" id="toc-using-the-non-interactive-r-script" class="nav-link" data-scroll-target="#using-the-non-interactive-r-script"><span class="header-section-number">18.9</span> Using the Non-Interactive R Script</a>
-  <ul class="collapse">
-  <li><a href="#example-hpc-submission-script-inspect_mat_script.sh" id="toc-example-hpc-submission-script-inspect_mat_script.sh" class="nav-link" data-scroll-target="#example-hpc-submission-script-inspect_mat_script.sh"><span class="header-section-number">18.9.1</span> Example HPC Submission Script (<code>Inspect_mat_Script.sh</code>)</a></li>
-  </ul></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">18.10</span> References</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">19.10</span> References</a></li>
   </ul>
 </nav>
 </nav>
@@ -416,9 +423,9 @@ div.csl-indent {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Data_Scientific.html">Scientific &amp; Multidimensional Data</a></li><li class="breadcrumb-item"><a href="./Inspect_mat_Notebook.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">MATLAB (.mat) Files</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Data_Scientific.html">Scientific &amp; Multidimensional Data</a></li><li class="breadcrumb-item"><a href="./Inspect_mat_Notebook.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">MATLAB (.mat) Files</span></a></li></ol></nav>
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">MATLAB (.mat) Files</span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">MATLAB (.mat) Files</span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
 </div>
 
 
@@ -447,29 +454,47 @@ div.csl-indent {
 </header>
 
 
-<section id="overview" class="level2" data-number="18.1">
-<h2 data-number="18.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">18.1</span> Overview</h2>
-<p>MAT-files are the proprietary binary data container format used by MATLAB. This format is widely used in engineering and science, but it pose a significant challenge for long-term preservation because they are not an open standard. Data stored in this format requires specific software (MATLAB) or specialized libraries to decode, creating a preservation risk.</p>
-<section id="the-version-challenge-v5-vs.-v7.3" class="level3" data-number="18.1.1">
-<h3 data-number="18.1.1" class="anchored" data-anchor-id="the-version-challenge-v5-vs.-v7.3"><span class="header-section-number">18.1.1</span> The Version Challenge (v5 vs.&nbsp;v7.3)</h3>
-<p>A critical aspect for curators is the file version.</p>
-<ul>
-<li><p><strong>Level 5 (v5):</strong> The classic binary format used since the late 1990s.</p></li>
-<li><p><strong>Level 7.3 (v7.3):</strong> Introduced in 2006, this is actually an <strong>HDF5</strong> file disguised with a <code>.mat</code> extension (see https://www.mathworks.com/help/matlab/import_export/mat-file-versions.html).</p></li>
-</ul>
-<p>This distinction is vital because standard R tools like <code>R.matlab</code> can read v5 but often fail on v7.3, requiring HDF5-specific parsers <span class="citation" data-cites="berndfischerautgregoirepauautmikesmithautcre2017">(<a href="Inspect_ipynb_Notebook.html#ref-berndfischerautgregoirepauautmikesmithautcre2017" role="doc-biblioref">Bernd Fischer [Aut], Gregoire Pau [Aut], Mike Smith [Aut, Cre] 2017</a>)</span>. Therefore, this notebook inspects <code>.mat</code> files by reading their <strong>Binary Header</strong> (the first 128 bytes). This allows curators to:</p>
+<section id="overview" class="level2" data-number="19.1">
+<h2 data-number="19.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">19.1</span> Overview</h2>
+<p>MAT-files are the proprietary binary data container format used by MATLAB. They are widely used in engineering and science but pose a significant challenge for long-term preservation.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Curation Goal">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Curation Goal
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Identify file versions and inventory internal variables. Our objective is to distinguish between classic Level 5 (v5) files and modern Level 7.3 (HDF5-based) files, ensuring the correct open-source libraries are used for long-term access.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled" title="Preservation Risk">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Preservation Risk
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Proprietary format lock-in is a major risk. Version 7.3 files require specialized HDF5 parsers, while older versions are opaque without MATLAB or compatible open-source alternatives like GNU Octave.</p>
+</div>
+</div>
+<p><strong>This notebook inspects <code>.mat</code> files to:</strong></p>
 <ol type="1">
-<li><p><strong>Identify Version:</strong> Distinguish between v5 and v7.3 without crashing.</p></li>
-<li><p><strong>Inventory Content:</strong> For v5 files, we list the variable names and array dimensions to understand the dataset’s complexity.</p></li>
+<li><strong>Identify Version:</strong> Distinguish between v5 and v7.3 without crashing.</li>
+<li><strong>Inventory Content:</strong> List variable names and array dimensions to understand dataset complexity.</li>
 </ol>
 <hr>
 </section>
-</section>
-<section id="setup" class="level2" data-number="18.2">
-<h2 data-number="18.2" class="anchored" data-anchor-id="setup"><span class="header-section-number">18.2</span> Setup</h2>
+<section id="setup" class="level2" data-number="19.2">
+<h2 data-number="19.2" class="anchored" data-anchor-id="setup"><span class="header-section-number">19.2</span> Setup</h2>
 <p>This workflow relies on the <code>R.matlab</code> package.</p>
-<section id="r-packages" class="level3" data-number="18.2.1">
-<h3 data-number="18.2.1" class="anchored" data-anchor-id="r-packages"><span class="header-section-number">18.2.1</span> R Packages</h3>
+<section id="r-packages" class="level3" data-number="19.2.1">
+<h3 data-number="19.2.1" class="anchored" data-anchor-id="r-packages"><span class="header-section-number">19.2.1</span> R Packages</h3>
 <p>If you don’t have the packages installed, run this command once in your R console:</p>
 <div class="cell">
 <details class="code-fold">
@@ -480,8 +505,8 @@ div.csl-indent {
 </details>
 </div>
 </section>
-<section id="load-libraries" class="level3" data-number="18.2.2">
-<h3 data-number="18.2.2" class="anchored" data-anchor-id="load-libraries"><span class="header-section-number">18.2.2</span> Load libraries</h3>
+<section id="load-libraries" class="level3" data-number="19.2.2">
+<h3 data-number="19.2.2" class="anchored" data-anchor-id="load-libraries"><span class="header-section-number">19.2.2</span> Load libraries</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -493,8 +518,8 @@ div.csl-indent {
 </div>
 </section>
 </section>
-<section id="select-target-directory" class="level2" data-number="18.3">
-<h2 data-number="18.3" class="anchored" data-anchor-id="select-target-directory"><span class="header-section-number">18.3</span> Select Target Directory</h2>
+<section id="select-target-directory" class="level2" data-number="19.3">
+<h2 data-number="19.3" class="anchored" data-anchor-id="select-target-directory"><span class="header-section-number">19.3</span> Select Target Directory</h2>
 <p>We select the folder containing the <code>.mat</code> files.</p>
 <p><strong>Note:</strong> If running interactively, a dialog box will appear. Otherwise, it defaults to the target_dir parameter.</p>
 <div class="cell">
@@ -521,8 +546,8 @@ div.csl-indent {
 </div>
 </div>
 </section>
-<section id="find-matlab-files" class="level2" data-number="18.4">
-<h2 data-number="18.4" class="anchored" data-anchor-id="find-matlab-files"><span class="header-section-number">18.4</span> Find MATLAB files</h2>
+<section id="find-matlab-files" class="level2" data-number="19.4">
+<h2 data-number="19.4" class="anchored" data-anchor-id="find-matlab-files"><span class="header-section-number">19.4</span> Find MATLAB files</h2>
 <p>We scan the directory for files ending in .mat.</p>
 <div class="cell">
 <details class="code-fold">
@@ -549,8 +574,8 @@ div.csl-indent {
 </div>
 </div>
 </section>
-<section id="generate-metadata-report" class="level2" data-number="18.5">
-<h2 data-number="18.5" class="anchored" data-anchor-id="generate-metadata-report"><span class="header-section-number">18.5</span> Generate Metadata Report</h2>
+<section id="generate-metadata-report" class="level2" data-number="19.5">
+<h2 data-number="19.5" class="anchored" data-anchor-id="generate-metadata-report"><span class="header-section-number">19.5</span> Generate Metadata Report</h2>
 <p>We try to read each .mat file as HDF5 first. If that succeeds, we extract:</p>
 <ul>
 <li>variable (dataset) names</li>
@@ -668,8 +693,8 @@ div.csl-indent {
 </div>
 </div>
 </section>
-<section id="exports-results" class="level2" data-number="18.6">
-<h2 data-number="18.6" class="anchored" data-anchor-id="exports-results"><span class="header-section-number">18.6</span> Exports results</h2>
+<section id="exports-results" class="level2" data-number="19.6">
+<h2 data-number="19.6" class="anchored" data-anchor-id="exports-results"><span class="header-section-number">19.6</span> Exports results</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -682,20 +707,20 @@ div.csl-indent {
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Report saved to:"</span>, output_file))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Report saved to: Results/Inspect_mat/MAT_Deep_Report_20260105.csv"</code></pre>
+<pre><code>[1] "Report saved to: Results/Inspect_mat/MAT_Deep_Report_20260515.csv"</code></pre>
 </div>
 </div>
 </section>
-<section id="curation-insights" class="level2" data-number="18.7">
-<h2 data-number="18.7" class="anchored" data-anchor-id="curation-insights"><span class="header-section-number">18.7</span> Curation Insights</h2>
+<section id="curation-insights" class="level2" data-number="19.7">
+<h2 data-number="19.7" class="anchored" data-anchor-id="curation-insights"><span class="header-section-number">19.7</span> Curation Insights</h2>
 <p>Use the generated CSV report to guide your preservation actions:</p>
 <ul>
 <li><p><strong>Format Obsolescence (v5 vs v7.3):</strong> The version column identifies the file architecture. v7.3 are essentially HDF5 files. They require specialized libraries (rhdf5 in R, h5py in Python) to read. Consider creating a Codebook that maps the HDF5 paths (e.g., /group1/dataset_A) to their scientific meaning.</p></li>
 <li><p><strong>Workspace Dumps:</strong> Files with high object counts (&gt;50) and generic names (var1, temp, data_copy) are likely RAM demanding. These files request a data dictionary or a cleaned version containing only the final variables.</p></li>
 <li><p><strong>Complex Structures (H5T_COMPOUND):</strong> In v7.3 files, H5T_COMPOUND indicates complex nested tables (structs). These are difficult to convert to CSV. Recommend converting these specific tables to JSON or separate CSVs to preserve the hierarchy.</p></li>
 </ul>
-<section id="notes-and-limitations" class="level3" data-number="18.7.1">
-<h3 data-number="18.7.1" class="anchored" data-anchor-id="notes-and-limitations"><span class="header-section-number">18.7.1</span> Notes and limitations</h3>
+<section id="notes-and-limitations" class="level3" data-number="19.7.1">
+<h3 data-number="19.7.1" class="anchored" data-anchor-id="notes-and-limitations"><span class="header-section-number">19.7.1</span> Notes and limitations</h3>
 <p>MATLAB .mat files can vary significantly in format and complexity. We have some limitations to keep in mind:</p>
 <ul>
 <li>Very large datasets may not be fully loaded and may be summarized based on sampling.</li>
@@ -705,20 +730,20 @@ div.csl-indent {
 </ul>
 </section>
 </section>
-<section id="additional-tools" class="level2" data-number="18.8">
-<h2 data-number="18.8" class="anchored" data-anchor-id="additional-tools"><span class="header-section-number">18.8</span> Additional Tools</h2>
+<section id="additional-tools" class="level2" data-number="19.8">
+<h2 data-number="19.8" class="anchored" data-anchor-id="additional-tools"><span class="header-section-number">19.8</span> Additional Tools</h2>
 <ul>
 <li><p><strong>rhdf5 (Bioconductor):</strong> This <a href="https://bioconductor.org/packages/release/bioc/html/rhdf5.html">library</a> allows R users to browse and read v7.3 MAT-files as if they were standard HDF5 archives.</p></li>
 <li><p><strong>GNU Octave:</strong> Is an <a href="https://octave.org/">open-source</a> high-level language, largely compatible with MATLAB. It can read and write most MAT-files without a MATLAB license.</p></li>
 <li><p><strong>HDFView:</strong> This is a <a href="https://www.hdfgroup.org/download-hdfview/">visual tool</a> to browse the contents of v7.3 MAT-files without needing code.</p></li>
 </ul>
 </section>
-<section id="using-the-non-interactive-r-script" class="level2" data-number="18.9">
-<h2 data-number="18.9" class="anchored" data-anchor-id="using-the-non-interactive-r-script"><span class="header-section-number">18.9</span> Using the Non-Interactive R Script</h2>
+<section id="using-the-non-interactive-r-script" class="level2" data-number="19.9">
+<h2 data-number="19.9" class="anchored" data-anchor-id="using-the-non-interactive-r-script"><span class="header-section-number">19.9</span> Using the Non-Interactive R Script</h2>
 <p>For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.</p>
 <p>Download the <strong>R Script:</strong> <a href="Scripts/Inspect_mat_Script.R"><strong><code>Inspect_mat_Script.R</code></strong></a></p>
-<section id="example-hpc-submission-script-inspect_mat_script.sh" class="level3" data-number="18.9.1">
-<h3 data-number="18.9.1" class="anchored" data-anchor-id="example-hpc-submission-script-inspect_mat_script.sh"><span class="header-section-number">18.9.1</span> Example HPC Submission Script (<code>Inspect_mat_Script.sh</code>)</h3>
+<section id="example-hpc-submission-script-inspect_mat_script.sh" class="level3" data-number="19.9.1">
+<h3 data-number="19.9.1" class="anchored" data-anchor-id="example-hpc-submission-script-inspect_mat_script.sh"><span class="header-section-number">19.9.1</span> Example HPC Submission Script (<code>Inspect_mat_Script.sh</code>)</h3>
 <div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=matlab_inspect</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=2</span></span>
@@ -737,12 +762,10 @@ div.csl-indent {
 <span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
-<section id="references" class="level2" data-number="18.10">
-<h2 data-number="18.10" class="anchored" data-anchor-id="references"><span class="header-section-number">18.10</span> References</h2>
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
-<div id="ref-berndfischerautgregoirepauautmikesmithautcre2017" class="csl-entry" role="listitem">
-Bernd Fischer [Aut], Gregoire Pau [Aut], Mike Smith [Aut, Cre]. 2017. <span>“Rhdf5.”</span> <a href="https://doi.org/10.18129/B9.BIOC.RHDF5">https://doi.org/10.18129/B9.BIOC.RHDF5</a>.
-</div>
+<section id="references" class="level2" data-number="19.10">
+<h2 data-number="19.10" class="anchored" data-anchor-id="references"><span class="header-section-number">19.10</span> References</h2>
+<div id="refs" role="list" style="display: none">
+
 </div>
 
 
@@ -771,6 +794,150 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -1222,7 +1389,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./Inspect_hdf5_Notebook.html" class="pagination-link" aria-label="HDF5 Files">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">HDF5 Files</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">HDF5 Files</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
@@ -1247,275 +1414,274 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## Overview</span></span>
 <span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>MAT-files are the proprietary binary data container format used by MATLAB. This format is widely used in engineering and science, but it pose a significant challenge for long-term preservation because they are not an open standard. Data stored in this format requires specific software (MATLAB) or specialized libraries to decode, creating a preservation risk.</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>MAT-files are the proprietary binary data container format used by MATLAB. They are widely used in engineering and science but pose a significant challenge for long-term preservation.</span>
 <span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="fu">### The Version Challenge (v5 vs. v7.3)</span></span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>A critical aspect for curators is the file version.</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Curation Goal"}</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>Identify file versions and inventory internal variables. Our objective is to distinguish between classic Level 5 (v5) files and modern Level 7.3 (HDF5-based) files, ensuring the correct open-source libraries are used for long-term access.</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Level 5 (v5):** The classic binary format used since the late 1990s.</span>
-<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Level 7.3 (v7.3):** Introduced in 2006, this is actually an **HDF5** file disguised with a <span class="in">`.mat`</span> extension (see https://www.mathworks.com/help/matlab/import_export/mat-file-versions.html).</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title="Preservation Risk"}</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>Proprietary format lock-in is a major risk. Version 7.3 files require specialized HDF5 parsers, while older versions are opaque without MATLAB or compatible open-source alternatives like GNU Octave.</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>This distinction is vital because standard R tools like <span class="in">`R.matlab`</span> can read v5 but often fail on v7.3, requiring HDF5-specific parsers <span class="co">[</span><span class="ot">@berndfischerautgregoirepauautmikesmithautcre2017</span><span class="co">]</span>. Therefore, this notebook inspects <span class="in">`.mat`</span> files by reading their **Binary Header** (the first 128 bytes). This allows curators to:</span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>**This notebook inspects `.mat` files to:**</span>
 <span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**Identify Version:** Distinguish between v5 and v7.3 without crashing.</span>
-<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**Inventory Content:** For v5 files, we list the variable names and array dimensions to understand the dataset's complexity.</span>
-<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
-<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a><span class="fu">## Setup</span></span>
-<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>This workflow relies on the <span class="in">`R.matlab`</span> package.</span>
-<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a><span class="fu">### R Packages</span></span>
-<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a>If you don't have the packages installed, run this command once in your R console:</span>
-<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(c("tidyverse", "R.matlab", "hdf5r",  "rstudioapi"))</span></span>
-<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">"BiocManager"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">"BiocManager"</span>); BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">"rhdf5"</span>)</span>
-<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a><span class="fu">### Load libraries</span></span>
-<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: load-libraries</span></span>
-<span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
-<span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb16-60"><a href="#cb16-60" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(R.matlab)</span>
-<span id="cb16-61"><a href="#cb16-61" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(hdf5r)</span>
-<span id="cb16-62"><a href="#cb16-62" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rstudioapi)</span>
-<span id="cb16-63"><a href="#cb16-63" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb16-64"><a href="#cb16-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-65"><a href="#cb16-65" aria-hidden="true" tabindex="-1"></a><span class="fu">## Select Target Directory</span></span>
-<span id="cb16-66"><a href="#cb16-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-67"><a href="#cb16-67" aria-hidden="true" tabindex="-1"></a>We select the folder containing the <span class="in">`.mat`</span> files.</span>
-<span id="cb16-68"><a href="#cb16-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-69"><a href="#cb16-69" aria-hidden="true" tabindex="-1"></a>**Note:** If running interactively, a dialog box will appear. Otherwise, it defaults to the target_dir parameter.</span>
-<span id="cb16-70"><a href="#cb16-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-73"><a href="#cb16-73" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-74"><a href="#cb16-74" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: select-target-dir</span></span>
-<span id="cb16-75"><a href="#cb16-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-76"><a href="#cb16-76" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Try to select interactively if in RStudio</span></span>
-<span id="cb16-77"><a href="#cb16-77" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">interactive</span>() <span class="sc">&amp;&amp;</span> .Platform<span class="sc">$</span>OS.type <span class="sc">==</span> <span class="st">"windows"</span>) { </span>
-<span id="cb16-78"><a href="#cb16-78" aria-hidden="true" tabindex="-1"></a>  selected_dir <span class="ot">&lt;-</span> rstudioapi<span class="sc">::</span><span class="fu">selectDirectory</span>(<span class="at">caption =</span> <span class="st">"Select Notebook Directory"</span>)</span>
-<span id="cb16-79"><a href="#cb16-79" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb16-80"><a href="#cb16-80" aria-hidden="true" tabindex="-1"></a>  selected_dir <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb16-81"><a href="#cb16-81" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb16-82"><a href="#cb16-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-83"><a href="#cb16-83" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Logic to determine final directory</span></span>
-<span id="cb16-84"><a href="#cb16-84" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(selected_dir)) {</span>
-<span id="cb16-85"><a href="#cb16-85" aria-hidden="true" tabindex="-1"></a>  target_dir <span class="ot">&lt;-</span> selected_dir</span>
-<span id="cb16-86"><a href="#cb16-86" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb16-87"><a href="#cb16-87" aria-hidden="true" tabindex="-1"></a>  target_dir <span class="ot">&lt;-</span> params<span class="sc">$</span>target_dir</span>
-<span id="cb16-88"><a href="#cb16-88" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb16-89"><a href="#cb16-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-90"><a href="#cb16-90" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Analyzing directory:"</span>, target_dir))</span>
-<span id="cb16-91"><a href="#cb16-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-92"><a href="#cb16-92" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb16-93"><a href="#cb16-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-94"><a href="#cb16-94" aria-hidden="true" tabindex="-1"></a><span class="fu">## Find MATLAB files</span></span>
-<span id="cb16-95"><a href="#cb16-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-96"><a href="#cb16-96" aria-hidden="true" tabindex="-1"></a>We scan the directory for files ending in .mat.</span>
-<span id="cb16-97"><a href="#cb16-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-100"><a href="#cb16-100" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-101"><a href="#cb16-101" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: find-files</span></span>
-<span id="cb16-102"><a href="#cb16-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-103"><a href="#cb16-103" aria-hidden="true" tabindex="-1"></a>ipynb_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(</span>
-<span id="cb16-104"><a href="#cb16-104" aria-hidden="true" tabindex="-1"></a>  <span class="at">path =</span> target_dir,</span>
-<span id="cb16-105"><a href="#cb16-105" aria-hidden="true" tabindex="-1"></a>  <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.mat$"</span>, </span>
-<span id="cb16-106"><a href="#cb16-106" aria-hidden="true" tabindex="-1"></a>  <span class="at">recursive =</span> <span class="cn">TRUE</span>, </span>
-<span id="cb16-107"><a href="#cb16-107" aria-hidden="true" tabindex="-1"></a>  <span class="at">full.names =</span> <span class="cn">TRUE</span>, </span>
-<span id="cb16-108"><a href="#cb16-108" aria-hidden="true" tabindex="-1"></a>  <span class="at">ignore.case =</span> <span class="cn">TRUE</span></span>
-<span id="cb16-109"><a href="#cb16-109" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb16-110"><a href="#cb16-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-111"><a href="#cb16-111" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Found"</span>, <span class="fu">length</span>(ipynb_files), <span class="st">"MATLAB files."</span>))</span>
-<span id="cb16-112"><a href="#cb16-112" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ipynb_files)</span>
-<span id="cb16-113"><a href="#cb16-113" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb16-114"><a href="#cb16-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-115"><a href="#cb16-115" aria-hidden="true" tabindex="-1"></a><span class="fu">## Generate Metadata Report</span></span>
-<span id="cb16-116"><a href="#cb16-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-117"><a href="#cb16-117" aria-hidden="true" tabindex="-1"></a>We try to read each .mat file as HDF5 first. If that succeeds, we extract:</span>
-<span id="cb16-118"><a href="#cb16-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-119"><a href="#cb16-119" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>variable (dataset) names</span>
-<span id="cb16-120"><a href="#cb16-120" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>data type (HDF5 class)</span>
-<span id="cb16-121"><a href="#cb16-121" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>array dimensions</span>
-<span id="cb16-122"><a href="#cb16-122" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>number of dimensions</span>
-<span id="cb16-123"><a href="#cb16-123" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>number of elements</span>
-<span id="cb16-124"><a href="#cb16-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-125"><a href="#cb16-125" aria-hidden="true" tabindex="-1"></a>If the file is not HDF5, the code falls back to R.matlab::readMat() and extracts the same information from a v4/v5 structure.</span>
-<span id="cb16-126"><a href="#cb16-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-129"><a href="#cb16-129" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-130"><a href="#cb16-130" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: extraction-logic</span></span>
-<span id="cb16-131"><a href="#cb16-131" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
-<span id="cb16-132"><a href="#cb16-132" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
-<span id="cb16-133"><a href="#cb16-133" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-134"><a href="#cb16-134" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Helper 1: Extract v5 Content (R.matlab) ---</span></span>
-<span id="cb16-135"><a href="#cb16-135" aria-hidden="true" tabindex="-1"></a>extract_v5_content <span class="ot">&lt;-</span> <span class="cf">function</span>(fp) {</span>
-<span id="cb16-136"><a href="#cb16-136" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>({</span>
-<span id="cb16-137"><a href="#cb16-137" aria-hidden="true" tabindex="-1"></a>    <span class="co"># readMat returns a simple list</span></span>
-<span id="cb16-138"><a href="#cb16-138" aria-hidden="true" tabindex="-1"></a>    content <span class="ot">&lt;-</span> R.matlab<span class="sc">::</span><span class="fu">readMat</span>(fp)</span>
-<span id="cb16-139"><a href="#cb16-139" aria-hidden="true" tabindex="-1"></a>    var_names <span class="ot">&lt;-</span> <span class="fu">names</span>(content)</span>
-<span id="cb16-140"><a href="#cb16-140" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb16-141"><a href="#cb16-141" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Map each variable to its dimensions and class</span></span>
-<span id="cb16-142"><a href="#cb16-142" aria-hidden="true" tabindex="-1"></a>    <span class="fu">map_dfr</span>(var_names, <span class="cf">function</span>(v) {</span>
-<span id="cb16-143"><a href="#cb16-143" aria-hidden="true" tabindex="-1"></a>      obj <span class="ot">&lt;-</span> content[[v]]</span>
-<span id="cb16-144"><a href="#cb16-144" aria-hidden="true" tabindex="-1"></a>      dims <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="fu">dim</span>(obj), <span class="at">collapse =</span> <span class="st">"x"</span>)</span>
-<span id="cb16-145"><a href="#cb16-145" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (dims <span class="sc">==</span> <span class="st">""</span>) dims <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="fu">length</span>(obj), <span class="st">"(len)"</span>) <span class="co"># Handle vectors</span></span>
-<span id="cb16-146"><a href="#cb16-146" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb16-147"><a href="#cb16-147" aria-hidden="true" tabindex="-1"></a>      <span class="fu">tibble</span>(</span>
-<span id="cb16-148"><a href="#cb16-148" aria-hidden="true" tabindex="-1"></a>        <span class="at">object_path =</span> v,</span>
-<span id="cb16-149"><a href="#cb16-149" aria-hidden="true" tabindex="-1"></a>        <span class="at">object_type =</span> <span class="st">"MATLAB Variable"</span>,</span>
-<span id="cb16-150"><a href="#cb16-150" aria-hidden="true" tabindex="-1"></a>        <span class="at">dimensions =</span> dims,</span>
-<span id="cb16-151"><a href="#cb16-151" aria-hidden="true" tabindex="-1"></a>        <span class="at">data_class =</span> <span class="fu">class</span>(obj)[<span class="dv">1</span>]</span>
-<span id="cb16-152"><a href="#cb16-152" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb16-153"><a href="#cb16-153" aria-hidden="true" tabindex="-1"></a>    })</span>
-<span id="cb16-154"><a href="#cb16-154" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
-<span id="cb16-155"><a href="#cb16-155" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tibble</span>(<span class="at">object_path =</span> <span class="st">"Parse Error"</span>, <span class="at">object_type =</span> <span class="st">"Error"</span>, <span class="at">dimensions =</span> <span class="cn">NA</span>, <span class="at">data_class =</span> e<span class="sc">$</span>message)</span>
-<span id="cb16-156"><a href="#cb16-156" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb16-157"><a href="#cb16-157" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb16-158"><a href="#cb16-158" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-159"><a href="#cb16-159" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Helper 2: Extract v7.3 Content (rhdf5) ---</span></span>
-<span id="cb16-160"><a href="#cb16-160" aria-hidden="true" tabindex="-1"></a>extract_v73_content <span class="ot">&lt;-</span> <span class="cf">function</span>(fp) {</span>
-<span id="cb16-161"><a href="#cb16-161" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>({</span>
-<span id="cb16-162"><a href="#cb16-162" aria-hidden="true" tabindex="-1"></a>    <span class="co"># h5ls recursively lists the HDF5 hierarchy</span></span>
-<span id="cb16-163"><a href="#cb16-163" aria-hidden="true" tabindex="-1"></a>    content <span class="ot">&lt;-</span> rhdf5<span class="sc">::</span><span class="fu">h5ls</span>(fp, <span class="at">all =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb16-164"><a href="#cb16-164" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb16-165"><a href="#cb16-165" aria-hidden="true" tabindex="-1"></a>    content <span class="sc">%&gt;%</span></span>
-<span id="cb16-166"><a href="#cb16-166" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(</span>
-<span id="cb16-167"><a href="#cb16-167" aria-hidden="true" tabindex="-1"></a>        <span class="at">object_path =</span> <span class="fu">paste0</span>(group, <span class="st">"/"</span>, name),</span>
-<span id="cb16-168"><a href="#cb16-168" aria-hidden="true" tabindex="-1"></a>        <span class="at">object_path =</span> <span class="fu">str_replace_all</span>(object_path, <span class="st">"//"</span>, <span class="st">"/"</span>) <span class="co"># Clean paths</span></span>
-<span id="cb16-169"><a href="#cb16-169" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span></span>
-<span id="cb16-170"><a href="#cb16-170" aria-hidden="true" tabindex="-1"></a>      <span class="fu">select</span>(</span>
-<span id="cb16-171"><a href="#cb16-171" aria-hidden="true" tabindex="-1"></a>        object_path,</span>
-<span id="cb16-172"><a href="#cb16-172" aria-hidden="true" tabindex="-1"></a>        <span class="at">object_type =</span> otype,  <span class="co"># e.g., H5I_DATASET</span></span>
-<span id="cb16-173"><a href="#cb16-173" aria-hidden="true" tabindex="-1"></a>        <span class="at">dimensions =</span> dim,</span>
-<span id="cb16-174"><a href="#cb16-174" aria-hidden="true" tabindex="-1"></a>        <span class="at">data_class =</span> dclass     <span class="co"># e.g., H5T_FLOAT</span></span>
-<span id="cb16-175"><a href="#cb16-175" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb16-176"><a href="#cb16-176" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
-<span id="cb16-177"><a href="#cb16-177" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tibble</span>(<span class="at">object_path =</span> <span class="st">"HDF5 Error"</span>, <span class="at">object_type =</span> <span class="st">"Error"</span>, <span class="at">dimensions =</span> <span class="cn">NA</span>, <span class="at">data_class =</span> e<span class="sc">$</span>message)</span>
-<span id="cb16-178"><a href="#cb16-178" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb16-179"><a href="#cb16-179" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb16-180"><a href="#cb16-180" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-181"><a href="#cb16-181" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Main Processing Function ---</span></span>
-<span id="cb16-182"><a href="#cb16-182" aria-hidden="true" tabindex="-1"></a>inspect_mat_file <span class="ot">&lt;-</span> <span class="cf">function</span>(fp) {</span>
-<span id="cb16-183"><a href="#cb16-183" aria-hidden="true" tabindex="-1"></a>  fname <span class="ot">&lt;-</span> <span class="fu">basename</span>(fp)</span>
-<span id="cb16-184"><a href="#cb16-184" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb16-185"><a href="#cb16-185" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 1. Header Check (Identify Version)</span></span>
-<span id="cb16-186"><a href="#cb16-186" aria-hidden="true" tabindex="-1"></a>  con <span class="ot">&lt;-</span> <span class="fu">file</span>(fp, <span class="st">"rb"</span>)</span>
-<span id="cb16-187"><a href="#cb16-187" aria-hidden="true" tabindex="-1"></a>  header_raw <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>(<span class="fu">readBin</span>(con, <span class="st">"raw"</span>, <span class="at">n =</span> <span class="dv">128</span>), <span class="at">finally =</span> <span class="fu">close</span>(con))</span>
-<span id="cb16-188"><a href="#cb16-188" aria-hidden="true" tabindex="-1"></a>  header_txt <span class="ot">&lt;-</span> <span class="fu">rawToChar</span>(header_raw[header_raw <span class="sc">&gt;</span> <span class="dv">31</span> <span class="sc">&amp;</span> header_raw <span class="sc">&lt;</span> <span class="dv">127</span>])</span>
-<span id="cb16-189"><a href="#cb16-189" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb16-190"><a href="#cb16-190" aria-hidden="true" tabindex="-1"></a>  is_hdf5 <span class="ot">&lt;-</span> <span class="fu">str_detect</span>(header_txt, <span class="st">"HDF5"</span>) <span class="sc">||</span> <span class="fu">str_detect</span>(header_txt, <span class="st">"MATLAB 7.3"</span>)</span>
-<span id="cb16-191"><a href="#cb16-191" aria-hidden="true" tabindex="-1"></a>  version_label <span class="ot">&lt;-</span> <span class="cf">if</span> (is_hdf5) <span class="st">"v7.3 (HDF5)"</span> <span class="cf">else</span> <span class="st">"v5 (Standard)"</span></span>
-<span id="cb16-192"><a href="#cb16-192" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb16-193"><a href="#cb16-193" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 2. Branching Logic</span></span>
-<span id="cb16-194"><a href="#cb16-194" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (is_hdf5) {</span>
-<span id="cb16-195"><a href="#cb16-195" aria-hidden="true" tabindex="-1"></a>    content_df <span class="ot">&lt;-</span> <span class="fu">extract_v73_content</span>(fp)</span>
-<span id="cb16-196"><a href="#cb16-196" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb16-197"><a href="#cb16-197" aria-hidden="true" tabindex="-1"></a>    content_df <span class="ot">&lt;-</span> <span class="fu">extract_v5_content</span>(fp)</span>
-<span id="cb16-198"><a href="#cb16-198" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb16-199"><a href="#cb16-199" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb16-200"><a href="#cb16-200" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 3. Add Metadata</span></span>
-<span id="cb16-201"><a href="#cb16-201" aria-hidden="true" tabindex="-1"></a>  content_df <span class="sc">%&gt;%</span></span>
-<span id="cb16-202"><a href="#cb16-202" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb16-203"><a href="#cb16-203" aria-hidden="true" tabindex="-1"></a>      <span class="at">filename =</span> fname,</span>
-<span id="cb16-204"><a href="#cb16-204" aria-hidden="true" tabindex="-1"></a>      <span class="at">version =</span> version_label</span>
-<span id="cb16-205"><a href="#cb16-205" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
-<span id="cb16-206"><a href="#cb16-206" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(filename, version, <span class="fu">everything</span>())</span>
-<span id="cb16-207"><a href="#cb16-207" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb16-208"><a href="#cb16-208" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-209"><a href="#cb16-209" aria-hidden="true" tabindex="-1"></a><span class="co"># Run Analysis</span></span>
-<span id="cb16-210"><a href="#cb16-210" aria-hidden="true" tabindex="-1"></a>mat_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(target_dir, <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.mat$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb16-211"><a href="#cb16-211" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-212"><a href="#cb16-212" aria-hidden="true" tabindex="-1"></a><span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"Processing"</span>, <span class="fu">length</span>(mat_files), <span class="st">"files..."</span>))</span>
-<span id="cb16-213"><a href="#cb16-213" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-214"><a href="#cb16-214" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(mat_files) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb16-215"><a href="#cb16-215" aria-hidden="true" tabindex="-1"></a>  results <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(mat_files, inspect_mat_file)</span>
-<span id="cb16-216"><a href="#cb16-216" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb16-217"><a href="#cb16-217" aria-hidden="true" tabindex="-1"></a>  results <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">filename =</span> <span class="fu">character</span>(), <span class="at">version =</span> <span class="fu">character</span>())</span>
-<span id="cb16-218"><a href="#cb16-218" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb16-219"><a href="#cb16-219" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-220"><a href="#cb16-220" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Extracted"</span>, <span class="fu">nrow</span>(results), <span class="st">"objects from"</span>, <span class="fu">length</span>(<span class="fu">unique</span>(results<span class="sc">$</span>filename)), <span class="st">"files."</span>))</span>
-<span id="cb16-221"><a href="#cb16-221" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(results, <span class="dv">10</span>)</span>
-<span id="cb16-222"><a href="#cb16-222" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb16-223"><a href="#cb16-223" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-224"><a href="#cb16-224" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exports results</span></span>
-<span id="cb16-225"><a href="#cb16-225" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-228"><a href="#cb16-228" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb16-229"><a href="#cb16-229" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: save-results</span></span>
-<span id="cb16-230"><a href="#cb16-230" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-231"><a href="#cb16-231" aria-hidden="true" tabindex="-1"></a>output_dir <span class="ot">&lt;-</span> <span class="st">"Results/Inspect_mat"</span></span>
-<span id="cb16-232"><a href="#cb16-232" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(output_dir, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb16-233"><a href="#cb16-233" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-234"><a href="#cb16-234" aria-hidden="true" tabindex="-1"></a>output_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(output_dir, <span class="fu">paste0</span>(<span class="st">"MAT_Deep_Report_"</span>, <span class="fu">format</span>(<span class="fu">Sys.Date</span>(), <span class="st">"%Y%m%d"</span>), <span class="st">".csv"</span>))</span>
-<span id="cb16-235"><a href="#cb16-235" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-236"><a href="#cb16-236" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(results, output_file, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb16-237"><a href="#cb16-237" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Report saved to:"</span>, output_file))</span>
-<span id="cb16-238"><a href="#cb16-238" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb16-239"><a href="#cb16-239" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-240"><a href="#cb16-240" aria-hidden="true" tabindex="-1"></a><span class="fu">## Curation Insights</span></span>
-<span id="cb16-241"><a href="#cb16-241" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-242"><a href="#cb16-242" aria-hidden="true" tabindex="-1"></a>Use the generated CSV report to guide your preservation actions:</span>
-<span id="cb16-243"><a href="#cb16-243" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-244"><a href="#cb16-244" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Format Obsolescence (v5 vs v7.3):** The version column identifies the file architecture. v7.3 are essentially HDF5 files. They require specialized libraries (rhdf5 in R, h5py in Python) to read. Consider creating a Codebook that maps the HDF5 paths (e.g., /group1/dataset_A) to their scientific meaning.</span>
-<span id="cb16-245"><a href="#cb16-245" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-246"><a href="#cb16-246" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Workspace Dumps:** Files with high object counts (<span class="sc">\&gt;</span>50) and generic names (var1, temp, data_copy) are likely RAM demanding. These files request a data dictionary or a cleaned version containing only the final variables.</span>
-<span id="cb16-247"><a href="#cb16-247" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-248"><a href="#cb16-248" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Complex Structures (H5T_COMPOUND):** In v7.3 files, H5T_COMPOUND indicates complex nested tables (structs). These are difficult to convert to CSV. Recommend converting these specific tables to JSON or separate CSVs to preserve the hierarchy.</span>
-<span id="cb16-249"><a href="#cb16-249" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-250"><a href="#cb16-250" aria-hidden="true" tabindex="-1"></a><span class="fu">### Notes and limitations</span></span>
-<span id="cb16-251"><a href="#cb16-251" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-252"><a href="#cb16-252" aria-hidden="true" tabindex="-1"></a>MATLAB .mat files can vary significantly in format and complexity. We have some limitations to keep in mind:</span>
-<span id="cb16-253"><a href="#cb16-253" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-254"><a href="#cb16-254" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Very large datasets may not be fully loaded and may be summarized based on sampling.</span>
-<span id="cb16-255"><a href="#cb16-255" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Deeply nested MATLAB structs or objects may require custom handling.</span>
-<span id="cb16-256"><a href="#cb16-256" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Character encoding in .mat files may differ across MATLAB versions.</span>
-<span id="cb16-257"><a href="#cb16-257" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Complex cell arrays can contain heterogeneous types that cannot be summarized numerically.</span>
-<span id="cb16-258"><a href="#cb16-258" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-259"><a href="#cb16-259" aria-hidden="true" tabindex="-1"></a><span class="fu">## Additional Tools</span></span>
-<span id="cb16-260"><a href="#cb16-260" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-261"><a href="#cb16-261" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**rhdf5 (Bioconductor):** This <span class="co">[</span><span class="ot">library</span><span class="co">](https://bioconductor.org/packages/release/bioc/html/rhdf5.html)</span> allows R users to browse and read v7.3 MAT-files as if they were standard HDF5 archives.</span>
-<span id="cb16-262"><a href="#cb16-262" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-263"><a href="#cb16-263" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**GNU Octave:** Is an <span class="co">[</span><span class="ot">open-source</span><span class="co">](https://octave.org/)</span> high-level language, largely compatible with MATLAB. It can read and write most MAT-files without a MATLAB license.</span>
-<span id="cb16-264"><a href="#cb16-264" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-265"><a href="#cb16-265" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**HDFView:** This is a <span class="co">[</span><span class="ot">visual tool</span><span class="co">](https://www.hdfgroup.org/download-hdfview/)</span> to browse the contents of v7.3 MAT-files without needing code.</span>
-<span id="cb16-266"><a href="#cb16-266" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-267"><a href="#cb16-267" aria-hidden="true" tabindex="-1"></a><span class="fu">## Using the Non-Interactive R Script</span></span>
-<span id="cb16-268"><a href="#cb16-268" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-269"><a href="#cb16-269" aria-hidden="true" tabindex="-1"></a>For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.</span>
-<span id="cb16-270"><a href="#cb16-270" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-271"><a href="#cb16-271" aria-hidden="true" tabindex="-1"></a>Download the **R Script:** [**`Inspect_mat_Script.R`**](Scripts/Inspect_mat_Script.R)</span>
-<span id="cb16-272"><a href="#cb16-272" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-273"><a href="#cb16-273" aria-hidden="true" tabindex="-1"></a><span class="fu">### Example HPC Submission Script (`Inspect_mat_Script.sh`)</span></span>
-<span id="cb16-274"><a href="#cb16-274" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-275"><a href="#cb16-275" aria-hidden="true" tabindex="-1"></a><span class="in">``` bash</span></span>
-<span id="cb16-276"><a href="#cb16-276" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb16-277"><a href="#cb16-277" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=matlab_inspect</span></span>
-<span id="cb16-278"><a href="#cb16-278" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=2</span></span>
-<span id="cb16-279"><a href="#cb16-279" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mem=8G</span></span>
-<span id="cb16-280"><a href="#cb16-280" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=01:00:00</span></span>
-<span id="cb16-281"><a href="#cb16-281" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=matlab_inspect_%j.out</span></span>
-<span id="cb16-282"><a href="#cb16-282" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --error=matlab_inspect_%j.err</span></span>
-<span id="cb16-283"><a href="#cb16-283" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-284"><a href="#cb16-284" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load R/4.3.0   <span class="co"># adapt to your cluster's module system</span></span>
-<span id="cb16-285"><a href="#cb16-285" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-286"><a href="#cb16-286" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> matlab_inspector.R <span class="dt">\</span></span>
-<span id="cb16-287"><a href="#cb16-287" aria-hidden="true" tabindex="-1"></a>  <span class="at">--target_dir</span> /path/to/your/mat/files <span class="dt">\</span></span>
-<span id="cb16-288"><a href="#cb16-288" aria-hidden="true" tabindex="-1"></a>  <span class="at">--output_dir</span> /path/to/output/folder <span class="dt">\</span></span>
-<span id="cb16-289"><a href="#cb16-289" aria-hidden="true" tabindex="-1"></a>  <span class="at">--max_full_numeric</span> 1000000 <span class="dt">\</span></span>
-<span id="cb16-290"><a href="#cb16-290" aria-hidden="true" tabindex="-1"></a>  <span class="at">--max_sample_numeric</span> 100000</span>
-<span id="cb16-291"><a href="#cb16-291" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb16-292"><a href="#cb16-292" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb16-293"><a href="#cb16-293" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-294"><a href="#cb16-294" aria-hidden="true" tabindex="-1"></a><span class="fu">## References</span></span>
-<span id="cb16-295"><a href="#cb16-295" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-296"><a href="#cb16-296" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
-<span id="cb16-297"><a href="#cb16-297" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**Inventory Content:** List variable names and array dimensions to understand dataset complexity.</span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a><span class="fu">## Setup</span></span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>This workflow relies on the <span class="in">`R.matlab`</span> package.</span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a><span class="fu">### R Packages</span></span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>If you don't have the packages installed, run this command once in your R console:</span>
+<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(c("tidyverse", "R.matlab", "hdf5r",  "rstudioapi"))</span></span>
+<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">"BiocManager"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">"BiocManager"</span>); BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">"rhdf5"</span>)</span>
+<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a><span class="fu">### Load libraries</span></span>
+<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: load-libraries</span></span>
+<span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(R.matlab)</span>
+<span id="cb16-60"><a href="#cb16-60" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(hdf5r)</span>
+<span id="cb16-61"><a href="#cb16-61" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rstudioapi)</span>
+<span id="cb16-62"><a href="#cb16-62" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-63"><a href="#cb16-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-64"><a href="#cb16-64" aria-hidden="true" tabindex="-1"></a><span class="fu">## Select Target Directory</span></span>
+<span id="cb16-65"><a href="#cb16-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-66"><a href="#cb16-66" aria-hidden="true" tabindex="-1"></a>We select the folder containing the <span class="in">`.mat`</span> files.</span>
+<span id="cb16-67"><a href="#cb16-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-68"><a href="#cb16-68" aria-hidden="true" tabindex="-1"></a>**Note:** If running interactively, a dialog box will appear. Otherwise, it defaults to the target_dir parameter.</span>
+<span id="cb16-69"><a href="#cb16-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-72"><a href="#cb16-72" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-73"><a href="#cb16-73" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: select-target-dir</span></span>
+<span id="cb16-74"><a href="#cb16-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-75"><a href="#cb16-75" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Try to select interactively if in RStudio</span></span>
+<span id="cb16-76"><a href="#cb16-76" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">interactive</span>() <span class="sc">&amp;&amp;</span> .Platform<span class="sc">$</span>OS.type <span class="sc">==</span> <span class="st">"windows"</span>) { </span>
+<span id="cb16-77"><a href="#cb16-77" aria-hidden="true" tabindex="-1"></a>  selected_dir <span class="ot">&lt;-</span> rstudioapi<span class="sc">::</span><span class="fu">selectDirectory</span>(<span class="at">caption =</span> <span class="st">"Select Notebook Directory"</span>)</span>
+<span id="cb16-78"><a href="#cb16-78" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb16-79"><a href="#cb16-79" aria-hidden="true" tabindex="-1"></a>  selected_dir <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb16-80"><a href="#cb16-80" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-81"><a href="#cb16-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-82"><a href="#cb16-82" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Logic to determine final directory</span></span>
+<span id="cb16-83"><a href="#cb16-83" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(selected_dir)) {</span>
+<span id="cb16-84"><a href="#cb16-84" aria-hidden="true" tabindex="-1"></a>  target_dir <span class="ot">&lt;-</span> selected_dir</span>
+<span id="cb16-85"><a href="#cb16-85" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb16-86"><a href="#cb16-86" aria-hidden="true" tabindex="-1"></a>  target_dir <span class="ot">&lt;-</span> params<span class="sc">$</span>target_dir</span>
+<span id="cb16-87"><a href="#cb16-87" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-88"><a href="#cb16-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-89"><a href="#cb16-89" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Analyzing directory:"</span>, target_dir))</span>
+<span id="cb16-90"><a href="#cb16-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-91"><a href="#cb16-91" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-92"><a href="#cb16-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-93"><a href="#cb16-93" aria-hidden="true" tabindex="-1"></a><span class="fu">## Find MATLAB files</span></span>
+<span id="cb16-94"><a href="#cb16-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-95"><a href="#cb16-95" aria-hidden="true" tabindex="-1"></a>We scan the directory for files ending in .mat.</span>
+<span id="cb16-96"><a href="#cb16-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-99"><a href="#cb16-99" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-100"><a href="#cb16-100" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: find-files</span></span>
+<span id="cb16-101"><a href="#cb16-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-102"><a href="#cb16-102" aria-hidden="true" tabindex="-1"></a>ipynb_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(</span>
+<span id="cb16-103"><a href="#cb16-103" aria-hidden="true" tabindex="-1"></a>  <span class="at">path =</span> target_dir,</span>
+<span id="cb16-104"><a href="#cb16-104" aria-hidden="true" tabindex="-1"></a>  <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.mat$"</span>, </span>
+<span id="cb16-105"><a href="#cb16-105" aria-hidden="true" tabindex="-1"></a>  <span class="at">recursive =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb16-106"><a href="#cb16-106" aria-hidden="true" tabindex="-1"></a>  <span class="at">full.names =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb16-107"><a href="#cb16-107" aria-hidden="true" tabindex="-1"></a>  <span class="at">ignore.case =</span> <span class="cn">TRUE</span></span>
+<span id="cb16-108"><a href="#cb16-108" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-109"><a href="#cb16-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-110"><a href="#cb16-110" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Found"</span>, <span class="fu">length</span>(ipynb_files), <span class="st">"MATLAB files."</span>))</span>
+<span id="cb16-111"><a href="#cb16-111" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ipynb_files)</span>
+<span id="cb16-112"><a href="#cb16-112" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-113"><a href="#cb16-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-114"><a href="#cb16-114" aria-hidden="true" tabindex="-1"></a><span class="fu">## Generate Metadata Report</span></span>
+<span id="cb16-115"><a href="#cb16-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-116"><a href="#cb16-116" aria-hidden="true" tabindex="-1"></a>We try to read each .mat file as HDF5 first. If that succeeds, we extract:</span>
+<span id="cb16-117"><a href="#cb16-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-118"><a href="#cb16-118" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>variable (dataset) names</span>
+<span id="cb16-119"><a href="#cb16-119" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>data type (HDF5 class)</span>
+<span id="cb16-120"><a href="#cb16-120" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>array dimensions</span>
+<span id="cb16-121"><a href="#cb16-121" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>number of dimensions</span>
+<span id="cb16-122"><a href="#cb16-122" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>number of elements</span>
+<span id="cb16-123"><a href="#cb16-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-124"><a href="#cb16-124" aria-hidden="true" tabindex="-1"></a>If the file is not HDF5, the code falls back to R.matlab::readMat() and extracts the same information from a v4/v5 structure.</span>
+<span id="cb16-125"><a href="#cb16-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-128"><a href="#cb16-128" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-129"><a href="#cb16-129" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: extraction-logic</span></span>
+<span id="cb16-130"><a href="#cb16-130" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
+<span id="cb16-131"><a href="#cb16-131" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb16-132"><a href="#cb16-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-133"><a href="#cb16-133" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Helper 1: Extract v5 Content (R.matlab) ---</span></span>
+<span id="cb16-134"><a href="#cb16-134" aria-hidden="true" tabindex="-1"></a>extract_v5_content <span class="ot">&lt;-</span> <span class="cf">function</span>(fp) {</span>
+<span id="cb16-135"><a href="#cb16-135" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>({</span>
+<span id="cb16-136"><a href="#cb16-136" aria-hidden="true" tabindex="-1"></a>    <span class="co"># readMat returns a simple list</span></span>
+<span id="cb16-137"><a href="#cb16-137" aria-hidden="true" tabindex="-1"></a>    content <span class="ot">&lt;-</span> R.matlab<span class="sc">::</span><span class="fu">readMat</span>(fp)</span>
+<span id="cb16-138"><a href="#cb16-138" aria-hidden="true" tabindex="-1"></a>    var_names <span class="ot">&lt;-</span> <span class="fu">names</span>(content)</span>
+<span id="cb16-139"><a href="#cb16-139" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-140"><a href="#cb16-140" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Map each variable to its dimensions and class</span></span>
+<span id="cb16-141"><a href="#cb16-141" aria-hidden="true" tabindex="-1"></a>    <span class="fu">map_dfr</span>(var_names, <span class="cf">function</span>(v) {</span>
+<span id="cb16-142"><a href="#cb16-142" aria-hidden="true" tabindex="-1"></a>      obj <span class="ot">&lt;-</span> content[[v]]</span>
+<span id="cb16-143"><a href="#cb16-143" aria-hidden="true" tabindex="-1"></a>      dims <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="fu">dim</span>(obj), <span class="at">collapse =</span> <span class="st">"x"</span>)</span>
+<span id="cb16-144"><a href="#cb16-144" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (dims <span class="sc">==</span> <span class="st">""</span>) dims <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="fu">length</span>(obj), <span class="st">"(len)"</span>) <span class="co"># Handle vectors</span></span>
+<span id="cb16-145"><a href="#cb16-145" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb16-146"><a href="#cb16-146" aria-hidden="true" tabindex="-1"></a>      <span class="fu">tibble</span>(</span>
+<span id="cb16-147"><a href="#cb16-147" aria-hidden="true" tabindex="-1"></a>        <span class="at">object_path =</span> v,</span>
+<span id="cb16-148"><a href="#cb16-148" aria-hidden="true" tabindex="-1"></a>        <span class="at">object_type =</span> <span class="st">"MATLAB Variable"</span>,</span>
+<span id="cb16-149"><a href="#cb16-149" aria-hidden="true" tabindex="-1"></a>        <span class="at">dimensions =</span> dims,</span>
+<span id="cb16-150"><a href="#cb16-150" aria-hidden="true" tabindex="-1"></a>        <span class="at">data_class =</span> <span class="fu">class</span>(obj)[<span class="dv">1</span>]</span>
+<span id="cb16-151"><a href="#cb16-151" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb16-152"><a href="#cb16-152" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb16-153"><a href="#cb16-153" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
+<span id="cb16-154"><a href="#cb16-154" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tibble</span>(<span class="at">object_path =</span> <span class="st">"Parse Error"</span>, <span class="at">object_type =</span> <span class="st">"Error"</span>, <span class="at">dimensions =</span> <span class="cn">NA</span>, <span class="at">data_class =</span> e<span class="sc">$</span>message)</span>
+<span id="cb16-155"><a href="#cb16-155" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb16-156"><a href="#cb16-156" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-157"><a href="#cb16-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-158"><a href="#cb16-158" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Helper 2: Extract v7.3 Content (rhdf5) ---</span></span>
+<span id="cb16-159"><a href="#cb16-159" aria-hidden="true" tabindex="-1"></a>extract_v73_content <span class="ot">&lt;-</span> <span class="cf">function</span>(fp) {</span>
+<span id="cb16-160"><a href="#cb16-160" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>({</span>
+<span id="cb16-161"><a href="#cb16-161" aria-hidden="true" tabindex="-1"></a>    <span class="co"># h5ls recursively lists the HDF5 hierarchy</span></span>
+<span id="cb16-162"><a href="#cb16-162" aria-hidden="true" tabindex="-1"></a>    content <span class="ot">&lt;-</span> rhdf5<span class="sc">::</span><span class="fu">h5ls</span>(fp, <span class="at">all =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-163"><a href="#cb16-163" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-164"><a href="#cb16-164" aria-hidden="true" tabindex="-1"></a>    content <span class="sc">%&gt;%</span></span>
+<span id="cb16-165"><a href="#cb16-165" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(</span>
+<span id="cb16-166"><a href="#cb16-166" aria-hidden="true" tabindex="-1"></a>        <span class="at">object_path =</span> <span class="fu">paste0</span>(group, <span class="st">"/"</span>, name),</span>
+<span id="cb16-167"><a href="#cb16-167" aria-hidden="true" tabindex="-1"></a>        <span class="at">object_path =</span> <span class="fu">str_replace_all</span>(object_path, <span class="st">"//"</span>, <span class="st">"/"</span>) <span class="co"># Clean paths</span></span>
+<span id="cb16-168"><a href="#cb16-168" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span></span>
+<span id="cb16-169"><a href="#cb16-169" aria-hidden="true" tabindex="-1"></a>      <span class="fu">select</span>(</span>
+<span id="cb16-170"><a href="#cb16-170" aria-hidden="true" tabindex="-1"></a>        object_path,</span>
+<span id="cb16-171"><a href="#cb16-171" aria-hidden="true" tabindex="-1"></a>        <span class="at">object_type =</span> otype,  <span class="co"># e.g., H5I_DATASET</span></span>
+<span id="cb16-172"><a href="#cb16-172" aria-hidden="true" tabindex="-1"></a>        <span class="at">dimensions =</span> dim,</span>
+<span id="cb16-173"><a href="#cb16-173" aria-hidden="true" tabindex="-1"></a>        <span class="at">data_class =</span> dclass     <span class="co"># e.g., H5T_FLOAT</span></span>
+<span id="cb16-174"><a href="#cb16-174" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb16-175"><a href="#cb16-175" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
+<span id="cb16-176"><a href="#cb16-176" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tibble</span>(<span class="at">object_path =</span> <span class="st">"HDF5 Error"</span>, <span class="at">object_type =</span> <span class="st">"Error"</span>, <span class="at">dimensions =</span> <span class="cn">NA</span>, <span class="at">data_class =</span> e<span class="sc">$</span>message)</span>
+<span id="cb16-177"><a href="#cb16-177" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb16-178"><a href="#cb16-178" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-179"><a href="#cb16-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-180"><a href="#cb16-180" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Main Processing Function ---</span></span>
+<span id="cb16-181"><a href="#cb16-181" aria-hidden="true" tabindex="-1"></a>inspect_mat_file <span class="ot">&lt;-</span> <span class="cf">function</span>(fp) {</span>
+<span id="cb16-182"><a href="#cb16-182" aria-hidden="true" tabindex="-1"></a>  fname <span class="ot">&lt;-</span> <span class="fu">basename</span>(fp)</span>
+<span id="cb16-183"><a href="#cb16-183" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-184"><a href="#cb16-184" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 1. Header Check (Identify Version)</span></span>
+<span id="cb16-185"><a href="#cb16-185" aria-hidden="true" tabindex="-1"></a>  con <span class="ot">&lt;-</span> <span class="fu">file</span>(fp, <span class="st">"rb"</span>)</span>
+<span id="cb16-186"><a href="#cb16-186" aria-hidden="true" tabindex="-1"></a>  header_raw <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>(<span class="fu">readBin</span>(con, <span class="st">"raw"</span>, <span class="at">n =</span> <span class="dv">128</span>), <span class="at">finally =</span> <span class="fu">close</span>(con))</span>
+<span id="cb16-187"><a href="#cb16-187" aria-hidden="true" tabindex="-1"></a>  header_txt <span class="ot">&lt;-</span> <span class="fu">rawToChar</span>(header_raw[header_raw <span class="sc">&gt;</span> <span class="dv">31</span> <span class="sc">&amp;</span> header_raw <span class="sc">&lt;</span> <span class="dv">127</span>])</span>
+<span id="cb16-188"><a href="#cb16-188" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-189"><a href="#cb16-189" aria-hidden="true" tabindex="-1"></a>  is_hdf5 <span class="ot">&lt;-</span> <span class="fu">str_detect</span>(header_txt, <span class="st">"HDF5"</span>) <span class="sc">||</span> <span class="fu">str_detect</span>(header_txt, <span class="st">"MATLAB 7.3"</span>)</span>
+<span id="cb16-190"><a href="#cb16-190" aria-hidden="true" tabindex="-1"></a>  version_label <span class="ot">&lt;-</span> <span class="cf">if</span> (is_hdf5) <span class="st">"v7.3 (HDF5)"</span> <span class="cf">else</span> <span class="st">"v5 (Standard)"</span></span>
+<span id="cb16-191"><a href="#cb16-191" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-192"><a href="#cb16-192" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 2. Branching Logic</span></span>
+<span id="cb16-193"><a href="#cb16-193" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (is_hdf5) {</span>
+<span id="cb16-194"><a href="#cb16-194" aria-hidden="true" tabindex="-1"></a>    content_df <span class="ot">&lt;-</span> <span class="fu">extract_v73_content</span>(fp)</span>
+<span id="cb16-195"><a href="#cb16-195" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb16-196"><a href="#cb16-196" aria-hidden="true" tabindex="-1"></a>    content_df <span class="ot">&lt;-</span> <span class="fu">extract_v5_content</span>(fp)</span>
+<span id="cb16-197"><a href="#cb16-197" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb16-198"><a href="#cb16-198" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-199"><a href="#cb16-199" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 3. Add Metadata</span></span>
+<span id="cb16-200"><a href="#cb16-200" aria-hidden="true" tabindex="-1"></a>  content_df <span class="sc">%&gt;%</span></span>
+<span id="cb16-201"><a href="#cb16-201" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb16-202"><a href="#cb16-202" aria-hidden="true" tabindex="-1"></a>      <span class="at">filename =</span> fname,</span>
+<span id="cb16-203"><a href="#cb16-203" aria-hidden="true" tabindex="-1"></a>      <span class="at">version =</span> version_label</span>
+<span id="cb16-204"><a href="#cb16-204" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
+<span id="cb16-205"><a href="#cb16-205" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(filename, version, <span class="fu">everything</span>())</span>
+<span id="cb16-206"><a href="#cb16-206" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-207"><a href="#cb16-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-208"><a href="#cb16-208" aria-hidden="true" tabindex="-1"></a><span class="co"># Run Analysis</span></span>
+<span id="cb16-209"><a href="#cb16-209" aria-hidden="true" tabindex="-1"></a>mat_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(target_dir, <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.mat$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-210"><a href="#cb16-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-211"><a href="#cb16-211" aria-hidden="true" tabindex="-1"></a><span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"Processing"</span>, <span class="fu">length</span>(mat_files), <span class="st">"files..."</span>))</span>
+<span id="cb16-212"><a href="#cb16-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-213"><a href="#cb16-213" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(mat_files) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb16-214"><a href="#cb16-214" aria-hidden="true" tabindex="-1"></a>  results <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(mat_files, inspect_mat_file)</span>
+<span id="cb16-215"><a href="#cb16-215" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb16-216"><a href="#cb16-216" aria-hidden="true" tabindex="-1"></a>  results <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">filename =</span> <span class="fu">character</span>(), <span class="at">version =</span> <span class="fu">character</span>())</span>
+<span id="cb16-217"><a href="#cb16-217" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-218"><a href="#cb16-218" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-219"><a href="#cb16-219" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Extracted"</span>, <span class="fu">nrow</span>(results), <span class="st">"objects from"</span>, <span class="fu">length</span>(<span class="fu">unique</span>(results<span class="sc">$</span>filename)), <span class="st">"files."</span>))</span>
+<span id="cb16-220"><a href="#cb16-220" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(results, <span class="dv">10</span>)</span>
+<span id="cb16-221"><a href="#cb16-221" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-222"><a href="#cb16-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-223"><a href="#cb16-223" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exports results</span></span>
+<span id="cb16-224"><a href="#cb16-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-227"><a href="#cb16-227" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb16-228"><a href="#cb16-228" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: save-results</span></span>
+<span id="cb16-229"><a href="#cb16-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-230"><a href="#cb16-230" aria-hidden="true" tabindex="-1"></a>output_dir <span class="ot">&lt;-</span> <span class="st">"Results/Inspect_mat"</span></span>
+<span id="cb16-231"><a href="#cb16-231" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(output_dir, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb16-232"><a href="#cb16-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-233"><a href="#cb16-233" aria-hidden="true" tabindex="-1"></a>output_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(output_dir, <span class="fu">paste0</span>(<span class="st">"MAT_Deep_Report_"</span>, <span class="fu">format</span>(<span class="fu">Sys.Date</span>(), <span class="st">"%Y%m%d"</span>), <span class="st">".csv"</span>))</span>
+<span id="cb16-234"><a href="#cb16-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-235"><a href="#cb16-235" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(results, output_file, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb16-236"><a href="#cb16-236" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Report saved to:"</span>, output_file))</span>
+<span id="cb16-237"><a href="#cb16-237" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-238"><a href="#cb16-238" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-239"><a href="#cb16-239" aria-hidden="true" tabindex="-1"></a><span class="fu">## Curation Insights</span></span>
+<span id="cb16-240"><a href="#cb16-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-241"><a href="#cb16-241" aria-hidden="true" tabindex="-1"></a>Use the generated CSV report to guide your preservation actions:</span>
+<span id="cb16-242"><a href="#cb16-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-243"><a href="#cb16-243" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Format Obsolescence (v5 vs v7.3):** The version column identifies the file architecture. v7.3 are essentially HDF5 files. They require specialized libraries (rhdf5 in R, h5py in Python) to read. Consider creating a Codebook that maps the HDF5 paths (e.g., /group1/dataset_A) to their scientific meaning.</span>
+<span id="cb16-244"><a href="#cb16-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-245"><a href="#cb16-245" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Workspace Dumps:** Files with high object counts (<span class="sc">\&gt;</span>50) and generic names (var1, temp, data_copy) are likely RAM demanding. These files request a data dictionary or a cleaned version containing only the final variables.</span>
+<span id="cb16-246"><a href="#cb16-246" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-247"><a href="#cb16-247" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Complex Structures (H5T_COMPOUND):** In v7.3 files, H5T_COMPOUND indicates complex nested tables (structs). These are difficult to convert to CSV. Recommend converting these specific tables to JSON or separate CSVs to preserve the hierarchy.</span>
+<span id="cb16-248"><a href="#cb16-248" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-249"><a href="#cb16-249" aria-hidden="true" tabindex="-1"></a><span class="fu">### Notes and limitations</span></span>
+<span id="cb16-250"><a href="#cb16-250" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-251"><a href="#cb16-251" aria-hidden="true" tabindex="-1"></a>MATLAB .mat files can vary significantly in format and complexity. We have some limitations to keep in mind:</span>
+<span id="cb16-252"><a href="#cb16-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-253"><a href="#cb16-253" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Very large datasets may not be fully loaded and may be summarized based on sampling.</span>
+<span id="cb16-254"><a href="#cb16-254" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Deeply nested MATLAB structs or objects may require custom handling.</span>
+<span id="cb16-255"><a href="#cb16-255" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Character encoding in .mat files may differ across MATLAB versions.</span>
+<span id="cb16-256"><a href="#cb16-256" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Complex cell arrays can contain heterogeneous types that cannot be summarized numerically.</span>
+<span id="cb16-257"><a href="#cb16-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-258"><a href="#cb16-258" aria-hidden="true" tabindex="-1"></a><span class="fu">## Additional Tools</span></span>
+<span id="cb16-259"><a href="#cb16-259" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-260"><a href="#cb16-260" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**rhdf5 (Bioconductor):** This <span class="co">[</span><span class="ot">library</span><span class="co">](https://bioconductor.org/packages/release/bioc/html/rhdf5.html)</span> allows R users to browse and read v7.3 MAT-files as if they were standard HDF5 archives.</span>
+<span id="cb16-261"><a href="#cb16-261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-262"><a href="#cb16-262" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**GNU Octave:** Is an <span class="co">[</span><span class="ot">open-source</span><span class="co">](https://octave.org/)</span> high-level language, largely compatible with MATLAB. It can read and write most MAT-files without a MATLAB license.</span>
+<span id="cb16-263"><a href="#cb16-263" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-264"><a href="#cb16-264" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**HDFView:** This is a <span class="co">[</span><span class="ot">visual tool</span><span class="co">](https://www.hdfgroup.org/download-hdfview/)</span> to browse the contents of v7.3 MAT-files without needing code.</span>
+<span id="cb16-265"><a href="#cb16-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-266"><a href="#cb16-266" aria-hidden="true" tabindex="-1"></a><span class="fu">## Using the Non-Interactive R Script</span></span>
+<span id="cb16-267"><a href="#cb16-267" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-268"><a href="#cb16-268" aria-hidden="true" tabindex="-1"></a>For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.</span>
+<span id="cb16-269"><a href="#cb16-269" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-270"><a href="#cb16-270" aria-hidden="true" tabindex="-1"></a>Download the **R Script:** [**`Inspect_mat_Script.R`**](Scripts/Inspect_mat_Script.R)</span>
+<span id="cb16-271"><a href="#cb16-271" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-272"><a href="#cb16-272" aria-hidden="true" tabindex="-1"></a><span class="fu">### Example HPC Submission Script (`Inspect_mat_Script.sh`)</span></span>
+<span id="cb16-273"><a href="#cb16-273" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-274"><a href="#cb16-274" aria-hidden="true" tabindex="-1"></a><span class="in">``` bash</span></span>
+<span id="cb16-275"><a href="#cb16-275" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb16-276"><a href="#cb16-276" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=matlab_inspect</span></span>
+<span id="cb16-277"><a href="#cb16-277" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=2</span></span>
+<span id="cb16-278"><a href="#cb16-278" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mem=8G</span></span>
+<span id="cb16-279"><a href="#cb16-279" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=01:00:00</span></span>
+<span id="cb16-280"><a href="#cb16-280" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=matlab_inspect_%j.out</span></span>
+<span id="cb16-281"><a href="#cb16-281" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --error=matlab_inspect_%j.err</span></span>
+<span id="cb16-282"><a href="#cb16-282" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-283"><a href="#cb16-283" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load R/4.3.0   <span class="co"># adapt to your cluster's module system</span></span>
+<span id="cb16-284"><a href="#cb16-284" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-285"><a href="#cb16-285" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> matlab_inspector.R <span class="dt">\</span></span>
+<span id="cb16-286"><a href="#cb16-286" aria-hidden="true" tabindex="-1"></a>  <span class="at">--target_dir</span> /path/to/your/mat/files <span class="dt">\</span></span>
+<span id="cb16-287"><a href="#cb16-287" aria-hidden="true" tabindex="-1"></a>  <span class="at">--output_dir</span> /path/to/output/folder <span class="dt">\</span></span>
+<span id="cb16-288"><a href="#cb16-288" aria-hidden="true" tabindex="-1"></a>  <span class="at">--max_full_numeric</span> 1000000 <span class="dt">\</span></span>
+<span id="cb16-289"><a href="#cb16-289" aria-hidden="true" tabindex="-1"></a>  <span class="at">--max_sample_numeric</span> 100000</span>
+<span id="cb16-290"><a href="#cb16-290" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-291"><a href="#cb16-291" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-292"><a href="#cb16-292" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-293"><a href="#cb16-293" aria-hidden="true" tabindex="-1"></a><span class="fu">## References</span></span>
+<span id="cb16-294"><a href="#cb16-294" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-295"><a href="#cb16-295" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
+<span id="cb16-296"><a href="#cb16-296" aria-hidden="true" tabindex="-1"></a>:::</span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

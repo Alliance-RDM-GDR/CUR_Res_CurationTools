@@ -15,15 +15,21 @@ params:
 
 ## Overview
 
-PDF is considered the standard for fixed-layout documents. However, not all PDFs are created in the same manner. The archival gold standard is **PDF/A (ISO 19005)**, which prohibits features that impede long-term preservation, such as encryption, audio/video content, and external font dependencies (see [PDF/A in a Nutshell 2.0](https://pdfa.org/resource/pdfa-in-a-nutshell-2-0/)).
+PDF is considered the standard for fixed-layout documents. However, not all PDFs are created in the same manner. 
 
-A major curation challenge is the distinction between documents created directly from a word processor, which are fully searchable and accessible to screen readers; and Image-Only PDFs, which contain only raster images of text. These are invisible to search engines and accessibility tools unless **OCR (Optical Character Recognition)** has been applied.
+::: {.callout-note title="Curation Goal"}
+Validate the archival suitability of PDF documents. Our objective is to distinguish between high-quality PDF/A files and "Image-Only" scans, ensuring content is searchable, accessible, and free from encryption that would lock data away.
+:::
 
-This notebook evaluates PDF files on three critical dimensions:
+::: {.callout-warning title="Preservation Risk"}
+Not all PDFs are equal. Encrypted files, image-only scans without OCR, and documents with external font dependencies pose significant risks for long-term accessibility and automated text mining.
+:::
 
-1.  **Security:** Detecting **Encryption** or password protection, which effectively "locks" the content away from future researchers.
-2.  **Accessibility:** Categorizing files as Searchable or Image-Only document.
-3.  **Metadata Quality:** Checking for embedded title and suthor fields, which are often lost during export.
+**This notebook evaluates PDF files on three critical dimensions:**
+
+1.  **Security:** Detecting Encryption or password protection.
+2.  **Accessibility:** Categorizing files as Searchable or Image-Only documents.
+3.  **Metadata Quality:** Checking for embedded Title and Author fields.
 
 ------------------------------------------------------------------------
 

@@ -14,14 +14,20 @@ params:
 
 ## Overview
 
-This notebook inspects **Stata (`.dta`)** files. Unlike simple text formats (CSV), Stata files are "self-describing," meaning they contain both the raw data and the metadata (variable labels, value labels, and missing value codes) in a single binary container (https://www.stata-press.com/data/r18/).
+This notebook inspects **Stata (`.dta`)** files. Unlike simple text formats, Stata files are "self-describing" binary containers that bundle raw data with extensive metadata.
 
-**Preservation Risk:** While suitable for multiple analysis workflows, `.dta` is a proprietary format. Best practices from the **ICPSR** (Inter-university Consortium for Political and Social Research) [recommend preserving](https://www.icpsr.umich.edu/files/deposit/dataprep.pdf) these files alongside their open-source equivalents (CSV + DDI) to ensure long-term accessibility.
+::: {.callout-note title="Curation Goal"}
+Quantify "metadata richness" and archival readiness. Our objective is to extract embedded variable labels and "Extended Missing Values" (e.g., `.a`, `.b`) to ensure the dataset remains contextually usable after preservation.
+:::
+
+::: {.callout-warning title="Preservation Risk"}
+Proprietary lock-in is a primary concern. Furthermore, Stata's unique extended missing values are frequently lost when files are blindly converted to CSV, leading to data degradation if not properly documented.
+:::
 
 **Curation Objectives:**
 
-1.  **Metadata Coverage:** Quantify the "richness" of the dataset. A file with 100 variables but 0 labels is effectively unusable for secondary analysis.
-2.  **Missing Value Integrity:** Stata supports "Extended Missing Values" (e.g., `.a` for "Refused", `.b` for "Skip"). We must verify if these are present, as they will be lost if blindly converted to CSV.
+1.  **Metadata Coverage:** Assess the quality of variable and value labels.
+2.  **Missing Value Integrity:** Detect extended missing codes that require special handling.
 3.  **Privacy Screening:** Scan string variables for Personally Identifiable Information (PII).
 
 ------------------------------------------------------------------------

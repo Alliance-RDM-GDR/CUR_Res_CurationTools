@@ -1,0 +1,877 @@
+"FileName","VariableName","VariableLabel","DataType","ValueLabels","MissingValues","EncodingCheck","Status"
+"GovernanceSurvey.sav","ID","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey.sav","RecordedDate","Recorded Date","POSIXct","","None","N/A","Success"
+"GovernanceSurvey.sav","Q1","Representative
+Governance Survey Research
+Team: Dr.
+Anthony Piscitelli, Conestoga College Dr.
+Andrea Perrella, Wilfrid Laurier University InformationYou are
+invited to participate in a research project being conducted by Dr. Anthony Piscitelli from Conestoga College. This
+research is being conducted to examine how Ontarians wish to be represented by
+their school boards. In this survey, we are interested in your opinions about
+politics, school boards, and some current issues. The online
+survey will take approximately 15 minutes to complete.RisksWe do not anticipate any harm from your participation in
+this study. You may omit any questions you do not
+wish to answer in this survey.BenefitsWe anticipate several benefits from this research. It will
+help to enhance responsiveness of school boards, expand our understanding of
+governance, and contribute to the public discourse. ConfidentialityThe results of this study will remain anonymous and
+confidential and maintained indefinitely for research purposes. Data will","haven_labelled","1=Yes","None","N/A","Success"
+"GovernanceSurvey.sav","Q2","How old you are today?","numeric","","None","N/A","Success"
+"GovernanceSurvey.sav","Q3","If a federalelection were held today, which party would you vote for:","haven_labelled","1=The Conservative Party; 10=The Liberal Party; 11=The New Democratic Party (NDP); 12=The Green Part","None","N/A","Success"
+"GovernanceSurvey.sav","Q4","Is there a party you are leaning towards in a federal election?","haven_labelled","1=The Conservative Party; 4=The Liberal Party; 5=The New Democratic Party (NDP); 6=The Green Party; ","None","N/A","Success"
+"GovernanceSurvey.sav","Q5","If a provincial
+election were held today, which party would you vote for:","haven_labelled","1=The Progressive Conservative Party; 4=The Liberal Party; 5=The New Democratic Party (NDP); 6=The G","None","N/A","Success"
+"GovernanceSurvey.sav","Q6","Is there a party you are leaning towards in a provincial election?","haven_labelled","1=The Progressive Conservative Party; 4=The Liberal Party; 5=The New Democratic Party (NDP); 6=The G","None","N/A","Success"
+"GovernanceSurvey.sav","Q7","Did you happen to vote in the last federal election held in October of
+2019?","haven_labelled","1=Yes; 4=No; 5=I was not eligible to vote; 6=Don’t Know","None","N/A","Success"
+"GovernanceSurvey.sav","Q8","In politics people sometimes talk
+of left and right. On a scale of 1 to 10, where 1 is on the left and 10 is on
+the right, where would you place yourself?","haven_labelled","1=Left      1; 2=2; 3=3; 4=4; 5=5; 6=6; 7=7; 8=8; 9=9; 10=10      Right","None","N/A","Success"
+"GovernanceSurvey.sav","Q9","Which of the
+following comes closer to your view?","haven_labelled","1=Government should do more to solve problems; 4=Government is doing too many things that should be ","None","N/A","Success"
+"GovernanceSurvey.sav","Q10","Generally speaking, would you
+say that most people can be trusted or that you cannot be too careful in
+dealing with people?","haven_labelled","1=Most people can be trusted; 2=You cannot be too careful in dealing with people","None","N/A","Success"
+"GovernanceSurvey.sav","Q11","What do you see asthe role of a school board trustee?","character","","None","Contains Special/Non-ASCII","Success"
+"GovernanceSurvey.sav","Q11code","What do you see asthe role of a school board trustee?","haven_labelled","1=Advocate/Represent Students; 2=Advocate/Represent Parents; 3=Advocate/Represent Students & Parents","None","N/A","Success"
+"GovernanceSurvey.sav","Q12","Do you have any children?","haven_labelled","1=Yes; 2=No","None","N/A","Success"
+"GovernanceSurvey.sav","Q13","How many children do you have?","numeric","","None","N/A","Success"
+"GovernanceSurvey.sav","Q14","Are any of your children under the age
+of 19?","haven_labelled","1=Yes; 2=No","None","N/A","Success"
+"GovernanceSurvey.sav","Q15","How many children do
+you have attending elementary school?","numeric","","None","N/A","Success"
+"GovernanceSurvey.sav","Q16","How many children do
+you have attending high school?","numeric","","None","N/A","Success"
+"GovernanceSurvey.sav","Q17_1","Which school board do your children attend. Check all that apply. English Public","haven_labelled","1=English Public","None","N/A","Success"
+"GovernanceSurvey.sav","Q17_4","Which school board do your children attend. Check all that apply. English Separate (English Catholic)","haven_labelled","1=English Separate (English Catholic)","None","N/A","Success"
+"GovernanceSurvey.sav","Q17_5","Which school board do your children attend. Check all that apply. French Public","haven_labelled","1=French Public","None","N/A","Success"
+"GovernanceSurvey.sav","Q17_6","Which school board do your children attend. Check all that apply. French Separate (French Catholic)","haven_labelled","1=French Separate (French Catholic)","None","N/A","Success"
+"GovernanceSurvey.sav","Q17_7","Which school board do your children attend. Check all that apply. Private School","haven_labelled","1=Private School","None","N/A","Success"
+"GovernanceSurvey.sav","Q18","Are any of your children currently enrolled in a French immersion
+program?","haven_labelled","1=All of my children are enrolled in French immersion; 4=Some of my children are enrolled in French ","None","N/A","Success"
+"GovernanceSurvey.sav","Q19","Were any of your
+children enrolled in French immersion in the past?","haven_labelled","1=Yes; 3=I do not have any children; 4=No","None","N/A","Success"
+"GovernanceSurvey.sav","Q20","Have any of your
+children ever attended a school that was closed, thus requiring your student to
+change schools?","haven_labelled","1=Yes; 4=No; 5=I do not have any children","None","N/A","Success"
+"GovernanceSurvey.sav","Q21_1","Do any of your children have a special need (check all that apply)? Physical disabilities","haven_labelled","1=Physical disabilities","None","N/A","Success"
+"GovernanceSurvey.sav","Q21_4","Do any of your children have a special need (check all that apply)? Mental health challenges","haven_labelled","1=Mental health challenges","None","N/A","Success"
+"GovernanceSurvey.sav","Q21_5","Do any of your children have a special need (check all that apply)? A learning disorder","haven_labelled","1=A learning disorder","None","N/A","Success"
+"GovernanceSurvey.sav","Q21_6","Do any of your children have a special need (check all that apply)? No","haven_labelled","1=No","None","N/A","Success"
+"GovernanceSurvey.sav","Q22_1","If you had a concern about one of your children’s teachers that you
+were unable to resolve with the teacher, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice No one","haven_labelled","1=No one","None","N/A","Success"
+"GovernanceSurvey.sav","Q22_4","If you had a concern about one of your children’s teachers that you
+were unable to resolve with the teacher, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice Another teacher","haven_labelled","1=Another teacher","None","N/A","Success"
+"GovernanceSurvey.sav","Q22_5","If you had a concern about one of your children’s teachers that you
+were unable to resolve with the teacher, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice The school secretary","haven_labelled","1=The school secretary","None","N/A","Success"
+"GovernanceSurvey.sav","Q22_6","If you had a concern about one of your children’s teachers that you
+were unable to resolve with the teacher, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice A vice principal","haven_labelled","1=A vice principal","None","N/A","Success"
+"GovernanceSurvey.sav","Q22_7","If you had a concern about one of your children’s teachers that you
+were unable to resolve with the teacher, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice The school principal","haven_labelled","1=The school principal","None","N/A","Success"
+"GovernanceSurvey.sav","Q22_8","If you had a concern about one of your children’s teachers that you
+were unable to resolve with the teacher, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice A superintendent","haven_labelled","1=A superintendent","None","N/A","Success"
+"GovernanceSurvey.sav","Q22_9","If you had a concern about one of your children’s teachers that you
+were unable to resolve with the teacher, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice The Director of Education","haven_labelled","1=The Director of Education","None","N/A","Success"
+"GovernanceSurvey.sav","Q22_10","If you had a concern about one of your children’s teachers that you
+were unable to resolve with the teacher, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice A school board trustee","haven_labelled","1=A school board trustee","None","N/A","Success"
+"GovernanceSurvey.sav","Q22_11","If you had a concern about one of your children’s teachers that you
+were unable to resolve with the teacher, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice A member of provincial parliament","haven_labelled","1=A member of provincial parliament","None","N/A","Success"
+"GovernanceSurvey.sav","Q22_12","If you had a concern about one of your children’s teachers that you
+were unable to resolve with the teacher, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice Other:","haven_labelled","1=Other:","None","N/A","Success"
+"GovernanceSurvey.sav","Q22_12_TEXT","If you had a concern about one of your children’s teachers that you
+were unable to resolve with the teacher, who would you approach to discuss the
+issue? (check all that apply). - Other: - Text","character","","None","ASCII","Success"
+"GovernanceSurvey.sav","Q23_1","If you had a concern
+about a rule at your child’s school, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice No one","haven_labelled","1=No one","None","N/A","Success"
+"GovernanceSurvey.sav","Q23_4","If you had a concern
+about a rule at your child’s school, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice Another teacher","haven_labelled","1=Another teacher","None","N/A","Success"
+"GovernanceSurvey.sav","Q23_5","If you had a concern
+about a rule at your child’s school, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice The school secretary","haven_labelled","1=The school secretary","None","N/A","Success"
+"GovernanceSurvey.sav","Q23_6","If you had a concern
+about a rule at your child’s school, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice A vice principal","haven_labelled","1=A vice principal","None","N/A","Success"
+"GovernanceSurvey.sav","Q23_7","If you had a concern
+about a rule at your child’s school, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice The school principal","haven_labelled","1=The school principal","None","N/A","Success"
+"GovernanceSurvey.sav","Q23_8","If you had a concern
+about a rule at your child’s school, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice A superintendent","haven_labelled","1=A superintendent","None","N/A","Success"
+"GovernanceSurvey.sav","Q23_9","If you had a concern
+about a rule at your child’s school, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice The Director of Education","haven_labelled","1=The Director of Education","None","N/A","Success"
+"GovernanceSurvey.sav","Q23_10","If you had a concern
+about a rule at your child’s school, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice A school board trustee","haven_labelled","1=A school board trustee","None","N/A","Success"
+"GovernanceSurvey.sav","Q23_11","If you had a concern
+about a rule at your child’s school, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice A member of provincial parliament","haven_labelled","1=A member of provincial parliament","None","N/A","Success"
+"GovernanceSurvey.sav","Q23_12","If you had a concern
+about a rule at your child’s school, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice Other:","haven_labelled","1=Other:","None","N/A","Success"
+"GovernanceSurvey.sav","Q23_12_TEXT","If you had a concern
+about a rule at your child’s school, who would you approach to discuss the
+issue? (check all that apply). - Other:  - Text","character","","None","ASCII","Success"
+"GovernanceSurvey.sav","Q24_1","If you had a concern that your child might have special needs, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice No one","haven_labelled","1=No one","None","N/A","Success"
+"GovernanceSurvey.sav","Q24_4","If you had a concern that your child might have special needs, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice Another teacher","haven_labelled","1=Another teacher","None","N/A","Success"
+"GovernanceSurvey.sav","Q24_5","If you had a concern that your child might have special needs, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice The school secretary","haven_labelled","1=The school secretary","None","N/A","Success"
+"GovernanceSurvey.sav","Q24_6","If you had a concern that your child might have special needs, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice A vice principal","haven_labelled","1=A vice principal","None","N/A","Success"
+"GovernanceSurvey.sav","Q24_7","If you had a concern that your child might have special needs, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice The school principal","haven_labelled","1=The school principal","None","N/A","Success"
+"GovernanceSurvey.sav","Q24_8","If you had a concern that your child might have special needs, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice A superintendent","haven_labelled","1=A superintendent","None","N/A","Success"
+"GovernanceSurvey.sav","Q24_9","If you had a concern that your child might have special needs, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice The Director of Education","haven_labelled","1=The Director of Education","None","N/A","Success"
+"GovernanceSurvey.sav","Q24_10","If you had a concern that your child might have special needs, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice A school board trustee","haven_labelled","1=A school board trustee","None","N/A","Success"
+"GovernanceSurvey.sav","Q24_11","If you had a concern that your child might have special needs, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice A member of provincial parliament","haven_labelled","1=A member of provincial parliament","None","N/A","Success"
+"GovernanceSurvey.sav","Q24_12","If you had a concern that your child might have special needs, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice Other:","haven_labelled","1=Other:","None","N/A","Success"
+"GovernanceSurvey.sav","Q24_12_TEXT","If you had a concern that your child might have special needs, who
+would you approach to discuss the issue? (check all that apply). - Other: - Text","character","","None","ASCII","Success"
+"GovernanceSurvey.sav","Q25_1","If you had a concern
+about access to technology at your local school, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice No one","haven_labelled","1=No one","None","N/A","Success"
+"GovernanceSurvey.sav","Q25_4","If you had a concern
+about access to technology at your local school, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice Another teacher","haven_labelled","1=Another teacher","None","N/A","Success"
+"GovernanceSurvey.sav","Q25_5","If you had a concern
+about access to technology at your local school, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice The school secretary","haven_labelled","1=The school secretary","None","N/A","Success"
+"GovernanceSurvey.sav","Q25_6","If you had a concern
+about access to technology at your local school, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice A vice principal","haven_labelled","1=A vice principal","None","N/A","Success"
+"GovernanceSurvey.sav","Q25_7","If you had a concern
+about access to technology at your local school, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice The school principal","haven_labelled","1=The school principal","None","N/A","Success"
+"GovernanceSurvey.sav","Q25_8","If you had a concern
+about access to technology at your local school, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice A superintendent","haven_labelled","1=A superintendent","None","N/A","Success"
+"GovernanceSurvey.sav","Q25_9","If you had a concern
+about access to technology at your local school, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice The Director of Education","haven_labelled","1=The Director of Education","None","N/A","Success"
+"GovernanceSurvey.sav","Q25_10","If you had a concern
+about access to technology at your local school, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice A school board trustee","haven_labelled","1=A school board trustee","None","N/A","Success"
+"GovernanceSurvey.sav","Q25_11","If you had a concern
+about access to technology at your local school, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice A member of provincial parliament","haven_labelled","1=A member of provincial parliament","None","N/A","Success"
+"GovernanceSurvey.sav","Q25_12","If you had a concern
+about access to technology at your local school, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice Other:","haven_labelled","1=Other:","None","N/A","Success"
+"GovernanceSurvey.sav","Q25_12_TEXT","If you had a concern
+about access to technology at your local school, who would you approach to
+discuss the issue? (check all that apply). - Other: - Text","character","","None","ASCII","Success"
+"GovernanceSurvey.sav","Q26_1","If you had a concern
+about a policy at your local school board, who would you approach to discuss
+the issue? (check all that apply). - Selected Choice No one","haven_labelled","1=No one","None","N/A","Success"
+"GovernanceSurvey.sav","Q26_4","If you had a concern
+about a policy at your local school board, who would you approach to discuss
+the issue? (check all that apply). - Selected Choice Another teacher","haven_labelled","1=Another teacher","None","N/A","Success"
+"GovernanceSurvey.sav","Q26_5","If you had a concern
+about a policy at your local school board, who would you approach to discuss
+the issue? (check all that apply). - Selected Choice The school secretary","haven_labelled","1=The school secretary","None","N/A","Success"
+"GovernanceSurvey.sav","Q26_6","If you had a concern
+about a policy at your local school board, who would you approach to discuss
+the issue? (check all that apply). - Selected Choice A vice principal","haven_labelled","1=A vice principal","None","N/A","Success"
+"GovernanceSurvey.sav","Q26_7","If you had a concern
+about a policy at your local school board, who would you approach to discuss
+the issue? (check all that apply). - Selected Choice The school principal","haven_labelled","1=The school principal","None","N/A","Success"
+"GovernanceSurvey.sav","Q26_8","If you had a concern
+about a policy at your local school board, who would you approach to discuss
+the issue? (check all that apply). - Selected Choice A superintendent","haven_labelled","1=A superintendent","None","N/A","Success"
+"GovernanceSurvey.sav","Q26_9","If you had a concern
+about a policy at your local school board, who would you approach to discuss
+the issue? (check all that apply). - Selected Choice The Director of Education","haven_labelled","1=The Director of Education","None","N/A","Success"
+"GovernanceSurvey.sav","Q26_10","If you had a concern
+about a policy at your local school board, who would you approach to discuss
+the issue? (check all that apply). - Selected Choice A school board trustee","haven_labelled","1=A school board trustee","None","N/A","Success"
+"GovernanceSurvey.sav","Q26_11","If you had a concern
+about a policy at your local school board, who would you approach to discuss
+the issue? (check all that apply). - Selected Choice A member of provincial parliament","haven_labelled","1=A member of provincial parliament","None","N/A","Success"
+"GovernanceSurvey.sav","Q26_12","If you had a concern
+about a policy at your local school board, who would you approach to discuss
+the issue? (check all that apply). - Selected Choice Other:","haven_labelled","1=Other:","None","N/A","Success"
+"GovernanceSurvey.sav","Q26_12_TEXT","If you had a concern
+about a policy at your local school board, who would you approach to discuss
+the issue? (check all that apply). - Other:  - Text","character","","None","ASCII","Success"
+"GovernanceSurvey.sav","Q27_1","If you had a concern
+about the curriculum your child was learning, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice No one","haven_labelled","1=No one","None","N/A","Success"
+"GovernanceSurvey.sav","Q27_4","If you had a concern
+about the curriculum your child was learning, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice Another teacher","haven_labelled","1=Another teacher","None","N/A","Success"
+"GovernanceSurvey.sav","Q27_5","If you had a concern
+about the curriculum your child was learning, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice The school secretary","haven_labelled","1=The school secretary","None","N/A","Success"
+"GovernanceSurvey.sav","Q27_6","If you had a concern
+about the curriculum your child was learning, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice A vice principal","haven_labelled","1=A vice principal","None","N/A","Success"
+"GovernanceSurvey.sav","Q27_7","If you had a concern
+about the curriculum your child was learning, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice The school principal","haven_labelled","1=The school principal","None","N/A","Success"
+"GovernanceSurvey.sav","Q27_8","If you had a concern
+about the curriculum your child was learning, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice A superintendent","haven_labelled","1=A superintendent","None","N/A","Success"
+"GovernanceSurvey.sav","Q27_9","If you had a concern
+about the curriculum your child was learning, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice The Director of Education","haven_labelled","1=The Director of Education","None","N/A","Success"
+"GovernanceSurvey.sav","Q27_10","If you had a concern
+about the curriculum your child was learning, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice A school board trustee","haven_labelled","1=A school board trustee","None","N/A","Success"
+"GovernanceSurvey.sav","Q27_11","If you had a concern
+about the curriculum your child was learning, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice A member of provincial parliament","haven_labelled","1=A member of provincial parliament","None","N/A","Success"
+"GovernanceSurvey.sav","Q27_12","If you had a concern
+about the curriculum your child was learning, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice Other:","haven_labelled","1=Other:","None","N/A","Success"
+"GovernanceSurvey.sav","Q27_12_TEXT","If you had a concern
+about the curriculum your child was learning, who would you approach to
+discuss the issue? (check all that apply). - Other: - Text","character","","None","ASCII","Success"
+"GovernanceSurvey.sav","Q28_1","If you had a concern about your child’s school transportation, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice No one","haven_labelled","1=No one","None","N/A","Success"
+"GovernanceSurvey.sav","Q28_4","If you had a concern about your child’s school transportation, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice A teacher","haven_labelled","1=A teacher","None","N/A","Success"
+"GovernanceSurvey.sav","Q28_5","If you had a concern about your child’s school transportation, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice A school secretary","haven_labelled","1=A school secretary","None","N/A","Success"
+"GovernanceSurvey.sav","Q28_6","If you had a concern about your child’s school transportation, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice A vice principal","haven_labelled","1=A vice principal","None","N/A","Success"
+"GovernanceSurvey.sav","Q28_7","If you had a concern about your child’s school transportation, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice The school principal","haven_labelled","1=The school principal","None","N/A","Success"
+"GovernanceSurvey.sav","Q28_8","If you had a concern about your child’s school transportation, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice A superintendent","haven_labelled","1=A superintendent","None","N/A","Success"
+"GovernanceSurvey.sav","Q28_9","If you had a concern about your child’s school transportation, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice The Director of Education","haven_labelled","1=The Director of Education","None","N/A","Success"
+"GovernanceSurvey.sav","Q28_10","If you had a concern about your child’s school transportation, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice A school board trustee","haven_labelled","1=A school board trustee","None","N/A","Success"
+"GovernanceSurvey.sav","Q28_11","If you had a concern about your child’s school transportation, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice A member of provincial parliament","haven_labelled","1=A member of provincial parliament","None","N/A","Success"
+"GovernanceSurvey.sav","Q28_12","If you had a concern about your child’s school transportation, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice Other:","haven_labelled","1=Other:","None","N/A","Success"
+"GovernanceSurvey.sav","Q28_12_TEXT","If you had a concern about your child’s school transportation, who
+would you approach to discuss the issue? (check all that apply). - Other: - Text","character","","None","ASCII","Success"
+"GovernanceSurvey.sav","Q29_1","If you had a concern
+about the upkeep of a local school (e.g. uncut grass, a ripped flag, a sidewalk
+not shoveled etc.). Who would you approach to discuss this issue? - Selected Choice No one","haven_labelled","1=No one","None","N/A","Success"
+"GovernanceSurvey.sav","Q29_4","If you had a concern
+about the upkeep of a local school (e.g. uncut grass, a ripped flag, a sidewalk
+not shoveled etc.). Who would you approach to discuss this issue? - Selected Choice A teacher","haven_labelled","1=A teacher","None","N/A","Success"
+"GovernanceSurvey.sav","Q29_5","If you had a concern
+about the upkeep of a local school (e.g. uncut grass, a ripped flag, a sidewalk
+not shoveled etc.). Who would you approach to discuss this issue? - Selected Choice A school secretary","haven_labelled","1=A school secretary","None","N/A","Success"
+"GovernanceSurvey.sav","Q29_6","If you had a concern
+about the upkeep of a local school (e.g. uncut grass, a ripped flag, a sidewalk
+not shoveled etc.). Who would you approach to discuss this issue? - Selected Choice A vice principal","haven_labelled","1=A vice principal","None","N/A","Success"
+"GovernanceSurvey.sav","Q29_7","If you had a concern
+about the upkeep of a local school (e.g. uncut grass, a ripped flag, a sidewalk
+not shoveled etc.). Who would you approach to discuss this issue? - Selected Choice The school principal","haven_labelled","1=The school principal","None","N/A","Success"
+"GovernanceSurvey.sav","Q29_8","If you had a concern
+about the upkeep of a local school (e.g. uncut grass, a ripped flag, a sidewalk
+not shoveled etc.). Who would you approach to discuss this issue? - Selected Choice A superintendent","haven_labelled","1=A superintendent","None","N/A","Success"
+"GovernanceSurvey.sav","Q29_9","If you had a concern
+about the upkeep of a local school (e.g. uncut grass, a ripped flag, a sidewalk
+not shoveled etc.). Who would you approach to discuss this issue? - Selected Choice The Director of Education","haven_labelled","1=The Director of Education","None","N/A","Success"
+"GovernanceSurvey.sav","Q29_10","If you had a concern
+about the upkeep of a local school (e.g. uncut grass, a ripped flag, a sidewalk
+not shoveled etc.). Who would you approach to discuss this issue? - Selected Choice A school board trustee","haven_labelled","1=A school board trustee","None","N/A","Success"
+"GovernanceSurvey.sav","Q29_11","If you had a concern
+about the upkeep of a local school (e.g. uncut grass, a ripped flag, a sidewalk
+not shoveled etc.). Who would you approach to discuss this issue? - Selected Choice A member of provincial parliament","haven_labelled","1=A member of provincial parliament","None","N/A","Success"
+"GovernanceSurvey.sav","Q29_12","If you had a concern
+about the upkeep of a local school (e.g. uncut grass, a ripped flag, a sidewalk
+not shoveled etc.). Who would you approach to discuss this issue? - Selected Choice Other:","haven_labelled","1=Other:","None","N/A","Success"
+"GovernanceSurvey.sav","Q29_12_TEXT","If you had a concern
+about the upkeep of a local school (e.g. uncut grass, a ripped flag, a sidewalk
+not shoveled etc.). Who would you approach to discuss this issue? - Other: - Text","character","","None","ASCII","Success"
+"GovernanceSurvey.sav","Q30_1","Please rank the
+following trustee duties in order of importance: (You can click on the responses, hold, and then slide the responses in order of priority) - Trustees should help parents navigate who to talk to about important issues","haven_labelled","1=1; 2=2; 3=3","None","N/A","Success"
+"GovernanceSurvey.sav","Q30_4","Please rank the
+following trustee duties in order of importance: (You can click on the responses, hold, and then slide the responses in order of priority) - Trustees should ensure the ideas of the people they represent are considered in board decisions","haven_labelled","1=1; 2=2; 3=3","None","N/A","Success"
+"GovernanceSurvey.sav","Q30_5","Please rank the
+following trustee duties in order of importance: (You can click on the responses, hold, and then slide the responses in order of priority) - Trustees should be communicating directly with parents about decisions the board makes","haven_labelled","1=1; 2=2; 3=3","None","N/A","Success"
+"GovernanceSurvey.sav","Q31","Which of the
+following comes closest to your view?","haven_labelled","1=Trustees should focus on policies and leave operational decisions to staff; 4=Trustees should be a","None","N/A","Success"
+"GovernanceSurvey.sav","Q32","Which of the
+following comes closest to your view?","haven_labelled","1=Trustees should vote the way the majority of people in their area want even if they disagree with ","None","N/A","Success"
+"GovernanceSurvey.sav","Q33","Which of the
+following comes closest to your view?","haven_labelled","2=The system of local school board trustees works well and should be maintained; 4=School board trus","None","N/A","Success"
+"GovernanceSurvey.sav","Q34_1","Please tell me if you strongly agree, agree, disagree, or strongly
+disagree with each of the following statements. - There should be more professional educators on boards of trustees.","haven_labelled","1=Strongly Agree; 2=Agree; 3=Disagree; 4=Strongly Disagree","None","N/A","Success"
+"GovernanceSurvey.sav","Q34_2","Please tell me if you strongly agree, agree, disagree, or strongly
+disagree with each of the following statements. - Individual trustees should regularly write articles in the newspaper to keep the community informed about important decisions being made","haven_labelled","1=Strongly Agree; 2=Agree; 3=Disagree; 4=Strongly Disagree","None","N/A","Success"
+"GovernanceSurvey.sav","Q34_3","Please tell me if you strongly agree, agree, disagree, or strongly
+disagree with each of the following statements. - If parents complain to a trustee it is appropriate for the trustee to overturn staff decisions on occasion","haven_labelled","1=Strongly Agree; 2=Agree; 3=Disagree; 4=Strongly Disagree","None","N/A","Success"
+"GovernanceSurvey.sav","Q34_4","Please tell me if you strongly agree, agree, disagree, or strongly
+disagree with each of the following statements. - If a student is suspended from school their parents should be able to appeal to the board of trustees to reconsider the suspension","haven_labelled","1=Strongly Agree; 2=Agree; 3=Disagree; 4=Strongly Disagree","None","N/A","Success"
+"GovernanceSurvey.sav","Q34_5","Please tell me if you strongly agree, agree, disagree, or strongly
+disagree with each of the following statements. - People who send their children to private school should get a tax break","haven_labelled","1=Strongly Agree; 2=Agree; 3=Disagree; 4=Strongly Disagree","None","N/A","Success"
+"GovernanceSurvey.sav","Q34_6","Please tell me if you strongly agree, agree, disagree, or strongly
+disagree with each of the following statements. - People without children in school should get a tax break","haven_labelled","1=Strongly Agree; 2=Agree; 3=Disagree; 4=Strongly Disagree","None","N/A","Success"
+"GovernanceSurvey.sav","Q35","What role should the board of trustees play in school management?","haven_labelled","1=Trustees should play no role in management, they should only focus on general policies; 4=Trustees","None","N/A","Success"
+"GovernanceSurvey.sav","Q36_1","Thinking about the
+decisions that directly affect the classroom and the school curriculum, should
+each of the following have more, less, or about the same amount of control as
+now? - Teachers","haven_labelled","1=More; 2=Same; 3=Less","None","N/A","Success"
+"GovernanceSurvey.sav","Q36_2","Thinking about the
+decisions that directly affect the classroom and the school curriculum, should
+each of the following have more, less, or about the same amount of control as
+now? - The Ontario Government","haven_labelled","1=More; 2=Same; 3=Less","None","N/A","Success"
+"GovernanceSurvey.sav","Q36_3","Thinking about the
+decisions that directly affect the classroom and the school curriculum, should
+each of the following have more, less, or about the same amount of control as
+now? - Elected trustees","haven_labelled","1=More; 2=Same; 3=Less","None","N/A","Success"
+"GovernanceSurvey.sav","Q36_4","Thinking about the
+decisions that directly affect the classroom and the school curriculum, should
+each of the following have more, less, or about the same amount of control as
+now? - Parents","haven_labelled","1=More; 2=Same; 3=Less","None","N/A","Success"
+"GovernanceSurvey.sav","Q36_5","Thinking about the
+decisions that directly affect the classroom and the school curriculum, should
+each of the following have more, less, or about the same amount of control as
+now? - School Board Administrators","haven_labelled","1=More; 2=Same; 3=Less","None","N/A","Success"
+"GovernanceSurvey.sav","Q36_6","Thinking about the
+decisions that directly affect the classroom and the school curriculum, should
+each of the following have more, less, or about the same amount of control as
+now? - Students","haven_labelled","1=More; 2=Same; 3=Less","None","N/A","Success"
+"GovernanceSurvey.sav","Q36_7","Thinking about the
+decisions that directly affect the classroom and the school curriculum, should
+each of the following have more, less, or about the same amount of control as
+now? - School councils","haven_labelled","1=More; 2=Same; 3=Less","None","N/A","Success"
+"GovernanceSurvey.sav","Q36_8","Thinking about the
+decisions that directly affect the classroom and the school curriculum, should
+each of the following have more, less, or about the same amount of control as
+now? - Potential employers","haven_labelled","1=More; 2=Same; 3=Less","None","N/A","Success"
+"GovernanceSurvey.sav","Q37","Sometimes it is
+necessary to close schools due to enrollment changes. If a school needs to
+close who should make the final decision? - Selected Choice","haven_labelled","1=The School Board Trustees; 4=The Director of Education; 5=The School Principal; 6=The Minister of ","None","N/A","Success"
+"GovernanceSurvey.sav","Q37_7_TEXT","Sometimes it is necessary to close schools due to enrollment changes. If a school needs to close who should make the final decision? - Other: - Text","character","","None","ASCII","Success"
+"GovernanceSurvey.sav","Q38","Sometimes it is necessary to change school boundaries due to
+enrollment changes. If school boundaries need to change who should make the
+final decision? - Selected Choice","haven_labelled","1=The School Board Trustees; 4=The Director of Education; 5=The School Principal; 6=The Minister of ","None","N/A","Success"
+"GovernanceSurvey.sav","Q38_7_TEXT","Sometimes it is necessary to change school boundaries due to enrollment changes. If school boundaries need to change who should make the final decision? - Other: - Text","character","","None","ASCII","Success"
+"GovernanceSurvey.sav","Q39","In general, how
+would you rate the performance of your local school board as a whole over the
+past four years?","haven_labelled","1=Very Good; 4=Good; 5=Average; 6=Poor; 7=Very poor","None","N/A","Success"
+"GovernanceSurvey.sav","Q40","In general, how
+would you rate the performance of your local school board trustee(s) over the
+past four years?","haven_labelled","1=Very Good; 4=Good; 5=Average; 6=Poor; 7=Very poor","None","N/A","Success"
+"GovernanceSurvey.sav","Q41","In your lifetime have you ever contacted your child’s school principal to talk about a concern or issue?","haven_labelled","1=Yes; 4=No; 5=I do not have children","None","N/A","Success"
+"GovernanceSurvey.sav","Q42","In your lifetime have you ever contacted a school board trustee/the board of trustees to discuss a concern or issue?","haven_labelled","1=Yes; 4=No","None","N/A","Success"
+"GovernanceSurvey.sav","Q43","Why did you contact the school board trustee?","character","","None","ASCII","Success"
+"GovernanceSurvey.sav","Q44_1","Over the last twelve (12) months have you: - Donated money to a political party or candidate?","haven_labelled","1=Yes; 2=No","None","N/A","Success"
+"GovernanceSurvey.sav","Q44_2","Over the last twelve (12) months have you: - Signed a petition?","haven_labelled","1=Yes; 2=No","None","N/A","Success"
+"GovernanceSurvey.sav","Q44_3","Over the last twelve (12) months have you: - Bought products for political, ethical, or environmental reasons?","haven_labelled","1=Yes; 2=No","None","N/A","Success"
+"GovernanceSurvey.sav","Q44_4","Over the last twelve (12) months have you: - Taken part in a march, rally, or protest?","haven_labelled","1=Yes; 2=No","None","N/A","Success"
+"GovernanceSurvey.sav","Q44_5","Over the last twelve (12) months have you: - Used the internet to be politically active?","haven_labelled","1=Yes; 2=No","None","N/A","Success"
+"GovernanceSurvey.sav","Q44_6","Over the last twelve (12) months have you: - Volunteered for a community group or a non-profit organization?","haven_labelled","1=Yes; 2=No","None","N/A","Success"
+"GovernanceSurvey.sav","Q44_7","Over the last twelve (12) months have you: - Contacted a school board trustee?","haven_labelled","1=Yes; 2=No","None","N/A","Success"
+"GovernanceSurvey.sav","Q45","Have you ever been a
+member of a political party?","haven_labelled","1=Yes; 2=No","None","N/A","Success"
+"GovernanceSurvey.sav","Q46","In this last section we would like to ask some demographic questions.      With which of the following gender identities do you most closely identify? - Selected Choice","haven_labelled","1=Male; 2=Female; 3=Transgender Female; 4=Transgender Male; 5=Other:","None","N/A","Success"
+"GovernanceSurvey.sav","Q46_5_TEXT","In this last section we would like to ask some demographic questions.      With which of the following gender identities do you most closely identify? - Other:  - Text","character","","None","ASCII","Success"
+"GovernanceSurvey.sav","Q47","Which of the following best
+describes your marital status:","haven_labelled","1=Married; 2=Living with a partner; 3=Divorced; 4=Separated; 5=Widowed or; 6=Never been married","None","N/A","Success"
+"GovernanceSurvey.sav","Q48","What is your current employment
+status? Are you … - Selected Choice","haven_labelled","1=Employed Full-time; 2=Employed Part-time; 3=Retired; 4=Unemployed; 5=A student; 6=A homemaker or; ","None","N/A","Success"
+"GovernanceSurvey.sav","Q48_7_TEXT","What is your current employment
+status? Are you … - Other: - Text","character","","None","ASCII","Success"
+"GovernanceSurvey.sav","Q49","What is the highest level of formal education
+that you have completed - Selected Choice","haven_labelled","1=Grade school; 2=High school; 3=A trade apprenticeship; 4=Some College; 5=College Diploma; 6=Some U","None","N/A","Success"
+"GovernanceSurvey.sav","Q49_11_TEXT","What is the highest level of formal education
+that you have completed - Other:  - Text","character","","None","ASCII","Success"
+"GovernanceSurvey.sav","Q50","Do you own or rent your home?","haven_labelled","1=Own; 2=Rent","None","N/A","Success"
+"GovernanceSurvey.sav","Q51","In which county were you born? - Selected Choice","haven_labelled","4=Canada; 5=Other:","None","N/A","Success"
+"GovernanceSurvey.sav","Q51_5_TEXT","In which county were you born? - Other: - Text","character","","None","ASCII","Success"
+"GovernanceSurvey.sav","Q52","In what year did you emigrate to Canada?","numeric","","None","N/A","Success"
+"GovernanceSurvey.sav","Q53","In your life, how important would you say
+religion is:","haven_labelled","1=Very important; 2=Somewhat important; 3=Not very important or; 4=Not important at all","None","N/A","Success"
+"GovernanceSurvey.sav","Q54","Which of the following best
+describes your religious identity? - Selected Choice","haven_labelled","1=Roman Catholic; 2=Protestant or Christian; 3=Muslim; 4=Jewish; 5=Hindu; 6=Sikh; 7=Atheist; 8=Agnos","None","N/A","Success"
+"GovernanceSurvey.sav","Q54_9_TEXT","Which of the following best
+describes your religious identity? - Other    - Text","character","","None","ASCII","Success"
+"GovernanceSurvey.sav","Q55","What are the first three digits of your postal
+code?","character","","None","ASCII","Success"
+"GovernanceSurvey.sav","Q56","Please tell me which of the
+following ranges your total annual household income falls within before taxes?","haven_labelled","1=Less than $20,000; 2=$20,000 to 50,000; 3=$50,000 to 70,000; 4=$70,000 to 100,000; 5=$100,000 to $","None","N/A","Success"
+"GovernanceSurvey.sav","Region","Which Region of Ontario is the respondent from","haven_labelled","1=Southwestern Ontario; 2=Eastern Ontario; 3=Greater Toronto Area; 4=Central Ontario; 5=Northern Ont","None","N/A","Success"
+"GovernanceSurvey.sav","RegionWaterloo","Which Region of the province is the respondent from Waterloo Region added","haven_labelled","1=Southwestern Ontario; 2=Eastern Ontario; 3=Greater Toronto Area; 5=Northern Ontario; 6=Central Ont","None","N/A","Success"
+"GovernanceSurvey.sav","gender","(No Label)","haven_labelled","1=male; 2=female; 3=other","None","N/A","Success"
+"GovernanceSurvey.sav","age","(No Label)","haven_labelled","1=18 to 34; 2=35 to 49; 3=50 to 64; 4=65 plus; 9=Missing","None","N/A","Success"
+"GovernanceSurvey.sav","parent","(No Label)","haven_labelled","1=not a school aged parent; 2=schol aged parent; 9=missing","None","N/A","Success"
+"GovernanceSurvey.sav","AgeSysmis","(No Label)","haven_labelled","1=18 to 34; 2=35 to 49; 3=50 to 64; 4=65+","None","N/A","Success"
+"GovernanceSurvey.sav","GenderSysmis","(No Label)","haven_labelled","1=male; 2=female; 3=other; 9=sysmis","None","N/A","Success"
+"GovernanceSurvey.sav","weightassembler","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey.sav","weightassemblerRegion","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey.sav","weightassemblerParent","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey.sav","WeightParentStandard1","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey.sav","WeightStandardAge1","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey.sav","weightstandard1","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey.sav","WeightRegionStandard1","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey.sav","weightstandard2","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey.sav","WeightParentStandard2","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey.sav","weightstandard3","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey.sav","WeightStandardAge2","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey.sav","weightstandard4","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey.sav","WeightRegionStandard2","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey.sav","weightstandard5","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey.sav","WeightParentStandard3","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey.sav","weightstandard6","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey.sav","WeightStandardAge3","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey.sav","weightstandard7","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey.sav","WeightRegionStandard3","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey.sav","weightstandard8","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey.sav","weightstandardFinal","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey_Data.sav","ID","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey_Data.sav","RecordedDate","Recorded Date","POSIXct","","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q1","Representative
+Governance Survey Research
+Team: Dr.
+Anthony Piscitelli, Conestoga College Dr.
+Andrea Perrella, Wilfrid Laurier University InformationYou are
+invited to participate in a research project being conducted by Dr. Anthony Piscitelli from Conestoga College. This
+research is being conducted to examine how Ontarians wish to be represented by
+their school boards. In this survey, we are interested in your opinions about
+politics, school boards, and some current issues. The online
+survey will take approximately 15 minutes to complete.RisksWe do not anticipate any harm from your participation in
+this study. You may omit any questions you do not
+wish to answer in this survey.BenefitsWe anticipate several benefits from this research. It will
+help to enhance responsiveness of school boards, expand our understanding of
+governance, and contribute to the public discourse. ConfidentialityThe results of this study will remain anonymous and
+confidential and maintained indefinitely for research purposes. Data will","haven_labelled","1=Yes","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q2","How old you are today?","numeric","","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q3","If a federalelection were held today, which party would you vote for:","haven_labelled","1=The Conservative Party; 10=The Liberal Party; 11=The New Democratic Party (NDP); 12=The Green Part","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q4","Is there a party you are leaning towards in a federal election?","haven_labelled","1=The Conservative Party; 4=The Liberal Party; 5=The New Democratic Party (NDP); 6=The Green Party; ","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q5","If a provincial
+election were held today, which party would you vote for:","haven_labelled","1=The Progressive Conservative Party; 4=The Liberal Party; 5=The New Democratic Party (NDP); 6=The G","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q6","Is there a party you are leaning towards in a provincial election?","haven_labelled","1=The Progressive Conservative Party; 4=The Liberal Party; 5=The New Democratic Party (NDP); 6=The G","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q7","Did you happen to vote in the last federal election held in October of
+2019?","haven_labelled","1=Yes; 4=No; 5=I was not eligible to vote; 6=Don’t Know","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q8","In politics people sometimes talk
+of left and right. On a scale of 1 to 10, where 1 is on the left and 10 is on
+the right, where would you place yourself?","haven_labelled","1=Left      1; 2=2; 3=3; 4=4; 5=5; 6=6; 7=7; 8=8; 9=9; 10=10      Right","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q9","Which of the
+following comes closer to your view?","haven_labelled","1=Government should do more to solve problems; 4=Government is doing too many things that should be ","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q10","Generally speaking, would you
+say that most people can be trusted or that you cannot be too careful in
+dealing with people?","haven_labelled","1=Most people can be trusted; 2=You cannot be too careful in dealing with people","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q11","What do you see asthe role of a school board trustee?","character","","None","Contains Special/Non-ASCII","Success"
+"GovernanceSurvey_Data.sav","Q11code","What do you see asthe role of a school board trustee?","haven_labelled","1=Advocate/Represent Students; 2=Advocate/Represent Parents; 3=Advocate/Represent Students & Parents","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q12","Do you have any children?","haven_labelled","1=Yes; 2=No","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q13","How many children do you have?","numeric","","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q14","Are any of your children under the age
+of 19?","haven_labelled","1=Yes; 2=No","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q15","How many children do
+you have attending elementary school?","numeric","","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q16","How many children do
+you have attending high school?","numeric","","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q17_1","Which school board do your children attend. Check all that apply. English Public","haven_labelled","1=English Public","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q17_4","Which school board do your children attend. Check all that apply. English Separate (English Catholic)","haven_labelled","1=English Separate (English Catholic)","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q17_5","Which school board do your children attend. Check all that apply. French Public","haven_labelled","1=French Public","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q17_6","Which school board do your children attend. Check all that apply. French Separate (French Catholic)","haven_labelled","1=French Separate (French Catholic)","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q17_7","Which school board do your children attend. Check all that apply. Private School","haven_labelled","1=Private School","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q18","Are any of your children currently enrolled in a French immersion
+program?","haven_labelled","1=All of my children are enrolled in French immersion; 4=Some of my children are enrolled in French ","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q19","Were any of your
+children enrolled in French immersion in the past?","haven_labelled","1=Yes; 3=I do not have any children; 4=No","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q20","Have any of your
+children ever attended a school that was closed, thus requiring your student to
+change schools?","haven_labelled","1=Yes; 4=No; 5=I do not have any children","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q21_1","Do any of your children have a special need (check all that apply)? Physical disabilities","haven_labelled","1=Physical disabilities","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q21_4","Do any of your children have a special need (check all that apply)? Mental health challenges","haven_labelled","1=Mental health challenges","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q21_5","Do any of your children have a special need (check all that apply)? A learning disorder","haven_labelled","1=A learning disorder","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q21_6","Do any of your children have a special need (check all that apply)? No","haven_labelled","1=No","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q22_1","If you had a concern about one of your children’s teachers that you
+were unable to resolve with the teacher, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice No one","haven_labelled","1=No one","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q22_4","If you had a concern about one of your children’s teachers that you
+were unable to resolve with the teacher, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice Another teacher","haven_labelled","1=Another teacher","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q22_5","If you had a concern about one of your children’s teachers that you
+were unable to resolve with the teacher, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice The school secretary","haven_labelled","1=The school secretary","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q22_6","If you had a concern about one of your children’s teachers that you
+were unable to resolve with the teacher, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice A vice principal","haven_labelled","1=A vice principal","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q22_7","If you had a concern about one of your children’s teachers that you
+were unable to resolve with the teacher, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice The school principal","haven_labelled","1=The school principal","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q22_8","If you had a concern about one of your children’s teachers that you
+were unable to resolve with the teacher, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice A superintendent","haven_labelled","1=A superintendent","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q22_9","If you had a concern about one of your children’s teachers that you
+were unable to resolve with the teacher, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice The Director of Education","haven_labelled","1=The Director of Education","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q22_10","If you had a concern about one of your children’s teachers that you
+were unable to resolve with the teacher, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice A school board trustee","haven_labelled","1=A school board trustee","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q22_11","If you had a concern about one of your children’s teachers that you
+were unable to resolve with the teacher, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice A member of provincial parliament","haven_labelled","1=A member of provincial parliament","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q22_12","If you had a concern about one of your children’s teachers that you
+were unable to resolve with the teacher, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice Other:","haven_labelled","1=Other:","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q22_12_TEXT","If you had a concern about one of your children’s teachers that you
+were unable to resolve with the teacher, who would you approach to discuss the
+issue? (check all that apply). - Other: - Text","character","","None","ASCII","Success"
+"GovernanceSurvey_Data.sav","Q23_1","If you had a concern
+about a rule at your child’s school, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice No one","haven_labelled","1=No one","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q23_4","If you had a concern
+about a rule at your child’s school, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice Another teacher","haven_labelled","1=Another teacher","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q23_5","If you had a concern
+about a rule at your child’s school, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice The school secretary","haven_labelled","1=The school secretary","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q23_6","If you had a concern
+about a rule at your child’s school, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice A vice principal","haven_labelled","1=A vice principal","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q23_7","If you had a concern
+about a rule at your child’s school, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice The school principal","haven_labelled","1=The school principal","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q23_8","If you had a concern
+about a rule at your child’s school, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice A superintendent","haven_labelled","1=A superintendent","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q23_9","If you had a concern
+about a rule at your child’s school, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice The Director of Education","haven_labelled","1=The Director of Education","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q23_10","If you had a concern
+about a rule at your child’s school, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice A school board trustee","haven_labelled","1=A school board trustee","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q23_11","If you had a concern
+about a rule at your child’s school, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice A member of provincial parliament","haven_labelled","1=A member of provincial parliament","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q23_12","If you had a concern
+about a rule at your child’s school, who would you approach to discuss the
+issue? (check all that apply). - Selected Choice Other:","haven_labelled","1=Other:","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q23_12_TEXT","If you had a concern
+about a rule at your child’s school, who would you approach to discuss the
+issue? (check all that apply). - Other:  - Text","character","","None","ASCII","Success"
+"GovernanceSurvey_Data.sav","Q24_1","If you had a concern that your child might have special needs, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice No one","haven_labelled","1=No one","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q24_4","If you had a concern that your child might have special needs, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice Another teacher","haven_labelled","1=Another teacher","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q24_5","If you had a concern that your child might have special needs, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice The school secretary","haven_labelled","1=The school secretary","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q24_6","If you had a concern that your child might have special needs, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice A vice principal","haven_labelled","1=A vice principal","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q24_7","If you had a concern that your child might have special needs, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice The school principal","haven_labelled","1=The school principal","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q24_8","If you had a concern that your child might have special needs, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice A superintendent","haven_labelled","1=A superintendent","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q24_9","If you had a concern that your child might have special needs, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice The Director of Education","haven_labelled","1=The Director of Education","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q24_10","If you had a concern that your child might have special needs, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice A school board trustee","haven_labelled","1=A school board trustee","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q24_11","If you had a concern that your child might have special needs, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice A member of provincial parliament","haven_labelled","1=A member of provincial parliament","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q24_12","If you had a concern that your child might have special needs, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice Other:","haven_labelled","1=Other:","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q24_12_TEXT","If you had a concern that your child might have special needs, who
+would you approach to discuss the issue? (check all that apply). - Other: - Text","character","","None","ASCII","Success"
+"GovernanceSurvey_Data.sav","Q25_1","If you had a concern
+about access to technology at your local school, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice No one","haven_labelled","1=No one","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q25_4","If you had a concern
+about access to technology at your local school, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice Another teacher","haven_labelled","1=Another teacher","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q25_5","If you had a concern
+about access to technology at your local school, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice The school secretary","haven_labelled","1=The school secretary","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q25_6","If you had a concern
+about access to technology at your local school, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice A vice principal","haven_labelled","1=A vice principal","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q25_7","If you had a concern
+about access to technology at your local school, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice The school principal","haven_labelled","1=The school principal","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q25_8","If you had a concern
+about access to technology at your local school, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice A superintendent","haven_labelled","1=A superintendent","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q25_9","If you had a concern
+about access to technology at your local school, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice The Director of Education","haven_labelled","1=The Director of Education","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q25_10","If you had a concern
+about access to technology at your local school, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice A school board trustee","haven_labelled","1=A school board trustee","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q25_11","If you had a concern
+about access to technology at your local school, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice A member of provincial parliament","haven_labelled","1=A member of provincial parliament","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q25_12","If you had a concern
+about access to technology at your local school, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice Other:","haven_labelled","1=Other:","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q25_12_TEXT","If you had a concern
+about access to technology at your local school, who would you approach to
+discuss the issue? (check all that apply). - Other: - Text","character","","None","ASCII","Success"
+"GovernanceSurvey_Data.sav","Q26_1","If you had a concern
+about a policy at your local school board, who would you approach to discuss
+the issue? (check all that apply). - Selected Choice No one","haven_labelled","1=No one","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q26_4","If you had a concern
+about a policy at your local school board, who would you approach to discuss
+the issue? (check all that apply). - Selected Choice Another teacher","haven_labelled","1=Another teacher","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q26_5","If you had a concern
+about a policy at your local school board, who would you approach to discuss
+the issue? (check all that apply). - Selected Choice The school secretary","haven_labelled","1=The school secretary","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q26_6","If you had a concern
+about a policy at your local school board, who would you approach to discuss
+the issue? (check all that apply). - Selected Choice A vice principal","haven_labelled","1=A vice principal","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q26_7","If you had a concern
+about a policy at your local school board, who would you approach to discuss
+the issue? (check all that apply). - Selected Choice The school principal","haven_labelled","1=The school principal","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q26_8","If you had a concern
+about a policy at your local school board, who would you approach to discuss
+the issue? (check all that apply). - Selected Choice A superintendent","haven_labelled","1=A superintendent","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q26_9","If you had a concern
+about a policy at your local school board, who would you approach to discuss
+the issue? (check all that apply). - Selected Choice The Director of Education","haven_labelled","1=The Director of Education","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q26_10","If you had a concern
+about a policy at your local school board, who would you approach to discuss
+the issue? (check all that apply). - Selected Choice A school board trustee","haven_labelled","1=A school board trustee","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q26_11","If you had a concern
+about a policy at your local school board, who would you approach to discuss
+the issue? (check all that apply). - Selected Choice A member of provincial parliament","haven_labelled","1=A member of provincial parliament","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q26_12","If you had a concern
+about a policy at your local school board, who would you approach to discuss
+the issue? (check all that apply). - Selected Choice Other:","haven_labelled","1=Other:","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q26_12_TEXT","If you had a concern
+about a policy at your local school board, who would you approach to discuss
+the issue? (check all that apply). - Other:  - Text","character","","None","ASCII","Success"
+"GovernanceSurvey_Data.sav","Q27_1","If you had a concern
+about the curriculum your child was learning, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice No one","haven_labelled","1=No one","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q27_4","If you had a concern
+about the curriculum your child was learning, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice Another teacher","haven_labelled","1=Another teacher","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q27_5","If you had a concern
+about the curriculum your child was learning, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice The school secretary","haven_labelled","1=The school secretary","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q27_6","If you had a concern
+about the curriculum your child was learning, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice A vice principal","haven_labelled","1=A vice principal","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q27_7","If you had a concern
+about the curriculum your child was learning, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice The school principal","haven_labelled","1=The school principal","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q27_8","If you had a concern
+about the curriculum your child was learning, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice A superintendent","haven_labelled","1=A superintendent","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q27_9","If you had a concern
+about the curriculum your child was learning, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice The Director of Education","haven_labelled","1=The Director of Education","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q27_10","If you had a concern
+about the curriculum your child was learning, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice A school board trustee","haven_labelled","1=A school board trustee","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q27_11","If you had a concern
+about the curriculum your child was learning, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice A member of provincial parliament","haven_labelled","1=A member of provincial parliament","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q27_12","If you had a concern
+about the curriculum your child was learning, who would you approach to
+discuss the issue? (check all that apply). - Selected Choice Other:","haven_labelled","1=Other:","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q27_12_TEXT","If you had a concern
+about the curriculum your child was learning, who would you approach to
+discuss the issue? (check all that apply). - Other: - Text","character","","None","ASCII","Success"
+"GovernanceSurvey_Data.sav","Q28_1","If you had a concern about your child’s school transportation, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice No one","haven_labelled","1=No one","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q28_4","If you had a concern about your child’s school transportation, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice A teacher","haven_labelled","1=A teacher","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q28_5","If you had a concern about your child’s school transportation, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice A school secretary","haven_labelled","1=A school secretary","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q28_6","If you had a concern about your child’s school transportation, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice A vice principal","haven_labelled","1=A vice principal","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q28_7","If you had a concern about your child’s school transportation, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice The school principal","haven_labelled","1=The school principal","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q28_8","If you had a concern about your child’s school transportation, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice A superintendent","haven_labelled","1=A superintendent","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q28_9","If you had a concern about your child’s school transportation, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice The Director of Education","haven_labelled","1=The Director of Education","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q28_10","If you had a concern about your child’s school transportation, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice A school board trustee","haven_labelled","1=A school board trustee","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q28_11","If you had a concern about your child’s school transportation, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice A member of provincial parliament","haven_labelled","1=A member of provincial parliament","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q28_12","If you had a concern about your child’s school transportation, who
+would you approach to discuss the issue? (check all that apply). - Selected Choice Other:","haven_labelled","1=Other:","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q28_12_TEXT","If you had a concern about your child’s school transportation, who
+would you approach to discuss the issue? (check all that apply). - Other: - Text","character","","None","ASCII","Success"
+"GovernanceSurvey_Data.sav","Q29_1","If you had a concern
+about the upkeep of a local school (e.g. uncut grass, a ripped flag, a sidewalk
+not shoveled etc.). Who would you approach to discuss this issue? - Selected Choice No one","haven_labelled","1=No one","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q29_4","If you had a concern
+about the upkeep of a local school (e.g. uncut grass, a ripped flag, a sidewalk
+not shoveled etc.). Who would you approach to discuss this issue? - Selected Choice A teacher","haven_labelled","1=A teacher","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q29_5","If you had a concern
+about the upkeep of a local school (e.g. uncut grass, a ripped flag, a sidewalk
+not shoveled etc.). Who would you approach to discuss this issue? - Selected Choice A school secretary","haven_labelled","1=A school secretary","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q29_6","If you had a concern
+about the upkeep of a local school (e.g. uncut grass, a ripped flag, a sidewalk
+not shoveled etc.). Who would you approach to discuss this issue? - Selected Choice A vice principal","haven_labelled","1=A vice principal","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q29_7","If you had a concern
+about the upkeep of a local school (e.g. uncut grass, a ripped flag, a sidewalk
+not shoveled etc.). Who would you approach to discuss this issue? - Selected Choice The school principal","haven_labelled","1=The school principal","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q29_8","If you had a concern
+about the upkeep of a local school (e.g. uncut grass, a ripped flag, a sidewalk
+not shoveled etc.). Who would you approach to discuss this issue? - Selected Choice A superintendent","haven_labelled","1=A superintendent","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q29_9","If you had a concern
+about the upkeep of a local school (e.g. uncut grass, a ripped flag, a sidewalk
+not shoveled etc.). Who would you approach to discuss this issue? - Selected Choice The Director of Education","haven_labelled","1=The Director of Education","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q29_10","If you had a concern
+about the upkeep of a local school (e.g. uncut grass, a ripped flag, a sidewalk
+not shoveled etc.). Who would you approach to discuss this issue? - Selected Choice A school board trustee","haven_labelled","1=A school board trustee","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q29_11","If you had a concern
+about the upkeep of a local school (e.g. uncut grass, a ripped flag, a sidewalk
+not shoveled etc.). Who would you approach to discuss this issue? - Selected Choice A member of provincial parliament","haven_labelled","1=A member of provincial parliament","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q29_12","If you had a concern
+about the upkeep of a local school (e.g. uncut grass, a ripped flag, a sidewalk
+not shoveled etc.). Who would you approach to discuss this issue? - Selected Choice Other:","haven_labelled","1=Other:","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q29_12_TEXT","If you had a concern
+about the upkeep of a local school (e.g. uncut grass, a ripped flag, a sidewalk
+not shoveled etc.). Who would you approach to discuss this issue? - Other: - Text","character","","None","ASCII","Success"
+"GovernanceSurvey_Data.sav","Q30_1","Please rank the
+following trustee duties in order of importance: (You can click on the responses, hold, and then slide the responses in order of priority) - Trustees should help parents navigate who to talk to about important issues","haven_labelled","1=1; 2=2; 3=3","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q30_4","Please rank the
+following trustee duties in order of importance: (You can click on the responses, hold, and then slide the responses in order of priority) - Trustees should ensure the ideas of the people they represent are considered in board decisions","haven_labelled","1=1; 2=2; 3=3","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q30_5","Please rank the
+following trustee duties in order of importance: (You can click on the responses, hold, and then slide the responses in order of priority) - Trustees should be communicating directly with parents about decisions the board makes","haven_labelled","1=1; 2=2; 3=3","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q31","Which of the
+following comes closest to your view?","haven_labelled","1=Trustees should focus on policies and leave operational decisions to staff; 4=Trustees should be a","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q32","Which of the
+following comes closest to your view?","haven_labelled","1=Trustees should vote the way the majority of people in their area want even if they disagree with ","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q33","Which of the
+following comes closest to your view?","haven_labelled","2=The system of local school board trustees works well and should be maintained; 4=School board trus","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q34_1","Please tell me if you strongly agree, agree, disagree, or strongly
+disagree with each of the following statements. - There should be more professional educators on boards of trustees.","haven_labelled","1=Strongly Agree; 2=Agree; 3=Disagree; 4=Strongly Disagree","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q34_2","Please tell me if you strongly agree, agree, disagree, or strongly
+disagree with each of the following statements. - Individual trustees should regularly write articles in the newspaper to keep the community informed about important decisions being made","haven_labelled","1=Strongly Agree; 2=Agree; 3=Disagree; 4=Strongly Disagree","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q34_3","Please tell me if you strongly agree, agree, disagree, or strongly
+disagree with each of the following statements. - If parents complain to a trustee it is appropriate for the trustee to overturn staff decisions on occasion","haven_labelled","1=Strongly Agree; 2=Agree; 3=Disagree; 4=Strongly Disagree","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q34_4","Please tell me if you strongly agree, agree, disagree, or strongly
+disagree with each of the following statements. - If a student is suspended from school their parents should be able to appeal to the board of trustees to reconsider the suspension","haven_labelled","1=Strongly Agree; 2=Agree; 3=Disagree; 4=Strongly Disagree","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q34_5","Please tell me if you strongly agree, agree, disagree, or strongly
+disagree with each of the following statements. - People who send their children to private school should get a tax break","haven_labelled","1=Strongly Agree; 2=Agree; 3=Disagree; 4=Strongly Disagree","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q34_6","Please tell me if you strongly agree, agree, disagree, or strongly
+disagree with each of the following statements. - People without children in school should get a tax break","haven_labelled","1=Strongly Agree; 2=Agree; 3=Disagree; 4=Strongly Disagree","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q35","What role should the board of trustees play in school management?","haven_labelled","1=Trustees should play no role in management, they should only focus on general policies; 4=Trustees","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q36_1","Thinking about the
+decisions that directly affect the classroom and the school curriculum, should
+each of the following have more, less, or about the same amount of control as
+now? - Teachers","haven_labelled","1=More; 2=Same; 3=Less","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q36_2","Thinking about the
+decisions that directly affect the classroom and the school curriculum, should
+each of the following have more, less, or about the same amount of control as
+now? - The Ontario Government","haven_labelled","1=More; 2=Same; 3=Less","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q36_3","Thinking about the
+decisions that directly affect the classroom and the school curriculum, should
+each of the following have more, less, or about the same amount of control as
+now? - Elected trustees","haven_labelled","1=More; 2=Same; 3=Less","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q36_4","Thinking about the
+decisions that directly affect the classroom and the school curriculum, should
+each of the following have more, less, or about the same amount of control as
+now? - Parents","haven_labelled","1=More; 2=Same; 3=Less","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q36_5","Thinking about the
+decisions that directly affect the classroom and the school curriculum, should
+each of the following have more, less, or about the same amount of control as
+now? - School Board Administrators","haven_labelled","1=More; 2=Same; 3=Less","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q36_6","Thinking about the
+decisions that directly affect the classroom and the school curriculum, should
+each of the following have more, less, or about the same amount of control as
+now? - Students","haven_labelled","1=More; 2=Same; 3=Less","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q36_7","Thinking about the
+decisions that directly affect the classroom and the school curriculum, should
+each of the following have more, less, or about the same amount of control as
+now? - School councils","haven_labelled","1=More; 2=Same; 3=Less","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q36_8","Thinking about the
+decisions that directly affect the classroom and the school curriculum, should
+each of the following have more, less, or about the same amount of control as
+now? - Potential employers","haven_labelled","1=More; 2=Same; 3=Less","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q37","Sometimes it is
+necessary to close schools due to enrollment changes. If a school needs to
+close who should make the final decision? - Selected Choice","haven_labelled","1=The School Board Trustees; 4=The Director of Education; 5=The School Principal; 6=The Minister of ","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q37_7_TEXT","Sometimes it is necessary to close schools due to enrollment changes. If a school needs to close who should make the final decision? - Other: - Text","character","","None","ASCII","Success"
+"GovernanceSurvey_Data.sav","Q38","Sometimes it is necessary to change school boundaries due to
+enrollment changes. If school boundaries need to change who should make the
+final decision? - Selected Choice","haven_labelled","1=The School Board Trustees; 4=The Director of Education; 5=The School Principal; 6=The Minister of ","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q38_7_TEXT","Sometimes it is necessary to change school boundaries due to enrollment changes. If school boundaries need to change who should make the final decision? - Other: - Text","character","","None","ASCII","Success"
+"GovernanceSurvey_Data.sav","Q39","In general, how
+would you rate the performance of your local school board as a whole over the
+past four years?","haven_labelled","1=Very Good; 4=Good; 5=Average; 6=Poor; 7=Very poor","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q40","In general, how
+would you rate the performance of your local school board trustee(s) over the
+past four years?","haven_labelled","1=Very Good; 4=Good; 5=Average; 6=Poor; 7=Very poor","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q41","In your lifetime have you ever contacted your child’s school principal to talk about a concern or issue?","haven_labelled","1=Yes; 4=No; 5=I do not have children","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q42","In your lifetime have you ever contacted a school board trustee/the board of trustees to discuss a concern or issue?","haven_labelled","1=Yes; 4=No","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q43","Why did you contact the school board trustee?","character","","None","ASCII","Success"
+"GovernanceSurvey_Data.sav","Q44_1","Over the last twelve (12) months have you: - Donated money to a political party or candidate?","haven_labelled","1=Yes; 2=No","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q44_2","Over the last twelve (12) months have you: - Signed a petition?","haven_labelled","1=Yes; 2=No","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q44_3","Over the last twelve (12) months have you: - Bought products for political, ethical, or environmental reasons?","haven_labelled","1=Yes; 2=No","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q44_4","Over the last twelve (12) months have you: - Taken part in a march, rally, or protest?","haven_labelled","1=Yes; 2=No","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q44_5","Over the last twelve (12) months have you: - Used the internet to be politically active?","haven_labelled","1=Yes; 2=No","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q44_6","Over the last twelve (12) months have you: - Volunteered for a community group or a non-profit organization?","haven_labelled","1=Yes; 2=No","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q44_7","Over the last twelve (12) months have you: - Contacted a school board trustee?","haven_labelled","1=Yes; 2=No","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q45","Have you ever been a
+member of a political party?","haven_labelled","1=Yes; 2=No","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q46","In this last section we would like to ask some demographic questions.      With which of the following gender identities do you most closely identify? - Selected Choice","haven_labelled","1=Male; 2=Female; 3=Transgender Female; 4=Transgender Male; 5=Other:","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q46_5_TEXT","In this last section we would like to ask some demographic questions.      With which of the following gender identities do you most closely identify? - Other:  - Text","character","","None","ASCII","Success"
+"GovernanceSurvey_Data.sav","Q47","Which of the following best
+describes your marital status:","haven_labelled","1=Married; 2=Living with a partner; 3=Divorced; 4=Separated; 5=Widowed or; 6=Never been married","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q48","What is your current employment
+status? Are you … - Selected Choice","haven_labelled","1=Employed Full-time; 2=Employed Part-time; 3=Retired; 4=Unemployed; 5=A student; 6=A homemaker or; ","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q48_7_TEXT","What is your current employment
+status? Are you … - Other: - Text","character","","None","ASCII","Success"
+"GovernanceSurvey_Data.sav","Q49","What is the highest level of formal education
+that you have completed - Selected Choice","haven_labelled","1=Grade school; 2=High school; 3=A trade apprenticeship; 4=Some College; 5=College Diploma; 6=Some U","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q49_11_TEXT","What is the highest level of formal education
+that you have completed - Other:  - Text","character","","None","ASCII","Success"
+"GovernanceSurvey_Data.sav","Q50","Do you own or rent your home?","haven_labelled","1=Own; 2=Rent","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q51","In which county were you born? - Selected Choice","haven_labelled","4=Canada; 5=Other:","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q51_5_TEXT","In which county were you born? - Other: - Text","character","","None","ASCII","Success"
+"GovernanceSurvey_Data.sav","Q52","In what year did you emigrate to Canada?","numeric","","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q53","In your life, how important would you say
+religion is:","haven_labelled","1=Very important; 2=Somewhat important; 3=Not very important or; 4=Not important at all","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q54","Which of the following best
+describes your religious identity? - Selected Choice","haven_labelled","1=Roman Catholic; 2=Protestant or Christian; 3=Muslim; 4=Jewish; 5=Hindu; 6=Sikh; 7=Atheist; 8=Agnos","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Q54_9_TEXT","Which of the following best
+describes your religious identity? - Other    - Text","character","","None","ASCII","Success"
+"GovernanceSurvey_Data.sav","Q55","What are the first three digits of your postal
+code?","character","","None","ASCII","Success"
+"GovernanceSurvey_Data.sav","Q56","Please tell me which of the
+following ranges your total annual household income falls within before taxes?","haven_labelled","1=Less than $20,000; 2=$20,000 to 50,000; 3=$50,000 to 70,000; 4=$70,000 to 100,000; 5=$100,000 to $","None","N/A","Success"
+"GovernanceSurvey_Data.sav","Region","Which Region of Ontario is the respondent from","haven_labelled","1=Southwestern Ontario; 2=Eastern Ontario; 3=Greater Toronto Area; 4=Central Ontario; 5=Northern Ont","None","N/A","Success"
+"GovernanceSurvey_Data.sav","RegionWaterloo","Which Region of the province is the respondent from Waterloo Region added","haven_labelled","1=Southwestern Ontario; 2=Eastern Ontario; 3=Greater Toronto Area; 5=Northern Ontario; 6=Central Ont","None","N/A","Success"
+"GovernanceSurvey_Data.sav","gender","(No Label)","haven_labelled","1=male; 2=female; 3=other","None","N/A","Success"
+"GovernanceSurvey_Data.sav","age","(No Label)","haven_labelled","1=18 to 34; 2=35 to 49; 3=50 to 64; 4=65 plus; 9=Missing","None","N/A","Success"
+"GovernanceSurvey_Data.sav","parent","(No Label)","haven_labelled","1=not a school aged parent; 2=schol aged parent; 9=missing","None","N/A","Success"
+"GovernanceSurvey_Data.sav","AgeSysmis","(No Label)","haven_labelled","1=18 to 34; 2=35 to 49; 3=50 to 64; 4=65+","None","N/A","Success"
+"GovernanceSurvey_Data.sav","GenderSysmis","(No Label)","haven_labelled","1=male; 2=female; 3=other; 9=sysmis","None","N/A","Success"
+"GovernanceSurvey_Data.sav","weightassembler","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey_Data.sav","weightassemblerRegion","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey_Data.sav","weightassemblerParent","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey_Data.sav","WeightParentStandard1","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey_Data.sav","WeightStandardAge1","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey_Data.sav","weightstandard1","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey_Data.sav","WeightRegionStandard1","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey_Data.sav","weightstandard2","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey_Data.sav","WeightParentStandard2","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey_Data.sav","weightstandard3","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey_Data.sav","WeightStandardAge2","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey_Data.sav","weightstandard4","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey_Data.sav","WeightRegionStandard2","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey_Data.sav","weightstandard5","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey_Data.sav","WeightParentStandard3","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey_Data.sav","weightstandard6","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey_Data.sav","WeightStandardAge3","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey_Data.sav","weightstandard7","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey_Data.sav","WeightRegionStandard3","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey_Data.sav","weightstandard8","(No Label)","numeric","","None","N/A","Success"
+"GovernanceSurvey_Data.sav","weightstandardFinal","(No Label)","numeric","","None","N/A","Success"

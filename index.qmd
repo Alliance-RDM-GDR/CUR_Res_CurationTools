@@ -1,22 +1,62 @@
 ---
-title: "Research data curators toolbox"
-subtitle: "A Practical Guide"
-format: html
+title: "Research Data Curator's Toolbox"
+subtitle: "A Practical Guide for Data Management"
+format: 
+  html:
+    toc: false
 ---
 
-::: lead
-This book collects well-documented R functions and hands-on workflows to support research data management (RDM) in practice — from ingest and validation to metadata enrichment, curation, and reporting.
+::: {.column-screen .bg-primary .text-white .p-5 .text-center style="background: linear-gradient(135deg, #003366 0%, #0d6efd 100%); margin-bottom: 2rem;"}
+<h1 style="color: white; font-weight: 700;">
+
+Research Data Curator's Toolbox
+
+</h1>
+
+<p style="font-size: 1.5rem; opacity: 0.9;">
+
+Expert Workflows for Digital Curation & Preservation
+
+</p>
 :::
 
-```{r}
-#| label: setup
-#| include: false
-# This chunk is executed for all chapters when building the book.
+## Welcome
 
-```
+This guide provides a collection of robust, documented R workflows to support Research Data Management (RDM) — from the moment data is ingested to its final archival reporting. Our goal is to empower curators to transform raw submissions into FAIR (Findable, Accessible, Interoperable, Reusable) research objects.
 
-> **How to read this book:** Each chapter introduces a task area (e.g., ingest, quality control). For each function, you’ll find its purpose, arguments, return value, examples, tests, and references. Copy/paste-ready snippets are provided in callouts.
+:::::: grid
+::: {.g-col-12 .g-col-md-4}
+### 🛠️ Triage & Inspect
 
-::: callout-tip
-**Reproducibility first.** All examples rely on versioned functions in `R/` with deterministic behavior and unit tests where applicable.
+Automated analysis of file extensions, formats, and basic integrity to identify immediate risks.
+:::
+
+::: {.g-col-12 .g-col-md-4}
+### 🔍 Deep Validation
+
+Specialized inspection for Tabular, Spatial, and Scientific data to ensure internal consistency.
+:::
+
+::: {.g-col-12 .g-col-md-4}
+### 📊 Archival Reporting
+
+Generation of standardized curation reports, metadata summaries, and risk logs for depositors.
+:::
+::::::
+
+------------------------------------------------------------------------
+
+### How to use this Guide
+
+Each chapter introduces a specific curation task or file format. Within each notebook, you will find:
+
+1.  **Curation Objectives**: What we are looking for and why it matters for preservation.
+2.  **Automated Checks**: R code snippets that perform technical inspection.
+3.  **Curation Insights**: Guidance on how to interpret flags and risks.
+4.  **Non-Interactive Scripts**: Standalone R scripts for batch processing in HPC or server environments.
+
+::: callout-note
+## Preservation First
+
+This toolbox prioritizes long-term accessibility. We emphasize detecting proprietary lock-ins, zero-byte files, and privacy risks (PII) before data is published.
 :::

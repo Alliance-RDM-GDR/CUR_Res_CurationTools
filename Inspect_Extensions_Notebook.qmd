@@ -12,19 +12,23 @@ params:
   target_dir: "data/Inspect_Extensions/"
 ---
 
-This notebook performs the initial "Triage" of a data package by inventorying file extensions. In digital preservation, it is crucial to understand that a **File Extension** (e.g., `.csv`, `.pdf`) is merely a textual label and does not guarantee the file's internal format.
+## Overview
 
-A robust preservation workflow distinguishes between:
+This notebook performs the initial "Triage" of a data package by inventorying file extensions. 
 
-1.  **Extension-based Identification:** Fast but unreliable. A user can rename `virus.exe` to `photo.jpg`. Curators must remain aware that extensions can be misleading.
+::: {.callout-note title="Curation Goal"}
+Establish an initial inventory of all file types within a submission. Our objective is to distinguish between extension-based labels and internal format signatures to identify mislabeled, obsolete, or high-risk files.
+:::
 
-2.  **Signature-based Identification:** Verifying the "Magic Number" (hexadecimal signature) embedded in the file header. For example, all Java class files begin with `CA FE BA BE`.
+::: {.callout-warning title="Preservation Risk"}
+A file extension is merely a textual label. Relying on it can hide malicious executables renamed as media files or proprietary formats that lack a long-term migration path [@brown2013].
+:::
 
 **Curation Objectives:**
 
-1.  **Content Profiling:** Establish the composition of the dataset (e.g., 80% Tabular Data, 20% Proprietary Code).
+1.  **Content Profiling:** Establish the composition of the dataset (e.g., Tabular vs. Proprietary).
 2.  **Junk Detection:** Identify system artifacts (`.DS_Store`, `Thumbs.db`) that clutter the archive.
-3.  **Risk Flagging:** Detect executables (`.exe`, `.bat`) or zero-byte files that indicate transfer errors.
+3.  **Risk Flagging:** Detect executables or zero-byte files that indicate transfer errors.
 
 ------------------------------------------------------------------------
 
@@ -48,7 +52,7 @@ This chunk loads the necessary library for the session.
 
 **Note:** The `exiftoolr` package requires the [ExifTool software](https://exiftool.org/). The code below checks for it and attempts to install it locally if missing.
 
-```{r load-libraries}
+```{r}
 #| label: load-libraries
 #| message: false
 
@@ -76,7 +80,7 @@ if (is.null(exif_version())) {
 
 This section identifies the directory to be analyzed and creates a complete list of every file within it, including those in sub-folders and hidden files. The directory is set by the `target_dir` parameter at the top of this document.
 
-```{r find-files}
+```{r}
 #| label: select-target-dir
 
 # Hybrid Selection Logic

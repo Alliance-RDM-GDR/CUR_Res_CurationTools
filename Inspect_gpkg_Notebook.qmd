@@ -12,16 +12,22 @@ params:
 
 ## Overview
 
-This notebook inspects **GeoPackage (`.gpkg`)** files. The GeoPackage is an open, standards-based, platform-independent, and self-describing format for transferring geospatial information, originally defined by the Open Geospatial Consortium (OGC) in 2014 (<https://www.geopackage.org/spec/>).
+This notebook inspects **GeoPackage (`.gpkg`)** files—an open, standards-based, and self-describing format for transferring geospatial information.
 
-Historically, the **ESRI Shapefile** was the dominant format for vector data. However, the Shapefile has significant preservation risks: it requires at least three separate files (`.shp`, `.shx`, `.dbf`) to function, has a hard 2GB size limit, and truncates column names to 10 characters [@obe2021]. In contrast, the **GeoPackage** is a platform-independent, single-file container based on SQLite. It supports direct use, is self-describing, and eliminates the multi-file fragility of Shapefiles (<https://www.geopackage.org/spec/>).
+::: {.callout-note title="Curation Goal"}
+Validate structural and spatial integrity. Our objective is to inventory the layers within the GeoPackage database, verify Coordinate Reference Systems (CRS), and ensure all geometries conform to the Simple Features standard (ISO 19125).
+:::
+
+::: {.callout-warning title="Preservation Risk"}
+GeoPackage eliminates the multi-file fragility of Shapefiles. However, a missing CRS is a primary cause of non-reproducibility in spatial analysis, as it prevents data from correctly aligning with other map layers [@obe2021].
+:::
 
 **Curation Objectives:**
 
-1.  **CRS Validation:** Verify that a **Coordinate Reference System (CRS)** is defined. A missing CRS is a primary cause of non-reproducibility in spatial analysis, as it prevents the data from being correctly aligned with other map layers.
-2.  **Layer Inventory:** A single GeoPackage can hold multiple datasets (tables). We must inventory all of them to ensure no data is overlooked.
-3.  **Geometry Profiling:** Determine the geometry type (e.g., `Point`, `Polygon`) and feature count.
-4.  **Standard Compliance:** Ensure the data conforms to the Simple Features standard (ISO 19125) regarding geometry validity.
+1.  **CRS Validation:** Ensuring every layer has a defined coordinate system.
+2.  **Layer Inventory:** Mapping all datasets stored within the container.
+3.  **Geometry Profiling:** Determining topological types and feature counts.
+4.  **Standard Compliance:** Detecting invalid geometries (e.g., self-intersecting lines).
 
 ## Setup
 
@@ -39,7 +45,7 @@ If you don't have these packages installed, run this command once in your R cons
 
 This chunk loads the necessary libraries for the session.
 
-```{r load-libraries}
+```{r}
 #| label: load-libraries
 #| message: false
 

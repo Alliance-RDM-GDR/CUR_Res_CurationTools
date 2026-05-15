@@ -15,19 +15,21 @@ params:
 
 ## Overview
 
-Unlike generic formats like CSV, SPSS files (`.sav`) utilize a **"Labelled Data"** paradigm where the codebook is embedded directly within the file [@wickham2023]. This means every variable carries three distinct layers of metadata:
+Unlike generic formats like CSV, SPSS files (`.sav`) utilize a **"Labelled Data"** paradigm where the codebook is embedded directly within the file [@wickham2023]. 
 
-1.  **Variable Label:** The human-readable question text (e.g., "Q1: What is your age?").
-2.  **Value Labels:** The dictionary mapping categorical codes to text (e.g., `1 = "Male"`, `2 = "Female"`).
-3.  **User-Defined Missing Values:** Specific numbers (e.g., `-99`, `999`) that the software explicitly treats as "Null" or "Skipped" rather than valid measurements (see [IBM SPSS statistics 28 brief guide](https://www.ibm.com/docs/en/SSLVMB_28.0.0/pdf/IBM_SPSS_Statistics_Brief_Guide.pdf)).
+::: {.callout-note title="Curation Goal"}
+Extract and preserve the embedded codebook. Our objective is to inventory variable labels, value mappings, and missing value definitions to ensure the data's semantic meaning is not lost during long-term preservation.
+:::
 
-A critical risk in preserving SPSS data is the accidental loss of these "Missing Value" definitions during conversion to non-proprietary formats. If a researcher calculates a mean age including `-99` (Refused) as a numeric value, the statistical results will be biased (See [SPSS data curation primer](https://github.com/DataCurationNetwork/data-primers/blob/main/SPSS%20Data%20Curation%20Primer/SPSS-data-curation-primer.md)).
+::: {.callout-warning title="Preservation Risk"}
+The accidental loss of "Missing Value" definitions during conversion is a critical risk. If placeholder codes (e.g., `-99`, `999`) are not explicitly identified, they may be mistaken for valid numeric measurements, leading to biased statistical results.
+:::
 
-This notebook performs a rigorous metadata extraction:
+**This notebook performs a rigorous metadata extraction:**
 
-1.  **Dictionary Extraction:** We use the `haven` package, which is designed to preserve the "labelled" attributes of SAS and SPSS data in R [@haven-2].
-2.  **Missing Value Inventory:** We explicitly list defined missing codes so they are not mistaken for real data.
-3.  **Encoding Scan:** We check for non-ASCII characters to flag potential legacy encoding issues (e.g., Windows-1252 vs. UTF-8), which are common in older datasets..
+1.  **Dictionary Extraction:** Inventorying human-readable labels and value mappings.
+2.  **Missing Value Inventory:** Explicitly listing codes that should be treated as Nulls.
+3.  **Encoding Scan:** Checking for character corruption (Mojibake) in older datasets.
 
 ## Setup
 

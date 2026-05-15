@@ -14,15 +14,21 @@ params:
 
 ## Overview
 
-This notebook provides a workflow for performing standardized quality control checks on image files. It automatically scans a directory for common image formats (`.jpg`, `.jpeg`, `.png`, `.tiff`), extracts comprehensive metadata, and generates summary reports. In digital preservation, images are more than just visual content; they are complex digital objects composed of **technical properties** (file format, compression, dimensions) and **embedded metadata** (EXIF/IPTC data).
+This notebook provides a workflow for performing standardized quality control on image files. Images are complex digital objects composed of technical properties and embedded metadata (EXIF/IPTC).
 
-This notebook automates the quality control (QC) process by integrating three specialized R packages:
+::: {.callout-note title="Curation Goal"}
+Perform standardized quality control and metadata harvesting. Our objective is to validate technical properties (dimensions, colorspace), calculate fixity checksums, and extract deep archival metadata to ensure long-term accessibility and provenance.
+:::
 
--   **`digest`**: Calculates MD5 checksums for fixity and duplicate detection [@digest].
--   **`magick`**: Validates file headers and extracts elemental properties (Dimensions, Colorspace) [@magick].
--   **`exiftoolr`**: Harvests deep archival metadata (Camera Model, GPS, Software) [@exiftoolr].
+::: {.callout-warning title="Preservation Risk"}
+Loss of embedded metadata during format conversion, "bit-rot" corruption, and accidental privacy leaks through GPS coordinates (EXIF) are the primary risks to the integrity and ethical sharing of digital image collections.
+:::
 
-Finally, we offer a guide on how to use the extracted metadata to identify common curation issues, such as inconsistent image dimensions, missing location data, or potential privacy concerns.
+**This notebook integrates three specialized R packages:**
+
+-   **`digest`**: Calculating MD5 checksums for fixity and duplicate detection [@digest].
+-   **`magick`**: Validating file headers and technical properties [@magick].
+-   **`exiftoolr`**: Harvesting deep metadata (Camera, GPS, Software) [@exiftoolr].
 
 ------------------------------------------------------------------------
 
@@ -52,7 +58,7 @@ The `exiftoolr` package is a wrapper around a command-line tool called **ExifToo
 
 Load all the necessary libraries for the session.
 
-```{r load-libraries}
+```{r}
 #| label: load-libraries
 #| message: false
 #| 
@@ -69,7 +75,7 @@ library(rstudioapi)
 
 This block allows for interactive selection of the image directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.
 
-```{r select-directory}
+```{r}
 #| label: select-target-dir
 
 # 1. Try to select interactively if in RStudio
@@ -94,7 +100,7 @@ print(paste("Analyzing directory:", target_dir))
 
 Here, we calculate an MD5 Checksum for every file. This alphanumeric string acts as a unique fingerprint. If a single bit of the file changes in the future (due to disk failure or accidental modification) [@rosenthal2010], this checksum will change, alerting the curator to corruption.
 
-```{r find-files}
+```{r}
 #| label: inventory-fixity
 
 # Find all image files recursively using Regex for extensions
@@ -125,8 +131,7 @@ head(file_inventory)
 
 The `magick` package allow us to confirm these files are readable and for extracting basic technical properties. This step loops through each file, reads its information, and collects it into a single table.
 
-```{r magick-summary}
-#| label: magick-analysis
+```{r}
 #| message: false
 #| warning: false
 
@@ -164,7 +169,7 @@ print("Technical validation complete.")
 
 This step uses `exiftoolr` to extract all available embedded metadata from the image files. This can include hundreds of fields detailing everything from the camera settings and lens information to GPS coordinates and software versions. Please note that the output can have many columns.
 
-```{r exiftool-summary}
+```{r}
 #| label: exif-extraction
 #| results: 'hide'
 

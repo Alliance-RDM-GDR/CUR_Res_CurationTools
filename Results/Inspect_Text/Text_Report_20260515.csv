@@ -1,0 +1,8 @@
+"FileName","Encoding","Confidence","HasBOM","LineEndings","LineCount","URL_Count","Email_Count","Example_Links","Status"
+"14_corr_ring_stats.txt","ASCII",1,FALSE,"Windows (CRLF)",12,0,0,"","Success"
+"388_corr_ring_stats.txt","ASCII",1,FALSE,"Windows (CRLF)",11,0,0,"","Success"
+"413_corr_ring_stats.txt","ASCII",1,FALSE,"Windows (CRLF)",13,0,0,"","Success"
+"File_tree.txt","UTF-8",1,FALSE,"Windows (CRLF)",146,0,0,"","Success"
+"readme.md","ASCII",1,FALSE,"Windows (CRLF)",31,1,0,"https://naddor.github.io/fuse/](https://naddor.github.io/fuse/)","Success"
+"README.txt","UTF-8",1,FALSE,"Windows (CRLF)",194,5,1,"https://orcid.org/0000-0002-1652-3135, https://orcid.org/0000-0002-2041-2083, https://orcid.org/0000","Success"
+"README_v2.txt","UTF-8",1,FALSE,"Windows (CRLF)",783,14,1,"https://creativecommons.org/licenses/by/4.0/], https://doi.org/10.1038/s41597-024-03679-1, https://d","Success"

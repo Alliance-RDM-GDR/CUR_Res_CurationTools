@@ -16,15 +16,19 @@ params:
 
 Jupyter Notebooks are **Literate Programming**, a paradigm introduced by Donald Knuth (1984), where code and natural language documentation are interwoven to create a "computational narrative." In data curation, preserving this narrative is as important as preserving the raw data.
 
-However, notebooks pose specific challenges for long-term preservation. Pimentel et al. (2019) analyzed over 1 million notebooks and found that **only 24%** could be re-executed without errors and only **4%** produced the same results [@pimentel2019]. Therefore, it is desirable to verify the **computational reproducibility** and **structural integrity** of jupyter notebooks.
+::: {.callout-note title="Curation Goal"}
+Preserve the computational narrative. Our objective is to assess the structural integrity and documentation quality of notebooks to ensure they remain understandable and potentially reproducible for future researchers.
+:::
+
+::: {.callout-warning title="Preservation Risk"}
+Notebooks are notoriously difficult to re-execute. Studies show that as few as 4% of notebooks produce identical results over time due to non-linear execution, hidden state, and undocumented software environments [@pimentel2019].
+:::
 
 **Key Curation Objectives:**
 
-This notebook inspects the JSON structure of `.ipynb` files to assess three dimensions of quality:
-
-1.  **Format Obsolescence:** Checking `nbformat` versions to ensure compatibility with modern interfaces.
-2.  **Documentation Quality:** Calculating the ratio of Markdown (text) to Code cells. A low ratio indicates "spaghetti code" that will be difficult for future researchers to understand [@rule2018].
-3.  **Dependency Awareness:** Scanning imports to identify the software environment (e.g., `pandas`, `tidyverse`) required for re-execution.
+1.  **Format Obsolescence:** Checking `nbformat` versions to ensure compatibility.
+2.  **Documentation Quality:** Calculating the ratio of Markdown to Code cells. A low ratio indicates poor explainability [@rule2018].
+3.  **Dependency Awareness:** Scanning imports to identify the software environment required for re-execution.
 
 ------------------------------------------------------------------------
 

@@ -14,15 +14,21 @@ params:
 
 ## Overview
 
-**JSON (JavaScript Object Notation)** has become the de standard for data interchange on the web and in NoSQL databases, replacing XML due to its lightweight and human-readable nature. In data curation, JSON is frequently used for metadata, configuration settings, and hierarchical datasets.
+**JSON (JavaScript Object Notation)** has become the de facto standard for data interchange, replacing XML in many research workflows due to its lightweight and human-readable nature. 
 
-Unlike tabular data (CSV), JSON is hierarchical and semi-structured. A file might appear valid but contain deeply nested structures that make it difficult to flatten or analyze. Pezoa et al. (2016) highlight that while JSON syntax is simple, the lack of a mandatory schema often leads to "structural heterogeneity," where different records in the same dataset have different fields [@pezoa2016].
+::: {.callout-note title="Curation Goal"}
+Validate syntactic integrity and structural complexity. Our objective is to ensure JSON files are free from trailing commas or encoding errors and to document their hierarchical depth to facilitate future data flattening and analysis.
+:::
 
-This notebook evaluates JSON files on three levels:
+::: {.callout-warning title="Preservation Risk"}
+"Structural heterogeneity"—where records in the same dataset have different fields—and extreme nesting depths without a mandatory schema often lead to data that is syntactically valid but contextually unusable [@pezoa2016].
+:::
 
-1.  **Syntactic Validity:** Can the parser read the file, or are there missing brackets/commas?
-2.  **Structural Complexity:** We calculate the **Nesting Depth** and **Key Count**. High depth values often indicate complex objects that require specialized flattening tools.
-3.  **Data Type:** Distinguishing between **Objects** (single records) and **Arrays** (lists of records).
+**This notebook evaluates JSON files on three levels:**
+
+1.  **Syntactic Validity:** Can the parser read the file?
+2.  **Structural Complexity:** Calculating **Nesting Depth** and **Key Count**.
+3.  **Data Type Identification:** Distinguishing between Objects (single records) and Arrays.
 
 ------------------------------------------------------------------------
 

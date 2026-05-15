@@ -2,7 +2,11 @@
 title: "CSV Files"
 author: "Natalie Williams"
 date: "2025-10-10"
-format: html
+format: 
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
 editor: visual
 execute:
   echo: true
@@ -14,16 +18,22 @@ params:
 
 ## Overview
 
-This notebook provides a comprehensive toolkit for inspecting tabular data stored in **Comma Separated Values (CSV)** format.While seemingly simple, CSVs are the backbone of long-term data preservation due to their text-based, human-readable nature.
+This notebook provides a comprehensive toolkit for inspecting tabular data stored in **Comma Separated Values (CSV)** format. While seemingly simple, CSVs are the backbone of long-term data preservation due to their text-based, human-readable nature.
 
-However, a "valid" CSV file is not necessarily a "usable" one. To ensure data reuse, datasets should adhere to **Tidy Data** principles, where variables are columns, observations are rows, and each observational unit forms a table [@wickham2014]. Common structural errors—such as "ragged" rows, empty header cells, or mixed data types—can severely hinder downstream analysis [@broman2018].
+::: {.callout-note title="Curation Goal"}
+Validate the integrity and "Archival Readiness" of tabular data. Our objective is to ensure files follow Tidy Data principles [@wickham2014], use universal encoding (UTF-8), and are free from structural defects that hinder automated processing.
+:::
+
+::: {.callout-warning title="Preservation Risk"}
+The simplicity of CSV is its greatest risk. Lack of strict schema enforcement often leads to "ragged" rows, mixed data types in single columns, and encoding corruption that can render datasets contextually unusable [@broman2018].
+:::
 
 **Curation Objectives:**
 
-1.  **Format Compliance:** Verify files use standard UTF-8 encoding to prevent character corruption (e.g., replacement characters like \`\`).
-2.  **Structural Integrity:** Detect "dirty" data patterns such as duplicate rows or irregular shapes (non-rectangular data).
-3.  **Content Profiling:** Automatically generate a statistical dictionary (Mean, Min, Max, Nulls) for every variable to validate the semantic meaning of the data.
-4.  **Privacy Screening:** Scan for Personally Identifiable Information (PII) embedded within text fields.
+1.  **Format Compliance:** Verify files use standard UTF-8 encoding.
+2.  **Structural Integrity:** Detect "dirty" data patterns such as duplicate rows or non-rectangular shapes.
+3.  **Content Profiling:** Generate statistical summaries to validate semantic meaning.
+4.  **Privacy Screening:** Scan for Personally Identifiable Information (PII).
 
 ------------------------------------------------------------------------
 
@@ -59,7 +69,7 @@ library(rstudioapi)
 
 First, we select the directory to analyze and find `.csv` files within it.
 
-```{r select-directory}
+```{r}
 #| label: select-target-dir
 
 # 1. Attempt interactive selection (Windows/RStudio)
@@ -79,7 +89,7 @@ message("Analyzing directory: ", target_dir)
 
 We locate all .csv files and extract basic filesystem metadata (size, modification date).
 
-```{r get-files}
+```{r}
 #| label: find-files
 
 csv_files <- list.files(
@@ -109,7 +119,7 @@ Metrics Calculated:
 
 -   PII Flag: Detection of potential email addresses in text columns.
 
-```{r initialize-df}
+```{r}
 #| label: batch-health-check
 #| message: false
 #| warning: false
@@ -249,7 +259,7 @@ We export two reports:
 
 -   Detailed Profile: The granular statistics for every variable.
 
-```{r write-files}
+```{r}
 #| label: save-results
 
 output_dir <- file.path("Results", "Inspect_CSV")

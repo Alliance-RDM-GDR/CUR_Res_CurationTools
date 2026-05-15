@@ -15,16 +15,22 @@ params:
 
 ## Overview
 
-XML (Extensible Markup Language) is a standard for storing structured data. In curation, we distinguish between two states. A Well-Formed file follows basic syntax rules (e.g., every start tag `<tag>` has an end tag `</tag>`). If this is not well-formed, the file is not completely functional. A valid file conforms to a specific **Schema (XSD or DTD)**. For example, a "Book" schema might require every `<book>` to have an `<isbn>`. Otherwise, a file can be well-formed but be considered *invalid* given the missing of some information like ISBN.
+XML (Extensible Markup Language) is a standard for storing structured data. In curation, we distinguish between "well-formedness" and "validity."
 
-XML often mixes vocabularies (e.g., HTML for display, Dublin Core for metadata). **Namespaces** (`xmlns`) prevent naming collisions. Identifying namespaces helps curators understand what standards the file claims to follow (e.g., DDI, TEI, METS) .
+::: {.callout-note title="Curation Goal"}
+Ensure structural and semantic validity. Our objective is to verify that XML files are syntactically well-formed and conform to specific schemas (XSD), ensuring metadata adheres to community standards like DDI, TEI, or Dublin Core.
+:::
 
-This notebook performs a rigorous structure analysis:
+::: {.callout-warning title="Preservation Risk"}
+Broken nesting structures, missing namespaces, and "XML Bombs" (recursive expansion risks) can crash archival parsers and lead to the permanent loss of structural context.
+:::
 
-1.  **Parse Check:** Verifies well-formedness using `xml2` .
-2.  **Schema Validation:** If an `.xsd` file is found in the directory, it validates the XMLs against it .
-3.  **Complexity Scan:** Calculates the **Max Nesting Depth**. Excessive depth (\>50 levels) can indicate "XML Bombs" or poor design.
-4.  **Namespace Inventory:** Extracts all declared namespaces.
+**This notebook performs a rigorous structure analysis:**
+
+1.  **Parse Check:** Verifying well-formedness.
+2.  **Schema Validation:** Comparing XMLs against accompanying `.xsd` files.
+3.  **Complexity Scan:** Calculating Max Nesting Depth.
+4.  **Namespace Inventory:** Extracting declared standards and vocabularies.
 
 ------------------------------------------------------------------------
 

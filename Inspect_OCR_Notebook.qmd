@@ -15,17 +15,21 @@ bibliography: references.bib
 
 ## Overview
 
-Optical Character Recognition (OCR) is the process of converting images of text (typed, handwritten, or printed) into machine-encoded text. In data curation, OCR is the bridge between "dark data" (unsearchable scanned PDFs/images) and "FAIR data" (Findable, Accessible, Interoperable, Reusable).
+Optical Character Recognition (OCR) is the process of converting images of text (typed, handwritten, or printed) into machine-encoded text. 
 
-**Why Google Document AI?**
+::: {.callout-note title="Curation Goal"}
+Bridge the gap between "dark data" (unsearchable scanned PDFs) and FAIR data. Our objective is to extract text and structure from image-based documents, ensuring they become indexable and accessible for future research.
+:::
 
-While standard OCR reads text line-by-line, **Document AI** uses deep learning to understand the *structure* of a document. It can distinguish between a form field (Key: "Date", Value: "2023-01-01") and a paragraph of text. The `daiR` package provides an R interface to this API [@daiR].
+::: {.callout-warning title="Preservation Risk"}
+Image-only documents are effectively invisible to automated indexing and assistive technologies. While AI-based OCR is powerful, it introduces risks of "hallucination," privacy concerns when using cloud APIs, and dependency on proprietary service models.
+:::
 
-### Curation Goals
+**Key Curation Objectives:**
 
-1.  **Digitization:** Extract text from static images/PDFs.
-2.  **Quality Assessment:** Use "Confidence Scores" to flag poor scans that need manual transcription.
-3.  **Privacy Screening:** Automatically scan extracted text for PII (emails, phone numbers).
+1.  **Digitization:** Extract text from static images and scans.
+2.  **Quality Assessment:** Use "Confidence Scores" to flag poor scans for manual review.
+3.  **Privacy Screening:** Automatically scan extracted text for sensitive information (PII).
 
 ## Setup
 

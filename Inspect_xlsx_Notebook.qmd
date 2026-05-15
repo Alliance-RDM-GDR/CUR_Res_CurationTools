@@ -15,19 +15,20 @@ params:
 
 ## Overview
 
-Excel files are complex "containers" (OLE Compound Documents or Zip-compressed XML) that hold much more than data. They are considered high-risk for preservation due to:
+Excel files are complex "containers" (Zip-compressed XML) that hold much more than raw data. They are considered high-risk formats for long-term preservation.
 
--   **Hidden Content:** Users often "hide" sheets containing scratch work or PII (Personally Identifiable Information) instead of deleting them.
--   **External Dependencies:** Cells can link to external files (e.g., `C:\Users\John\Budget.xlsx`). When the file is moved to an archive, these links break, creating "reference errors."
--   **Macros (VBA):** Automation scripts (Visual Basic for Applications) can pose security risks and are difficult to preserve.
+::: {.callout-note title="Curation Goal"}
+Unpack the complex structure of Excel spreadsheets. Our objective is to identify hidden content, validate structural integrity, and detect external dependencies that may compromise the file's future usability.
+:::
 
-This notebook combines two approaches:
+::: {.callout-warning title="Preservation Risk"}
+Proprietary macros (VBA), external cell links that break upon transfer, and hidden sheets containing sensitive scratch work or PII are significant threats to data integrity and privacy in archival settings.
+:::
 
-1.  **Structure Scan:** Checks for macros, external links, and hidden sheets (using `tidyxl` for `.xlsx` and file attributes for `.xls`).
+**This notebook combines two approaches:**
 
-2.  
-
-    ## **Content Preview:** Reads the actual data dimensions and headers to assess if the file is a clean table or a messy report (using `readxl`).
+1.  **Structure Scan:** Checking for macros, external links, and hidden sheets.
+2.  **Content Preview:** Assessing if the file is a machine-readable table or a formatted report.
 
 ## Setup
 
@@ -47,7 +48,7 @@ If you don't have these packages installed, run this command once in your R cons
 
 This chunk loads all the necessary libraries for the session.
 
-```{r load-libraries}
+```{r}
 #| label: load-libraries
 #| message: false
 
@@ -65,7 +66,7 @@ This section identifies the directory to be analyzed and finds all Excel files w
 
 > **Note:** If you are running this interactively in RStudio, a dialog box will appear. If you are rendering this document (where no user interaction is possible), it will default to the `params$target_dir` defined in the YAML header.
 
-```{r select-directory}
+```{r}
 #| label: select-target-dir
 
 # 1. Try to select interactively if in RStudio
@@ -89,7 +90,7 @@ print(paste("Analyzing directory:", target_dir))
 
 Now we scan the selected directory for all `.xls` and `.xlsx` files.
 
-```{r find-files}
+```{r}
 #| label: find-files
 
 # Find all Excel files using a regex pattern
@@ -112,7 +113,7 @@ head(excel_files)
 
 In this section, we iterate through each file. For .xlsx files, we perform a deep scan for hidden content. For legacy .xls, we rely on basic extraction.
 
-```{r generate-report}
+```{r}
 #| label: inspection-logic
 #| warning: false
 #| message: false

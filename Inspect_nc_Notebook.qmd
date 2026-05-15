@@ -14,15 +14,21 @@ params:
 
 ## Overview
 
-[NetCDF](https://www.ogc.org/standards/netcdf/) (Network Common Data Form) is the OGC standard for storing multidimensional scientific data. Unlike CSVs, NetCDF files are self-describing, meaning they contain a header describing the layout, units, and dimensions of the data inside. This makes them ideal for archiving complex climate models and satellite imagery.
+[NetCDF](https://www.ogc.org/standards/netcdf/) (Network Common Data Form) is the OGC standard for storing multidimensional scientific data. 
 
-NetCDF defines *how* to store data but does not define *what* the data represents. Therefore, the community developed the [Climate and Forecast (CF) Conventions](https://cfconventions.org/). These metadata rules ensure that software knows, for instance, that a variable named `temp` with units `K` represents physical temperature.
+::: {.callout-note title="Curation Goal"}
+Validate the self-describing nature of scientific data. Our objective is to ensure NetCDF files follow community conventions (CF Conventions) and contain sufficient metadata (units, dimensions, and CRS) for reliable future reuse.
+:::
 
-This notebook evaluates NetCDF files on three levels:
+::: {.callout-warning title="Preservation Risk"}
+NetCDF defines *how* to store data, but not *what* it represents. Non-compliance with the Climate and Forecast (CF) conventions renders the data contextually unusable, as software cannot reliably interpret physical units or spatial alignment.
+:::
 
-1.  **Metadata Compliance:** Checks for global attributes like `Conventions` or `institution`.
-2.  **Spatial Awareness:** Detects if the file contains a defined **Coordinate Reference System (CRS)** (e.g., Latitude/Longitude grids), which is essential for GIS reuse.
-3.  **Data Health:** Performs a "lightweight scan" of the first data slice to check if the file is empty (100% NaNs).
+**This notebook evaluates NetCDF files on three levels:**
+
+1.  **Metadata Compliance:** Checking for global attributes like `Conventions` or `institution`.
+2.  **Spatial Awareness:** Detecting Coordinate Reference Systems (CRS).
+3.  **Data Health:** Scanning for empty datasets (100% NaNs).
 
 ------------------------------------------------------------------------
 
@@ -44,7 +50,7 @@ The following R packages are required. If you don't have them, run this code onc
 
 This chunk loads all the necessary libraries for the session.
 
-```{r load-libraries}
+```{r}
 #| label: load-libraries
 #| message: false
 
@@ -62,7 +68,7 @@ This section identifies the directory to be analyzed and finds all `.nc` files w
 
 > **Note:** If you are running this interactively in RStudio, a dialog box will appear. If you are rendering this document (where no user interaction is possible), it will default to the `params$target_dir` defined in the YAML header.
 
-```{r select-directory}
+```{r}
 #| label: select-target-dir
 
 # 1. Try to select interactively if in RStudio
@@ -86,7 +92,7 @@ print(paste("Analyzing directory:", target_dir))
 
 Now we scan the selected directory for all `.nc` files.
 
-```{r find-files}
+```{r}
 #| label: find-files
 
 # Find all NetCDF files
@@ -195,7 +201,7 @@ head(inventory_results)
 
 Now, we perform a deep extraction of all attributes to create detailed documentation.
 
-```{r extract-metadata}
+```{r}
 #| label: deep-extraction
 #| warning: false
 #| message: false
@@ -238,7 +244,7 @@ print("Deep extraction complete.")
 
 We reshape the metadata into two summary tables: one for Global Attributes (file-level) and one for Variable Attributes (variable-level).
 
-```{r reshape-global-attributes}
+```{r}
 #| label: reshape-attributes
 
 # A. Global Attributes Summary
@@ -276,7 +282,7 @@ head(nc_variables_with_attributes)
 
 Finally, we save the most useful summary tables to `.csv` files for documentation and further analysis.
 
-```{r write-files}
+```{r}
 #| label: save-results
 
 output_dir <- "Results/Inspect_nc"
@@ -313,7 +319,7 @@ Use the generated reports to guide your preservation actions:
 
 Verify if all files in a dataset have the same `title`, `institution`, `source`, and CF `Conventions`.
 
-```{r curation-check-global}
+```{r}
 #| label: curation-check-global
 #| code-fold: false
 
@@ -334,7 +340,7 @@ if (nrow(nc_attributes_global) > 0) {
 
 For data to be reusable, variables should always have attributes like `long_name` and `units`. This section allows checking for missing attributes across all variables.
 
-```{r curation-check-var-attr}
+```{r}
 #| label: curation-check-var-attr
 #| code-fold: false
 

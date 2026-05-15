@@ -9,7 +9,7 @@
 <meta name="author" content="Natalie Williams">
 <meta name="dcterms.date" content="2025-10-14">
 
-<title>19&nbsp; Image Quality Control – Tools for Research Data Management and curation</title>
+<title>21&nbsp; Image Quality Control – Tools for Research Data Management and Curation</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -86,16 +86,19 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./Inspect_Tiff_Notebook.html" rel="next">
 <link href="./Data_Image.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d166b450ba5a8e9f7a0ab969bf6592c1.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-542cf50e1f395a1c6267587cc8cc3ecf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-542cf50e1f395a1c6267587cc8cc3ecf.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-449b49f15f060f871489bcfd4a9f82ff.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -137,7 +140,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Data_Image.html">Image Data</a></li><li class="breadcrumb-item"><a href="./Inspect_Images_Notebook.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Image Quality Control</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Data_Image.html">Image Data</a></li><li class="breadcrumb-item"><a href="./Inspect_Images_Notebook.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Image Quality Control</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -152,7 +155,10 @@ div.csl-indent {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Tools for Research Data Management and curation</a> 
+      <a href="./">Tools for Research Data Management and Curation</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -165,7 +171,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Research data curators toolbox</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Research Data Curator’s Toolbox</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -180,13 +186,13 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_ipynb_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Inspection of Jupyter Notebooks (.ipynb)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Jupyter Notebooks (.ipynb) Files</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_Code_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Code Inspection (R/Quarto)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">R/Quarto Code</span></span></a>
   </div>
 </li>
       </ul>
@@ -203,19 +209,19 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_PDF_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Inspection of PDF Documents (.pdf)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PDF (.pdf) Documents</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_Text_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Inspection of Text (.txt) and Markdown (.md) Files</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Text (.txt) and Markdown (.md) Files</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_OCR_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">OCR &amp; Document Intelligence using `daiR` and Google AI</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">OCR and Document Intelligence using <code>daiR</code> and Google AI</span></span></a>
   </div>
 </li>
       </ul>
@@ -232,7 +238,13 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_Extensions_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">File extensions and format inspector</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">File extensions and formats</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Inspect_Containers_Notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Container/Archive (.zip, .tar, .7z) Formats</span></span></a>
   </div>
 </li>
       </ul>
@@ -249,31 +261,37 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_csv_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">CSV Files</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">CSV Files</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_xlsx_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Inspection of Excel Files (.xls, .xlsx)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Excel (.xls, .xlsx) Files</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_sav_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Inspection of SPSS Data Files (.sav)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">SPSS Data (.sav) Files</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_dta_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Stata (.dta) Files</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Stata (.dta) Files</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_sas7bdat_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Inspection of SAS Data Files (.sas7bdat)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">SAS Data (.sas7bdat) Files</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Inspect_sqlite_Notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">SQLite Databases (.sqlite, .db)</span></span></a>
   </div>
 </li>
       </ul>
@@ -290,13 +308,13 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_json_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">JSON Files</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">JSON Files</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_xml_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Inspection of XML Files</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">XML Files</span></span></a>
   </div>
 </li>
       </ul>
@@ -313,19 +331,19 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_nc_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">NetCDF Files</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">NetCDF Files</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_hdf5_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">HDF5 File Inspection</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">HDF5 Files</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_mat_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Inspection of MATLAB Files (.mat)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">MATLAB (.mat) Files</span></span></a>
   </div>
 </li>
       </ul>
@@ -342,7 +360,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_gpkg_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">GeoPackage (.gpkg) files</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">GeoPackage (.gpkg) Files</span></span></a>
   </div>
 </li>
       </ul>
@@ -359,7 +377,13 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_Images_Notebook.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Image Quality Control</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Image Quality Control</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Inspect_Tiff_Notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">TIFF (.tif, .tiff) Images</span></span></a>
   </div>
 </li>
       </ul>
@@ -370,27 +394,27 @@ div.csl-indent {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">19.1</span> Overview</a></li>
-  <li><a href="#one-time-setup" id="toc-one-time-setup" class="nav-link" data-scroll-target="#one-time-setup"><span class="header-section-number">19.2</span> One-time setup</a>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">21.1</span> Overview</a></li>
+  <li><a href="#one-time-setup" id="toc-one-time-setup" class="nav-link" data-scroll-target="#one-time-setup"><span class="header-section-number">21.2</span> One-time setup</a>
   <ul class="collapse">
-  <li><a href="#r-packages" id="toc-r-packages" class="nav-link" data-scroll-target="#r-packages"><span class="header-section-number">19.2.1</span> R Packages</a></li>
-  <li><a href="#exiftool-software" id="toc-exiftool-software" class="nav-link" data-scroll-target="#exiftool-software"><span class="header-section-number">19.2.2</span> ExifTool software</a></li>
+  <li><a href="#r-packages" id="toc-r-packages" class="nav-link" data-scroll-target="#r-packages"><span class="header-section-number">21.2.1</span> R Packages</a></li>
+  <li><a href="#exiftool-software" id="toc-exiftool-software" class="nav-link" data-scroll-target="#exiftool-software"><span class="header-section-number">21.2.2</span> ExifTool software</a></li>
   </ul></li>
-  <li><a href="#load-libraries" id="toc-load-libraries" class="nav-link" data-scroll-target="#load-libraries"><span class="header-section-number">19.3</span> Load libraries</a></li>
-  <li><a href="#select-a-target-directory" id="toc-select-a-target-directory" class="nav-link" data-scroll-target="#select-a-target-directory"><span class="header-section-number">19.4</span> Select a target directory</a>
+  <li><a href="#load-libraries" id="toc-load-libraries" class="nav-link" data-scroll-target="#load-libraries"><span class="header-section-number">21.3</span> Load libraries</a></li>
+  <li><a href="#select-a-target-directory" id="toc-select-a-target-directory" class="nav-link" data-scroll-target="#select-a-target-directory"><span class="header-section-number">21.4</span> Select a target directory</a>
   <ul class="collapse">
-  <li><a href="#find-image-files" id="toc-find-image-files" class="nav-link" data-scroll-target="#find-image-files"><span class="header-section-number">19.4.1</span> Find Image Files</a></li>
+  <li><a href="#find-image-files" id="toc-find-image-files" class="nav-link" data-scroll-target="#find-image-files"><span class="header-section-number">21.4.1</span> Find Image Files</a></li>
   </ul></li>
-  <li><a href="#technical-validation-using-magick" id="toc-technical-validation-using-magick" class="nav-link" data-scroll-target="#technical-validation-using-magick"><span class="header-section-number">19.5</span> Technical Validation using <code>magick</code></a></li>
-  <li><a href="#detailed-exif-metadata-with-exiftoolr" id="toc-detailed-exif-metadata-with-exiftoolr" class="nav-link" data-scroll-target="#detailed-exif-metadata-with-exiftoolr"><span class="header-section-number">19.6</span> Detailed EXIF Metadata with <code>exiftoolr</code></a></li>
-  <li><a href="#curation-intelligence" id="toc-curation-intelligence" class="nav-link" data-scroll-target="#curation-intelligence"><span class="header-section-number">19.7</span> Curation Intelligence</a></li>
-  <li><a href="#curation-insights" id="toc-curation-insights" class="nav-link" data-scroll-target="#curation-insights"><span class="header-section-number">19.8</span> Curation Insights</a></li>
-  <li><a href="#additional-tools-resources" id="toc-additional-tools-resources" class="nav-link" data-scroll-target="#additional-tools-resources"><span class="header-section-number">19.9</span> Additional Tools &amp; Resources</a></li>
-  <li><a href="#using-the-non-interactive-r-script" id="toc-using-the-non-interactive-r-script" class="nav-link" data-scroll-target="#using-the-non-interactive-r-script"><span class="header-section-number">19.10</span> Using the Non-Interactive R Script</a>
+  <li><a href="#technical-validation-using-magick" id="toc-technical-validation-using-magick" class="nav-link" data-scroll-target="#technical-validation-using-magick"><span class="header-section-number">21.5</span> Technical Validation using <code>magick</code></a></li>
+  <li><a href="#detailed-exif-metadata-with-exiftoolr" id="toc-detailed-exif-metadata-with-exiftoolr" class="nav-link" data-scroll-target="#detailed-exif-metadata-with-exiftoolr"><span class="header-section-number">21.6</span> Detailed EXIF Metadata with <code>exiftoolr</code></a></li>
+  <li><a href="#curation-intelligence" id="toc-curation-intelligence" class="nav-link" data-scroll-target="#curation-intelligence"><span class="header-section-number">21.7</span> Curation Intelligence</a></li>
+  <li><a href="#curation-insights" id="toc-curation-insights" class="nav-link" data-scroll-target="#curation-insights"><span class="header-section-number">21.8</span> Curation Insights</a></li>
+  <li><a href="#additional-tools-resources" id="toc-additional-tools-resources" class="nav-link" data-scroll-target="#additional-tools-resources"><span class="header-section-number">21.9</span> Additional Tools &amp; Resources</a></li>
+  <li><a href="#using-the-non-interactive-r-script" id="toc-using-the-non-interactive-r-script" class="nav-link" data-scroll-target="#using-the-non-interactive-r-script"><span class="header-section-number">21.10</span> Using the Non-Interactive R Script</a>
   <ul class="collapse">
-  <li><a href="#example-hpc-submission-script" id="toc-example-hpc-submission-script" class="nav-link" data-scroll-target="#example-hpc-submission-script"><span class="header-section-number">19.10.1</span> Example HPC Submission Script</a></li>
+  <li><a href="#example-hpc-submission-script" id="toc-example-hpc-submission-script" class="nav-link" data-scroll-target="#example-hpc-submission-script"><span class="header-section-number">21.10.1</span> Example HPC Submission Script</a></li>
   </ul></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">19.11</span> References</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">21.11</span> References</a></li>
   </ul>
 </nav>
 </nav>
@@ -401,9 +425,9 @@ div.csl-indent {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Data_Image.html">Image Data</a></li><li class="breadcrumb-item"><a href="./Inspect_Images_Notebook.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Image Quality Control</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Data_Image.html">Image Data</a></li><li class="breadcrumb-item"><a href="./Inspect_Images_Notebook.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Image Quality Control</span></a></li></ol></nav>
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Image Quality Control</span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Image Quality Control</span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
 </div>
 
 
@@ -432,23 +456,48 @@ div.csl-indent {
 </header>
 
 
-<section id="overview" class="level2" data-number="19.1">
-<h2 data-number="19.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">19.1</span> Overview</h2>
-<p>This notebook provides a workflow for performing standardized quality control checks on image files. It automatically scans a directory for common image formats (<code>.jpg</code>, <code>.jpeg</code>, <code>.png</code>, <code>.tiff</code>), extracts comprehensive metadata, and generates summary reports. In digital preservation, images are more than just visual content; they are complex digital objects composed of <strong>technical properties</strong> (file format, compression, dimensions) and <strong>embedded metadata</strong> (EXIF/IPTC data).</p>
-<p>This notebook automates the quality control (QC) process by integrating three specialized R packages:</p>
+<section id="overview" class="level2" data-number="21.1">
+<h2 data-number="21.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">21.1</span> Overview</h2>
+<p>This notebook provides a workflow for performing standardized quality control on image files. Images are complex digital objects composed of technical properties and embedded metadata (EXIF/IPTC).</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Curation Goal">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Curation Goal
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Perform standardized quality control and metadata harvesting. Our objective is to validate technical properties (dimensions, colorspace), calculate fixity checksums, and extract deep archival metadata to ensure long-term accessibility and provenance.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled" title="Preservation Risk">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Preservation Risk
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Loss of embedded metadata during format conversion, “bit-rot” corruption, and accidental privacy leaks through GPS coordinates (EXIF) are the primary risks to the integrity and ethical sharing of digital image collections.</p>
+</div>
+</div>
+<p><strong>This notebook integrates three specialized R packages:</strong></p>
 <ul>
-<li><strong><code>digest</code></strong>: Calculates MD5 checksums for fixity and duplicate detection <span class="citation" data-cites="digest">(<a href="Inspect_ipynb_Notebook.html#ref-digest" role="doc-biblioref">Eddelbuettel 2024</a>)</span>.</li>
-<li><strong><code>magick</code></strong>: Validates file headers and extracts elemental properties (Dimensions, Colorspace) <span class="citation" data-cites="magick">(<a href="Inspect_ipynb_Notebook.html#ref-magick" role="doc-biblioref">Ooms 2025</a>)</span>.</li>
-<li><strong><code>exiftoolr</code></strong>: Harvests deep archival metadata (Camera Model, GPS, Software) <span class="citation" data-cites="exiftoolr">(<a href="Inspect_ipynb_Notebook.html#ref-exiftoolr" role="doc-biblioref">O’Brien 2025</a>)</span>.</li>
+<li><strong><code>digest</code></strong>: Calculating MD5 checksums for fixity and duplicate detection <span class="citation" data-cites="digest">(<a href="Inspect_ipynb_Notebook.html#ref-digest" role="doc-biblioref">Eddelbuettel 2024</a>)</span>.</li>
+<li><strong><code>magick</code></strong>: Validating file headers and technical properties <span class="citation" data-cites="magick">(<a href="Inspect_ipynb_Notebook.html#ref-magick" role="doc-biblioref">Ooms 2025</a>)</span>.</li>
+<li><strong><code>exiftoolr</code></strong>: Harvesting deep metadata (Camera, GPS, Software) <span class="citation" data-cites="exiftoolr">(<a href="Inspect_ipynb_Notebook.html#ref-exiftoolr" role="doc-biblioref">O’Brien 2025</a>)</span>.</li>
 </ul>
-<p>Finally, we offer a guide on how to use the extracted metadata to identify common curation issues, such as inconsistent image dimensions, missing location data, or potential privacy concerns.</p>
 <hr>
 </section>
-<section id="one-time-setup" class="level2" data-number="19.2">
-<h2 data-number="19.2" class="anchored" data-anchor-id="one-time-setup"><span class="header-section-number">19.2</span> One-time setup</h2>
+<section id="one-time-setup" class="level2" data-number="21.2">
+<h2 data-number="21.2" class="anchored" data-anchor-id="one-time-setup"><span class="header-section-number">21.2</span> One-time setup</h2>
 <p>Before running this notebook, ensure the required R packages and the <code>ExifTool</code> command-line software are installed.</p>
-<section id="r-packages" class="level3" data-number="19.2.1">
-<h3 data-number="19.2.1" class="anchored" data-anchor-id="r-packages"><span class="header-section-number">19.2.1</span> R Packages</h3>
+<section id="r-packages" class="level3" data-number="21.2.1">
+<h3 data-number="21.2.1" class="anchored" data-anchor-id="r-packages"><span class="header-section-number">21.2.1</span> R Packages</h3>
 <p>The following R packages are required. If you don’t have them, uncomment this code and run it once in your R console:</p>
 <div class="cell">
 <details class="code-fold">
@@ -457,8 +506,8 @@ div.csl-indent {
 </details>
 </div>
 </section>
-<section id="exiftool-software" class="level3" data-number="19.2.2">
-<h3 data-number="19.2.2" class="anchored" data-anchor-id="exiftool-software"><span class="header-section-number">19.2.2</span> ExifTool software</h3>
+<section id="exiftool-software" class="level3" data-number="21.2.2">
+<h3 data-number="21.2.2" class="anchored" data-anchor-id="exiftool-software"><span class="header-section-number">21.2.2</span> ExifTool software</h3>
 <p>The <code>exiftoolr</code> package is a wrapper around a command-line tool called <strong>ExifTool</strong>. You must install this tool for the detailed metadata extraction to work. <strong>Run the following command <em>once</em> in your console to install the software.</strong></p>
 <div class="cell">
 <details class="code-fold">
@@ -469,8 +518,8 @@ div.csl-indent {
 <hr>
 </section>
 </section>
-<section id="load-libraries" class="level2" data-number="19.3">
-<h2 data-number="19.3" class="anchored" data-anchor-id="load-libraries"><span class="header-section-number">19.3</span> Load libraries</h2>
+<section id="load-libraries" class="level2" data-number="21.3">
+<h2 data-number="21.3" class="anchored" data-anchor-id="load-libraries"><span class="header-section-number">21.3</span> Load libraries</h2>
 <p>Load all the necessary libraries for the session.</p>
 <div class="cell">
 <details class="code-fold">
@@ -484,8 +533,8 @@ div.csl-indent {
 </div>
 <hr>
 </section>
-<section id="select-a-target-directory" class="level2" data-number="19.4">
-<h2 data-number="19.4" class="anchored" data-anchor-id="select-a-target-directory"><span class="header-section-number">19.4</span> Select a target directory</h2>
+<section id="select-a-target-directory" class="level2" data-number="21.4">
+<h2 data-number="21.4" class="anchored" data-anchor-id="select-a-target-directory"><span class="header-section-number">21.4</span> Select a target directory</h2>
 <p>This block allows for interactive selection of the image directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.</p>
 <div class="cell">
 <details class="code-fold">
@@ -511,8 +560,8 @@ div.csl-indent {
 <pre><code>[1] "Analyzing directory: data/Inspect_Images/"</code></pre>
 </div>
 </div>
-<section id="find-image-files" class="level3" data-number="19.4.1">
-<h3 data-number="19.4.1" class="anchored" data-anchor-id="find-image-files"><span class="header-section-number">19.4.1</span> Find Image Files</h3>
+<section id="find-image-files" class="level3" data-number="21.4.1">
+<h3 data-number="21.4.1" class="anchored" data-anchor-id="find-image-files"><span class="header-section-number">21.4.1</span> Find Image Files</h3>
 <p>Here, we calculate an MD5 Checksum for every file. This alphanumeric string acts as a unique fingerprint. If a single bit of the file changes in the future (due to disk failure or accidental modification) <span class="citation" data-cites="rosenthal2010">(<a href="Inspect_ipynb_Notebook.html#ref-rosenthal2010" role="doc-biblioref">Rosenthal 2010</a>)</span>, this checksum will change, alerting the curator to corruption.</p>
 <div class="cell">
 <details class="code-fold">
@@ -556,8 +605,8 @@ div.csl-indent {
 <hr>
 </section>
 </section>
-<section id="technical-validation-using-magick" class="level2" data-number="19.5">
-<h2 data-number="19.5" class="anchored" data-anchor-id="technical-validation-using-magick"><span class="header-section-number">19.5</span> Technical Validation using <code>magick</code></h2>
+<section id="technical-validation-using-magick" class="level2" data-number="21.5">
+<h2 data-number="21.5" class="anchored" data-anchor-id="technical-validation-using-magick"><span class="header-section-number">21.5</span> Technical Validation using <code>magick</code></h2>
 <p>The <code>magick</code> package allow us to confirm these files are readable and for extracting basic technical properties. This step loops through each file, reads its information, and collects it into a single table.</p>
 <div class="cell">
 <details class="code-fold">
@@ -595,8 +644,8 @@ div.csl-indent {
 </div>
 <hr>
 </section>
-<section id="detailed-exif-metadata-with-exiftoolr" class="level2" data-number="19.6">
-<h2 data-number="19.6" class="anchored" data-anchor-id="detailed-exif-metadata-with-exiftoolr"><span class="header-section-number">19.6</span> Detailed EXIF Metadata with <code>exiftoolr</code></h2>
+<section id="detailed-exif-metadata-with-exiftoolr" class="level2" data-number="21.6">
+<h2 data-number="21.6" class="anchored" data-anchor-id="detailed-exif-metadata-with-exiftoolr"><span class="header-section-number">21.6</span> Detailed EXIF Metadata with <code>exiftoolr</code></h2>
 <p>This step uses <code>exiftoolr</code> to extract all available embedded metadata from the image files. This can include hundreds of fields detailing everything from the camera settings and lens information to GPS coordinates and software versions. Please note that the output can have many columns.</p>
 <div class="cell">
 <details class="code-fold">
@@ -622,8 +671,8 @@ div.csl-indent {
 </div>
 <hr>
 </section>
-<section id="curation-intelligence" class="level2" data-number="19.7">
-<h2 data-number="19.7" class="anchored" data-anchor-id="curation-intelligence"><span class="header-section-number">19.7</span> Curation Intelligence</h2>
+<section id="curation-intelligence" class="level2" data-number="21.7">
+<h2 data-number="21.7" class="anchored" data-anchor-id="curation-intelligence"><span class="header-section-number">21.7</span> Curation Intelligence</h2>
 <p>We now merge the three data streams (Inventory, Magick, Exif) to perform automated quality control. We apply logic to “flag” files that deviate from the norm or pose risks.</p>
 <p>The Flagging Logic:</p>
 <ul>
@@ -715,13 +764,13 @@ div.csl-indent {
 <span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Curation report saved to:"</span>, output_file))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Curation report saved to: Results/Inspect_Images/Curation_Report_Images_20260105.csv"</code></pre>
+<pre><code>[1] "Curation report saved to: Results/Inspect_Images/Curation_Report_Images_20260515.csv"</code></pre>
 </div>
 </div>
 <hr>
 </section>
-<section id="curation-insights" class="level2" data-number="19.8">
-<h2 data-number="19.8" class="anchored" data-anchor-id="curation-insights"><span class="header-section-number">19.8</span> Curation Insights</h2>
+<section id="curation-insights" class="level2" data-number="21.8">
+<h2 data-number="21.8" class="anchored" data-anchor-id="curation-insights"><span class="header-section-number">21.8</span> Curation Insights</h2>
 <p>Use the generated CSV to perform these checks:</p>
 <ul>
 <li><p><strong>Privacy Risks (GPS):</strong> Filter the CSV for flag_privacy_gps == “HAS_GPS_DATA”. These images contain embedded location coordinates (Latitude/Longitude). If the dataset involves human subjects or protected species, these coordinates must be scrubbed using ExifTool (-gps:all=) before publication to prevent “mosaic effect” re-identification.</p></li>
@@ -729,8 +778,8 @@ div.csl-indent {
 <li><p><strong>Digital Fixity (Duplicates):</strong> Filter for flag_duplicate == “DUPLICATE”. These files share the exact same MD5 hash, meaning they are bit-for-bit identical, even if they have different filenames.</p></li>
 </ul>
 </section>
-<section id="additional-tools-resources" class="level2" data-number="19.9">
-<h2 data-number="19.9" class="anchored" data-anchor-id="additional-tools-resources"><span class="header-section-number">19.9</span> Additional Tools &amp; Resources</h2>
+<section id="additional-tools-resources" class="level2" data-number="21.9">
+<h2 data-number="21.9" class="anchored" data-anchor-id="additional-tools-resources"><span class="header-section-number">21.9</span> Additional Tools &amp; Resources</h2>
 <p>While R is excellent for batch processing and statistical summaries, visual and command-line tools are often required for deep analysis or manual correction.</p>
 <ul>
 <li><p><strong>ExifTool (Command Line): </strong>The industry standard for reading, writing, and editing metadata. Unlike the R wrapper, the direct command line allows you to write data (e.g., scrubbing GPS tags) (see https://https://exiftool.org/).</p></li>
@@ -739,13 +788,13 @@ div.csl-indent {
 <li><p><strong>ImageMagick (GUI/CLI):</strong> It is a <a href="ImageMagick.org">tool</a> Useful for batch converting proprietary raw formats into preservation-ready TIFFs.</p></li>
 </ul>
 </section>
-<section id="using-the-non-interactive-r-script" class="level2" data-number="19.10">
-<h2 data-number="19.10" class="anchored" data-anchor-id="using-the-non-interactive-r-script"><span class="header-section-number">19.10</span> Using the Non-Interactive R Script</h2>
+<section id="using-the-non-interactive-r-script" class="level2" data-number="21.10">
+<h2 data-number="21.10" class="anchored" data-anchor-id="using-the-non-interactive-r-script"><span class="header-section-number">21.10</span> Using the Non-Interactive R Script</h2>
 <p>For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.</p>
 <p><strong>Prerequisites:</strong> * R with <code>tidyverse</code>, <code>magick</code>, and <code>exiftoolr</code> installed. * <strong>ExifTool</strong> command-line software must be installed on the system.</p>
 <p>Download the <strong>R Script:</strong> <a href="Scripts/Inspect_Images_Script.R"><strong><code>Inspect_Images_Script.R</code></strong></a></p>
-<section id="example-hpc-submission-script" class="level3" data-number="19.10.1">
-<h3 data-number="19.10.1" class="anchored" data-anchor-id="example-hpc-submission-script"><span class="header-section-number">19.10.1</span> Example HPC Submission Script</h3>
+<section id="example-hpc-submission-script" class="level3" data-number="21.10.1">
+<h3 data-number="21.10.1" class="anchored" data-anchor-id="example-hpc-submission-script"><span class="header-section-number">21.10.1</span> Example HPC Submission Script</h3>
 <div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=img_curation     </span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --nodes=1                   </span></span>
@@ -774,8 +823,8 @@ div.csl-indent {
 <span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Job finished."</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
-<section id="references" class="level2" data-number="19.11">
-<h2 data-number="19.11" class="anchored" data-anchor-id="references"><span class="header-section-number">19.11</span> References</h2>
+<section id="references" class="level2" data-number="21.11">
+<h2 data-number="21.11" class="anchored" data-anchor-id="references"><span class="header-section-number">21.11</span> References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
 <div id="ref-digest" class="csl-entry" role="listitem">
 Eddelbuettel, Dirk. 2024. <span>“Digest: Create Compact Hash Digests of r Objects.”</span> <a href="https://CRAN.R-project.org/package=digest">https://CRAN.R-project.org/package=digest</a>.
@@ -817,6 +866,150 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -1272,6 +1465,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="./Inspect_Tiff_Notebook.html" class="pagination-link" aria-label="TIFF (.tif, .tiff) Images">
+        <span class="nav-page-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">TIFF (.tif, .tiff) Images</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="sourceCode" id="cb20" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
@@ -1290,337 +1486,343 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## Overview</span></span>
 <span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>This notebook provides a workflow for performing standardized quality control checks on image files. It automatically scans a directory for common image formats (<span class="in">`.jpg`</span>, <span class="in">`.jpeg`</span>, <span class="in">`.png`</span>, <span class="in">`.tiff`</span>), extracts comprehensive metadata, and generates summary reports. In digital preservation, images are more than just visual content; they are complex digital objects composed of **technical properties** (file format, compression, dimensions) and **embedded metadata** (EXIF/IPTC data).</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>This notebook provides a workflow for performing standardized quality control on image files. Images are complex digital objects composed of technical properties and embedded metadata (EXIF/IPTC).</span>
 <span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>This notebook automates the quality control (QC) process by integrating three specialized R packages:</span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**`digest`**: Calculates MD5 checksums for fixity and duplicate detection <span class="co">[</span><span class="ot">@digest</span><span class="co">]</span>.</span>
-<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**`magick`**: Validates file headers and extracts elemental properties (Dimensions, Colorspace) <span class="co">[</span><span class="ot">@magick</span><span class="co">]</span>.</span>
-<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**`exiftoolr`**: Harvests deep archival metadata (Camera Model, GPS, Software) <span class="co">[</span><span class="ot">@exiftoolr</span><span class="co">]</span>.</span>
-<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>Finally, we offer a guide on how to use the extracted metadata to identify common curation issues, such as inconsistent image dimensions, missing location data, or potential privacy concerns.</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Curation Goal"}</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>Perform standardized quality control and metadata harvesting. Our objective is to validate technical properties (dimensions, colorspace), calculate fixity checksums, and extract deep archival metadata to ensure long-term accessibility and provenance.</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title="Preservation Risk"}</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>Loss of embedded metadata during format conversion, "bit-rot" corruption, and accidental privacy leaks through GPS coordinates (EXIF) are the primary risks to the integrity and ethical sharing of digital image collections.</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>**This notebook integrates three specialized R packages:**</span>
 <span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a><span class="fu">## One-time setup</span></span>
-<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>Before running this notebook, ensure the required R packages and the <span class="in">`ExifTool`</span> command-line software are installed.</span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**`digest`**: Calculating MD5 checksums for fixity and duplicate detection <span class="co">[</span><span class="ot">@digest</span><span class="co">]</span>.</span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**`magick`**: Validating file headers and technical properties <span class="co">[</span><span class="ot">@magick</span><span class="co">]</span>.</span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**`exiftoolr`**: Harvesting deep metadata (Camera, GPS, Software) <span class="co">[</span><span class="ot">@exiftoolr</span><span class="co">]</span>.</span>
 <span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a><span class="fu">### R Packages</span></span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
 <span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>The following R packages are required. If you don't have them, uncomment this code and run it once in your R console:</span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a><span class="fu">## One-time setup</span></span>
 <span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(c("tidyverse", "digest", "magick", "exiftoolr", "rstudioapi"))</span></span>
-<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>Before running this notebook, ensure the required R packages and the <span class="in">`ExifTool`</span> command-line software are installed.</span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a><span class="fu">### R Packages</span></span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a>The following R packages are required. If you don't have them, uncomment this code and run it once in your R console:</span>
 <span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a><span class="fu">### ExifTool software</span></span>
-<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a>The <span class="in">`exiftoolr`</span> package is a wrapper around a command-line tool called **ExifTool**. You must install this tool for the detailed metadata extraction to work. **Run the following command *once* in your console to install the software.**</span>
-<span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-49"><a href="#cb20-49" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb20-50"><a href="#cb20-50" aria-hidden="true" tabindex="-1"></a><span class="co"># exiftoolr::install_exiftool()</span></span>
-<span id="cb20-51"><a href="#cb20-51" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(c("tidyverse", "digest", "magick", "exiftoolr", "rstudioapi"))</span></span>
+<span id="cb20-47"><a href="#cb20-47" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-48"><a href="#cb20-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-49"><a href="#cb20-49" aria-hidden="true" tabindex="-1"></a><span class="fu">### ExifTool software</span></span>
+<span id="cb20-50"><a href="#cb20-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-51"><a href="#cb20-51" aria-hidden="true" tabindex="-1"></a>The <span class="in">`exiftoolr`</span> package is a wrapper around a command-line tool called **ExifTool**. You must install this tool for the detailed metadata extraction to work. **Run the following command *once* in your console to install the software.**</span>
 <span id="cb20-52"><a href="#cb20-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-53"><a href="#cb20-53" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
-<span id="cb20-54"><a href="#cb20-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-55"><a href="#cb20-55" aria-hidden="true" tabindex="-1"></a><span class="fu">## Load libraries</span></span>
-<span id="cb20-56"><a href="#cb20-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-57"><a href="#cb20-57" aria-hidden="true" tabindex="-1"></a>Load all the necessary libraries for the session.</span>
+<span id="cb20-55"><a href="#cb20-55" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb20-56"><a href="#cb20-56" aria-hidden="true" tabindex="-1"></a><span class="co"># exiftoolr::install_exiftool()</span></span>
+<span id="cb20-57"><a href="#cb20-57" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb20-58"><a href="#cb20-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-59"><a href="#cb20-59" aria-hidden="true" tabindex="-1"></a><span class="in">```{r load-libraries}</span></span>
-<span id="cb20-60"><a href="#cb20-60" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: load-libraries</span></span>
-<span id="cb20-61"><a href="#cb20-61" aria-hidden="true" tabindex="-1"></a><span class="in">#| message: false</span></span>
-<span id="cb20-62"><a href="#cb20-62" aria-hidden="true" tabindex="-1"></a><span class="in">#| </span></span>
-<span id="cb20-63"><a href="#cb20-63" aria-hidden="true" tabindex="-1"></a><span class="in">library(tidyverse)</span></span>
-<span id="cb20-64"><a href="#cb20-64" aria-hidden="true" tabindex="-1"></a><span class="in">library(digest)</span></span>
-<span id="cb20-65"><a href="#cb20-65" aria-hidden="true" tabindex="-1"></a><span class="in">library(magick)</span></span>
-<span id="cb20-66"><a href="#cb20-66" aria-hidden="true" tabindex="-1"></a><span class="in">library(exiftoolr)</span></span>
-<span id="cb20-67"><a href="#cb20-67" aria-hidden="true" tabindex="-1"></a><span class="in">library(rstudioapi)</span></span>
-<span id="cb20-68"><a href="#cb20-68" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb20-69"><a href="#cb20-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-70"><a href="#cb20-70" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
-<span id="cb20-71"><a href="#cb20-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-72"><a href="#cb20-72" aria-hidden="true" tabindex="-1"></a><span class="fu">## Select a target directory</span></span>
-<span id="cb20-73"><a href="#cb20-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-74"><a href="#cb20-74" aria-hidden="true" tabindex="-1"></a>This block allows for interactive selection of the image directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.</span>
+<span id="cb20-59"><a href="#cb20-59" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb20-60"><a href="#cb20-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-61"><a href="#cb20-61" aria-hidden="true" tabindex="-1"></a><span class="fu">## Load libraries</span></span>
+<span id="cb20-62"><a href="#cb20-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-63"><a href="#cb20-63" aria-hidden="true" tabindex="-1"></a>Load all the necessary libraries for the session.</span>
+<span id="cb20-64"><a href="#cb20-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-65"><a href="#cb20-65" aria-hidden="true" tabindex="-1"></a><span class="in">```{r load-libraries}</span></span>
+<span id="cb20-66"><a href="#cb20-66" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: load-libraries</span></span>
+<span id="cb20-67"><a href="#cb20-67" aria-hidden="true" tabindex="-1"></a><span class="in">#| message: false</span></span>
+<span id="cb20-68"><a href="#cb20-68" aria-hidden="true" tabindex="-1"></a><span class="in">#| </span></span>
+<span id="cb20-69"><a href="#cb20-69" aria-hidden="true" tabindex="-1"></a><span class="in">library(tidyverse)</span></span>
+<span id="cb20-70"><a href="#cb20-70" aria-hidden="true" tabindex="-1"></a><span class="in">library(digest)</span></span>
+<span id="cb20-71"><a href="#cb20-71" aria-hidden="true" tabindex="-1"></a><span class="in">library(magick)</span></span>
+<span id="cb20-72"><a href="#cb20-72" aria-hidden="true" tabindex="-1"></a><span class="in">library(exiftoolr)</span></span>
+<span id="cb20-73"><a href="#cb20-73" aria-hidden="true" tabindex="-1"></a><span class="in">library(rstudioapi)</span></span>
+<span id="cb20-74"><a href="#cb20-74" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb20-75"><a href="#cb20-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-76"><a href="#cb20-76" aria-hidden="true" tabindex="-1"></a><span class="in">```{r select-directory}</span></span>
-<span id="cb20-77"><a href="#cb20-77" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: select-target-dir</span></span>
-<span id="cb20-78"><a href="#cb20-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-79"><a href="#cb20-79" aria-hidden="true" tabindex="-1"></a><span class="in"># 1. Try to select interactively if in RStudio</span></span>
-<span id="cb20-80"><a href="#cb20-80" aria-hidden="true" tabindex="-1"></a><span class="in">if (interactive() &amp;&amp; .Platform$OS.type == "windows") { </span></span>
-<span id="cb20-81"><a href="#cb20-81" aria-hidden="true" tabindex="-1"></a><span class="in">  # .Platform check helps avoid errors in some non-interactive rendering contexts</span></span>
-<span id="cb20-82"><a href="#cb20-82" aria-hidden="true" tabindex="-1"></a><span class="in">  selected_dir &lt;- rstudioapi::selectDirectory(caption = "Select Image Directory")</span></span>
-<span id="cb20-83"><a href="#cb20-83" aria-hidden="true" tabindex="-1"></a><span class="in">} else {</span></span>
-<span id="cb20-84"><a href="#cb20-84" aria-hidden="true" tabindex="-1"></a><span class="in">  selected_dir &lt;- NULL</span></span>
-<span id="cb20-85"><a href="#cb20-85" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
-<span id="cb20-86"><a href="#cb20-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-87"><a href="#cb20-87" aria-hidden="true" tabindex="-1"></a><span class="in"># 2. Logic to determine final directory (Interactive vs Parameter)</span></span>
-<span id="cb20-88"><a href="#cb20-88" aria-hidden="true" tabindex="-1"></a><span class="in">if (!is.null(selected_dir)) {</span></span>
-<span id="cb20-89"><a href="#cb20-89" aria-hidden="true" tabindex="-1"></a><span class="in">  target_dir &lt;- selected_dir</span></span>
-<span id="cb20-90"><a href="#cb20-90" aria-hidden="true" tabindex="-1"></a><span class="in">} else {</span></span>
-<span id="cb20-91"><a href="#cb20-91" aria-hidden="true" tabindex="-1"></a><span class="in">  target_dir &lt;- params$target_dir</span></span>
-<span id="cb20-92"><a href="#cb20-92" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
-<span id="cb20-93"><a href="#cb20-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-94"><a href="#cb20-94" aria-hidden="true" tabindex="-1"></a><span class="in">print(paste("Analyzing directory:", target_dir))</span></span>
-<span id="cb20-95"><a href="#cb20-95" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb20-96"><a href="#cb20-96" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-97"><a href="#cb20-97" aria-hidden="true" tabindex="-1"></a><span class="fu">### Find Image Files</span></span>
-<span id="cb20-98"><a href="#cb20-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-99"><a href="#cb20-99" aria-hidden="true" tabindex="-1"></a>Here, we calculate an MD5 Checksum for every file. This alphanumeric string acts as a unique fingerprint. If a single bit of the file changes in the future (due to disk failure or accidental modification) <span class="co">[</span><span class="ot">@rosenthal2010</span><span class="co">]</span>, this checksum will change, alerting the curator to corruption.</span>
-<span id="cb20-100"><a href="#cb20-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-101"><a href="#cb20-101" aria-hidden="true" tabindex="-1"></a><span class="in">```{r find-files}</span></span>
-<span id="cb20-102"><a href="#cb20-102" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: inventory-fixity</span></span>
-<span id="cb20-103"><a href="#cb20-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-104"><a href="#cb20-104" aria-hidden="true" tabindex="-1"></a><span class="in"># Find all image files recursively using Regex for extensions</span></span>
-<span id="cb20-105"><a href="#cb20-105" aria-hidden="true" tabindex="-1"></a><span class="in">image_files &lt;- list.files(</span></span>
-<span id="cb20-106"><a href="#cb20-106" aria-hidden="true" tabindex="-1"></a><span class="in">  path = target_dir,</span></span>
-<span id="cb20-107"><a href="#cb20-107" aria-hidden="true" tabindex="-1"></a><span class="in">  pattern = "\\.(jpg|jpeg|png|tiff|tif)$",</span></span>
-<span id="cb20-108"><a href="#cb20-108" aria-hidden="true" tabindex="-1"></a><span class="in">  recursive = TRUE,</span></span>
-<span id="cb20-109"><a href="#cb20-109" aria-hidden="true" tabindex="-1"></a><span class="in">  full.names = TRUE,</span></span>
-<span id="cb20-110"><a href="#cb20-110" aria-hidden="true" tabindex="-1"></a><span class="in">  ignore.case = TRUE</span></span>
-<span id="cb20-111"><a href="#cb20-111" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
-<span id="cb20-112"><a href="#cb20-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-113"><a href="#cb20-113" aria-hidden="true" tabindex="-1"></a><span class="in">print(paste("Found", length(image_files), "potential image files. Calculating checksums..."))</span></span>
-<span id="cb20-114"><a href="#cb20-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-115"><a href="#cb20-115" aria-hidden="true" tabindex="-1"></a><span class="in"># Inventory and Checksum Calculation</span></span>
-<span id="cb20-116"><a href="#cb20-116" aria-hidden="true" tabindex="-1"></a><span class="in">file_inventory &lt;- tibble(file_path = image_files) %&gt;%</span></span>
-<span id="cb20-117"><a href="#cb20-117" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(</span></span>
-<span id="cb20-118"><a href="#cb20-118" aria-hidden="true" tabindex="-1"></a><span class="in">    filename = basename(file_path),</span></span>
-<span id="cb20-119"><a href="#cb20-119" aria-hidden="true" tabindex="-1"></a><span class="in">    # Calculate MD5 hash for fixity</span></span>
-<span id="cb20-120"><a href="#cb20-120" aria-hidden="true" tabindex="-1"></a><span class="in">    md5_checksum = map_chr(file_path, digest::digest, file = TRUE, algo = "md5")</span></span>
-<span id="cb20-121"><a href="#cb20-121" aria-hidden="true" tabindex="-1"></a><span class="in">  )</span></span>
-<span id="cb20-122"><a href="#cb20-122" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-123"><a href="#cb20-123" aria-hidden="true" tabindex="-1"></a><span class="in">head(file_inventory)</span></span>
-<span id="cb20-124"><a href="#cb20-124" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb20-125"><a href="#cb20-125" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-126"><a href="#cb20-126" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
-<span id="cb20-127"><a href="#cb20-127" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-128"><a href="#cb20-128" aria-hidden="true" tabindex="-1"></a><span class="fu">## Technical Validation using `magick`</span></span>
-<span id="cb20-129"><a href="#cb20-129" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-130"><a href="#cb20-130" aria-hidden="true" tabindex="-1"></a>The <span class="in">`magick`</span> package allow us to confirm these files are readable and for extracting basic technical properties. This step loops through each file, reads its information, and collects it into a single table.</span>
+<span id="cb20-76"><a href="#cb20-76" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb20-77"><a href="#cb20-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-78"><a href="#cb20-78" aria-hidden="true" tabindex="-1"></a><span class="fu">## Select a target directory</span></span>
+<span id="cb20-79"><a href="#cb20-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-80"><a href="#cb20-80" aria-hidden="true" tabindex="-1"></a>This block allows for interactive selection of the image directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.</span>
+<span id="cb20-81"><a href="#cb20-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-82"><a href="#cb20-82" aria-hidden="true" tabindex="-1"></a><span class="in">```{r select-directory}</span></span>
+<span id="cb20-83"><a href="#cb20-83" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: select-target-dir</span></span>
+<span id="cb20-84"><a href="#cb20-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-85"><a href="#cb20-85" aria-hidden="true" tabindex="-1"></a><span class="in"># 1. Try to select interactively if in RStudio</span></span>
+<span id="cb20-86"><a href="#cb20-86" aria-hidden="true" tabindex="-1"></a><span class="in">if (interactive() &amp;&amp; .Platform$OS.type == "windows") { </span></span>
+<span id="cb20-87"><a href="#cb20-87" aria-hidden="true" tabindex="-1"></a><span class="in">  # .Platform check helps avoid errors in some non-interactive rendering contexts</span></span>
+<span id="cb20-88"><a href="#cb20-88" aria-hidden="true" tabindex="-1"></a><span class="in">  selected_dir &lt;- rstudioapi::selectDirectory(caption = "Select Image Directory")</span></span>
+<span id="cb20-89"><a href="#cb20-89" aria-hidden="true" tabindex="-1"></a><span class="in">} else {</span></span>
+<span id="cb20-90"><a href="#cb20-90" aria-hidden="true" tabindex="-1"></a><span class="in">  selected_dir &lt;- NULL</span></span>
+<span id="cb20-91"><a href="#cb20-91" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
+<span id="cb20-92"><a href="#cb20-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-93"><a href="#cb20-93" aria-hidden="true" tabindex="-1"></a><span class="in"># 2. Logic to determine final directory (Interactive vs Parameter)</span></span>
+<span id="cb20-94"><a href="#cb20-94" aria-hidden="true" tabindex="-1"></a><span class="in">if (!is.null(selected_dir)) {</span></span>
+<span id="cb20-95"><a href="#cb20-95" aria-hidden="true" tabindex="-1"></a><span class="in">  target_dir &lt;- selected_dir</span></span>
+<span id="cb20-96"><a href="#cb20-96" aria-hidden="true" tabindex="-1"></a><span class="in">} else {</span></span>
+<span id="cb20-97"><a href="#cb20-97" aria-hidden="true" tabindex="-1"></a><span class="in">  target_dir &lt;- params$target_dir</span></span>
+<span id="cb20-98"><a href="#cb20-98" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
+<span id="cb20-99"><a href="#cb20-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-100"><a href="#cb20-100" aria-hidden="true" tabindex="-1"></a><span class="in">print(paste("Analyzing directory:", target_dir))</span></span>
+<span id="cb20-101"><a href="#cb20-101" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-102"><a href="#cb20-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-103"><a href="#cb20-103" aria-hidden="true" tabindex="-1"></a><span class="fu">### Find Image Files</span></span>
+<span id="cb20-104"><a href="#cb20-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-105"><a href="#cb20-105" aria-hidden="true" tabindex="-1"></a>Here, we calculate an MD5 Checksum for every file. This alphanumeric string acts as a unique fingerprint. If a single bit of the file changes in the future (due to disk failure or accidental modification) <span class="co">[</span><span class="ot">@rosenthal2010</span><span class="co">]</span>, this checksum will change, alerting the curator to corruption.</span>
+<span id="cb20-106"><a href="#cb20-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-107"><a href="#cb20-107" aria-hidden="true" tabindex="-1"></a><span class="in">```{r find-files}</span></span>
+<span id="cb20-108"><a href="#cb20-108" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: inventory-fixity</span></span>
+<span id="cb20-109"><a href="#cb20-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-110"><a href="#cb20-110" aria-hidden="true" tabindex="-1"></a><span class="in"># Find all image files recursively using Regex for extensions</span></span>
+<span id="cb20-111"><a href="#cb20-111" aria-hidden="true" tabindex="-1"></a><span class="in">image_files &lt;- list.files(</span></span>
+<span id="cb20-112"><a href="#cb20-112" aria-hidden="true" tabindex="-1"></a><span class="in">  path = target_dir,</span></span>
+<span id="cb20-113"><a href="#cb20-113" aria-hidden="true" tabindex="-1"></a><span class="in">  pattern = "\\.(jpg|jpeg|png|tiff|tif)$",</span></span>
+<span id="cb20-114"><a href="#cb20-114" aria-hidden="true" tabindex="-1"></a><span class="in">  recursive = TRUE,</span></span>
+<span id="cb20-115"><a href="#cb20-115" aria-hidden="true" tabindex="-1"></a><span class="in">  full.names = TRUE,</span></span>
+<span id="cb20-116"><a href="#cb20-116" aria-hidden="true" tabindex="-1"></a><span class="in">  ignore.case = TRUE</span></span>
+<span id="cb20-117"><a href="#cb20-117" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
+<span id="cb20-118"><a href="#cb20-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-119"><a href="#cb20-119" aria-hidden="true" tabindex="-1"></a><span class="in">print(paste("Found", length(image_files), "potential image files. Calculating checksums..."))</span></span>
+<span id="cb20-120"><a href="#cb20-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-121"><a href="#cb20-121" aria-hidden="true" tabindex="-1"></a><span class="in"># Inventory and Checksum Calculation</span></span>
+<span id="cb20-122"><a href="#cb20-122" aria-hidden="true" tabindex="-1"></a><span class="in">file_inventory &lt;- tibble(file_path = image_files) %&gt;%</span></span>
+<span id="cb20-123"><a href="#cb20-123" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(</span></span>
+<span id="cb20-124"><a href="#cb20-124" aria-hidden="true" tabindex="-1"></a><span class="in">    filename = basename(file_path),</span></span>
+<span id="cb20-125"><a href="#cb20-125" aria-hidden="true" tabindex="-1"></a><span class="in">    # Calculate MD5 hash for fixity</span></span>
+<span id="cb20-126"><a href="#cb20-126" aria-hidden="true" tabindex="-1"></a><span class="in">    md5_checksum = map_chr(file_path, digest::digest, file = TRUE, algo = "md5")</span></span>
+<span id="cb20-127"><a href="#cb20-127" aria-hidden="true" tabindex="-1"></a><span class="in">  )</span></span>
+<span id="cb20-128"><a href="#cb20-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-129"><a href="#cb20-129" aria-hidden="true" tabindex="-1"></a><span class="in">head(file_inventory)</span></span>
+<span id="cb20-130"><a href="#cb20-130" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb20-131"><a href="#cb20-131" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-132"><a href="#cb20-132" aria-hidden="true" tabindex="-1"></a><span class="in">```{r magick-summary}</span></span>
-<span id="cb20-133"><a href="#cb20-133" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: magick-analysis</span></span>
-<span id="cb20-134"><a href="#cb20-134" aria-hidden="true" tabindex="-1"></a><span class="in">#| message: false</span></span>
-<span id="cb20-135"><a href="#cb20-135" aria-hidden="true" tabindex="-1"></a><span class="in">#| warning: false</span></span>
-<span id="cb20-136"><a href="#cb20-136" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-137"><a href="#cb20-137" aria-hidden="true" tabindex="-1"></a><span class="in">magick_results &lt;- purrr::map_dfr(image_files, function(fp) {</span></span>
-<span id="cb20-138"><a href="#cb20-138" aria-hidden="true" tabindex="-1"></a><span class="in">  tryCatch({</span></span>
-<span id="cb20-139"><a href="#cb20-139" aria-hidden="true" tabindex="-1"></a><span class="in">    img &lt;- image_read(fp)</span></span>
-<span id="cb20-140"><a href="#cb20-140" aria-hidden="true" tabindex="-1"></a><span class="in">    info &lt;- image_info(img)</span></span>
-<span id="cb20-141"><a href="#cb20-141" aria-hidden="true" tabindex="-1"></a><span class="in">    </span></span>
-<span id="cb20-142"><a href="#cb20-142" aria-hidden="true" tabindex="-1"></a><span class="in">    # Return a clean row of data</span></span>
-<span id="cb20-143"><a href="#cb20-143" aria-hidden="true" tabindex="-1"></a><span class="in">    tibble(</span></span>
-<span id="cb20-144"><a href="#cb20-144" aria-hidden="true" tabindex="-1"></a><span class="in">      file_path = fp,</span></span>
-<span id="cb20-145"><a href="#cb20-145" aria-hidden="true" tabindex="-1"></a><span class="in">      format_magick = info$format,</span></span>
-<span id="cb20-146"><a href="#cb20-146" aria-hidden="true" tabindex="-1"></a><span class="in">      width = info$width,</span></span>
-<span id="cb20-147"><a href="#cb20-147" aria-hidden="true" tabindex="-1"></a><span class="in">      height = info$height,</span></span>
-<span id="cb20-148"><a href="#cb20-148" aria-hidden="true" tabindex="-1"></a><span class="in">      colorspace = info$colorspace,</span></span>
-<span id="cb20-149"><a href="#cb20-149" aria-hidden="true" tabindex="-1"></a><span class="in">      filesize_mb = round(info$filesize / 1024^2, 2),</span></span>
-<span id="cb20-150"><a href="#cb20-150" aria-hidden="true" tabindex="-1"></a><span class="in">      valid_image = TRUE</span></span>
-<span id="cb20-151"><a href="#cb20-151" aria-hidden="true" tabindex="-1"></a><span class="in">    )</span></span>
-<span id="cb20-152"><a href="#cb20-152" aria-hidden="true" tabindex="-1"></a><span class="in">  }, error = function(e) {</span></span>
-<span id="cb20-153"><a href="#cb20-153" aria-hidden="true" tabindex="-1"></a><span class="in">    # Log corrupt files</span></span>
-<span id="cb20-154"><a href="#cb20-154" aria-hidden="true" tabindex="-1"></a><span class="in">    tibble(</span></span>
-<span id="cb20-155"><a href="#cb20-155" aria-hidden="true" tabindex="-1"></a><span class="in">      file_path = fp,</span></span>
-<span id="cb20-156"><a href="#cb20-156" aria-hidden="true" tabindex="-1"></a><span class="in">      valid_image = FALSE,</span></span>
-<span id="cb20-157"><a href="#cb20-157" aria-hidden="true" tabindex="-1"></a><span class="in">      error_msg = e$message</span></span>
-<span id="cb20-158"><a href="#cb20-158" aria-hidden="true" tabindex="-1"></a><span class="in">    )</span></span>
-<span id="cb20-159"><a href="#cb20-159" aria-hidden="true" tabindex="-1"></a><span class="in">  })</span></span>
-<span id="cb20-160"><a href="#cb20-160" aria-hidden="true" tabindex="-1"></a><span class="in">})</span></span>
-<span id="cb20-161"><a href="#cb20-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-162"><a href="#cb20-162" aria-hidden="true" tabindex="-1"></a><span class="in">print("Technical validation complete.")</span></span>
-<span id="cb20-163"><a href="#cb20-163" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb20-164"><a href="#cb20-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-165"><a href="#cb20-165" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
-<span id="cb20-166"><a href="#cb20-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-167"><a href="#cb20-167" aria-hidden="true" tabindex="-1"></a><span class="fu">## Detailed EXIF Metadata with `exiftoolr`</span></span>
-<span id="cb20-168"><a href="#cb20-168" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-169"><a href="#cb20-169" aria-hidden="true" tabindex="-1"></a>This step uses <span class="in">`exiftoolr`</span> to extract all available embedded metadata from the image files. This can include hundreds of fields detailing everything from the camera settings and lens information to GPS coordinates and software versions. Please note that the output can have many columns.</span>
+<span id="cb20-132"><a href="#cb20-132" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb20-133"><a href="#cb20-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-134"><a href="#cb20-134" aria-hidden="true" tabindex="-1"></a><span class="fu">## Technical Validation using `magick`</span></span>
+<span id="cb20-135"><a href="#cb20-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-136"><a href="#cb20-136" aria-hidden="true" tabindex="-1"></a>The <span class="in">`magick`</span> package allow us to confirm these files are readable and for extracting basic technical properties. This step loops through each file, reads its information, and collects it into a single table.</span>
+<span id="cb20-137"><a href="#cb20-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-138"><a href="#cb20-138" aria-hidden="true" tabindex="-1"></a><span class="in">```{r magick-summary}</span></span>
+<span id="cb20-139"><a href="#cb20-139" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: magick-analysis</span></span>
+<span id="cb20-140"><a href="#cb20-140" aria-hidden="true" tabindex="-1"></a><span class="in">#| message: false</span></span>
+<span id="cb20-141"><a href="#cb20-141" aria-hidden="true" tabindex="-1"></a><span class="in">#| warning: false</span></span>
+<span id="cb20-142"><a href="#cb20-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-143"><a href="#cb20-143" aria-hidden="true" tabindex="-1"></a><span class="in">magick_results &lt;- purrr::map_dfr(image_files, function(fp) {</span></span>
+<span id="cb20-144"><a href="#cb20-144" aria-hidden="true" tabindex="-1"></a><span class="in">  tryCatch({</span></span>
+<span id="cb20-145"><a href="#cb20-145" aria-hidden="true" tabindex="-1"></a><span class="in">    img &lt;- image_read(fp)</span></span>
+<span id="cb20-146"><a href="#cb20-146" aria-hidden="true" tabindex="-1"></a><span class="in">    info &lt;- image_info(img)</span></span>
+<span id="cb20-147"><a href="#cb20-147" aria-hidden="true" tabindex="-1"></a><span class="in">    </span></span>
+<span id="cb20-148"><a href="#cb20-148" aria-hidden="true" tabindex="-1"></a><span class="in">    # Return a clean row of data</span></span>
+<span id="cb20-149"><a href="#cb20-149" aria-hidden="true" tabindex="-1"></a><span class="in">    tibble(</span></span>
+<span id="cb20-150"><a href="#cb20-150" aria-hidden="true" tabindex="-1"></a><span class="in">      file_path = fp,</span></span>
+<span id="cb20-151"><a href="#cb20-151" aria-hidden="true" tabindex="-1"></a><span class="in">      format_magick = info$format,</span></span>
+<span id="cb20-152"><a href="#cb20-152" aria-hidden="true" tabindex="-1"></a><span class="in">      width = info$width,</span></span>
+<span id="cb20-153"><a href="#cb20-153" aria-hidden="true" tabindex="-1"></a><span class="in">      height = info$height,</span></span>
+<span id="cb20-154"><a href="#cb20-154" aria-hidden="true" tabindex="-1"></a><span class="in">      colorspace = info$colorspace,</span></span>
+<span id="cb20-155"><a href="#cb20-155" aria-hidden="true" tabindex="-1"></a><span class="in">      filesize_mb = round(info$filesize / 1024^2, 2),</span></span>
+<span id="cb20-156"><a href="#cb20-156" aria-hidden="true" tabindex="-1"></a><span class="in">      valid_image = TRUE</span></span>
+<span id="cb20-157"><a href="#cb20-157" aria-hidden="true" tabindex="-1"></a><span class="in">    )</span></span>
+<span id="cb20-158"><a href="#cb20-158" aria-hidden="true" tabindex="-1"></a><span class="in">  }, error = function(e) {</span></span>
+<span id="cb20-159"><a href="#cb20-159" aria-hidden="true" tabindex="-1"></a><span class="in">    # Log corrupt files</span></span>
+<span id="cb20-160"><a href="#cb20-160" aria-hidden="true" tabindex="-1"></a><span class="in">    tibble(</span></span>
+<span id="cb20-161"><a href="#cb20-161" aria-hidden="true" tabindex="-1"></a><span class="in">      file_path = fp,</span></span>
+<span id="cb20-162"><a href="#cb20-162" aria-hidden="true" tabindex="-1"></a><span class="in">      valid_image = FALSE,</span></span>
+<span id="cb20-163"><a href="#cb20-163" aria-hidden="true" tabindex="-1"></a><span class="in">      error_msg = e$message</span></span>
+<span id="cb20-164"><a href="#cb20-164" aria-hidden="true" tabindex="-1"></a><span class="in">    )</span></span>
+<span id="cb20-165"><a href="#cb20-165" aria-hidden="true" tabindex="-1"></a><span class="in">  })</span></span>
+<span id="cb20-166"><a href="#cb20-166" aria-hidden="true" tabindex="-1"></a><span class="in">})</span></span>
+<span id="cb20-167"><a href="#cb20-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-168"><a href="#cb20-168" aria-hidden="true" tabindex="-1"></a><span class="in">print("Technical validation complete.")</span></span>
+<span id="cb20-169"><a href="#cb20-169" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb20-170"><a href="#cb20-170" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-171"><a href="#cb20-171" aria-hidden="true" tabindex="-1"></a><span class="in">```{r exiftool-summary}</span></span>
-<span id="cb20-172"><a href="#cb20-172" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: exif-extraction</span></span>
-<span id="cb20-173"><a href="#cb20-173" aria-hidden="true" tabindex="-1"></a><span class="in">#| results: 'hide'</span></span>
+<span id="cb20-171"><a href="#cb20-171" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb20-172"><a href="#cb20-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-173"><a href="#cb20-173" aria-hidden="true" tabindex="-1"></a><span class="fu">## Detailed EXIF Metadata with `exiftoolr`</span></span>
 <span id="cb20-174"><a href="#cb20-174" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-175"><a href="#cb20-175" aria-hidden="true" tabindex="-1"></a><span class="in"># Run ExifTool on all files at once</span></span>
-<span id="cb20-176"><a href="#cb20-176" aria-hidden="true" tabindex="-1"></a><span class="in">exif_results &lt;- tryCatch({</span></span>
-<span id="cb20-177"><a href="#cb20-177" aria-hidden="true" tabindex="-1"></a><span class="in">  exif_read(image_files) %&gt;%</span></span>
-<span id="cb20-178"><a href="#cb20-178" aria-hidden="true" tabindex="-1"></a><span class="in">    mutate(SourceFile = image_files) # Ensure joining key exists</span></span>
-<span id="cb20-179"><a href="#cb20-179" aria-hidden="true" tabindex="-1"></a><span class="in">}, error = function(e) {</span></span>
-<span id="cb20-180"><a href="#cb20-180" aria-hidden="true" tabindex="-1"></a><span class="in">  message("ExifTool warning: ", e$message)</span></span>
-<span id="cb20-181"><a href="#cb20-181" aria-hidden="true" tabindex="-1"></a><span class="in">  return(data.frame(SourceFile = image_files))</span></span>
-<span id="cb20-182"><a href="#cb20-182" aria-hidden="true" tabindex="-1"></a><span class="in">})</span></span>
-<span id="cb20-183"><a href="#cb20-183" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-184"><a href="#cb20-184" aria-hidden="true" tabindex="-1"></a><span class="in"># Select high-value columns for the report (customizable)</span></span>
-<span id="cb20-185"><a href="#cb20-185" aria-hidden="true" tabindex="-1"></a><span class="in">common_cols &lt;- intersect(names(exif_results), c("SourceFile", "Make", "Model", "Software", "DateTimeOriginal", "GPSLatitude", "GPSLongitude", "Megapixels"))</span></span>
-<span id="cb20-186"><a href="#cb20-186" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-187"><a href="#cb20-187" aria-hidden="true" tabindex="-1"></a><span class="in">if(length(common_cols) &gt; 0) {</span></span>
-<span id="cb20-188"><a href="#cb20-188" aria-hidden="true" tabindex="-1"></a><span class="in">  exif_subset &lt;- exif_results %&gt;% select(all_of(common_cols))</span></span>
-<span id="cb20-189"><a href="#cb20-189" aria-hidden="true" tabindex="-1"></a><span class="in">} else {</span></span>
-<span id="cb20-190"><a href="#cb20-190" aria-hidden="true" tabindex="-1"></a><span class="in">  exif_subset &lt;- exif_results</span></span>
-<span id="cb20-191"><a href="#cb20-191" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
-<span id="cb20-192"><a href="#cb20-192" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb20-193"><a href="#cb20-193" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-194"><a href="#cb20-194" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
-<span id="cb20-195"><a href="#cb20-195" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-196"><a href="#cb20-196" aria-hidden="true" tabindex="-1"></a><span class="fu">## Curation Intelligence</span></span>
-<span id="cb20-197"><a href="#cb20-197" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-198"><a href="#cb20-198" aria-hidden="true" tabindex="-1"></a>We now merge the three data streams (Inventory, Magick, Exif) to perform automated quality control. We apply logic to "flag" files that deviate from the norm or pose risks.</span>
+<span id="cb20-175"><a href="#cb20-175" aria-hidden="true" tabindex="-1"></a>This step uses <span class="in">`exiftoolr`</span> to extract all available embedded metadata from the image files. This can include hundreds of fields detailing everything from the camera settings and lens information to GPS coordinates and software versions. Please note that the output can have many columns.</span>
+<span id="cb20-176"><a href="#cb20-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-177"><a href="#cb20-177" aria-hidden="true" tabindex="-1"></a><span class="in">```{r exiftool-summary}</span></span>
+<span id="cb20-178"><a href="#cb20-178" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: exif-extraction</span></span>
+<span id="cb20-179"><a href="#cb20-179" aria-hidden="true" tabindex="-1"></a><span class="in">#| results: 'hide'</span></span>
+<span id="cb20-180"><a href="#cb20-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-181"><a href="#cb20-181" aria-hidden="true" tabindex="-1"></a><span class="in"># Run ExifTool on all files at once</span></span>
+<span id="cb20-182"><a href="#cb20-182" aria-hidden="true" tabindex="-1"></a><span class="in">exif_results &lt;- tryCatch({</span></span>
+<span id="cb20-183"><a href="#cb20-183" aria-hidden="true" tabindex="-1"></a><span class="in">  exif_read(image_files) %&gt;%</span></span>
+<span id="cb20-184"><a href="#cb20-184" aria-hidden="true" tabindex="-1"></a><span class="in">    mutate(SourceFile = image_files) # Ensure joining key exists</span></span>
+<span id="cb20-185"><a href="#cb20-185" aria-hidden="true" tabindex="-1"></a><span class="in">}, error = function(e) {</span></span>
+<span id="cb20-186"><a href="#cb20-186" aria-hidden="true" tabindex="-1"></a><span class="in">  message("ExifTool warning: ", e$message)</span></span>
+<span id="cb20-187"><a href="#cb20-187" aria-hidden="true" tabindex="-1"></a><span class="in">  return(data.frame(SourceFile = image_files))</span></span>
+<span id="cb20-188"><a href="#cb20-188" aria-hidden="true" tabindex="-1"></a><span class="in">})</span></span>
+<span id="cb20-189"><a href="#cb20-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-190"><a href="#cb20-190" aria-hidden="true" tabindex="-1"></a><span class="in"># Select high-value columns for the report (customizable)</span></span>
+<span id="cb20-191"><a href="#cb20-191" aria-hidden="true" tabindex="-1"></a><span class="in">common_cols &lt;- intersect(names(exif_results), c("SourceFile", "Make", "Model", "Software", "DateTimeOriginal", "GPSLatitude", "GPSLongitude", "Megapixels"))</span></span>
+<span id="cb20-192"><a href="#cb20-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-193"><a href="#cb20-193" aria-hidden="true" tabindex="-1"></a><span class="in">if(length(common_cols) &gt; 0) {</span></span>
+<span id="cb20-194"><a href="#cb20-194" aria-hidden="true" tabindex="-1"></a><span class="in">  exif_subset &lt;- exif_results %&gt;% select(all_of(common_cols))</span></span>
+<span id="cb20-195"><a href="#cb20-195" aria-hidden="true" tabindex="-1"></a><span class="in">} else {</span></span>
+<span id="cb20-196"><a href="#cb20-196" aria-hidden="true" tabindex="-1"></a><span class="in">  exif_subset &lt;- exif_results</span></span>
+<span id="cb20-197"><a href="#cb20-197" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
+<span id="cb20-198"><a href="#cb20-198" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb20-199"><a href="#cb20-199" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-200"><a href="#cb20-200" aria-hidden="true" tabindex="-1"></a>The Flagging Logic:</span>
+<span id="cb20-200"><a href="#cb20-200" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
 <span id="cb20-201"><a href="#cb20-201" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-202"><a href="#cb20-202" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Duplicate_File:** Files sharing the exact same MD5 checksum (Redundant storage).</span>
+<span id="cb20-202"><a href="#cb20-202" aria-hidden="true" tabindex="-1"></a><span class="fu">## Curation Intelligence</span></span>
 <span id="cb20-203"><a href="#cb20-203" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-204"><a href="#cb20-204" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Privacy_Risk:** Files containing GPSLatitude data (requires review).</span>
+<span id="cb20-204"><a href="#cb20-204" aria-hidden="true" tabindex="-1"></a>We now merge the three data streams (Inventory, Magick, Exif) to perform automated quality control. We apply logic to "flag" files that deviate from the norm or pose risks.</span>
 <span id="cb20-205"><a href="#cb20-205" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-206"><a href="#cb20-206" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Dimension_Outlier:** Images that do not match the Mode (most common) width/height of the dataset.</span>
+<span id="cb20-206"><a href="#cb20-206" aria-hidden="true" tabindex="-1"></a>The Flagging Logic:</span>
 <span id="cb20-207"><a href="#cb20-207" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-208"><a href="#cb20-208" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Corrupt:** Files that magick failed to read.</span>
+<span id="cb20-208"><a href="#cb20-208" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Duplicate_File:** Files sharing the exact same MD5 checksum (Redundant storage).</span>
 <span id="cb20-209"><a href="#cb20-209" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-212"><a href="#cb20-212" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb20-213"><a href="#cb20-213" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: merge-and-flag</span></span>
-<span id="cb20-214"><a href="#cb20-214" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-215"><a href="#cb20-215" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Merge all data sources</span></span>
-<span id="cb20-216"><a href="#cb20-216" aria-hidden="true" tabindex="-1"></a>full_report <span class="ot">&lt;-</span> file_inventory <span class="sc">%&gt;%</span></span>
-<span id="cb20-217"><a href="#cb20-217" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(magick_results, <span class="at">by =</span> <span class="st">"file_path"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb20-218"><a href="#cb20-218" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(exif_subset, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"file_path"</span> <span class="ot">=</span> <span class="st">"SourceFile"</span>))</span>
-<span id="cb20-219"><a href="#cb20-219" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-220"><a href="#cb20-220" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Defensive Step: Ensure critical columns exist</span></span>
-<span id="cb20-221"><a href="#cb20-221" aria-hidden="true" tabindex="-1"></a><span class="co"># If no files have GPS, these columns won't exist. We create them as NA to prevent errors.</span></span>
-<span id="cb20-222"><a href="#cb20-222" aria-hidden="true" tabindex="-1"></a>cols_to_ensure <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"GPSLatitude"</span>, <span class="st">"width"</span>, <span class="st">"height"</span>)</span>
-<span id="cb20-223"><a href="#cb20-223" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-224"><a href="#cb20-224" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (col <span class="cf">in</span> cols_to_ensure) {</span>
-<span id="cb20-225"><a href="#cb20-225" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span>col <span class="sc">%in%</span> <span class="fu">names</span>(full_report)) {</span>
-<span id="cb20-226"><a href="#cb20-226" aria-hidden="true" tabindex="-1"></a>    full_report[[col]] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb20-227"><a href="#cb20-227" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb20-228"><a href="#cb20-228" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb20-210"><a href="#cb20-210" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Privacy_Risk:** Files containing GPSLatitude data (requires review).</span>
+<span id="cb20-211"><a href="#cb20-211" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-212"><a href="#cb20-212" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Dimension_Outlier:** Images that do not match the Mode (most common) width/height of the dataset.</span>
+<span id="cb20-213"><a href="#cb20-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-214"><a href="#cb20-214" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Corrupt:** Files that magick failed to read.</span>
+<span id="cb20-215"><a href="#cb20-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-218"><a href="#cb20-218" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb20-219"><a href="#cb20-219" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: merge-and-flag</span></span>
+<span id="cb20-220"><a href="#cb20-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-221"><a href="#cb20-221" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Merge all data sources</span></span>
+<span id="cb20-222"><a href="#cb20-222" aria-hidden="true" tabindex="-1"></a>full_report <span class="ot">&lt;-</span> file_inventory <span class="sc">%&gt;%</span></span>
+<span id="cb20-223"><a href="#cb20-223" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(magick_results, <span class="at">by =</span> <span class="st">"file_path"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb20-224"><a href="#cb20-224" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(exif_subset, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"file_path"</span> <span class="ot">=</span> <span class="st">"SourceFile"</span>))</span>
+<span id="cb20-225"><a href="#cb20-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-226"><a href="#cb20-226" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Defensive Step: Ensure critical columns exist</span></span>
+<span id="cb20-227"><a href="#cb20-227" aria-hidden="true" tabindex="-1"></a><span class="co"># If no files have GPS, these columns won't exist. We create them as NA to prevent errors.</span></span>
+<span id="cb20-228"><a href="#cb20-228" aria-hidden="true" tabindex="-1"></a>cols_to_ensure <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"GPSLatitude"</span>, <span class="st">"width"</span>, <span class="st">"height"</span>)</span>
 <span id="cb20-229"><a href="#cb20-229" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-230"><a href="#cb20-230" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Calculate the "Mode" (most common) dimensions for outlier detection</span></span>
-<span id="cb20-231"><a href="#cb20-231" aria-hidden="true" tabindex="-1"></a>get_mode <span class="ot">&lt;-</span> <span class="cf">function</span>(v) {</span>
-<span id="cb20-232"><a href="#cb20-232" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Remove NAs before calculating mode to avoid errors</span></span>
-<span id="cb20-233"><a href="#cb20-233" aria-hidden="true" tabindex="-1"></a>  v <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(v)</span>
-<span id="cb20-234"><a href="#cb20-234" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(v) <span class="sc">==</span> <span class="dv">0</span>) <span class="fu">return</span>(<span class="cn">NA</span>)</span>
-<span id="cb20-235"><a href="#cb20-235" aria-hidden="true" tabindex="-1"></a>  uniqv <span class="ot">&lt;-</span> <span class="fu">unique</span>(v)</span>
-<span id="cb20-236"><a href="#cb20-236" aria-hidden="true" tabindex="-1"></a>  uniqv[<span class="fu">which.max</span>(<span class="fu">tabulate</span>(<span class="fu">match</span>(v, uniqv)))]</span>
-<span id="cb20-237"><a href="#cb20-237" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb20-238"><a href="#cb20-238" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-239"><a href="#cb20-239" aria-hidden="true" tabindex="-1"></a>mode_width <span class="ot">&lt;-</span> <span class="fu">get_mode</span>(full_report<span class="sc">$</span>width)</span>
-<span id="cb20-240"><a href="#cb20-240" aria-hidden="true" tabindex="-1"></a>mode_height <span class="ot">&lt;-</span> <span class="fu">get_mode</span>(full_report<span class="sc">$</span>height)</span>
-<span id="cb20-241"><a href="#cb20-241" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-242"><a href="#cb20-242" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Apply Curation Flags</span></span>
-<span id="cb20-243"><a href="#cb20-243" aria-hidden="true" tabindex="-1"></a>curated_data <span class="ot">&lt;-</span> full_report <span class="sc">%&gt;%</span></span>
-<span id="cb20-244"><a href="#cb20-244" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(md5_checksum) <span class="sc">%&gt;%</span></span>
-<span id="cb20-245"><a href="#cb20-245" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">is_duplicate =</span> <span class="fu">n</span>() <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb20-246"><a href="#cb20-246" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb20-247"><a href="#cb20-247" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb20-248"><a href="#cb20-248" aria-hidden="true" tabindex="-1"></a>    <span class="at">flag_duplicate =</span> <span class="fu">ifelse</span>(is_duplicate, <span class="st">"DUPLICATE"</span>, <span class="cn">NA</span>),</span>
-<span id="cb20-249"><a href="#cb20-249" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check if valid_image exists; if not, assume FALSE (safety check)</span></span>
-<span id="cb20-250"><a href="#cb20-250" aria-hidden="true" tabindex="-1"></a>    <span class="at">flag_corrupt =</span> <span class="fu">ifelse</span>(<span class="fu">exists</span>(<span class="st">"valid_image"</span>) <span class="sc">&amp;</span> <span class="sc">!</span>valid_image, <span class="st">"CORRUPT"</span>, <span class="cn">NA</span>),</span>
-<span id="cb20-251"><a href="#cb20-251" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Safe check for GPS: if it was missing, we made it NA above, so this just returns NA</span></span>
-<span id="cb20-252"><a href="#cb20-252" aria-hidden="true" tabindex="-1"></a>    <span class="at">flag_privacy_gps =</span> <span class="fu">ifelse</span>(<span class="sc">!</span><span class="fu">is.na</span>(GPSLatitude), <span class="st">"HAS_GPS_DATA"</span>, <span class="cn">NA</span>),</span>
-<span id="cb20-253"><a href="#cb20-253" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Safe check for outliers: handles cases where width/height might be NA</span></span>
-<span id="cb20-254"><a href="#cb20-254" aria-hidden="true" tabindex="-1"></a>    <span class="at">flag_outlier =</span> <span class="fu">ifelse</span>(</span>
-<span id="cb20-255"><a href="#cb20-255" aria-hidden="true" tabindex="-1"></a>      <span class="sc">!</span><span class="fu">is.na</span>(width) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(height) <span class="sc">&amp;</span> (width <span class="sc">!=</span> mode_width <span class="sc">|</span> height <span class="sc">!=</span> mode_height), </span>
-<span id="cb20-256"><a href="#cb20-256" aria-hidden="true" tabindex="-1"></a>      <span class="st">"DIMENSION_OUTLIER"</span>, </span>
-<span id="cb20-257"><a href="#cb20-257" aria-hidden="true" tabindex="-1"></a>      <span class="cn">NA</span></span>
-<span id="cb20-258"><a href="#cb20-258" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb20-259"><a href="#cb20-259" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb20-260"><a href="#cb20-260" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Combine flags into a single readable column</span></span>
-<span id="cb20-261"><a href="#cb20-261" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unite</span>(<span class="st">"curation_flags"</span>, <span class="fu">starts_with</span>(<span class="st">"flag_"</span>), <span class="at">sep =</span> <span class="st">"; "</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">remove =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb20-262"><a href="#cb20-262" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-263"><a href="#cb20-263" aria-hidden="true" tabindex="-1"></a><span class="co"># Preview flagged issues</span></span>
-<span id="cb20-264"><a href="#cb20-264" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"--- Flagged Issues for Review ---"</span>)</span>
-<span id="cb20-265"><a href="#cb20-265" aria-hidden="true" tabindex="-1"></a>curated_data <span class="sc">%&gt;%</span> </span>
-<span id="cb20-266"><a href="#cb20-266" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(curated_data<span class="sc">$</span>curation_flags <span class="sc">!=</span> <span class="st">""</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb20-267"><a href="#cb20-267" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(filename, curation_flags) <span class="sc">%&gt;%</span></span>
-<span id="cb20-268"><a href="#cb20-268" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span>
-<span id="cb20-269"><a href="#cb20-269" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb20-270"><a href="#cb20-270" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-273"><a href="#cb20-273" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb20-274"><a href="#cb20-274" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: save-results</span></span>
-<span id="cb20-275"><a href="#cb20-275" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-276"><a href="#cb20-276" aria-hidden="true" tabindex="-1"></a>output_dir <span class="ot">&lt;-</span> <span class="st">"Results/Inspect_Images"</span></span>
-<span id="cb20-277"><a href="#cb20-277" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(output_dir, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb20-278"><a href="#cb20-278" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-279"><a href="#cb20-279" aria-hidden="true" tabindex="-1"></a>timestamp <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">Sys.Date</span>(), <span class="st">"%Y%m%d"</span>)</span>
-<span id="cb20-280"><a href="#cb20-280" aria-hidden="true" tabindex="-1"></a>output_file <span class="ot">&lt;-</span> <span class="fu">paste0</span>(output_dir, <span class="st">"/Curation_Report_Images_"</span>, timestamp, <span class="st">".csv"</span>)</span>
+<span id="cb20-230"><a href="#cb20-230" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (col <span class="cf">in</span> cols_to_ensure) {</span>
+<span id="cb20-231"><a href="#cb20-231" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span>col <span class="sc">%in%</span> <span class="fu">names</span>(full_report)) {</span>
+<span id="cb20-232"><a href="#cb20-232" aria-hidden="true" tabindex="-1"></a>    full_report[[col]] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb20-233"><a href="#cb20-233" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb20-234"><a href="#cb20-234" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb20-235"><a href="#cb20-235" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-236"><a href="#cb20-236" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Calculate the "Mode" (most common) dimensions for outlier detection</span></span>
+<span id="cb20-237"><a href="#cb20-237" aria-hidden="true" tabindex="-1"></a>get_mode <span class="ot">&lt;-</span> <span class="cf">function</span>(v) {</span>
+<span id="cb20-238"><a href="#cb20-238" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Remove NAs before calculating mode to avoid errors</span></span>
+<span id="cb20-239"><a href="#cb20-239" aria-hidden="true" tabindex="-1"></a>  v <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(v)</span>
+<span id="cb20-240"><a href="#cb20-240" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(v) <span class="sc">==</span> <span class="dv">0</span>) <span class="fu">return</span>(<span class="cn">NA</span>)</span>
+<span id="cb20-241"><a href="#cb20-241" aria-hidden="true" tabindex="-1"></a>  uniqv <span class="ot">&lt;-</span> <span class="fu">unique</span>(v)</span>
+<span id="cb20-242"><a href="#cb20-242" aria-hidden="true" tabindex="-1"></a>  uniqv[<span class="fu">which.max</span>(<span class="fu">tabulate</span>(<span class="fu">match</span>(v, uniqv)))]</span>
+<span id="cb20-243"><a href="#cb20-243" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb20-244"><a href="#cb20-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-245"><a href="#cb20-245" aria-hidden="true" tabindex="-1"></a>mode_width <span class="ot">&lt;-</span> <span class="fu">get_mode</span>(full_report<span class="sc">$</span>width)</span>
+<span id="cb20-246"><a href="#cb20-246" aria-hidden="true" tabindex="-1"></a>mode_height <span class="ot">&lt;-</span> <span class="fu">get_mode</span>(full_report<span class="sc">$</span>height)</span>
+<span id="cb20-247"><a href="#cb20-247" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-248"><a href="#cb20-248" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Apply Curation Flags</span></span>
+<span id="cb20-249"><a href="#cb20-249" aria-hidden="true" tabindex="-1"></a>curated_data <span class="ot">&lt;-</span> full_report <span class="sc">%&gt;%</span></span>
+<span id="cb20-250"><a href="#cb20-250" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(md5_checksum) <span class="sc">%&gt;%</span></span>
+<span id="cb20-251"><a href="#cb20-251" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">is_duplicate =</span> <span class="fu">n</span>() <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb20-252"><a href="#cb20-252" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb20-253"><a href="#cb20-253" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb20-254"><a href="#cb20-254" aria-hidden="true" tabindex="-1"></a>    <span class="at">flag_duplicate =</span> <span class="fu">ifelse</span>(is_duplicate, <span class="st">"DUPLICATE"</span>, <span class="cn">NA</span>),</span>
+<span id="cb20-255"><a href="#cb20-255" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check if valid_image exists; if not, assume FALSE (safety check)</span></span>
+<span id="cb20-256"><a href="#cb20-256" aria-hidden="true" tabindex="-1"></a>    <span class="at">flag_corrupt =</span> <span class="fu">ifelse</span>(<span class="fu">exists</span>(<span class="st">"valid_image"</span>) <span class="sc">&amp;</span> <span class="sc">!</span>valid_image, <span class="st">"CORRUPT"</span>, <span class="cn">NA</span>),</span>
+<span id="cb20-257"><a href="#cb20-257" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Safe check for GPS: if it was missing, we made it NA above, so this just returns NA</span></span>
+<span id="cb20-258"><a href="#cb20-258" aria-hidden="true" tabindex="-1"></a>    <span class="at">flag_privacy_gps =</span> <span class="fu">ifelse</span>(<span class="sc">!</span><span class="fu">is.na</span>(GPSLatitude), <span class="st">"HAS_GPS_DATA"</span>, <span class="cn">NA</span>),</span>
+<span id="cb20-259"><a href="#cb20-259" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Safe check for outliers: handles cases where width/height might be NA</span></span>
+<span id="cb20-260"><a href="#cb20-260" aria-hidden="true" tabindex="-1"></a>    <span class="at">flag_outlier =</span> <span class="fu">ifelse</span>(</span>
+<span id="cb20-261"><a href="#cb20-261" aria-hidden="true" tabindex="-1"></a>      <span class="sc">!</span><span class="fu">is.na</span>(width) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(height) <span class="sc">&amp;</span> (width <span class="sc">!=</span> mode_width <span class="sc">|</span> height <span class="sc">!=</span> mode_height), </span>
+<span id="cb20-262"><a href="#cb20-262" aria-hidden="true" tabindex="-1"></a>      <span class="st">"DIMENSION_OUTLIER"</span>, </span>
+<span id="cb20-263"><a href="#cb20-263" aria-hidden="true" tabindex="-1"></a>      <span class="cn">NA</span></span>
+<span id="cb20-264"><a href="#cb20-264" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb20-265"><a href="#cb20-265" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb20-266"><a href="#cb20-266" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Combine flags into a single readable column</span></span>
+<span id="cb20-267"><a href="#cb20-267" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unite</span>(<span class="st">"curation_flags"</span>, <span class="fu">starts_with</span>(<span class="st">"flag_"</span>), <span class="at">sep =</span> <span class="st">"; "</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">remove =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb20-268"><a href="#cb20-268" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-269"><a href="#cb20-269" aria-hidden="true" tabindex="-1"></a><span class="co"># Preview flagged issues</span></span>
+<span id="cb20-270"><a href="#cb20-270" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"--- Flagged Issues for Review ---"</span>)</span>
+<span id="cb20-271"><a href="#cb20-271" aria-hidden="true" tabindex="-1"></a>curated_data <span class="sc">%&gt;%</span> </span>
+<span id="cb20-272"><a href="#cb20-272" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(curated_data<span class="sc">$</span>curation_flags <span class="sc">!=</span> <span class="st">""</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb20-273"><a href="#cb20-273" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(filename, curation_flags) <span class="sc">%&gt;%</span></span>
+<span id="cb20-274"><a href="#cb20-274" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span>
+<span id="cb20-275"><a href="#cb20-275" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-276"><a href="#cb20-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-279"><a href="#cb20-279" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb20-280"><a href="#cb20-280" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: save-results</span></span>
 <span id="cb20-281"><a href="#cb20-281" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-282"><a href="#cb20-282" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(curated_data, output_file, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb20-283"><a href="#cb20-283" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-284"><a href="#cb20-284" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Curation report saved to:"</span>, output_file))</span>
-<span id="cb20-285"><a href="#cb20-285" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb20-286"><a href="#cb20-286" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb20-282"><a href="#cb20-282" aria-hidden="true" tabindex="-1"></a>output_dir <span class="ot">&lt;-</span> <span class="st">"Results/Inspect_Images"</span></span>
+<span id="cb20-283"><a href="#cb20-283" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(output_dir, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb20-284"><a href="#cb20-284" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-285"><a href="#cb20-285" aria-hidden="true" tabindex="-1"></a>timestamp <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">Sys.Date</span>(), <span class="st">"%Y%m%d"</span>)</span>
+<span id="cb20-286"><a href="#cb20-286" aria-hidden="true" tabindex="-1"></a>output_file <span class="ot">&lt;-</span> <span class="fu">paste0</span>(output_dir, <span class="st">"/Curation_Report_Images_"</span>, timestamp, <span class="st">".csv"</span>)</span>
 <span id="cb20-287"><a href="#cb20-287" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-288"><a href="#cb20-288" aria-hidden="true" tabindex="-1"></a><span class="fu">## Curation Insights</span></span>
+<span id="cb20-288"><a href="#cb20-288" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(curated_data, output_file, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb20-289"><a href="#cb20-289" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-290"><a href="#cb20-290" aria-hidden="true" tabindex="-1"></a>Use the generated CSV to perform these checks:</span>
-<span id="cb20-291"><a href="#cb20-291" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-292"><a href="#cb20-292" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Privacy Risks (GPS):** Filter the CSV for flag_privacy_gps == "HAS_GPS_DATA". These images contain embedded location coordinates (Latitude/Longitude). If the dataset involves human subjects or protected species, these coordinates must be scrubbed using ExifTool (-gps:all=) before publication to prevent "mosaic effect" re-identification.</span>
+<span id="cb20-290"><a href="#cb20-290" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Curation report saved to:"</span>, output_file))</span>
+<span id="cb20-291"><a href="#cb20-291" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-292"><a href="#cb20-292" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
 <span id="cb20-293"><a href="#cb20-293" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-294"><a href="#cb20-294" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Format Obsolescence:** Check the format_magick column. While .jpg and .tiff are standard, proprietary raw formats (e.g., .CR2, .NEF, .ARW) are less stable for long-term preservation. It is recommended to retain the raw file for the "preservation master" but generate a standard TIFF or JPEG 2000 copy for the "access derivative."</span>
+<span id="cb20-294"><a href="#cb20-294" aria-hidden="true" tabindex="-1"></a><span class="fu">## Curation Insights</span></span>
 <span id="cb20-295"><a href="#cb20-295" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-296"><a href="#cb20-296" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Digital Fixity (Duplicates):** Filter for flag_duplicate == "DUPLICATE". These files share the exact same MD5 hash, meaning they are bit-for-bit identical, even if they have different filenames.</span>
+<span id="cb20-296"><a href="#cb20-296" aria-hidden="true" tabindex="-1"></a>Use the generated CSV to perform these checks:</span>
 <span id="cb20-297"><a href="#cb20-297" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-298"><a href="#cb20-298" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-299"><a href="#cb20-299" aria-hidden="true" tabindex="-1"></a><span class="fu">## Additional Tools &amp; Resources</span></span>
-<span id="cb20-300"><a href="#cb20-300" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-301"><a href="#cb20-301" aria-hidden="true" tabindex="-1"></a>While R is excellent for batch processing and statistical summaries, visual and command-line tools are often required for deep analysis or manual correction.</span>
-<span id="cb20-302"><a href="#cb20-302" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-303"><a href="#cb20-303" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**ExifTool (Command Line): **The industry standard for reading, writing, and editing metadata. Unlike the R wrapper, the direct command line allows you to write data (e.g., scrubbing GPS tags) (see https://https://exiftool.org/).</span>
+<span id="cb20-298"><a href="#cb20-298" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Privacy Risks (GPS):** Filter the CSV for flag_privacy_gps == "HAS_GPS_DATA". These images contain embedded location coordinates (Latitude/Longitude). If the dataset involves human subjects or protected species, these coordinates must be scrubbed using ExifTool (-gps:all=) before publication to prevent "mosaic effect" re-identification.</span>
+<span id="cb20-299"><a href="#cb20-299" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-300"><a href="#cb20-300" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Format Obsolescence:** Check the format_magick column. While .jpg and .tiff are standard, proprietary raw formats (e.g., .CR2, .NEF, .ARW) are less stable for long-term preservation. It is recommended to retain the raw file for the "preservation master" but generate a standard TIFF or JPEG 2000 copy for the "access derivative."</span>
+<span id="cb20-301"><a href="#cb20-301" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-302"><a href="#cb20-302" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Digital Fixity (Duplicates):** Filter for flag_duplicate == "DUPLICATE". These files share the exact same MD5 hash, meaning they are bit-for-bit identical, even if they have different filenames.</span>
+<span id="cb20-303"><a href="#cb20-303" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-304"><a href="#cb20-304" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-305"><a href="#cb20-305" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**JHOVE (JSTOR/Harvard Object Validation Environment):** A widely used <span class="co">[</span><span class="ot">digital preservation tool</span><span class="co">](https://jhove.openpreservation.org/)</span>. It performs stricter format validation than magick. It can verify if a file claims to be a TIFF but violates the specific version 6.0 specification.</span>
+<span id="cb20-305"><a href="#cb20-305" aria-hidden="true" tabindex="-1"></a><span class="fu">## Additional Tools &amp; Resources</span></span>
 <span id="cb20-306"><a href="#cb20-306" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-307"><a href="#cb20-307" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Tesseract OCR:** Is an optical <span class="co">[</span><span class="ot">character recognition engine</span><span class="co">](https://github.com/tesseract-ocr/tesseract)</span>. It is essential for "Content Analysis." It can scan thousands of images to detect text, helping curators flag files that contain sensitive documents (PII) which might have been mixed into a photo dataset.</span>
+<span id="cb20-307"><a href="#cb20-307" aria-hidden="true" tabindex="-1"></a>While R is excellent for batch processing and statistical summaries, visual and command-line tools are often required for deep analysis or manual correction.</span>
 <span id="cb20-308"><a href="#cb20-308" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-309"><a href="#cb20-309" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**ImageMagick (GUI/CLI):** It is a <span class="co">[</span><span class="ot">tool</span><span class="co">](ImageMagick.org)</span> Useful for batch converting proprietary raw formats into preservation-ready TIFFs.</span>
+<span id="cb20-309"><a href="#cb20-309" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**ExifTool (Command Line): **The industry standard for reading, writing, and editing metadata. Unlike the R wrapper, the direct command line allows you to write data (e.g., scrubbing GPS tags) (see https://https://exiftool.org/).</span>
 <span id="cb20-310"><a href="#cb20-310" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-311"><a href="#cb20-311" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-312"><a href="#cb20-312" aria-hidden="true" tabindex="-1"></a><span class="fu">## Using the Non-Interactive R Script</span></span>
-<span id="cb20-313"><a href="#cb20-313" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-314"><a href="#cb20-314" aria-hidden="true" tabindex="-1"></a>For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.</span>
-<span id="cb20-315"><a href="#cb20-315" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-316"><a href="#cb20-316" aria-hidden="true" tabindex="-1"></a>**Prerequisites:** \* R with `tidyverse`, `magick`, and `exiftoolr` installed. \* **ExifTool** command-line software must be installed on the system.</span>
+<span id="cb20-311"><a href="#cb20-311" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**JHOVE (JSTOR/Harvard Object Validation Environment):** A widely used <span class="co">[</span><span class="ot">digital preservation tool</span><span class="co">](https://jhove.openpreservation.org/)</span>. It performs stricter format validation than magick. It can verify if a file claims to be a TIFF but violates the specific version 6.0 specification.</span>
+<span id="cb20-312"><a href="#cb20-312" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-313"><a href="#cb20-313" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Tesseract OCR:** Is an optical <span class="co">[</span><span class="ot">character recognition engine</span><span class="co">](https://github.com/tesseract-ocr/tesseract)</span>. It is essential for "Content Analysis." It can scan thousands of images to detect text, helping curators flag files that contain sensitive documents (PII) which might have been mixed into a photo dataset.</span>
+<span id="cb20-314"><a href="#cb20-314" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-315"><a href="#cb20-315" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**ImageMagick (GUI/CLI):** It is a <span class="co">[</span><span class="ot">tool</span><span class="co">](ImageMagick.org)</span> Useful for batch converting proprietary raw formats into preservation-ready TIFFs.</span>
+<span id="cb20-316"><a href="#cb20-316" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-317"><a href="#cb20-317" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-318"><a href="#cb20-318" aria-hidden="true" tabindex="-1"></a>Download the **R Script:** [**`Inspect_Images_Script.R`**](Scripts/Inspect_Images_Script.R)</span>
+<span id="cb20-318"><a href="#cb20-318" aria-hidden="true" tabindex="-1"></a><span class="fu">## Using the Non-Interactive R Script</span></span>
 <span id="cb20-319"><a href="#cb20-319" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-320"><a href="#cb20-320" aria-hidden="true" tabindex="-1"></a><span class="fu">### Example HPC Submission Script</span></span>
+<span id="cb20-320"><a href="#cb20-320" aria-hidden="true" tabindex="-1"></a>For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.</span>
 <span id="cb20-321"><a href="#cb20-321" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-322"><a href="#cb20-322" aria-hidden="true" tabindex="-1"></a><span class="in">``` bash</span></span>
-<span id="cb20-323"><a href="#cb20-323" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb20-324"><a href="#cb20-324" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=img_curation     </span></span>
-<span id="cb20-325"><a href="#cb20-325" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --nodes=1                   </span></span>
-<span id="cb20-326"><a href="#cb20-326" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --ntasks=1                  </span></span>
-<span id="cb20-327"><a href="#cb20-327" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=4           </span></span>
-<span id="cb20-328"><a href="#cb20-328" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mem=16G                  </span></span>
-<span id="cb20-329"><a href="#cb20-329" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=01:00:00             </span></span>
-<span id="cb20-330"><a href="#cb20-330" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=logs/img_qc_%j.log </span></span>
-<span id="cb20-331"><a href="#cb20-331" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --error=logs/img_qc_%j.err  </span></span>
-<span id="cb20-332"><a href="#cb20-332" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-333"><a href="#cb20-333" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Load Modules</span></span>
-<span id="cb20-334"><a href="#cb20-334" aria-hidden="true" tabindex="-1"></a><span class="co"># Adjust these based on your specific cluster's environment</span></span>
-<span id="cb20-335"><a href="#cb20-335" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load R/4.2.0           </span>
-<span id="cb20-336"><a href="#cb20-336" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load exiftool          </span>
-<span id="cb20-337"><a href="#cb20-337" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-338"><a href="#cb20-338" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Define Variables</span></span>
-<span id="cb20-339"><a href="#cb20-339" aria-hidden="true" tabindex="-1"></a><span class="co"># Point this to the folder containing your images</span></span>
-<span id="cb20-340"><a href="#cb20-340" aria-hidden="true" tabindex="-1"></a><span class="va">TARGET_DIR</span><span class="op">=</span><span class="st">"/scratch/user/project_data/images_raw"</span></span>
-<span id="cb20-341"><a href="#cb20-341" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-342"><a href="#cb20-342" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Run the R Script</span></span>
-<span id="cb20-343"><a href="#cb20-343" aria-hidden="true" tabindex="-1"></a><span class="co"># We pass the target directory as the first argument ($1)</span></span>
-<span id="cb20-344"><a href="#cb20-344" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Starting Image Curation Pipeline on </span><span class="va">$TARGET_DIR</span><span class="st">"</span></span>
-<span id="cb20-345"><a href="#cb20-345" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-346"><a href="#cb20-346" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> Inspect_Images_Script.R <span class="st">"</span><span class="va">$TARGET_DIR</span><span class="st">"</span></span>
+<span id="cb20-322"><a href="#cb20-322" aria-hidden="true" tabindex="-1"></a>**Prerequisites:** \* R with `tidyverse`, `magick`, and `exiftoolr` installed. \* **ExifTool** command-line software must be installed on the system.</span>
+<span id="cb20-323"><a href="#cb20-323" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-324"><a href="#cb20-324" aria-hidden="true" tabindex="-1"></a>Download the **R Script:** [**`Inspect_Images_Script.R`**](Scripts/Inspect_Images_Script.R)</span>
+<span id="cb20-325"><a href="#cb20-325" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-326"><a href="#cb20-326" aria-hidden="true" tabindex="-1"></a><span class="fu">### Example HPC Submission Script</span></span>
+<span id="cb20-327"><a href="#cb20-327" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-328"><a href="#cb20-328" aria-hidden="true" tabindex="-1"></a><span class="in">``` bash</span></span>
+<span id="cb20-329"><a href="#cb20-329" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb20-330"><a href="#cb20-330" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=img_curation     </span></span>
+<span id="cb20-331"><a href="#cb20-331" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --nodes=1                   </span></span>
+<span id="cb20-332"><a href="#cb20-332" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --ntasks=1                  </span></span>
+<span id="cb20-333"><a href="#cb20-333" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=4           </span></span>
+<span id="cb20-334"><a href="#cb20-334" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mem=16G                  </span></span>
+<span id="cb20-335"><a href="#cb20-335" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=01:00:00             </span></span>
+<span id="cb20-336"><a href="#cb20-336" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=logs/img_qc_%j.log </span></span>
+<span id="cb20-337"><a href="#cb20-337" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --error=logs/img_qc_%j.err  </span></span>
+<span id="cb20-338"><a href="#cb20-338" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-339"><a href="#cb20-339" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Load Modules</span></span>
+<span id="cb20-340"><a href="#cb20-340" aria-hidden="true" tabindex="-1"></a><span class="co"># Adjust these based on your specific cluster's environment</span></span>
+<span id="cb20-341"><a href="#cb20-341" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load R/4.2.0           </span>
+<span id="cb20-342"><a href="#cb20-342" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load exiftool          </span>
+<span id="cb20-343"><a href="#cb20-343" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-344"><a href="#cb20-344" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Define Variables</span></span>
+<span id="cb20-345"><a href="#cb20-345" aria-hidden="true" tabindex="-1"></a><span class="co"># Point this to the folder containing your images</span></span>
+<span id="cb20-346"><a href="#cb20-346" aria-hidden="true" tabindex="-1"></a><span class="va">TARGET_DIR</span><span class="op">=</span><span class="st">"/scratch/user/project_data/images_raw"</span></span>
 <span id="cb20-347"><a href="#cb20-347" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-348"><a href="#cb20-348" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Job finished."</span></span>
-<span id="cb20-349"><a href="#cb20-349" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb20-350"><a href="#cb20-350" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-348"><a href="#cb20-348" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Run the R Script</span></span>
+<span id="cb20-349"><a href="#cb20-349" aria-hidden="true" tabindex="-1"></a><span class="co"># We pass the target directory as the first argument ($1)</span></span>
+<span id="cb20-350"><a href="#cb20-350" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Starting Image Curation Pipeline on </span><span class="va">$TARGET_DIR</span><span class="st">"</span></span>
 <span id="cb20-351"><a href="#cb20-351" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-352"><a href="#cb20-352" aria-hidden="true" tabindex="-1"></a><span class="fu">## References</span></span>
+<span id="cb20-352"><a href="#cb20-352" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> Inspect_Images_Script.R <span class="st">"</span><span class="va">$TARGET_DIR</span><span class="st">"</span></span>
 <span id="cb20-353"><a href="#cb20-353" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-354"><a href="#cb20-354" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
-<span id="cb20-355"><a href="#cb20-355" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb20-354"><a href="#cb20-354" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Job finished."</span></span>
+<span id="cb20-355"><a href="#cb20-355" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb20-356"><a href="#cb20-356" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-357"><a href="#cb20-357" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-358"><a href="#cb20-358" aria-hidden="true" tabindex="-1"></a><span class="fu">## References</span></span>
+<span id="cb20-359"><a href="#cb20-359" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-360"><a href="#cb20-360" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
+<span id="cb20-361"><a href="#cb20-361" aria-hidden="true" tabindex="-1"></a>:::</span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

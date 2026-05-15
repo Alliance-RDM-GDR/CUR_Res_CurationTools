@@ -16,15 +16,19 @@ params:
 
 This notebook provides a static analysis framework for auditing R code (`.R`) and literate programming documents (`.qmd`, `.Rmd`).
 
-**Static analysis** refers to the examination of source code without executing it. This approach is essential for data curation as it allows for the safe assessment of code quality, reproducibility, and security risks.
+::: {.callout-note title="Curation Goal"}
+Static analysis refers to the examination of source code without executing it. Our objective is to safely assess code quality, reproducibility, and potential security risks without triggering harmful scripts.
+:::
 
-**Computational Reproducibility** is defined as the ability to re-run the exact same code on the exact same data to generate the exact same results [@stodden2010]. However, "code rot" is a pervasive issue in research curation. Scripts that run perfectly on the researcher's laptop often fail in archival environments due to three primary causes:
+::: {.callout-warning title="Preservation Risk"}
+"Code rot" is a pervasive issue in research curation. Scripts that run perfectly on a researcher's laptop often fail in archival environments due to undocumented dependencies, absolute paths (e.g., `setwd()`), or outdated package versions [@stodden2010].
+:::
 
 **Key Curation Objectives:**
 
-1.  **Structural/syntax Validation:** Verify that script files contain syntactically valid R code, identifying files that are corrupted or incomplete.
-2.  **Dependency Mapping:** Extract both explicit package loading (e.g., `library(dplyr)`) and implicit calls (e.g., `dplyr::filter`) to assist in reconstructing software environments.
-3.  **Risk Assessment:** Detect commands that threaten reproducibility (e.g., absolute paths, `setwd()`) or security (e.g., system calls, potential API tokens).
+1.  **Structural/syntax Validation:** Verify that script files contain syntactically valid R code.
+2.  **Dependency Mapping:** Extract explicit and implicit package calls to assist in environment reconstruction.
+3.  **Risk Assessment:** Detect commands that threaten reproducibility or security.
 
 ------------------------------------------------------------------------
 

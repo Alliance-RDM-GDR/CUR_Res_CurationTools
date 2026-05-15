@@ -1,0 +1,15 @@
+"FileName","id","name","length","unlim","coord_dim","active","start","count"
+"Averaged_exceedance_TP_p99p0_ERA5.nc",0,"longitude",521,FALSE,TRUE,TRUE,1,521
+"Averaged_exceedance_TP_p99p0_ERA5.nc",1,"latitude",201,FALSE,TRUE,TRUE,1,201
+"Averaged_exceedance_TP_p99p0_ERA5.nc",2,"season",4,FALSE,FALSE,TRUE,1,4
+"Geopotential_orography.nc",0,"longitude",521,FALSE,TRUE,TRUE,1,521
+"Geopotential_orography.nc",1,"latitude",201,FALSE,TRUE,TRUE,1,201
+"Geopotential_orography.nc",2,"time",1,FALSE,TRUE,TRUE,1,1
+"TPp99p0_2001_2020_ERA5.nc",0,"latitude",201,FALSE,TRUE,TRUE,1,201
+"TPp99p0_2001_2020_ERA5.nc",1,"longitude",521,FALSE,TRUE,TRUE,1,521
+"TPp99p0_2001_2020_IMERG.nc",0,"longitude",1301,FALSE,TRUE,TRUE,1,1301
+"TPp99p0_2001_2020_IMERG.nc",1,"latitude",351,FALSE,TRUE,TRUE,1,351
+"TPp99p0_2001_2020_IMERG025grid.nc",0,"lon",521,FALSE,TRUE,TRUE,1,521
+"TPp99p0_2001_2020_IMERG025grid.nc",1,"lat",141,FALSE,TRUE,TRUE,1,141
+"WSp99p0_2001_2020_ERA5.nc",0,"latitude",201,FALSE,TRUE,TRUE,1,201
+"WSp99p0_2001_2020_ERA5.nc",1,"longitude",521,FALSE,TRUE,TRUE,1,521

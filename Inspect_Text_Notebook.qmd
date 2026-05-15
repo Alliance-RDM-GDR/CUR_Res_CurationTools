@@ -15,15 +15,21 @@ params:
 
 ## Overview
 
-Text files are the simplest form of documentation. Howver, they are often prone to **Encoding** issues, specially when dealing with other languages or symbols other then English. The archival standard for text files is **UTF-8** (defined in ISO/IEC 10646). Legacy encodings (like **Windows-1252**) map bytes to characters differently. If a file saved in Windows-1252 is read as UTF-8, characters like "é" turn into garbage symbols ("Mojibake"), rendering the data unreadable (see https://www.unicode.org/versions/Unicode15.0.0/).
+Text files are the simplest form of documentation. However, they are often prone to encoding and structural issues that impede interoperability.
 
-Some editors add a hidden signature (`U+FEFF`, BOM) at the start of UTF-8 files. This "invisible" character often breaks scripts and parsers. Also, \***Line Endings (EOL):** Windows uses `CRLF` (`\r\n`), while Linux/Unix uses `LF` (`\n`). "Mixed" line endings often cause version control conflicts. Text documents often include external resources via URLs, which are often found to be broken, and are common places for accidental PII leaks, such as personal email addresses.
+::: {.callout-note title="Curation Goal"}
+Ensure universal readability and "Archival Readiness" of text documents. Our objective is to validate UTF-8 encoding, identify "invisible" characters (BOM), and normalize line endings to ensure documents remain readable across all operating systems.
+:::
+
+::: {.callout-warning title="Preservation Risk"}
+Character corruption ("Mojibake") caused by legacy encodings (e.g., Windows-1252) and "link rot" from broken external URLs are the primary threats to the long-term usability of plain text documentation.
+:::
 
 **Key Curation Objectives:**
 
-1.  **Encoding:** Detect character encoding. Archival standards require **UTF-8**. Legacy encodings (like Windows-1252) cause "mojibake" on other systems.
-
-2.  **Link Validation:** Extract HTTP/HTTPS links to check if external references are valid.
+1.  **Encoding Validation:** Detect character encoding and ensure compliance with the UTF-8 standard.
+2.  **Structural Integrity:** Identify Byte Order Marks (BOM) and mixed line endings (CRLF/LF).
+3.  **Link & Security Scan:** Extract external URLs and scan for accidental PII leaks (e.g., email addresses).
 
 ------------------------------------------------------------------------
 

@@ -14,21 +14,20 @@ params:
 
 ## Overview
 
-MAT-files are the proprietary binary data container format used by MATLAB. This format is widely used in engineering and science, but it pose a significant challenge for long-term preservation because they are not an open standard. Data stored in this format requires specific software (MATLAB) or specialized libraries to decode, creating a preservation risk.
+MAT-files are the proprietary binary data container format used by MATLAB. They are widely used in engineering and science but pose a significant challenge for long-term preservation.
 
-### The Version Challenge (v5 vs. v7.3)
+::: {.callout-note title="Curation Goal"}
+Identify file versions and inventory internal variables. Our objective is to distinguish between classic Level 5 (v5) files and modern Level 7.3 (HDF5-based) files, ensuring the correct open-source libraries are used for long-term access.
+:::
 
-A critical aspect for curators is the file version.
+::: {.callout-warning title="Preservation Risk"}
+Proprietary format lock-in is a major risk. Version 7.3 files require specialized HDF5 parsers, while older versions are opaque without MATLAB or compatible open-source alternatives like GNU Octave.
+:::
 
--   **Level 5 (v5):** The classic binary format used since the late 1990s.
-
--   **Level 7.3 (v7.3):** Introduced in 2006, this is actually an **HDF5** file disguised with a `.mat` extension (see https://www.mathworks.com/help/matlab/import_export/mat-file-versions.html).
-
-This distinction is vital because standard R tools like `R.matlab` can read v5 but often fail on v7.3, requiring HDF5-specific parsers [@berndfischerautgregoirepauautmikesmithautcre2017]. Therefore, this notebook inspects `.mat` files by reading their **Binary Header** (the first 128 bytes). This allows curators to:
+**This notebook inspects `.mat` files to:**
 
 1.  **Identify Version:** Distinguish between v5 and v7.3 without crashing.
-
-2.  **Inventory Content:** For v5 files, we list the variable names and array dimensions to understand the dataset's complexity.
+2.  **Inventory Content:** List variable names and array dimensions to understand dataset complexity.
 
 ------------------------------------------------------------------------
 

@@ -5,50 +5,125 @@ date: "2025-01-05"
 format: 
   html:
     toc: true
+    toc-location: left
     code-fold: true
+bibliography: references.bib
 params:
   target_dir: "data/Inspect_sqlite/"
 ---
 
 ## 1. Overview
 
-**SQLite** is the most widely deployed database engine in the world (see [SQLite.org](https://sqlite.org/about.html)). Different to client-server database management systems (DBMS) like PostgreSQL or Oracle, which often require a running server process, an SQLite database is a single, self-contained disk file. This portability makes it a preferred format for numerous applications such as:
+**SQLite** is the most widely deployed database engine in the world (see [SQLite.org](https://sqlite.org/about.html)). Unlike client-server database management systems (DBMS) like PostgreSQL or Oracle, an SQLite database is a single, self-contained disk file. 
 
--   **Research Software:** Storing simulation outputs or intermediate data processing steps.
--   **Digital Humanities:** Exporting datasets from web scrapers or network analysis tools.
--   **Mobile & Embedded Systems:** It is the standard local storage format for Android and iOS (see [documentation](https://developer.android.com/training/data-storage/sqlite?hl=es-419)\].
+::: {.callout-note title="Curation Goal"}
+From a curation perspective, SQLite is a highly sustainable format. [The Library of Congress](https://www.loc.gov/preservation/digital/formats/fdd/fdd000461.shtml) lists it as a preferred format for datasets due to its open specification and long-term stability. Our goal is to "unbox" the database to ensure all tables are documented and accessible.
+:::
 
-From a curation perspective, SQLite can be considered as a highly sustainable format. Indeed, [The Library of Congress](https://www.loc.gov/preservation/digital/formats/fdd/fdd000461.shtml) lists it as a preferred format for datasets due to its open specification, ubiquity, and long-term stability. However, it is important to consider that "Self-Contained" does not implies "Self-Documenting." A curator receiving a `.db` file often faces a "Black Box" containing an unknown number of tables and relationshipsm if not properly documented.
-
-Because a single file can contain hundreds of separate "tables" (essentially spreadsheets linked together), curators cannot simply "open" it to check quality. Therefore, this notebook processes the following approach:
-
-1.  **Inventory Tables:** List every table inside the container to ensure no data is overlooked.
-2.  **Map the Schema:** Identify column names and data types to verify if the data matches the documentation.
-3.  **Volume Check:** Count rows in each table to detect "Empty" tables (orphaned structures) or "Massive" tables that may require special handling.
+::: {.callout-warning title="Preservation Risk"}
+"Self-Contained" does not imply "Self-Documenting." A curator receiving a `.db` file often faces a **Black Box**. Without a schema map, relationships between tables (Foreign Keys) can be lost, making the data contextually unusable.
+:::
 
 ------------------------------------------------------------------------
 
 ## Setup
 
-We use `RSQLite` to interact with the database files directly from R.
+We use `RSQLite` [@RSQLite] to interact with the database files directly from R.
 
 ### R Packages
 
 ```{r}
-# install.packages(c("tidyverse", "RSQLite", "DBI", "rstudioapi"))
+# install.packages(c("tidyverse", "RSQLite", "DBI", "rstudioapi", "DT"))
 ```
 
 ### Load Libraries
 
 ```{r}
-#| message: false
-#| 
 #| label: setup
 #| message: false
 #| warning: false
 
 library(tidyverse)
-library(DBI)        # Standard Database Interface
-library(RSQLite)    # SQLite Engine
-library(rstudioapi) # UI interaction
+library(DBI)        
+library(RSQLite)    
+library(rstudioapi) 
+library(DT)
 ```
+
+## Select Target Directory
+
+```{r}
+#| label: select-directory
+
+if (interactive() && .Platform$OS.type == "windows") {
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select SQLite Directory")
+} else {
+  selected_dir <- NULL
+}
+
+target_dir <- if (!is.null(selected_dir)) selected_dir else params$target_dir
+print(paste("Analyzing directory:", target_dir))
+```
+
+## Inventory and Schema Extraction
+
+This process iterates through all SQLite files, connects to them, and extracts the structure of every table found.
+
+```{r}
+#| label: database-inspection
+
+db_files <- list.files(target_dir, pattern = "\\.(sqlite|db|sqlite3)$", full.names = TRUE, recursive = TRUE)
+
+inspect_sqlite <- function(file_path) {
+  con <- dbConnect(SQLite(), file_path)
+  tables <- dbListTables(con)
+  
+  details <- map_dfr(tables, function(tbl) {
+    # Get column info
+    cols <- dbGetQuery(con, paste0("PRAGMA table_info(", tbl, ")"))
+    # Get row count
+    row_count <- dbGetQuery(con, paste0("SELECT COUNT(*) as count FROM ", tbl))$count
+    
+    tibble(
+      file = basename(file_path),
+      table_name = tbl,
+      columns = paste(cols$name, collapse = ", "),
+      row_count = row_count
+    )
+  })
+  
+  dbDisconnect(con)
+  return(details)
+}
+
+if (length(db_files) > 0) {
+  db_inventory <- map_dfr(db_files, inspect_sqlite)
+  datatable(db_inventory, caption = "Inventory of Tables and Row Counts")
+} else {
+  message("No SQLite files found.")
+}
+```
+
+## Archival Reporting
+
+We save the database manifest to support long-term preservation documentation.
+
+```{r}
+#| label: save-results
+
+if (exists("db_inventory")) {
+  output_dir <- "Results/Inspect_sqlite"
+  dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+  
+  timestamp <- format(Sys.Date(), "%Y%m%d")
+  write.csv(db_inventory, file.path(output_dir, paste0("Database_Manifest_", timestamp, ".csv")), row.names = FALSE)
+  
+  message("Report saved to: ", output_dir)
+}
+```
+
+## References
+
+::: {#refs}
+:::
+

@@ -15,15 +15,21 @@ params:
 
 ## Overview
 
-SAS files (`.sas7bdat`) are a standard for clinical and statistical data. However, unlike modern self-contained formats, SAS often splits data and metadata into two files: a **Data File (`.sas7bdat`)** containing rows and columns and a **Catalog File (`.sas7bcat`):** containing the "Formats" (Value Labels), such as defining that `1 = "Placebo"` and `2 = "Treatment"`. Thus, If the catalog file is lost, the data file contains only cryptic codes (1, 2) without their meaning.
+SAS files (`.sas7bdat`) are a standard for clinical and statistical data. However, they often split information across multiple files, creating a significant curation challenge.
 
-Distinguishing between SAS Transport (XPORT) and Catalog Port (CPORT) is a critical triage step in data curation.XPORT (.xpt) is an open, documented standard mandated by the US Food and Drug Administration (FDA) for regulatory submissions. Since the specification is public, it can be reliably read by non-SAS open-source tools like R (haven) and Python (pandas). This make this format the preferred format for digital preservation. In contrast, CPORT is a proprietary, version-dependent format originally designed to move entire SAS libraries (including catalogs). CPORT files are not readable by standard open-source libraries. they require a licensed installation of SAS to "unpack" or convert. This consititutes a preservation risk, given that if the depositor does not provide a converted version, the data is locked behind a proprietary software paywall.
+::: {.callout-note title="Curation Goal"}
+Ensure the completeness and interoperability of SAS datasets. Our objective is to verify that both data files and catalog files (`.sas7bcat`) are present, enabling the correct decoding of categorical variables and labels.
+:::
 
-This notebook performs a rigorous inventory:
+::: {.callout-warning title="Preservation Risk"}
+Proprietary "CPORT" formats and missing catalog files are major risks. Without the associated formats, numeric codes in the data file become cryptic and contextually meaningless, requiring expensive proprietary software to recover.
+:::
 
-1.  **Catalog Check:** Scans specifically for `.sas7bcat` files to ensure metadata isn't missing.
-2.  **Robust Extraction:** Uses a multi-strategy approach (Haven -\> sas7bdat -\> Fallback) to read files even if they are slightly corrupted or old versions.
-3.  **Encoding Scan:** Checks for non-ASCII characters to flag potential encoding errors (e.g., "Mojibake") common in older Windows-1252 datasets.
+**This notebook performs a rigorous inventory:**
+
+1.  **Catalog Check:** Scans for `.sas7bcat` files to ensure metadata isn't missing.
+2.  **Format Validation:** Distinguishes between open XPORT (.xpt) and proprietary CPORT formats.
+3.  **Encoding Scan:** Checks for character corruption common in older datasets.
 
 ------------------------------------------------------------------------
 

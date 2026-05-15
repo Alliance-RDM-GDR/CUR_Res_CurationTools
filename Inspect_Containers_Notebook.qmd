@@ -15,19 +15,21 @@ bibliography: references.bib
 
 ## Overview
 
-Curators often receive data packaged in containers like **ZIP**, **TAR**, or **7-Zip**. While convenient for transfer, these formats are "black boxes" that hide potential preservation risks:
+Curators often receive data packaged in containers like **ZIP**, **TAR**, or **7-Zip**. While convenient for transfer, these formats are "black boxes" that hide potential preservation risks.
 
--   **Corruption:** Archives are prone to bit-rot. A single corrupted bit in a solid archive (like `.7z`) can render the entire dataset unreadable.
+::: {.callout-note title="Curation Goal"}
+"Peek" inside compressed containers without full extraction. Our objective is to inventory contents, verify file integrity, and identify nested structures to ensure all data remains discoverable and accessible.
+:::
 
--   **"Zip Bombs" (Decompression Bombs):** Malicious or accidentally created files that are small when compressed (e.g., 42 KB) but expand to petabytes (4.5 PB) when opened, crashing the curation workstation.
+::: {.callout-warning title="Preservation Risk"}
+Archives are prone to bit-rot; a single corrupted bit in a solid archive can render the entire dataset unreadable. Furthermore, "Zip Bombs" can crash curation workstations, and nested archives often defy automated indexing systems.
+:::
 
--   **Nested Archives:** Archives inside archives (e.g., `data.zip` containing `backup.tar.gz`) create "Russian Doll" problems for preservation systems.
-
-This notebook uses the `archive` package (based on `libarchive`) to "peek" inside the container without fully extracting it. We assess:
+**This notebook uses the `archive` package to assess:**
 
 1.  **Integrity:** Can the file be read? (Basic corruption check).
-2.  **Expansion Ratio:** We calculate the **Compression Ratio**. If the extracted size is \>100x the file size, it is flagged as a potential Zip Bomb.
-3.  **Manifest:** We generate a summary of contents (e.g., "Contains 500 .csv files and 2 .exe files").
+2.  **Expansion Ratio:** Identifying potential "Zip Bombs" (Expansion > 100x).
+3.  **Manifest:** Generating a detailed summary of contents.
 
 ------------------------------------------------------------------------
 

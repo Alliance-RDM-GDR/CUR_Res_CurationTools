@@ -9,7 +9,7 @@
 <meta name="author" content="Daniel Manrique-Castano">
 <meta name="dcterms.date" content="2025-11-19">
 
-<title>13&nbsp; JSON Files – Tools for Research Data Management and curation</title>
+<title>15&nbsp; JSON Files – Tools for Research Data Management and Curation</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -93,10 +93,12 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d166b450ba5a8e9f7a0ab969bf6592c1.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-542cf50e1f395a1c6267587cc8cc3ecf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-542cf50e1f395a1c6267587cc8cc3ecf.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-449b49f15f060f871489bcfd4a9f82ff.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -138,7 +140,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Data_Structured.html">Structured &amp; Hierarchical Data</a></li><li class="breadcrumb-item"><a href="./Inspect_json_Notebook.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">JSON Files</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Data_Structured.html">Structured &amp; Hierarchical Data</a></li><li class="breadcrumb-item"><a href="./Inspect_json_Notebook.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">JSON Files</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -153,7 +155,10 @@ div.csl-indent {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Tools for Research Data Management and curation</a> 
+      <a href="./">Tools for Research Data Management and Curation</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -166,7 +171,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Research data curators toolbox</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Research Data Curator’s Toolbox</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -181,13 +186,13 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_ipynb_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Inspection of Jupyter Notebooks (.ipynb)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Jupyter Notebooks (.ipynb) Files</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_Code_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Code Inspection (R/Quarto)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">R/Quarto Code</span></span></a>
   </div>
 </li>
       </ul>
@@ -204,19 +209,19 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_PDF_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Inspection of PDF Documents (.pdf)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PDF (.pdf) Documents</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_Text_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Inspection of Text (.txt) and Markdown (.md) Files</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Text (.txt) and Markdown (.md) Files</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_OCR_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">OCR &amp; Document Intelligence using `daiR` and Google AI</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">OCR and Document Intelligence using <code>daiR</code> and Google AI</span></span></a>
   </div>
 </li>
       </ul>
@@ -233,7 +238,13 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_Extensions_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">File extensions and format inspector</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">File extensions and formats</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Inspect_Containers_Notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Container/Archive (.zip, .tar, .7z) Formats</span></span></a>
   </div>
 </li>
       </ul>
@@ -250,31 +261,37 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_csv_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">CSV Files</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">CSV Files</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_xlsx_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Inspection of Excel Files (.xls, .xlsx)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Excel (.xls, .xlsx) Files</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_sav_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Inspection of SPSS Data Files (.sav)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">SPSS Data (.sav) Files</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_dta_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Stata (.dta) Files</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Stata (.dta) Files</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_sas7bdat_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Inspection of SAS Data Files (.sas7bdat)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">SAS Data (.sas7bdat) Files</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Inspect_sqlite_Notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">SQLite Databases (.sqlite, .db)</span></span></a>
   </div>
 </li>
       </ul>
@@ -291,13 +308,13 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_json_Notebook.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">JSON Files</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">JSON Files</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_xml_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Inspection of XML Files</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">XML Files</span></span></a>
   </div>
 </li>
       </ul>
@@ -314,19 +331,19 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_nc_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">NetCDF Files</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">NetCDF Files</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_hdf5_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">HDF5 File Inspection</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">HDF5 Files</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_mat_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Inspection of MATLAB Files (.mat)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">MATLAB (.mat) Files</span></span></a>
   </div>
 </li>
       </ul>
@@ -343,7 +360,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_gpkg_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">GeoPackage (.gpkg) files</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">GeoPackage (.gpkg) Files</span></span></a>
   </div>
 </li>
       </ul>
@@ -360,7 +377,13 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_Images_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Image Quality Control</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Image Quality Control</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Inspect_Tiff_Notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">TIFF (.tif, .tiff) Images</span></span></a>
   </div>
 </li>
       </ul>
@@ -371,21 +394,21 @@ div.csl-indent {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">13.1</span> Overview</a></li>
-  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup"><span class="header-section-number">13.2</span> Setup</a>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">15.1</span> Overview</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup"><span class="header-section-number">15.2</span> Setup</a>
   <ul class="collapse">
-  <li><a href="#r-packages" id="toc-r-packages" class="nav-link" data-scroll-target="#r-packages"><span class="header-section-number">13.2.1</span> R Packages</a></li>
+  <li><a href="#r-packages" id="toc-r-packages" class="nav-link" data-scroll-target="#r-packages"><span class="header-section-number">15.2.1</span> R Packages</a></li>
   </ul></li>
-  <li><a href="#load-libraries" id="toc-load-libraries" class="nav-link" data-scroll-target="#load-libraries"><span class="header-section-number">13.3</span> Load libraries</a></li>
-  <li><a href="#select-target-directory" id="toc-select-target-directory" class="nav-link" data-scroll-target="#select-target-directory"><span class="header-section-number">13.4</span> Select Target Directory</a></li>
-  <li><a href="#find-json-files" id="toc-find-json-files" class="nav-link" data-scroll-target="#find-json-files"><span class="header-section-number">13.5</span> Find Json files</a></li>
-  <li><a href="#inventory-extraction" id="toc-inventory-extraction" class="nav-link" data-scroll-target="#inventory-extraction"><span class="header-section-number">13.6</span> Inventory &amp; Extraction</a></li>
-  <li><a href="#visualization-data-types" id="toc-visualization-data-types" class="nav-link" data-scroll-target="#visualization-data-types"><span class="header-section-number">13.7</span> Visualization: Data Types</a></li>
-  <li><a href="#export-results" id="toc-export-results" class="nav-link" data-scroll-target="#export-results"><span class="header-section-number">13.8</span> Export Results</a></li>
-  <li><a href="#curation-insights" id="toc-curation-insights" class="nav-link" data-scroll-target="#curation-insights"><span class="header-section-number">13.9</span> Curation Insights</a></li>
-  <li><a href="#additional-tools" id="toc-additional-tools" class="nav-link" data-scroll-target="#additional-tools"><span class="header-section-number">13.10</span> Additional Tools</a></li>
-  <li><a href="#using-the-non-interactive-r-script" id="toc-using-the-non-interactive-r-script" class="nav-link" data-scroll-target="#using-the-non-interactive-r-script"><span class="header-section-number">13.11</span> Using the Non-Interactive R Script</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">13.12</span> References</a></li>
+  <li><a href="#load-libraries" id="toc-load-libraries" class="nav-link" data-scroll-target="#load-libraries"><span class="header-section-number">15.3</span> Load libraries</a></li>
+  <li><a href="#select-target-directory" id="toc-select-target-directory" class="nav-link" data-scroll-target="#select-target-directory"><span class="header-section-number">15.4</span> Select Target Directory</a></li>
+  <li><a href="#find-json-files" id="toc-find-json-files" class="nav-link" data-scroll-target="#find-json-files"><span class="header-section-number">15.5</span> Find Json files</a></li>
+  <li><a href="#inventory-extraction" id="toc-inventory-extraction" class="nav-link" data-scroll-target="#inventory-extraction"><span class="header-section-number">15.6</span> Inventory &amp; Extraction</a></li>
+  <li><a href="#visualization-data-types" id="toc-visualization-data-types" class="nav-link" data-scroll-target="#visualization-data-types"><span class="header-section-number">15.7</span> Visualization: Data Types</a></li>
+  <li><a href="#export-results" id="toc-export-results" class="nav-link" data-scroll-target="#export-results"><span class="header-section-number">15.8</span> Export Results</a></li>
+  <li><a href="#curation-insights" id="toc-curation-insights" class="nav-link" data-scroll-target="#curation-insights"><span class="header-section-number">15.9</span> Curation Insights</a></li>
+  <li><a href="#additional-tools" id="toc-additional-tools" class="nav-link" data-scroll-target="#additional-tools"><span class="header-section-number">15.10</span> Additional Tools</a></li>
+  <li><a href="#using-the-non-interactive-r-script" id="toc-using-the-non-interactive-r-script" class="nav-link" data-scroll-target="#using-the-non-interactive-r-script"><span class="header-section-number">15.11</span> Using the Non-Interactive R Script</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">15.12</span> References</a></li>
   </ul>
 </nav>
 </nav>
@@ -396,9 +419,9 @@ div.csl-indent {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Data_Structured.html">Structured &amp; Hierarchical Data</a></li><li class="breadcrumb-item"><a href="./Inspect_json_Notebook.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">JSON Files</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Data_Structured.html">Structured &amp; Hierarchical Data</a></li><li class="breadcrumb-item"><a href="./Inspect_json_Notebook.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">JSON Files</span></a></li></ol></nav>
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">JSON Files</span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">JSON Files</span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
 </div>
 
 
@@ -427,23 +450,48 @@ div.csl-indent {
 </header>
 
 
-<section id="overview" class="level2" data-number="13.1">
-<h2 data-number="13.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">13.1</span> Overview</h2>
-<p><strong>JSON (JavaScript Object Notation)</strong> has become the de standard for data interchange on the web and in NoSQL databases, replacing XML due to its lightweight and human-readable nature. In data curation, JSON is frequently used for metadata, configuration settings, and hierarchical datasets.</p>
-<p>Unlike tabular data (CSV), JSON is hierarchical and semi-structured. A file might appear valid but contain deeply nested structures that make it difficult to flatten or analyze. Pezoa et al.&nbsp;(2016) highlight that while JSON syntax is simple, the lack of a mandatory schema often leads to “structural heterogeneity,” where different records in the same dataset have different fields <span class="citation" data-cites="pezoa2016">(<a href="Inspect_ipynb_Notebook.html#ref-pezoa2016" role="doc-biblioref">Pezoa et al. 2016</a>)</span>.</p>
-<p>This notebook evaluates JSON files on three levels:</p>
+<section id="overview" class="level2" data-number="15.1">
+<h2 data-number="15.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">15.1</span> Overview</h2>
+<p><strong>JSON (JavaScript Object Notation)</strong> has become the de facto standard for data interchange, replacing XML in many research workflows due to its lightweight and human-readable nature.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Curation Goal">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Curation Goal
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Validate syntactic integrity and structural complexity. Our objective is to ensure JSON files are free from trailing commas or encoding errors and to document their hierarchical depth to facilitate future data flattening and analysis.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled" title="Preservation Risk">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Preservation Risk
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>“Structural heterogeneity”—where records in the same dataset have different fields—and extreme nesting depths without a mandatory schema often lead to data that is syntactically valid but contextually unusable <span class="citation" data-cites="pezoa2016">(<a href="Inspect_ipynb_Notebook.html#ref-pezoa2016" role="doc-biblioref">Pezoa et al. 2016</a>)</span>.</p>
+</div>
+</div>
+<p><strong>This notebook evaluates JSON files on three levels:</strong></p>
 <ol type="1">
-<li><strong>Syntactic Validity:</strong> Can the parser read the file, or are there missing brackets/commas?</li>
-<li><strong>Structural Complexity:</strong> We calculate the <strong>Nesting Depth</strong> and <strong>Key Count</strong>. High depth values often indicate complex objects that require specialized flattening tools.</li>
-<li><strong>Data Type:</strong> Distinguishing between <strong>Objects</strong> (single records) and <strong>Arrays</strong> (lists of records).</li>
+<li><strong>Syntactic Validity:</strong> Can the parser read the file?</li>
+<li><strong>Structural Complexity:</strong> Calculating <strong>Nesting Depth</strong> and <strong>Key Count</strong>.</li>
+<li><strong>Data Type Identification:</strong> Distinguishing between Objects (single records) and Arrays.</li>
 </ol>
 <hr>
 </section>
-<section id="setup" class="level2" data-number="13.2">
-<h2 data-number="13.2" class="anchored" data-anchor-id="setup"><span class="header-section-number">13.2</span> Setup</h2>
+<section id="setup" class="level2" data-number="15.2">
+<h2 data-number="15.2" class="anchored" data-anchor-id="setup"><span class="header-section-number">15.2</span> Setup</h2>
 <p>This workflow relies on <code>jsonlite</code> <span class="citation" data-cites="jsonlite">(<a href="Inspect_ipynb_Notebook.html#ref-jsonlite" role="doc-biblioref">Ooms 2014</a>)</span> for parsing and <code>tidyverse</code> <span class="citation" data-cites="tidyverse-2">(<a href="Inspect_ipynb_Notebook.html#ref-tidyverse-2" role="doc-biblioref">Wickham et al. 2019</a>)</span> for data manipulation.</p>
-<section id="r-packages" class="level3" data-number="13.2.1">
-<h3 data-number="13.2.1" class="anchored" data-anchor-id="r-packages"><span class="header-section-number">13.2.1</span> R Packages</h3>
+<section id="r-packages" class="level3" data-number="15.2.1">
+<h3 data-number="15.2.1" class="anchored" data-anchor-id="r-packages"><span class="header-section-number">15.2.1</span> R Packages</h3>
 <p>If you don’t have these packages installed, run this command once in your R console:</p>
 <div class="cell">
 <details class="code-fold">
@@ -453,8 +501,8 @@ div.csl-indent {
 </div>
 </section>
 </section>
-<section id="load-libraries" class="level2" data-number="13.3">
-<h2 data-number="13.3" class="anchored" data-anchor-id="load-libraries"><span class="header-section-number">13.3</span> Load libraries</h2>
+<section id="load-libraries" class="level2" data-number="15.3">
+<h2 data-number="15.3" class="anchored" data-anchor-id="load-libraries"><span class="header-section-number">15.3</span> Load libraries</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -468,8 +516,8 @@ div.csl-indent {
 </details>
 </div>
 </section>
-<section id="select-target-directory" class="level2" data-number="13.4">
-<h2 data-number="13.4" class="anchored" data-anchor-id="select-target-directory"><span class="header-section-number">13.4</span> Select Target Directory</h2>
+<section id="select-target-directory" class="level2" data-number="15.4">
+<h2 data-number="15.4" class="anchored" data-anchor-id="select-target-directory"><span class="header-section-number">15.4</span> Select Target Directory</h2>
 <p>Select the directory containing your .json files.</p>
 <p>Note: Interactive selection works in RStudio. If rendering, it defaults to params$target_dir.</p>
 <div class="cell">
@@ -498,8 +546,8 @@ div.csl-indent {
 </div>
 </div>
 </section>
-<section id="find-json-files" class="level2" data-number="13.5">
-<h2 data-number="13.5" class="anchored" data-anchor-id="find-json-files"><span class="header-section-number">13.5</span> Find Json files</h2>
+<section id="find-json-files" class="level2" data-number="15.5">
+<h2 data-number="15.5" class="anchored" data-anchor-id="find-json-files"><span class="header-section-number">15.5</span> Find Json files</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -528,8 +576,8 @@ div.csl-indent {
 </div>
 </div>
 </section>
-<section id="inventory-extraction" class="level2" data-number="13.6">
-<h2 data-number="13.6" class="anchored" data-anchor-id="inventory-extraction"><span class="header-section-number">13.6</span> Inventory &amp; Extraction</h2>
+<section id="inventory-extraction" class="level2" data-number="15.6">
+<h2 data-number="15.6" class="anchored" data-anchor-id="inventory-extraction"><span class="header-section-number">15.6</span> Inventory &amp; Extraction</h2>
 <p>We iterate through the JSON files to determine their R-structure (Data Frame vs.&nbsp;List) and complexity.</p>
 <div class="cell">
 <details class="code-fold">
@@ -627,8 +675,8 @@ div.csl-indent {
 </div>
 </div>
 </section>
-<section id="visualization-data-types" class="level2" data-number="13.7">
-<h2 data-number="13.7" class="anchored" data-anchor-id="visualization-data-types"><span class="header-section-number">13.7</span> Visualization: Data Types</h2>
+<section id="visualization-data-types" class="level2" data-number="15.7">
+<h2 data-number="15.7" class="anchored" data-anchor-id="visualization-data-types"><span class="header-section-number">15.7</span> Visualization: Data Types</h2>
 <p>We visualize the distribution of JSON structures. A prevalence of data.frame types indicates a dataset that is easy to analyze in R, while list types imply nested metadata.</p>
 <div class="cell">
 <details class="code-fold">
@@ -655,8 +703,8 @@ div.csl-indent {
 </div>
 </div>
 </section>
-<section id="export-results" class="level2" data-number="13.8">
-<h2 data-number="13.8" class="anchored" data-anchor-id="export-results"><span class="header-section-number">13.8</span> Export Results</h2>
+<section id="export-results" class="level2" data-number="15.8">
+<h2 data-number="15.8" class="anchored" data-anchor-id="export-results"><span class="header-section-number">15.8</span> Export Results</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -669,12 +717,12 @@ div.csl-indent {
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Report saved to:"</span>, output_file))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Report saved to: Results/Inspect_json/JSON_Report_20260105.csv"</code></pre>
+<pre><code>[1] "Report saved to: Results/Inspect_json/JSON_Report_20260515.csv"</code></pre>
 </div>
 </div>
 </section>
-<section id="curation-insights" class="level2" data-number="13.9">
-<h2 data-number="13.9" class="anchored" data-anchor-id="curation-insights"><span class="header-section-number">13.9</span> Curation Insights</h2>
+<section id="curation-insights" class="level2" data-number="15.9">
+<h2 data-number="15.9" class="anchored" data-anchor-id="curation-insights"><span class="header-section-number">15.9</span> Curation Insights</h2>
 <p>Use the generated CSV report to guide your preservation actions:</p>
 <ul>
 <li><p><strong>Validity Check (is_valid):</strong> Files marked FALSE are corrupt. Common causes include “Trailing Commas” (allowed in JavaScript but forbidden in standard JSON) or truncation (incomplete download). You can validate the syntax using a linter. If truncated, attempt to recover the source. If the error is encoding-related (e.g., “Invalid char”), check if the file is saved as UTF-8.</p></li>
@@ -682,8 +730,8 @@ div.csl-indent {
 <li><p><strong>Complexity Check (max_depth &gt; 5):</strong> Deeply nested files are difficult for future researchers to query without specialized tools. Curation best practice suggests generating a “JSON Schema” to validate that all files in the batch adhere to the same structure.</p></li>
 </ul>
 </section>
-<section id="additional-tools" class="level2" data-number="13.10">
-<h2 data-number="13.10" class="anchored" data-anchor-id="additional-tools"><span class="header-section-number">13.10</span> Additional Tools</h2>
+<section id="additional-tools" class="level2" data-number="15.10">
+<h2 data-number="15.10" class="anchored" data-anchor-id="additional-tools"><span class="header-section-number">15.10</span> Additional Tools</h2>
 <ul>
 <li><p><strong>jq:</strong> Is a lightweight and flexible <a href="https://jqlang.org/">command-line JSON processor</a>, known as the industry standard for slicing, filtering, and transforming JSON data.</p></li>
 <li><p><strong>JSON Schema Validator:</strong> Is a <a href="https://json-schema.org/">tool</a> to define the expected structure of your JSON (required fields, data types), allowing curators to automate the quality control of metadata.</p></li>
@@ -693,8 +741,8 @@ div.csl-indent {
 <li><strong>VS Code (JSON Tools):</strong> <a href="https://code.visualstudio.com/docs/languages/json">Visual Studio Code</a> has built-in formatters that can automatically fix minor syntax errors (like indentation) and highlight invalid characters.</li>
 </ul>
 </section>
-<section id="using-the-non-interactive-r-script" class="level2" data-number="13.11">
-<h2 data-number="13.11" class="anchored" data-anchor-id="using-the-non-interactive-r-script"><span class="header-section-number">13.11</span> Using the Non-Interactive R Script</h2>
+<section id="using-the-non-interactive-r-script" class="level2" data-number="15.11">
+<h2 data-number="15.11" class="anchored" data-anchor-id="using-the-non-interactive-r-script"><span class="header-section-number">15.11</span> Using the Non-Interactive R Script</h2>
 <p>For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.</p>
 <p>Download the <strong>R Script:</strong> <a href="Scripts/Inspect_json_Script.R"><strong><code>Inspect_json_Script.R</code></strong></a></p>
 <ul>
@@ -723,8 +771,8 @@ div.csl-indent {
 <span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Starting JSON Inspection on </span><span class="va">$TARGET_DIR</span><span class="st">"</span></span>
 <span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> Scripts/Inspect_json_Script.R <span class="st">"</span><span class="va">$TARGET_DIR</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="references" class="level2" data-number="13.12">
-<h2 data-number="13.12" class="anchored" data-anchor-id="references"><span class="header-section-number">13.12</span> References</h2>
+<section id="references" class="level2" data-number="15.12">
+<h2 data-number="15.12" class="anchored" data-anchor-id="references"><span class="header-section-number">15.12</span> References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
 <div id="ref-jsonlite" class="csl-entry" role="listitem">
 Ooms, Jeroen. 2014. <span>“The Jsonlite Package: A Practical and Consistent Mapping Between JSON Data and r Objects.”</span> <a href="https://arxiv.org/abs/1403.2805">https://arxiv.org/abs/1403.2805</a>.
@@ -763,6 +811,150 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -1218,8 +1410,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./Inspect_xml_Notebook.html" class="pagination-link" aria-label="Inspection of XML Files">
-        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Inspection of XML Files</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./Inspect_xml_Notebook.html" class="pagination-link" aria-label="XML Files">
+        <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">XML Files</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
@@ -1239,268 +1431,274 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## Overview</span></span>
 <span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>**JSON (JavaScript Object Notation)** has become the de standard for data interchange on the web and in NoSQL databases, replacing XML due to its lightweight and human-readable nature. In data curation, JSON is frequently used for metadata, configuration settings, and hierarchical datasets.</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>**JSON (JavaScript Object Notation)** has become the de facto standard for data interchange, replacing XML in many research workflows due to its lightweight and human-readable nature. </span>
 <span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>Unlike tabular data (CSV), JSON is hierarchical and semi-structured. A file might appear valid but contain deeply nested structures that make it difficult to flatten or analyze. Pezoa et al. (2016) highlight that while JSON syntax is simple, the lack of a mandatory schema often leads to "structural heterogeneity," where different records in the same dataset have different fields <span class="co">[</span><span class="ot">@pezoa2016</span><span class="co">]</span>.</span>
-<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>This notebook evaluates JSON files on three levels:</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Curation Goal"}</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>Validate syntactic integrity and structural complexity. Our objective is to ensure JSON files are free from trailing commas or encoding errors and to document their hierarchical depth to facilitate future data flattening and analysis.</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**Syntactic Validity:** Can the parser read the file, or are there missing brackets/commas?</span>
-<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**Structural Complexity:** We calculate the **Nesting Depth** and **Key Count**. High depth values often indicate complex objects that require specialized flattening tools.</span>
-<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**Data Type:** Distinguishing between **Objects** (single records) and **Arrays** (lists of records).</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title="Preservation Risk"}</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>"Structural heterogeneity"—where records in the same dataset have different fields—and extreme nesting depths without a mandatory schema often lead to data that is syntactically valid but contextually unusable <span class="co">[</span><span class="ot">@pezoa2016</span><span class="co">]</span>.</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>**This notebook evaluates JSON files on three levels:**</span>
 <span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a><span class="fu">## Setup</span></span>
-<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>This workflow relies on <span class="in">`jsonlite`</span> <span class="co">[</span><span class="ot">@jsonlite</span><span class="co">]</span> for parsing and <span class="in">`tidyverse`</span> <span class="co">[</span><span class="ot">@tidyverse-2</span><span class="co">]</span> for data manipulation.</span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**Syntactic Validity:** Can the parser read the file?</span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**Structural Complexity:** Calculating **Nesting Depth** and **Key Count**.</span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**Data Type Identification:** Distinguishing between Objects (single records) and Arrays.</span>
 <span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a><span class="fu">### R Packages</span></span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
 <span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>If you don't have these packages installed, run this command once in your R console:</span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a><span class="fu">## Setup</span></span>
 <span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(c("tidyverse", "jsonlite", "purrr", "rstudioapi"))</span></span>
-<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb17-43"><a href="#cb17-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-44"><a href="#cb17-44" aria-hidden="true" tabindex="-1"></a><span class="fu">## Load libraries</span></span>
-<span id="cb17-45"><a href="#cb17-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-48"><a href="#cb17-48" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb17-49"><a href="#cb17-49" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: load-libraries</span></span>
-<span id="cb17-50"><a href="#cb17-50" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a>This workflow relies on <span class="in">`jsonlite`</span> <span class="co">[</span><span class="ot">@jsonlite</span><span class="co">]</span> for parsing and <span class="in">`tidyverse`</span> <span class="co">[</span><span class="ot">@tidyverse-2</span><span class="co">]</span> for data manipulation.</span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a><span class="fu">### R Packages</span></span>
+<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a>If you don't have these packages installed, run this command once in your R console:</span>
+<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-45"><a href="#cb17-45" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb17-46"><a href="#cb17-46" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(c("tidyverse", "jsonlite", "purrr", "rstudioapi"))</span></span>
+<span id="cb17-47"><a href="#cb17-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-48"><a href="#cb17-48" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb17-49"><a href="#cb17-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-50"><a href="#cb17-50" aria-hidden="true" tabindex="-1"></a><span class="fu">## Load libraries</span></span>
 <span id="cb17-51"><a href="#cb17-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-52"><a href="#cb17-52" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb17-53"><a href="#cb17-53" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jsonlite)   <span class="co"># Standard parser</span></span>
-<span id="cb17-54"><a href="#cb17-54" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)      <span class="co"># For robust iteration</span></span>
-<span id="cb17-55"><a href="#cb17-55" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rstudioapi) <span class="co"># For directory selection</span></span>
-<span id="cb17-56"><a href="#cb17-56" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb17-54"><a href="#cb17-54" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb17-55"><a href="#cb17-55" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: load-libraries</span></span>
+<span id="cb17-56"><a href="#cb17-56" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
 <span id="cb17-57"><a href="#cb17-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-58"><a href="#cb17-58" aria-hidden="true" tabindex="-1"></a><span class="fu">## Select Target Directory</span></span>
-<span id="cb17-59"><a href="#cb17-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-60"><a href="#cb17-60" aria-hidden="true" tabindex="-1"></a>Select the directory containing your .json files.</span>
-<span id="cb17-61"><a href="#cb17-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-62"><a href="#cb17-62" aria-hidden="true" tabindex="-1"></a>Note: Interactive selection works in RStudio. If rendering, it defaults to params\$target_dir.</span>
+<span id="cb17-58"><a href="#cb17-58" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb17-59"><a href="#cb17-59" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jsonlite)   <span class="co"># Standard parser</span></span>
+<span id="cb17-60"><a href="#cb17-60" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)      <span class="co"># For robust iteration</span></span>
+<span id="cb17-61"><a href="#cb17-61" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rstudioapi) <span class="co"># For directory selection</span></span>
+<span id="cb17-62"><a href="#cb17-62" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb17-63"><a href="#cb17-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-66"><a href="#cb17-66" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb17-67"><a href="#cb17-67" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: select-target-dir</span></span>
-<span id="cb17-68"><a href="#cb17-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-69"><a href="#cb17-69" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Try to select interactively if in RStudio</span></span>
-<span id="cb17-70"><a href="#cb17-70" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">interactive</span>() <span class="sc">&amp;&amp;</span> .Platform<span class="sc">$</span>OS.type <span class="sc">==</span> <span class="st">"windows"</span>) { </span>
-<span id="cb17-71"><a href="#cb17-71" aria-hidden="true" tabindex="-1"></a>  selected_dir <span class="ot">&lt;-</span> rstudioapi<span class="sc">::</span><span class="fu">selectDirectory</span>(<span class="at">caption =</span> <span class="st">"Select JSON Directory"</span>)</span>
-<span id="cb17-72"><a href="#cb17-72" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb17-73"><a href="#cb17-73" aria-hidden="true" tabindex="-1"></a>  selected_dir <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb17-74"><a href="#cb17-74" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb17-75"><a href="#cb17-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-76"><a href="#cb17-76" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Logic to determine final directory</span></span>
-<span id="cb17-77"><a href="#cb17-77" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(selected_dir)) {</span>
-<span id="cb17-78"><a href="#cb17-78" aria-hidden="true" tabindex="-1"></a>  target_dir <span class="ot">&lt;-</span> selected_dir</span>
-<span id="cb17-79"><a href="#cb17-79" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb17-80"><a href="#cb17-80" aria-hidden="true" tabindex="-1"></a>  target_dir <span class="ot">&lt;-</span> params<span class="sc">$</span>target_dir</span>
-<span id="cb17-81"><a href="#cb17-81" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb17-82"><a href="#cb17-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-83"><a href="#cb17-83" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Analyzing directory:"</span>, target_dir))</span>
-<span id="cb17-84"><a href="#cb17-84" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb17-85"><a href="#cb17-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-86"><a href="#cb17-86" aria-hidden="true" tabindex="-1"></a><span class="fu">## Find Json files</span></span>
-<span id="cb17-87"><a href="#cb17-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-90"><a href="#cb17-90" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb17-91"><a href="#cb17-91" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: find-files</span></span>
-<span id="cb17-92"><a href="#cb17-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-93"><a href="#cb17-93" aria-hidden="true" tabindex="-1"></a><span class="co"># Find all .json files</span></span>
-<span id="cb17-94"><a href="#cb17-94" aria-hidden="true" tabindex="-1"></a>json_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(</span>
-<span id="cb17-95"><a href="#cb17-95" aria-hidden="true" tabindex="-1"></a>  <span class="at">path =</span> target_dir,</span>
-<span id="cb17-96"><a href="#cb17-96" aria-hidden="true" tabindex="-1"></a>  <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.json$"</span>, </span>
-<span id="cb17-97"><a href="#cb17-97" aria-hidden="true" tabindex="-1"></a>  <span class="at">recursive =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb17-98"><a href="#cb17-98" aria-hidden="true" tabindex="-1"></a>  <span class="at">full.names =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb17-99"><a href="#cb17-99" aria-hidden="true" tabindex="-1"></a>  <span class="at">ignore.case =</span> <span class="cn">TRUE</span></span>
-<span id="cb17-100"><a href="#cb17-100" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb17-101"><a href="#cb17-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-102"><a href="#cb17-102" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Found"</span>, <span class="fu">length</span>(json_files), <span class="st">"JSON files."</span>))</span>
-<span id="cb17-103"><a href="#cb17-103" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(json_files)</span>
-<span id="cb17-104"><a href="#cb17-104" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb17-105"><a href="#cb17-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-106"><a href="#cb17-106" aria-hidden="true" tabindex="-1"></a><span class="fu">## Inventory &amp; Extraction</span></span>
+<span id="cb17-64"><a href="#cb17-64" aria-hidden="true" tabindex="-1"></a><span class="fu">## Select Target Directory</span></span>
+<span id="cb17-65"><a href="#cb17-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-66"><a href="#cb17-66" aria-hidden="true" tabindex="-1"></a>Select the directory containing your .json files.</span>
+<span id="cb17-67"><a href="#cb17-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-68"><a href="#cb17-68" aria-hidden="true" tabindex="-1"></a>Note: Interactive selection works in RStudio. If rendering, it defaults to params\$target_dir.</span>
+<span id="cb17-69"><a href="#cb17-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-72"><a href="#cb17-72" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb17-73"><a href="#cb17-73" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: select-target-dir</span></span>
+<span id="cb17-74"><a href="#cb17-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-75"><a href="#cb17-75" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Try to select interactively if in RStudio</span></span>
+<span id="cb17-76"><a href="#cb17-76" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">interactive</span>() <span class="sc">&amp;&amp;</span> .Platform<span class="sc">$</span>OS.type <span class="sc">==</span> <span class="st">"windows"</span>) { </span>
+<span id="cb17-77"><a href="#cb17-77" aria-hidden="true" tabindex="-1"></a>  selected_dir <span class="ot">&lt;-</span> rstudioapi<span class="sc">::</span><span class="fu">selectDirectory</span>(<span class="at">caption =</span> <span class="st">"Select JSON Directory"</span>)</span>
+<span id="cb17-78"><a href="#cb17-78" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb17-79"><a href="#cb17-79" aria-hidden="true" tabindex="-1"></a>  selected_dir <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb17-80"><a href="#cb17-80" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb17-81"><a href="#cb17-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-82"><a href="#cb17-82" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Logic to determine final directory</span></span>
+<span id="cb17-83"><a href="#cb17-83" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(selected_dir)) {</span>
+<span id="cb17-84"><a href="#cb17-84" aria-hidden="true" tabindex="-1"></a>  target_dir <span class="ot">&lt;-</span> selected_dir</span>
+<span id="cb17-85"><a href="#cb17-85" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb17-86"><a href="#cb17-86" aria-hidden="true" tabindex="-1"></a>  target_dir <span class="ot">&lt;-</span> params<span class="sc">$</span>target_dir</span>
+<span id="cb17-87"><a href="#cb17-87" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb17-88"><a href="#cb17-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-89"><a href="#cb17-89" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Analyzing directory:"</span>, target_dir))</span>
+<span id="cb17-90"><a href="#cb17-90" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb17-91"><a href="#cb17-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-92"><a href="#cb17-92" aria-hidden="true" tabindex="-1"></a><span class="fu">## Find Json files</span></span>
+<span id="cb17-93"><a href="#cb17-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-96"><a href="#cb17-96" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb17-97"><a href="#cb17-97" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: find-files</span></span>
+<span id="cb17-98"><a href="#cb17-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-99"><a href="#cb17-99" aria-hidden="true" tabindex="-1"></a><span class="co"># Find all .json files</span></span>
+<span id="cb17-100"><a href="#cb17-100" aria-hidden="true" tabindex="-1"></a>json_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(</span>
+<span id="cb17-101"><a href="#cb17-101" aria-hidden="true" tabindex="-1"></a>  <span class="at">path =</span> target_dir,</span>
+<span id="cb17-102"><a href="#cb17-102" aria-hidden="true" tabindex="-1"></a>  <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.json$"</span>, </span>
+<span id="cb17-103"><a href="#cb17-103" aria-hidden="true" tabindex="-1"></a>  <span class="at">recursive =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb17-104"><a href="#cb17-104" aria-hidden="true" tabindex="-1"></a>  <span class="at">full.names =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb17-105"><a href="#cb17-105" aria-hidden="true" tabindex="-1"></a>  <span class="at">ignore.case =</span> <span class="cn">TRUE</span></span>
+<span id="cb17-106"><a href="#cb17-106" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb17-107"><a href="#cb17-107" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-108"><a href="#cb17-108" aria-hidden="true" tabindex="-1"></a>We iterate through the JSON files to determine their R-structure (Data Frame vs. List) and complexity.</span>
-<span id="cb17-109"><a href="#cb17-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-112"><a href="#cb17-112" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb17-113"><a href="#cb17-113" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: extraction-logic</span></span>
-<span id="cb17-114"><a href="#cb17-114" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
-<span id="cb17-115"><a href="#cb17-115" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
-<span id="cb17-116"><a href="#cb17-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-117"><a href="#cb17-117" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper: Calculate Nesting Depth recursively</span></span>
-<span id="cb17-118"><a href="#cb17-118" aria-hidden="true" tabindex="-1"></a>get_depth <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb17-119"><a href="#cb17-119" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.list</span>(x) <span class="sc">&amp;&amp;</span> <span class="fu">length</span>(x) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb17-120"><a href="#cb17-120" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span> <span class="sc">+</span> <span class="fu">max</span>(<span class="fu">vapply</span>(x, get_depth, <span class="fu">numeric</span>(<span class="dv">1</span>)), <span class="dv">0</span>)</span>
-<span id="cb17-121"><a href="#cb17-121" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb17-122"><a href="#cb17-122" aria-hidden="true" tabindex="-1"></a>    <span class="dv">0</span></span>
-<span id="cb17-123"><a href="#cb17-123" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb17-124"><a href="#cb17-124" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb17-125"><a href="#cb17-125" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-126"><a href="#cb17-126" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize results list</span></span>
-<span id="cb17-127"><a href="#cb17-127" aria-hidden="true" tabindex="-1"></a>json_summary_list <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb17-128"><a href="#cb17-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-129"><a href="#cb17-129" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop through files</span></span>
-<span id="cb17-130"><a href="#cb17-130" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (file_path <span class="cf">in</span> json_files) {</span>
-<span id="cb17-131"><a href="#cb17-131" aria-hidden="true" tabindex="-1"></a>  file_name <span class="ot">&lt;-</span> <span class="fu">basename</span>(file_path)</span>
-<span id="cb17-132"><a href="#cb17-132" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb17-133"><a href="#cb17-133" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>({</span>
-<span id="cb17-134"><a href="#cb17-134" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Attempt to parse the JSON</span></span>
-<span id="cb17-135"><a href="#cb17-135" aria-hidden="true" tabindex="-1"></a>    <span class="co"># simplifyVector = TRUE allows R to detect tables automatically</span></span>
-<span id="cb17-136"><a href="#cb17-136" aria-hidden="true" tabindex="-1"></a>    json_data <span class="ot">&lt;-</span> jsonlite<span class="sc">::</span><span class="fu">fromJSON</span>(file_path, <span class="at">simplifyVector =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb17-137"><a href="#cb17-137" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb17-138"><a href="#cb17-138" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate Complexity (Depth)</span></span>
-<span id="cb17-139"><a href="#cb17-139" aria-hidden="true" tabindex="-1"></a>    <span class="co"># We re-parse without simplification just to check the raw tree depth accurately</span></span>
-<span id="cb17-140"><a href="#cb17-140" aria-hidden="true" tabindex="-1"></a>    raw_data <span class="ot">&lt;-</span> jsonlite<span class="sc">::</span><span class="fu">fromJSON</span>(file_path, <span class="at">simplifyVector =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb17-141"><a href="#cb17-141" aria-hidden="true" tabindex="-1"></a>    depth_val <span class="ot">&lt;-</span> <span class="fu">get_depth</span>(raw_data)</span>
-<span id="cb17-142"><a href="#cb17-142" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb17-143"><a href="#cb17-143" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Determine Class (Data Frame, List, or Vector)</span></span>
-<span id="cb17-144"><a href="#cb17-144" aria-hidden="true" tabindex="-1"></a>    obj_class <span class="ot">&lt;-</span> <span class="fu">class</span>(json_data)[<span class="dv">1</span>]</span>
-<span id="cb17-145"><a href="#cb17-145" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb17-146"><a href="#cb17-146" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Determine Dimensions &amp; Keys based on type</span></span>
-<span id="cb17-147"><a href="#cb17-147" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">is.data.frame</span>(json_data)) {</span>
-<span id="cb17-148"><a href="#cb17-148" aria-hidden="true" tabindex="-1"></a>      dims_str <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="fu">dim</span>(json_data), <span class="at">collapse =</span> <span class="st">" x "</span>)</span>
-<span id="cb17-149"><a href="#cb17-149" aria-hidden="true" tabindex="-1"></a>      keys_str <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="fu">head</span>(<span class="fu">colnames</span>(json_data), <span class="dv">5</span>), <span class="at">collapse =</span> <span class="st">", "</span>)</span>
-<span id="cb17-150"><a href="#cb17-150" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">ncol</span>(json_data) <span class="sc">&gt;</span> <span class="dv">5</span>) keys_str <span class="ot">&lt;-</span> <span class="fu">paste</span>(keys_str, <span class="st">"..."</span>)</span>
-<span id="cb17-151"><a href="#cb17-151" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb17-152"><a href="#cb17-152" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">is.list</span>(json_data)) {</span>
-<span id="cb17-153"><a href="#cb17-153" aria-hidden="true" tabindex="-1"></a>      dims_str <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="fu">length</span>(json_data), <span class="st">"elements"</span>)</span>
-<span id="cb17-154"><a href="#cb17-154" aria-hidden="true" tabindex="-1"></a>      keys_str <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="fu">head</span>(<span class="fu">names</span>(json_data), <span class="dv">5</span>), <span class="at">collapse =</span> <span class="st">", "</span>)</span>
-<span id="cb17-155"><a href="#cb17-155" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">length</span>(json_data) <span class="sc">&gt;</span> <span class="dv">5</span>) keys_str <span class="ot">&lt;-</span> <span class="fu">paste</span>(keys_str, <span class="st">"..."</span>)</span>
-<span id="cb17-156"><a href="#cb17-156" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb17-157"><a href="#cb17-157" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
-<span id="cb17-158"><a href="#cb17-158" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Atomic vectors or arrays</span></span>
-<span id="cb17-159"><a href="#cb17-159" aria-hidden="true" tabindex="-1"></a>      dims_str <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="fu">length</span>(json_data), <span class="st">"length"</span>)</span>
-<span id="cb17-160"><a href="#cb17-160" aria-hidden="true" tabindex="-1"></a>      keys_str <span class="ot">&lt;-</span> <span class="st">"(No Keys - Flat Array)"</span></span>
-<span id="cb17-161"><a href="#cb17-161" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb17-162"><a href="#cb17-162" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb17-163"><a href="#cb17-163" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Store success result</span></span>
-<span id="cb17-164"><a href="#cb17-164" aria-hidden="true" tabindex="-1"></a>    json_summary_list[[<span class="fu">length</span>(json_summary_list) <span class="sc">+</span> <span class="dv">1</span>]] <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb17-165"><a href="#cb17-165" aria-hidden="true" tabindex="-1"></a>      <span class="at">filename =</span> file_name,</span>
-<span id="cb17-166"><a href="#cb17-166" aria-hidden="true" tabindex="-1"></a>      <span class="at">is_valid =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb17-167"><a href="#cb17-167" aria-hidden="true" tabindex="-1"></a>      <span class="at">structure_type =</span> obj_class,</span>
-<span id="cb17-168"><a href="#cb17-168" aria-hidden="true" tabindex="-1"></a>      <span class="at">dimensions =</span> dims_str,</span>
-<span id="cb17-169"><a href="#cb17-169" aria-hidden="true" tabindex="-1"></a>      <span class="at">top_level_keys =</span> keys_str,</span>
-<span id="cb17-170"><a href="#cb17-170" aria-hidden="true" tabindex="-1"></a>      <span class="at">max_depth =</span> depth_val,</span>
-<span id="cb17-171"><a href="#cb17-171" aria-hidden="true" tabindex="-1"></a>      <span class="at">error_msg =</span> <span class="cn">NA_character_</span></span>
-<span id="cb17-172"><a href="#cb17-172" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb17-173"><a href="#cb17-173" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb17-174"><a href="#cb17-174" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
-<span id="cb17-175"><a href="#cb17-175" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Store error result</span></span>
-<span id="cb17-176"><a href="#cb17-176" aria-hidden="true" tabindex="-1"></a>    json_summary_list[[<span class="fu">length</span>(json_summary_list) <span class="sc">+</span> <span class="dv">1</span>]] <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb17-177"><a href="#cb17-177" aria-hidden="true" tabindex="-1"></a>      <span class="at">filename =</span> file_name,</span>
-<span id="cb17-178"><a href="#cb17-178" aria-hidden="true" tabindex="-1"></a>      <span class="at">is_valid =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb17-179"><a href="#cb17-179" aria-hidden="true" tabindex="-1"></a>      <span class="at">structure_type =</span> <span class="st">"Error"</span>,</span>
-<span id="cb17-180"><a href="#cb17-180" aria-hidden="true" tabindex="-1"></a>      <span class="at">dimensions =</span> <span class="st">"NA"</span>,</span>
-<span id="cb17-181"><a href="#cb17-181" aria-hidden="true" tabindex="-1"></a>      <span class="at">top_level_keys =</span> <span class="st">"NA"</span>,</span>
-<span id="cb17-182"><a href="#cb17-182" aria-hidden="true" tabindex="-1"></a>      <span class="at">max_depth =</span> <span class="cn">NA_real_</span>,</span>
-<span id="cb17-183"><a href="#cb17-183" aria-hidden="true" tabindex="-1"></a>      <span class="at">error_msg =</span> e<span class="sc">$</span>message</span>
-<span id="cb17-184"><a href="#cb17-184" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb17-185"><a href="#cb17-185" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb17-186"><a href="#cb17-186" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb17-187"><a href="#cb17-187" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-188"><a href="#cb17-188" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine Results</span></span>
-<span id="cb17-189"><a href="#cb17-189" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(json_summary_list)</span>
-<span id="cb17-190"><a href="#cb17-190" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-191"><a href="#cb17-191" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Analyzed"</span>, <span class="fu">nrow</span>(results), <span class="st">"JSON files."</span>))</span>
-<span id="cb17-192"><a href="#cb17-192" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(results)</span>
-<span id="cb17-193"><a href="#cb17-193" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb17-194"><a href="#cb17-194" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-195"><a href="#cb17-195" aria-hidden="true" tabindex="-1"></a><span class="fu">## Visualization: Data Types</span></span>
+<span id="cb17-108"><a href="#cb17-108" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Found"</span>, <span class="fu">length</span>(json_files), <span class="st">"JSON files."</span>))</span>
+<span id="cb17-109"><a href="#cb17-109" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(json_files)</span>
+<span id="cb17-110"><a href="#cb17-110" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb17-111"><a href="#cb17-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-112"><a href="#cb17-112" aria-hidden="true" tabindex="-1"></a><span class="fu">## Inventory &amp; Extraction</span></span>
+<span id="cb17-113"><a href="#cb17-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-114"><a href="#cb17-114" aria-hidden="true" tabindex="-1"></a>We iterate through the JSON files to determine their R-structure (Data Frame vs. List) and complexity.</span>
+<span id="cb17-115"><a href="#cb17-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-118"><a href="#cb17-118" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb17-119"><a href="#cb17-119" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: extraction-logic</span></span>
+<span id="cb17-120"><a href="#cb17-120" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
+<span id="cb17-121"><a href="#cb17-121" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb17-122"><a href="#cb17-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-123"><a href="#cb17-123" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper: Calculate Nesting Depth recursively</span></span>
+<span id="cb17-124"><a href="#cb17-124" aria-hidden="true" tabindex="-1"></a>get_depth <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb17-125"><a href="#cb17-125" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.list</span>(x) <span class="sc">&amp;&amp;</span> <span class="fu">length</span>(x) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb17-126"><a href="#cb17-126" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span> <span class="sc">+</span> <span class="fu">max</span>(<span class="fu">vapply</span>(x, get_depth, <span class="fu">numeric</span>(<span class="dv">1</span>)), <span class="dv">0</span>)</span>
+<span id="cb17-127"><a href="#cb17-127" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb17-128"><a href="#cb17-128" aria-hidden="true" tabindex="-1"></a>    <span class="dv">0</span></span>
+<span id="cb17-129"><a href="#cb17-129" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb17-130"><a href="#cb17-130" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb17-131"><a href="#cb17-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-132"><a href="#cb17-132" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize results list</span></span>
+<span id="cb17-133"><a href="#cb17-133" aria-hidden="true" tabindex="-1"></a>json_summary_list <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb17-134"><a href="#cb17-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-135"><a href="#cb17-135" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop through files</span></span>
+<span id="cb17-136"><a href="#cb17-136" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (file_path <span class="cf">in</span> json_files) {</span>
+<span id="cb17-137"><a href="#cb17-137" aria-hidden="true" tabindex="-1"></a>  file_name <span class="ot">&lt;-</span> <span class="fu">basename</span>(file_path)</span>
+<span id="cb17-138"><a href="#cb17-138" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-139"><a href="#cb17-139" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>({</span>
+<span id="cb17-140"><a href="#cb17-140" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Attempt to parse the JSON</span></span>
+<span id="cb17-141"><a href="#cb17-141" aria-hidden="true" tabindex="-1"></a>    <span class="co"># simplifyVector = TRUE allows R to detect tables automatically</span></span>
+<span id="cb17-142"><a href="#cb17-142" aria-hidden="true" tabindex="-1"></a>    json_data <span class="ot">&lt;-</span> jsonlite<span class="sc">::</span><span class="fu">fromJSON</span>(file_path, <span class="at">simplifyVector =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb17-143"><a href="#cb17-143" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-144"><a href="#cb17-144" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate Complexity (Depth)</span></span>
+<span id="cb17-145"><a href="#cb17-145" aria-hidden="true" tabindex="-1"></a>    <span class="co"># We re-parse without simplification just to check the raw tree depth accurately</span></span>
+<span id="cb17-146"><a href="#cb17-146" aria-hidden="true" tabindex="-1"></a>    raw_data <span class="ot">&lt;-</span> jsonlite<span class="sc">::</span><span class="fu">fromJSON</span>(file_path, <span class="at">simplifyVector =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb17-147"><a href="#cb17-147" aria-hidden="true" tabindex="-1"></a>    depth_val <span class="ot">&lt;-</span> <span class="fu">get_depth</span>(raw_data)</span>
+<span id="cb17-148"><a href="#cb17-148" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-149"><a href="#cb17-149" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Determine Class (Data Frame, List, or Vector)</span></span>
+<span id="cb17-150"><a href="#cb17-150" aria-hidden="true" tabindex="-1"></a>    obj_class <span class="ot">&lt;-</span> <span class="fu">class</span>(json_data)[<span class="dv">1</span>]</span>
+<span id="cb17-151"><a href="#cb17-151" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-152"><a href="#cb17-152" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Determine Dimensions &amp; Keys based on type</span></span>
+<span id="cb17-153"><a href="#cb17-153" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">is.data.frame</span>(json_data)) {</span>
+<span id="cb17-154"><a href="#cb17-154" aria-hidden="true" tabindex="-1"></a>      dims_str <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="fu">dim</span>(json_data), <span class="at">collapse =</span> <span class="st">" x "</span>)</span>
+<span id="cb17-155"><a href="#cb17-155" aria-hidden="true" tabindex="-1"></a>      keys_str <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="fu">head</span>(<span class="fu">colnames</span>(json_data), <span class="dv">5</span>), <span class="at">collapse =</span> <span class="st">", "</span>)</span>
+<span id="cb17-156"><a href="#cb17-156" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">ncol</span>(json_data) <span class="sc">&gt;</span> <span class="dv">5</span>) keys_str <span class="ot">&lt;-</span> <span class="fu">paste</span>(keys_str, <span class="st">"..."</span>)</span>
+<span id="cb17-157"><a href="#cb17-157" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb17-158"><a href="#cb17-158" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">is.list</span>(json_data)) {</span>
+<span id="cb17-159"><a href="#cb17-159" aria-hidden="true" tabindex="-1"></a>      dims_str <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="fu">length</span>(json_data), <span class="st">"elements"</span>)</span>
+<span id="cb17-160"><a href="#cb17-160" aria-hidden="true" tabindex="-1"></a>      keys_str <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="fu">head</span>(<span class="fu">names</span>(json_data), <span class="dv">5</span>), <span class="at">collapse =</span> <span class="st">", "</span>)</span>
+<span id="cb17-161"><a href="#cb17-161" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">length</span>(json_data) <span class="sc">&gt;</span> <span class="dv">5</span>) keys_str <span class="ot">&lt;-</span> <span class="fu">paste</span>(keys_str, <span class="st">"..."</span>)</span>
+<span id="cb17-162"><a href="#cb17-162" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb17-163"><a href="#cb17-163" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb17-164"><a href="#cb17-164" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Atomic vectors or arrays</span></span>
+<span id="cb17-165"><a href="#cb17-165" aria-hidden="true" tabindex="-1"></a>      dims_str <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="fu">length</span>(json_data), <span class="st">"length"</span>)</span>
+<span id="cb17-166"><a href="#cb17-166" aria-hidden="true" tabindex="-1"></a>      keys_str <span class="ot">&lt;-</span> <span class="st">"(No Keys - Flat Array)"</span></span>
+<span id="cb17-167"><a href="#cb17-167" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb17-168"><a href="#cb17-168" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-169"><a href="#cb17-169" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Store success result</span></span>
+<span id="cb17-170"><a href="#cb17-170" aria-hidden="true" tabindex="-1"></a>    json_summary_list[[<span class="fu">length</span>(json_summary_list) <span class="sc">+</span> <span class="dv">1</span>]] <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb17-171"><a href="#cb17-171" aria-hidden="true" tabindex="-1"></a>      <span class="at">filename =</span> file_name,</span>
+<span id="cb17-172"><a href="#cb17-172" aria-hidden="true" tabindex="-1"></a>      <span class="at">is_valid =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb17-173"><a href="#cb17-173" aria-hidden="true" tabindex="-1"></a>      <span class="at">structure_type =</span> obj_class,</span>
+<span id="cb17-174"><a href="#cb17-174" aria-hidden="true" tabindex="-1"></a>      <span class="at">dimensions =</span> dims_str,</span>
+<span id="cb17-175"><a href="#cb17-175" aria-hidden="true" tabindex="-1"></a>      <span class="at">top_level_keys =</span> keys_str,</span>
+<span id="cb17-176"><a href="#cb17-176" aria-hidden="true" tabindex="-1"></a>      <span class="at">max_depth =</span> depth_val,</span>
+<span id="cb17-177"><a href="#cb17-177" aria-hidden="true" tabindex="-1"></a>      <span class="at">error_msg =</span> <span class="cn">NA_character_</span></span>
+<span id="cb17-178"><a href="#cb17-178" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb17-179"><a href="#cb17-179" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-180"><a href="#cb17-180" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
+<span id="cb17-181"><a href="#cb17-181" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Store error result</span></span>
+<span id="cb17-182"><a href="#cb17-182" aria-hidden="true" tabindex="-1"></a>    json_summary_list[[<span class="fu">length</span>(json_summary_list) <span class="sc">+</span> <span class="dv">1</span>]] <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb17-183"><a href="#cb17-183" aria-hidden="true" tabindex="-1"></a>      <span class="at">filename =</span> file_name,</span>
+<span id="cb17-184"><a href="#cb17-184" aria-hidden="true" tabindex="-1"></a>      <span class="at">is_valid =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb17-185"><a href="#cb17-185" aria-hidden="true" tabindex="-1"></a>      <span class="at">structure_type =</span> <span class="st">"Error"</span>,</span>
+<span id="cb17-186"><a href="#cb17-186" aria-hidden="true" tabindex="-1"></a>      <span class="at">dimensions =</span> <span class="st">"NA"</span>,</span>
+<span id="cb17-187"><a href="#cb17-187" aria-hidden="true" tabindex="-1"></a>      <span class="at">top_level_keys =</span> <span class="st">"NA"</span>,</span>
+<span id="cb17-188"><a href="#cb17-188" aria-hidden="true" tabindex="-1"></a>      <span class="at">max_depth =</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb17-189"><a href="#cb17-189" aria-hidden="true" tabindex="-1"></a>      <span class="at">error_msg =</span> e<span class="sc">$</span>message</span>
+<span id="cb17-190"><a href="#cb17-190" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb17-191"><a href="#cb17-191" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb17-192"><a href="#cb17-192" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb17-193"><a href="#cb17-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-194"><a href="#cb17-194" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine Results</span></span>
+<span id="cb17-195"><a href="#cb17-195" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(json_summary_list)</span>
 <span id="cb17-196"><a href="#cb17-196" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-197"><a href="#cb17-197" aria-hidden="true" tabindex="-1"></a>We visualize the distribution of JSON structures. A prevalence of data.frame types indicates a dataset that is easy to analyze in R, while list types imply nested metadata.</span>
-<span id="cb17-198"><a href="#cb17-198" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-201"><a href="#cb17-201" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb17-202"><a href="#cb17-202" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: visual-json</span></span>
-<span id="cb17-203"><a href="#cb17-203" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Distribution of JSON Structure Types"</span></span>
+<span id="cb17-197"><a href="#cb17-197" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Analyzed"</span>, <span class="fu">nrow</span>(results), <span class="st">"JSON files."</span>))</span>
+<span id="cb17-198"><a href="#cb17-198" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(results)</span>
+<span id="cb17-199"><a href="#cb17-199" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb17-200"><a href="#cb17-200" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-201"><a href="#cb17-201" aria-hidden="true" tabindex="-1"></a><span class="fu">## Visualization: Data Types</span></span>
+<span id="cb17-202"><a href="#cb17-202" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-203"><a href="#cb17-203" aria-hidden="true" tabindex="-1"></a>We visualize the distribution of JSON structures. A prevalence of data.frame types indicates a dataset that is easy to analyze in R, while list types imply nested metadata.</span>
 <span id="cb17-204"><a href="#cb17-204" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-205"><a href="#cb17-205" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(results <span class="sc">%&gt;%</span> <span class="fu">filter</span>(is_valid), <span class="fu">aes</span>(<span class="at">x =</span> structure_type, <span class="at">fill =</span> structure_type)) <span class="sc">+</span></span>
-<span id="cb17-206"><a href="#cb17-206" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
-<span id="cb17-207"><a href="#cb17-207" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Set2"</span>) <span class="sc">+</span></span>
-<span id="cb17-208"><a href="#cb17-208" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb17-209"><a href="#cb17-209" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"JSON Structure Types"</span>,</span>
-<span id="cb17-210"><a href="#cb17-210" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Identified R Objects (Data Frame = Tabular, List = Nested)"</span>,</span>
-<span id="cb17-211"><a href="#cb17-211" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Structure Type"</span>,</span>
-<span id="cb17-212"><a href="#cb17-212" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Count"</span></span>
-<span id="cb17-213"><a href="#cb17-213" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb17-214"><a href="#cb17-214" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb17-215"><a href="#cb17-215" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
-<span id="cb17-216"><a href="#cb17-216" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb17-217"><a href="#cb17-217" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-218"><a href="#cb17-218" aria-hidden="true" tabindex="-1"></a><span class="fu">## Export Results</span></span>
-<span id="cb17-219"><a href="#cb17-219" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-222"><a href="#cb17-222" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb17-223"><a href="#cb17-223" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: save-results</span></span>
-<span id="cb17-224"><a href="#cb17-224" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-225"><a href="#cb17-225" aria-hidden="true" tabindex="-1"></a>output_dir <span class="ot">&lt;-</span> <span class="st">"Results/Inspect_json"</span></span>
-<span id="cb17-226"><a href="#cb17-226" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(output_dir, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb17-227"><a href="#cb17-227" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-228"><a href="#cb17-228" aria-hidden="true" tabindex="-1"></a>output_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(output_dir, <span class="fu">paste0</span>(<span class="st">"JSON_Report_"</span>, <span class="fu">format</span>(<span class="fu">Sys.Date</span>(), <span class="st">"%Y%m%d"</span>), <span class="st">".csv"</span>))</span>
-<span id="cb17-229"><a href="#cb17-229" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-230"><a href="#cb17-230" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(results, output_file, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb17-231"><a href="#cb17-231" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Report saved to:"</span>, output_file))</span>
-<span id="cb17-232"><a href="#cb17-232" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb17-207"><a href="#cb17-207" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb17-208"><a href="#cb17-208" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: visual-json</span></span>
+<span id="cb17-209"><a href="#cb17-209" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Distribution of JSON Structure Types"</span></span>
+<span id="cb17-210"><a href="#cb17-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-211"><a href="#cb17-211" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(results <span class="sc">%&gt;%</span> <span class="fu">filter</span>(is_valid), <span class="fu">aes</span>(<span class="at">x =</span> structure_type, <span class="at">fill =</span> structure_type)) <span class="sc">+</span></span>
+<span id="cb17-212"><a href="#cb17-212" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb17-213"><a href="#cb17-213" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Set2"</span>) <span class="sc">+</span></span>
+<span id="cb17-214"><a href="#cb17-214" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb17-215"><a href="#cb17-215" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"JSON Structure Types"</span>,</span>
+<span id="cb17-216"><a href="#cb17-216" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Identified R Objects (Data Frame = Tabular, List = Nested)"</span>,</span>
+<span id="cb17-217"><a href="#cb17-217" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Structure Type"</span>,</span>
+<span id="cb17-218"><a href="#cb17-218" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Count"</span></span>
+<span id="cb17-219"><a href="#cb17-219" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb17-220"><a href="#cb17-220" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb17-221"><a href="#cb17-221" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
+<span id="cb17-222"><a href="#cb17-222" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb17-223"><a href="#cb17-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-224"><a href="#cb17-224" aria-hidden="true" tabindex="-1"></a><span class="fu">## Export Results</span></span>
+<span id="cb17-225"><a href="#cb17-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-228"><a href="#cb17-228" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb17-229"><a href="#cb17-229" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: save-results</span></span>
+<span id="cb17-230"><a href="#cb17-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-231"><a href="#cb17-231" aria-hidden="true" tabindex="-1"></a>output_dir <span class="ot">&lt;-</span> <span class="st">"Results/Inspect_json"</span></span>
+<span id="cb17-232"><a href="#cb17-232" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(output_dir, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb17-233"><a href="#cb17-233" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-234"><a href="#cb17-234" aria-hidden="true" tabindex="-1"></a><span class="fu">## Curation Insights</span></span>
+<span id="cb17-234"><a href="#cb17-234" aria-hidden="true" tabindex="-1"></a>output_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(output_dir, <span class="fu">paste0</span>(<span class="st">"JSON_Report_"</span>, <span class="fu">format</span>(<span class="fu">Sys.Date</span>(), <span class="st">"%Y%m%d"</span>), <span class="st">".csv"</span>))</span>
 <span id="cb17-235"><a href="#cb17-235" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-236"><a href="#cb17-236" aria-hidden="true" tabindex="-1"></a>Use the generated CSV report to guide your preservation actions:</span>
-<span id="cb17-237"><a href="#cb17-237" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-238"><a href="#cb17-238" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Validity Check (is_valid):** Files marked FALSE are corrupt. Common causes include "Trailing Commas" (allowed in JavaScript but forbidden in standard JSON) or truncation (incomplete download). You can validate the syntax using a linter. If truncated, attempt to recover the source. If the error is encoding-related (e.g., "Invalid char"), check if the file is saved as UTF-8.</span>
+<span id="cb17-236"><a href="#cb17-236" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(results, output_file, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb17-237"><a href="#cb17-237" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Report saved to:"</span>, output_file))</span>
+<span id="cb17-238"><a href="#cb17-238" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb17-239"><a href="#cb17-239" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-240"><a href="#cb17-240" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Structure Check (structure_type):** Files identified as list often contain nested hierarchies that cannot be easily flattened into a table. Ensure these files are documented with a data dictionary explaining the nesting logic.</span>
+<span id="cb17-240"><a href="#cb17-240" aria-hidden="true" tabindex="-1"></a><span class="fu">## Curation Insights</span></span>
 <span id="cb17-241"><a href="#cb17-241" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-242"><a href="#cb17-242" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Complexity Check (max_depth \&gt; 5):** Deeply nested files are difficult for future researchers to query without specialized tools. Curation best practice suggests generating a "JSON Schema" to validate that all files in the batch adhere to the same structure.</span>
+<span id="cb17-242"><a href="#cb17-242" aria-hidden="true" tabindex="-1"></a>Use the generated CSV report to guide your preservation actions:</span>
 <span id="cb17-243"><a href="#cb17-243" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-244"><a href="#cb17-244" aria-hidden="true" tabindex="-1"></a><span class="fu">## Additional Tools</span></span>
+<span id="cb17-244"><a href="#cb17-244" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Validity Check (is_valid):** Files marked FALSE are corrupt. Common causes include "Trailing Commas" (allowed in JavaScript but forbidden in standard JSON) or truncation (incomplete download). You can validate the syntax using a linter. If truncated, attempt to recover the source. If the error is encoding-related (e.g., "Invalid char"), check if the file is saved as UTF-8.</span>
 <span id="cb17-245"><a href="#cb17-245" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-246"><a href="#cb17-246" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**jq:** Is a lightweight and flexible <span class="co">[</span><span class="ot">command-line JSON processor</span><span class="co">](https://jqlang.org/)</span>, known as the industry standard for slicing, filtering, and transforming JSON data.</span>
+<span id="cb17-246"><a href="#cb17-246" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Structure Check (structure_type):** Files identified as list often contain nested hierarchies that cannot be easily flattened into a table. Ensure these files are documented with a data dictionary explaining the nesting logic.</span>
 <span id="cb17-247"><a href="#cb17-247" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-248"><a href="#cb17-248" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**JSON Schema Validator:** Is a <span class="co">[</span><span class="ot">tool</span><span class="co">](https://json-schema.org/)</span> to define the expected structure of your JSON (required fields, data types), allowing curators to automate the quality control of metadata.</span>
+<span id="cb17-248"><a href="#cb17-248" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Complexity Check (max_depth \&gt; 5):** Deeply nested files are difficult for future researchers to query without specialized tools. Curation best practice suggests generating a "JSON Schema" to validate that all files in the batch adhere to the same structure.</span>
 <span id="cb17-249"><a href="#cb17-249" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-250"><a href="#cb17-250" aria-hidden="true" tabindex="-1"></a>Source: Pezoa, F. et al. (2016). Foundations of JSON Schema.</span>
+<span id="cb17-250"><a href="#cb17-250" aria-hidden="true" tabindex="-1"></a><span class="fu">## Additional Tools</span></span>
 <span id="cb17-251"><a href="#cb17-251" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-252"><a href="#cb17-252" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**VS Code (JSON Tools):** <span class="co">[</span><span class="ot">Visual Studio Code</span><span class="co">](https://code.visualstudio.com/docs/languages/json)</span> has built-in formatters that can automatically fix minor syntax errors (like indentation) and highlight invalid characters.</span>
+<span id="cb17-252"><a href="#cb17-252" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**jq:** Is a lightweight and flexible <span class="co">[</span><span class="ot">command-line JSON processor</span><span class="co">](https://jqlang.org/)</span>, known as the industry standard for slicing, filtering, and transforming JSON data.</span>
 <span id="cb17-253"><a href="#cb17-253" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-254"><a href="#cb17-254" aria-hidden="true" tabindex="-1"></a><span class="fu">## Using the Non-Interactive R Script</span></span>
+<span id="cb17-254"><a href="#cb17-254" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**JSON Schema Validator:** Is a <span class="co">[</span><span class="ot">tool</span><span class="co">](https://json-schema.org/)</span> to define the expected structure of your JSON (required fields, data types), allowing curators to automate the quality control of metadata.</span>
 <span id="cb17-255"><a href="#cb17-255" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-256"><a href="#cb17-256" aria-hidden="true" tabindex="-1"></a>For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.</span>
+<span id="cb17-256"><a href="#cb17-256" aria-hidden="true" tabindex="-1"></a>Source: Pezoa, F. et al. (2016). Foundations of JSON Schema.</span>
 <span id="cb17-257"><a href="#cb17-257" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-258"><a href="#cb17-258" aria-hidden="true" tabindex="-1"></a>Download the **R Script:** [**`Inspect_json_Script.R`**](Scripts/Inspect_json_Script.R)</span>
+<span id="cb17-258"><a href="#cb17-258" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**VS Code (JSON Tools):** <span class="co">[</span><span class="ot">Visual Studio Code</span><span class="co">](https://code.visualstudio.com/docs/languages/json)</span> has built-in formatters that can automatically fix minor syntax errors (like indentation) and highlight invalid characters.</span>
 <span id="cb17-259"><a href="#cb17-259" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-260"><a href="#cb17-260" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**For clusters**</span>
+<span id="cb17-260"><a href="#cb17-260" aria-hidden="true" tabindex="-1"></a><span class="fu">## Using the Non-Interactive R Script</span></span>
 <span id="cb17-261"><a href="#cb17-261" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-262"><a href="#cb17-262" aria-hidden="true" tabindex="-1"></a>Alternatively, adapt the folling code script to match your cluster's environment and your data path, then submit it using <span class="in">`sbatch`</span>.</span>
+<span id="cb17-262"><a href="#cb17-262" aria-hidden="true" tabindex="-1"></a>For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.</span>
 <span id="cb17-263"><a href="#cb17-263" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-264"><a href="#cb17-264" aria-hidden="true" tabindex="-1"></a><span class="in">``` bash</span></span>
-<span id="cb17-265"><a href="#cb17-265" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb17-266"><a href="#cb17-266" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=json_inspect</span></span>
-<span id="cb17-267"><a href="#cb17-267" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --nodes=1</span></span>
-<span id="cb17-268"><a href="#cb17-268" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --ntasks=1</span></span>
-<span id="cb17-269"><a href="#cb17-269" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=00:15:00</span></span>
-<span id="cb17-270"><a href="#cb17-270" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mem=4G</span></span>
-<span id="cb17-271"><a href="#cb17-271" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=logs/inspect_json_%j.log</span></span>
-<span id="cb17-272"><a href="#cb17-272" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-273"><a href="#cb17-273" aria-hidden="true" tabindex="-1"></a><span class="co"># Load R module (Adjust based on your cluster's specific module name)</span></span>
-<span id="cb17-274"><a href="#cb17-274" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load R</span>
-<span id="cb17-275"><a href="#cb17-275" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-276"><a href="#cb17-276" aria-hidden="true" tabindex="-1"></a><span class="co"># Define target directory containing JSON files</span></span>
-<span id="cb17-277"><a href="#cb17-277" aria-hidden="true" tabindex="-1"></a><span class="va">TARGET_DIR</span><span class="op">=</span><span class="st">"/scratch/user/project_data/metadata"</span></span>
+<span id="cb17-264"><a href="#cb17-264" aria-hidden="true" tabindex="-1"></a>Download the **R Script:** [**`Inspect_json_Script.R`**](Scripts/Inspect_json_Script.R)</span>
+<span id="cb17-265"><a href="#cb17-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-266"><a href="#cb17-266" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**For clusters**</span>
+<span id="cb17-267"><a href="#cb17-267" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-268"><a href="#cb17-268" aria-hidden="true" tabindex="-1"></a>Alternatively, adapt the folling code script to match your cluster's environment and your data path, then submit it using <span class="in">`sbatch`</span>.</span>
+<span id="cb17-269"><a href="#cb17-269" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-270"><a href="#cb17-270" aria-hidden="true" tabindex="-1"></a><span class="in">``` bash</span></span>
+<span id="cb17-271"><a href="#cb17-271" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb17-272"><a href="#cb17-272" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=json_inspect</span></span>
+<span id="cb17-273"><a href="#cb17-273" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --nodes=1</span></span>
+<span id="cb17-274"><a href="#cb17-274" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --ntasks=1</span></span>
+<span id="cb17-275"><a href="#cb17-275" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=00:15:00</span></span>
+<span id="cb17-276"><a href="#cb17-276" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mem=4G</span></span>
+<span id="cb17-277"><a href="#cb17-277" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=logs/inspect_json_%j.log</span></span>
 <span id="cb17-278"><a href="#cb17-278" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-279"><a href="#cb17-279" aria-hidden="true" tabindex="-1"></a><span class="co"># Create output directory structure if it doesn't exist</span></span>
-<span id="cb17-280"><a href="#cb17-280" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> Results/Inspect_json</span>
-<span id="cb17-281"><a href="#cb17-281" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> logs</span>
-<span id="cb17-282"><a href="#cb17-282" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-283"><a href="#cb17-283" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the R script</span></span>
-<span id="cb17-284"><a href="#cb17-284" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Starting JSON Inspection on </span><span class="va">$TARGET_DIR</span><span class="st">"</span></span>
-<span id="cb17-285"><a href="#cb17-285" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> Scripts/Inspect_json_Script.R <span class="st">"</span><span class="va">$TARGET_DIR</span><span class="st">"</span></span>
-<span id="cb17-286"><a href="#cb17-286" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb17-287"><a href="#cb17-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-279"><a href="#cb17-279" aria-hidden="true" tabindex="-1"></a><span class="co"># Load R module (Adjust based on your cluster's specific module name)</span></span>
+<span id="cb17-280"><a href="#cb17-280" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load R</span>
+<span id="cb17-281"><a href="#cb17-281" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-282"><a href="#cb17-282" aria-hidden="true" tabindex="-1"></a><span class="co"># Define target directory containing JSON files</span></span>
+<span id="cb17-283"><a href="#cb17-283" aria-hidden="true" tabindex="-1"></a><span class="va">TARGET_DIR</span><span class="op">=</span><span class="st">"/scratch/user/project_data/metadata"</span></span>
+<span id="cb17-284"><a href="#cb17-284" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-285"><a href="#cb17-285" aria-hidden="true" tabindex="-1"></a><span class="co"># Create output directory structure if it doesn't exist</span></span>
+<span id="cb17-286"><a href="#cb17-286" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> Results/Inspect_json</span>
+<span id="cb17-287"><a href="#cb17-287" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> logs</span>
 <span id="cb17-288"><a href="#cb17-288" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-289"><a href="#cb17-289" aria-hidden="true" tabindex="-1"></a><span class="fu">## References</span></span>
-<span id="cb17-290"><a href="#cb17-290" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-291"><a href="#cb17-291" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
-<span id="cb17-292"><a href="#cb17-292" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb17-289"><a href="#cb17-289" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the R script</span></span>
+<span id="cb17-290"><a href="#cb17-290" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Starting JSON Inspection on </span><span class="va">$TARGET_DIR</span><span class="st">"</span></span>
+<span id="cb17-291"><a href="#cb17-291" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> Scripts/Inspect_json_Script.R <span class="st">"</span><span class="va">$TARGET_DIR</span><span class="st">"</span></span>
+<span id="cb17-292"><a href="#cb17-292" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb17-293"><a href="#cb17-293" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-294"><a href="#cb17-294" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-295"><a href="#cb17-295" aria-hidden="true" tabindex="-1"></a><span class="fu">## References</span></span>
+<span id="cb17-296"><a href="#cb17-296" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-297"><a href="#cb17-297" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
+<span id="cb17-298"><a href="#cb17-298" aria-hidden="true" tabindex="-1"></a>:::</span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
