@@ -24,7 +24,7 @@ jobs:
             libgdal-dev libproj-dev libgeos-dev libudunits2-dev \
             libhdf5-dev libmagick++-dev libpoppler-cpp-dev \
             libxml2-dev libssl-dev libcurl4-openssl-dev \
-            libimage-exiftool-perl
+            libimage-exiftool-perl libarchive-dev
 
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
@@ -52,6 +52,16 @@ jobs:
             any::pdftools
             any::daiR
             any::RSQLite
+            any::tidync
+            any::ncmeta
+            any::R.matlab
+            any::sas7bdat
+            any::skimr
+            any::tmap
+            any::fs
+            any::labelled
+            any::DBI
+            any::archive
 
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
