@@ -1,5 +1,4 @@
 ---
-Me gusta. Procede. ---
 title: "Jupyter Notebooks (.ipynb) Files"
 author: "Daniel Manrique-Castano"
 date: "2025-12-08"
