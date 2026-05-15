@@ -34,7 +34,7 @@ Validate syntactic integrity and structural complexity. Our objective is to ensu
 
 ## Setup
 
-This workflow relies on `jsonlite` [@jsonlite] for parsing and `tidyverse` [@tidyverse-2] for data manipulation.
+This workflow relies on `jsonlite` [@jsonlite] for parsing and `tidyverse` [@tidyverse] for data manipulation.
 
 ### R Packages
 

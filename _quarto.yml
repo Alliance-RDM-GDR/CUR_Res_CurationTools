@@ -63,6 +63,8 @@ format:
       light: cosmo
       dark: cyborg
     css: styles/styles.css
+    mainfont: "Montserrat"
+    headerfont: "Ubuntu"
     toc-depth: 3
     code-copy: true
     code-tools: true

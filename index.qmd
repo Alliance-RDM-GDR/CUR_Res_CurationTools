@@ -6,18 +6,10 @@ format:
     toc: false
 ---
 
-::: {.column-screen .bg-primary .text-white .p-5 .text-center style="background: linear-gradient(135deg, #003366 0%, #0d6efd 100%); margin-bottom: 2rem;"}
-<h1 style="color: white; font-weight: 700;">
+::: {.column-screen .hero-banner .text-center}
+<h1 style="color: white; font-weight: 700; font-family: 'Ubuntu', sans-serif;">Research Data Curator's Toolbox</h1>
 
-Research Data Curator's Toolbox
-
-</h1>
-
-<p style="font-size: 1.5rem; opacity: 0.9;">
-
-Expert Workflows for Digital Curation & Preservation
-
-</p>
+<p style="font-size: 1.5rem; opacity: 0.9; font-family: 'Montserrat', sans-serif;">Expert Workflows for Digital Curation & Preservation</p>
 :::
 
 ## Welcome
@@ -25,20 +17,20 @@ Expert Workflows for Digital Curation & Preservation
 This guide provides a collection of robust, documented R workflows to support Research Data Management (RDM) — from the moment data is ingested to its final archival reporting. Our goal is to empower curators to transform raw submissions into FAIR (Findable, Accessible, Interoperable, Reusable) research objects.
 
 :::::: grid
-::: {.g-col-12 .g-col-md-4}
-### 🛠️ Triage & Inspect
+::: {.g-col-12 .g-col-md-4 .nav-card .p-3}
+<h3 class="nav-card-title">🛠️ Triage & Inspect</h3>
 
 Automated analysis of file extensions, formats, and basic integrity to identify immediate risks.
 :::
 
-::: {.g-col-12 .g-col-md-4}
-### 🔍 Deep Validation
+::: {.g-col-12 .g-col-md-4 .nav-card .p-3}
+<h3 class="nav-card-title">🔍 Deep Validation</h3>
 
 Specialized inspection for Tabular, Spatial, and Scientific data to ensure internal consistency.
 :::
 
-::: {.g-col-12 .g-col-md-4}
-### 📊 Archival Reporting
+::: {.g-col-12 .g-col-md-4 .nav-card .p-3}
+<h3 class="nav-card-title">📊 Archival Reporting</h3>
 
 Generation of standardized curation reports, metadata summaries, and risk logs for depositors.
 :::

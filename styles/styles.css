@@ -1,8 +1,165 @@
-/* Keep typography clean and readable for long-form tech writing */
+/* Alliance Brand Identity - Stylesheet */
+
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+
 :root {
-  --rdm-accent: #0b7285;
+  /* Primary Palette */
+  --alliance-teal-dark: #006666;
+  --alliance-teal-bright: #51BE9C;
+  --alliance-yellow: #D6AB00;
+  --alliance-grey-digital: #32322F;
+  
+  /* Secondary Palette */
+  --alliance-grey-warm: #B7B6B3;
+  --alliance-white-warm: #FBFAFA;
+  
+  /* Accent Palette */
+  --alliance-blue-accent: #A8E4E2;
+  --alliance-coral-accent: #F37D53;
+  --alliance-maple-accent: #B3021A;
 }
-.book .navbar-brand { font-weight: 700; }
-.book .sidebar .book-toc a.active { color: var(--rdm-accent); }
-.callout-tip { border-left-color: var(--rdm-accent) !important; }
-pre code { font-size: 0.95rem; }
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  color: var(--alliance-grey-digital);
+  background-color: var(--alliance-white-warm);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: 500;
+  color: var(--alliance-teal-dark);
+}
+
+/* Navbar */
+.navbar {
+  background-color: var(--alliance-teal-dark) !important;
+  border-bottom: 3px solid var(--alliance-yellow);
+}
+
+.navbar-title, .navbar-brand {
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: 700;
+  color: white !important;
+}
+
+/* Sidebar */
+.sidebar {
+  background-color: white;
+}
+
+.sidebar .book-toc a.active {
+  color: var(--alliance-teal-dark) !important;
+  font-weight: 600;
+  border-left: 3px solid var(--alliance-yellow);
+}
+
+/* Callouts */
+.callout.callout-style-default {
+  border-left-width: 5px;
+}
+
+.callout-note {
+  border-left-color: var(--alliance-teal-bright) !important;
+}
+.callout-note .callout-header {
+  background-color: rgba(81, 190, 156, 0.1);
+  color: var(--alliance-teal-dark);
+}
+
+.callout-warning {
+  border-left-color: var(--alliance-yellow) !important;
+}
+.callout-warning .callout-header {
+  background-color: rgba(214, 171, 0, 0.1);
+  color: #8a6d00;
+}
+
+.callout-important {
+  border-left-color: var(--alliance-coral-accent) !important;
+}
+.callout-important .callout-header {
+  background-color: rgba(243, 125, 83, 0.1);
+}
+
+.callout-tip {
+  border-left-color: var(--alliance-blue-accent) !important;
+}
+
+.callout-caution {
+  border-left-color: var(--alliance-maple-accent) !important;
+}
+
+/* Home Page Specifics */
+.hero-banner {
+  background: linear-gradient(135deg, var(--alliance-teal-dark) 0%, var(--alliance-teal-bright) 100%);
+  padding: 4rem 2rem;
+  color: white;
+  border-radius: 12px;
+  margin-bottom: 3rem;
+  box-shadow: 0 10px 30px rgba(0, 102, 102, 0.2);
+}
+
+.hero-banner h1 {
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.nav-card {
+  border: 1px solid var(--alliance-grey-warm);
+  transition: all 0.3s ease;
+  border-radius: 10px;
+}
+
+.nav-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--alliance-teal-bright);
+  box-shadow: 0 5px 15px rgba(0, 102, 102, 0.1);
+}
+
+.nav-card-title {
+  color: var(--alliance-teal-dark);
+  font-weight: 700;
+}
+
+/* Code blocks */
+pre code {
+  font-size: 0.9rem;
+}
+
+/* Dark Mode Adjustments */
+[data-quarto-color-scheme="dark"] {
+  --alliance-teal-dark: #008080; /* Slightly brighter for dark background */
+  --alliance-white-warm: #1a1a1a;
+  --alliance-grey-digital: #e0e0e0;
+}
+
+[data-quarto-color-scheme="dark"] body {
+  background-color: var(--alliance-white-warm);
+  color: var(--alliance-grey-digital);
+}
+
+[data-quarto-color-scheme="dark"] .sidebar, 
+[data-quarto-color-scheme="dark"] .sidebar-navigation {
+  background-color: #121212;
+}
+
+[data-quarto-color-scheme="dark"] .nav-card {
+  background-color: #252525;
+  border-color: #444;
+}
+
+/* Links */
+a {
+  color: var(--alliance-teal-dark);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+a:hover {
+  color: var(--alliance-teal-bright);
+}
+
+[data-quarto-color-scheme="dark"] a {
+  color: var(--alliance-teal-bright);
+}

@@ -33,7 +33,7 @@ Image-only documents are effectively invisible to automated indexing and assisti
 
 ## Setup
 
-**Prerequisite:** To use `daiR`[@daiR-2], you must have a Google Cloud Project with the **Document AI API** enabled and a Service Account JSON key.
+**Prerequisite:** To use `daiR`[@daiR], you must have a Google Cloud Project with the **Document AI API** enabled and a Service Account JSON key.
 
 ### R Packages
 
