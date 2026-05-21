@@ -60,26 +60,7 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -170,7 +151,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Research Data Curator’s Toolbox</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Research Data Curator’s Toolbox // Boîte à outils du curateur de données de recherche</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -214,7 +195,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_Text_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Text (.txt) and Markdown (.md) Files</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Text (.txt) and Markdown (.md) Files // Fichiers texte (.txt) et Markdown (.md)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -260,13 +241,13 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_csv_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">CSV Files</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">CSV Files // Fichiers CSV</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_xlsx_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Excel (.xls, .xlsx) Files</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Excel (.xls, .xlsx) Files // Fichiers Excel (.xls, .xlsx)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -330,7 +311,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_nc_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">NetCDF Files</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">NetCDF Files // Fichiers NetCDF</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -376,7 +357,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Inspect_Images_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Image Quality Control</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Image Quality Control // Contrôle de la qualité de l’image</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -393,23 +374,22 @@ div.csl-indent {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">4.1</span> Overview</a></li>
-  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup"><span class="header-section-number">4.2</span> Setup</a>
+  <li><a href="#overview-aperçu" id="toc-overview-aperçu" class="nav-link active" data-scroll-target="#overview-aperçu"><span class="header-section-number">4.1</span> Overview // Aperçu</a></li>
+  <li><a href="#setup-configuration" id="toc-setup-configuration" class="nav-link" data-scroll-target="#setup-configuration"><span class="header-section-number">4.2</span> Setup // Configuration</a>
   <ul class="collapse">
-  <li><a href="#r-packages" id="toc-r-packages" class="nav-link" data-scroll-target="#r-packages"><span class="header-section-number">4.2.1</span> R Packages</a></li>
-  <li><a href="#load-libraries" id="toc-load-libraries" class="nav-link" data-scroll-target="#load-libraries"><span class="header-section-number">4.2.2</span> Load libraries</a></li>
+  <li><a href="#r-packages-packages-r" id="toc-r-packages-packages-r" class="nav-link" data-scroll-target="#r-packages-packages-r"><span class="header-section-number">4.2.1</span> R Packages // Packages R</a></li>
+  <li><a href="#load-libraries-charger-les-bibliothèques" id="toc-load-libraries-charger-les-bibliothèques" class="nav-link" data-scroll-target="#load-libraries-charger-les-bibliothèques"><span class="header-section-number">4.2.2</span> Load libraries // Charger les bibliothèques</a></li>
   </ul></li>
-  <li><a href="#select-target-directory" id="toc-select-target-directory" class="nav-link" data-scroll-target="#select-target-directory"><span class="header-section-number">4.3</span> Select Target Directory</a></li>
-  <li><a href="#find-pdf-files" id="toc-find-pdf-files" class="nav-link" data-scroll-target="#find-pdf-files"><span class="header-section-number">4.4</span> Find PDF Files</a></li>
-  <li><a href="#file-inventory-and-inspection" id="toc-file-inventory-and-inspection" class="nav-link" data-scroll-target="#file-inventory-and-inspection"><span class="header-section-number">4.5</span> File inventory and inspection</a></li>
-  <li><a href="#save-results" id="toc-save-results" class="nav-link" data-scroll-target="#save-results"><span class="header-section-number">4.6</span> Save Results</a></li>
-  <li><a href="#curation-insights" id="toc-curation-insights" class="nav-link" data-scroll-target="#curation-insights"><span class="header-section-number">4.7</span> Curation Insights</a></li>
-  <li><a href="#additional-tools" id="toc-additional-tools" class="nav-link" data-scroll-target="#additional-tools"><span class="header-section-number">4.8</span> Additional Tools</a></li>
-  <li><a href="#using-the-non-interactive-r-script" id="toc-using-the-non-interactive-r-script" class="nav-link" data-scroll-target="#using-the-non-interactive-r-script"><span class="header-section-number">4.9</span> Using the Non-Interactive R Script</a>
+  <li><a href="#select-a-target-directory-sélectionnez-un-répertoire-de-destination" id="toc-select-a-target-directory-sélectionnez-un-répertoire-de-destination" class="nav-link" data-scroll-target="#select-a-target-directory-sélectionnez-un-répertoire-de-destination"><span class="header-section-number">4.3</span> Select a target directory // Sélectionnez un répertoire de destination</a></li>
+  <li><a href="#find-pdf-files-rechercher-des-fichiers-pdf" id="toc-find-pdf-files-rechercher-des-fichiers-pdf" class="nav-link" data-scroll-target="#find-pdf-files-rechercher-des-fichiers-pdf"><span class="header-section-number">4.4</span> Find PDF Files // Rechercher des fichiers PDF</a></li>
+  <li><a href="#file-inventory-and-inspection-inventaire-et-analyse-des-fichiers" id="toc-file-inventory-and-inspection-inventaire-et-analyse-des-fichiers" class="nav-link" data-scroll-target="#file-inventory-and-inspection-inventaire-et-analyse-des-fichiers"><span class="header-section-number">4.5</span> File inventory and inspection // Inventaire et analyse des fichiers</a></li>
+  <li><a href="#save-results-enregistrer-les-résultats" id="toc-save-results-enregistrer-les-résultats" class="nav-link" data-scroll-target="#save-results-enregistrer-les-résultats"><span class="header-section-number">4.6</span> Save Results // Enregistrer les résultats</a></li>
+  <li><a href="#curation-insights-aperçu-de-la-curation" id="toc-curation-insights-aperçu-de-la-curation" class="nav-link" data-scroll-target="#curation-insights-aperçu-de-la-curation"><span class="header-section-number">4.7</span> Curation Insights // Aperçu de la curation</a></li>
+  <li><a href="#additional-tools-outils-supplémentaires" id="toc-additional-tools-outils-supplémentaires" class="nav-link" data-scroll-target="#additional-tools-outils-supplémentaires"><span class="header-section-number">4.8</span> Additional Tools // Outils supplémentaires</a></li>
+  <li><a href="#using-the-non-interactive-r-script-utilisation-du-script-r-non-interactif" id="toc-using-the-non-interactive-r-script-utilisation-du-script-r-non-interactif" class="nav-link" data-scroll-target="#using-the-non-interactive-r-script-utilisation-du-script-r-non-interactif"><span class="header-section-number">4.9</span> Using the Non-Interactive R Script // Utilisation du script R non interactif</a>
   <ul class="collapse">
-  <li><a href="#example-hpc-submission-script" id="toc-example-hpc-submission-script" class="nav-link" data-scroll-target="#example-hpc-submission-script"><span class="header-section-number">4.9.1</span> Example HPC Submission Script</a></li>
+  <li><a href="#example-hpc-submission-script-exemple-de-script-de-soumission-hpc" id="toc-example-hpc-submission-script-exemple-de-script-de-soumission-hpc" class="nav-link" data-scroll-target="#example-hpc-submission-script-exemple-de-script-de-soumission-hpc"><span class="header-section-number">4.9.1</span> Example HPC Submission Script // Exemple de script de soumission HPC</a></li>
   </ul></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">4.10</span> References</a></li>
   </ul>
 </nav>
 </nav>
@@ -451,48 +431,62 @@ div.csl-indent {
 </header>
 
 
-<section id="overview" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">4.1</span> Overview</h2>
+<section id="overview-aperçu" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="overview-aperçu"><span class="header-section-number">4.1</span> Overview // Aperçu</h2>
 <p>PDF is considered the standard for fixed-layout documents. However, not all PDFs are created in the same manner.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Curation Goal">
+<p>//</p>
+<p>Le format PDF est considéré comme la norme pour les documents à mise en page fixe. Cependant, tous les fichiers PDF ne sont pas créés de la même manière.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Curation Goal // Objectif de la curation">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Curation Goal
+<span class="screen-reader-only">Note</span>Curation Goal // Objectif de la curation
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Validate the archival suitability of PDF documents. Our objective is to distinguish between high-quality PDF/A files and “Image-Only” scans, ensuring content is searchable, accessible, and free from encryption that would lock data away.</p>
+<p>Validate the archival suitability of PDF documents. Our objective is to distinguish between high-quality PDF/A files and “Image-Only” scans, ensuring content is searchable, accessible, and free from encryption that would lock data away. // Vérifier si les documents PDF sont adaptés à l’archivage. Notre objectif est de distinguer les fichiers PDF/A de haute qualité des numérisations « uniquement sous forme d’images », afin de garantir que le contenu soit consultable, accessible et exempt de tout cryptage susceptible d’en bloquer l’accès.</p>
 </div>
 </div>
-<div class="callout callout-style-default callout-warning callout-titled" title="Preservation Risk">
+<div class="callout callout-style-default callout-warning callout-titled" title="Identifying Risks // Identification des risques">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Preservation Risk
+<span class="screen-reader-only">Warning</span>Identifying Risks // Identification des risques
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Not all PDFs are equal. Encrypted files, image-only scans without OCR, and documents with external font dependencies pose significant risks for long-term accessibility and automated text mining.</p>
+<p>Not all PDFs are equal. Encrypted files, image-only scans without OCR, and documents with external font dependencies pose significant risks for long-term accessibility and automated text mining. // Tous les fichiers PDF ne se valent pas. Les fichiers cryptés, les numérisations contenant uniquement des images sans OCR et les documents dépendant de polices externes présentent des risques importants pour l’accessibilité à long terme et l’exploration automatisée de textes.</p>
 </div>
 </div>
-<p><strong>This notebook evaluates PDF files on three critical dimensions:</strong></p>
+<p><strong>This notebook evaluates PDF files on three dimensions:</strong></p>
 <ol type="1">
 <li><strong>Security:</strong> Detecting Encryption or password protection.</li>
 <li><strong>Accessibility:</strong> Categorizing files as Searchable or Image-Only documents.</li>
 <li><strong>Metadata Quality:</strong> Checking for embedded Title and Author fields.</li>
 </ol>
+<p>//</p>
+<p><strong>Ce cahier d’exercices évalue les fichiers PDF selon trois critères :</strong></p>
+<ol type="1">
+<li><strong>Sécurité :</strong> détection d’un cryptage ou d’une protection par mot de passe.</li>
+<li><strong>Accessibilité :</strong> classification des fichiers en documents consultables ou en documents contenant uniquement des images.</li>
+<li><strong>Qualité des métadonnées :</strong> vérification de la présence des champs « Titre » et « Auteur » intégrés.</li>
+</ol>
 <hr>
 </section>
-<section id="setup" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="setup"><span class="header-section-number">4.2</span> Setup</h2>
+<section id="setup-configuration" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="setup-configuration"><span class="header-section-number">4.2</span> Setup // Configuration</h2>
 <p>We use <code>pdftools</code> for PDF analysis and <code>tidyverse</code> for reporting.</p>
-<section id="r-packages" class="level3" data-number="4.2.1">
-<h3 data-number="4.2.1" class="anchored" data-anchor-id="r-packages"><span class="header-section-number">4.2.1</span> R Packages</h3>
+<p>//</p>
+<p>Nous utilisons <code>pdftools</code> pour l’analyse des fichiers PDF et <code>tidyverse</code> pour la création de rapports.</p>
+<section id="r-packages-packages-r" class="level3" data-number="4.2.1">
+<h3 data-number="4.2.1" class="anchored" data-anchor-id="r-packages-packages-r"><span class="header-section-number">4.2.1</span> R Packages // Packages R</h3>
+<p>The following R packages are required. If you don’t have these packages, uncomment this code and run it once in your R console:</p>
+<p>//</p>
+<p>Les packages R suivants sont requis. Si vous ne disposez pas de ces packages, décommentez ce code et exécutez-le une fois dans votre console R :</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -500,8 +494,8 @@ div.csl-indent {
 </details>
 </div>
 </section>
-<section id="load-libraries" class="level3" data-number="4.2.2">
-<h3 data-number="4.2.2" class="anchored" data-anchor-id="load-libraries"><span class="header-section-number">4.2.2</span> Load libraries</h3>
+<section id="load-libraries-charger-les-bibliothèques" class="level3" data-number="4.2.2">
+<h3 data-number="4.2.2" class="anchored" data-anchor-id="load-libraries-charger-les-bibliothèques"><span class="header-section-number">4.2.2</span> Load libraries // Charger les bibliothèques</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -512,32 +506,38 @@ div.csl-indent {
 </div>
 </section>
 </section>
-<section id="select-target-directory" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="select-target-directory"><span class="header-section-number">4.3</span> Select Target Directory</h2>
+<section id="select-a-target-directory-sélectionnez-un-répertoire-de-destination" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="select-a-target-directory-sélectionnez-un-répertoire-de-destination"><span class="header-section-number">4.3</span> Select a target directory // Sélectionnez un répertoire de destination</h2>
+<p>This block allows for interactive selection of the image directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.</p>
+<p>//</p>
+<p>Ce bloc permet de sélectionner de manière interactive le répertoire contenant les images. En cas d’exécution dans un environnement non interactif, le chemin par défaut est celui défini dans l’en-tête YAML.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">interactive</span>() <span class="sc">&amp;&amp;</span> .Platform<span class="sc">$</span>OS.type <span class="sc">==</span> <span class="st">"windows"</span>) { </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  selected_dir <span class="ot">&lt;-</span> rstudioapi<span class="sc">::</span><span class="fu">selectDirectory</span>(<span class="at">caption =</span> <span class="st">"Select PDF Directory"</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  selected_dir <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(selected_dir)) {</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  target_dir <span class="ot">&lt;-</span> selected_dir</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  target_dir <span class="ot">&lt;-</span> params<span class="sc">$</span>target_dir</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Analyzing directory:"</span>, target_dir))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Try to select interactively if in RStudio</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">interactive</span>() <span class="sc">&amp;&amp;</span> .Platform<span class="sc">$</span>OS.type <span class="sc">==</span> <span class="st">"windows"</span>) { </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># .Platform check helps avoid errors in some non-interactive rendering contexts</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  selected_dir <span class="ot">&lt;-</span> rstudioapi<span class="sc">::</span><span class="fu">selectDirectory</span>(<span class="at">caption =</span> <span class="st">"Select Image Directory"</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  selected_dir <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Logic to determine final directory (Interactive vs Parameter)</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(selected_dir)) {</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  target_dir <span class="ot">&lt;-</span> selected_dir</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  target_dir <span class="ot">&lt;-</span> params<span class="sc">$</span>target_dir</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Analyzing directory:"</span>, target_dir))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Analyzing directory: data/Inspect_pdf/"</code></pre>
 </div>
 </div>
 </section>
-<section id="find-pdf-files" class="level2" data-number="4.4">
-<h2 data-number="4.4" class="anchored" data-anchor-id="find-pdf-files"><span class="header-section-number">4.4</span> Find PDF Files</h2>
+<section id="find-pdf-files-rechercher-des-fichiers-pdf" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="find-pdf-files-rechercher-des-fichiers-pdf"><span class="header-section-number">4.4</span> Find PDF Files // Rechercher des fichiers PDF</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -556,9 +556,11 @@ div.csl-indent {
 </div>
 </div>
 </section>
-<section id="file-inventory-and-inspection" class="level2" data-number="4.5">
-<h2 data-number="4.5" class="anchored" data-anchor-id="file-inventory-and-inspection"><span class="header-section-number">4.5</span> File inventory and inspection</h2>
+<section id="file-inventory-and-inspection-inventaire-et-analyse-des-fichiers" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="file-inventory-and-inspection-inventaire-et-analyse-des-fichiers"><span class="header-section-number">4.5</span> File inventory and inspection // Inventaire et analyse des fichiers</h2>
 <p>We iterate through the files to extract metadata, check for encryption, and sample the text content to determine its accessibility status.</p>
+<p>//</p>
+<p>Nous parcourons les fichiers pour en extraire les métadonnées, vérifier s’ils sont cryptés et analyser un échantillon du contenu textuel afin de déterminer leur niveau d’accessibilité.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -652,8 +654,8 @@ div.csl-indent {
 </div>
 </div>
 </section>
-<section id="save-results" class="level2" data-number="4.6">
-<h2 data-number="4.6" class="anchored" data-anchor-id="save-results"><span class="header-section-number">4.6</span> Save Results</h2>
+<section id="save-results-enregistrer-les-résultats" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="save-results-enregistrer-les-résultats"><span class="header-section-number">4.6</span> Save Results // Enregistrer les résultats</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -671,30 +673,47 @@ div.csl-indent {
 </div>
 </div>
 </section>
-<section id="curation-insights" class="level2" data-number="4.7">
-<h2 data-number="4.7" class="anchored" data-anchor-id="curation-insights"><span class="header-section-number">4.7</span> Curation Insights</h2>
-<p>Use the generated CSV report to guide your preservation actions:</p>
+<section id="curation-insights-aperçu-de-la-curation" class="level2" data-number="4.7">
+<h2 data-number="4.7" class="anchored" data-anchor-id="curation-insights-aperçu-de-la-curation"><span class="header-section-number">4.7</span> Curation Insights // Aperçu de la curation</h2>
+<p>Use the generated CSV report to guide your actions:</p>
 <ul>
-<li><p><strong>Encryption (Encrypted = TRUE):</strong> Encrypted files cannot be migrated, indexed, or arguably “preserved.” Curators must contact the depositor immediately to remove the password. If the password is lost, the file cannot be reused.</p></li>
-<li><p><strong>Accessibility (TextStatus = “Image-Only”):</strong> These are scanned images. They are readable by humans but invisible to search engines and screen readers (accessibility violation). You can run these files through an OCR tool (like Tesseract or Adobe Acrobat) to generate a text layer.</p></li>
+<li><p><strong>Encryption (Encrypted = TRUE):</strong> Encrypted files cannot be migrated, indexed, or preserved. Contact the depositor to discuss removing the password. If the password is lost, the file cannot be reused.</p></li>
+<li><p><strong>Accessibility (TextStatus = “Image-Only”):</strong> These are scanned images. They are readable by humans but invisible to search engines and screen readers (accessibility violation). You can run these files through an OCR tool like Tesseract or Adobe Acrobat to generate a text layer.</p></li>
 <li><p><strong>Font Embedding (Fonts):</strong> If Fonts is empty or lists generic names like “Helvetica” without embedding, the layout may break on future systems. the curator can convert the file to PDF/A-1b or PDF/A-2b, which forces font embedding.</p></li>
 </ul>
+<p>//</p>
+<p>Utilisez le rapport CSV généré pour orienter vos actions :</p>
+<ul>
+<li><p><strong>Chiffrement (Encrypted = TRUE) :</strong> Les fichiers chiffrés ne peuvent être ni migrés, ni indexés, ni conservés. Contactez le déposant pour discuter de la suppression du mot de passe. Si le mot de passe est perdu, le fichier ne pourra pas être réutilisé.</p></li>
+<li><p><strong>Accessibilité (TextStatus = « Image-Only ») :</strong> Il s’agit d’images numérisées. Elles sont lisibles par les humains mais invisibles pour les moteurs de recherche et les lecteurs d’écran (violation de l’accessibilité). Vous pouvez traiter ces fichiers à l’aide d’un outil OCR tel que Tesseract ou Adobe Acrobat afin de générer une couche de texte.</p></li>
+<li><p><strong>Intégration des polices (Fonts) :</strong> Si le champ « Fonts » est vide ou contient des noms génériques tels que « Helvetica » sans intégration, la mise en page risque d’être altérée sur les systèmes futurs. Le conservateur peut convertir le fichier au format PDF/A-1b ou PDF/A-2b, ce qui force l’intégration des polices.</p></li>
+</ul>
 </section>
-<section id="additional-tools" class="level2" data-number="4.8">
-<h2 data-number="4.8" class="anchored" data-anchor-id="additional-tools"><span class="header-section-number">4.8</span> Additional Tools</h2>
+<section id="additional-tools-outils-supplémentaires" class="level2" data-number="4.8">
+<h2 data-number="4.8" class="anchored" data-anchor-id="additional-tools-outils-supplémentaires"><span class="header-section-number">4.8</span> Additional Tools // Outils supplémentaires</h2>
 <ul>
 <li><p><strong>VeraPDF:</strong> This is the standard open-source validator for PDF/A compliance. It checks if fonts are embedded and if multimedia is excluded (see https://verapdf.org).</p></li>
 <li><p><strong>Tesseract OCR:</strong> Is an <a href="https://github.com/tesseract-ocr/tesseract">open-source engine</a> for optical character recognition . It can take an “Image-Only” PDF and output a searchable text file or a new PDF with a text layer.</p></li>
 <li><p><strong>Google AI:</strong> Extractd text and data from images and documents using <a href="https://cloud.google.com/use-cases/ocr">AI capabilities</a>. See a use case in another <a href="./Inspect_OCR_Notebook.html">chapter of this book</a>.</p></li>
 <li><p><strong>Ghostscript:</strong> This is a <a href="https://ghostscript.com/">command-line interpreter</a> often used to repair corrupted PDFs or convert standard PDFs into PDF/A format.</p></li>
 </ul>
+<p>//</p>
+<ul>
+<li><p><strong>VeraPDF :</strong> Il s’agit du validateur open source de référence pour la conformité au format PDF/A. Il vérifie si les polices sont intégrées et si les éléments multimédias sont exclus (voir https://verapdf.org).</p></li>
+<li><p><strong>Tesseract OCR :</strong> Il s’agit d’un <a href="https://github.com/tesseract-ocr/tesseract">moteur open source</a> dédié à la reconnaissance optique de caractères. Il peut prendre un PDF « Image-Only » et générer un fichier texte consultable ou un nouveau PDF avec un calque de texte.</p></li>
+<li><p><strong>Google AI :</strong> Extrait du texte et des données à partir d’images et de documents à l’aide de <a href="https://cloud.google.com/use-cases/ocr">fonctionnalités d’IA</a>. Découvrez un cas d’utilisation dans un autre <a href="./Inspect_OCR_Notebook.html">chapitre de ce livre</a>.</p></li>
+<li><p><strong>Ghostscript :</strong> Il s’agit d’un <a href="https://ghostscript.com/">interpréteur en ligne de commande</a> souvent utilisé pour réparer des PDF corrompus ou convertir des PDF standard au format PDF/A.</p></li>
+</ul>
 </section>
-<section id="using-the-non-interactive-r-script" class="level2" data-number="4.9">
-<h2 data-number="4.9" class="anchored" data-anchor-id="using-the-non-interactive-r-script"><span class="header-section-number">4.9</span> Using the Non-Interactive R Script</h2>
+<section id="using-the-non-interactive-r-script-utilisation-du-script-r-non-interactif" class="level2" data-number="4.9">
+<h2 data-number="4.9" class="anchored" data-anchor-id="using-the-non-interactive-r-script-utilisation-du-script-r-non-interactif"><span class="header-section-number">4.9</span> Using the Non-Interactive R Script // Utilisation du script R non interactif</h2>
 <p>For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.</p>
 <p>Download the <strong>R Script:</strong> <a href="Scripts/Inspect_PDF_Script.R"><strong><code>Inspect_PDF_Script.R</code></strong></a></p>
-<section id="example-hpc-submission-script" class="level3" data-number="4.9.1">
-<h3 data-number="4.9.1" class="anchored" data-anchor-id="example-hpc-submission-script"><span class="header-section-number">4.9.1</span> Example HPC Submission Script</h3>
+<p>//</p>
+<p>Pour les utilisateurs qui souhaitent exécuter cette analyse sur un serveur, dans le cadre d’un traitement par lots ou depuis la ligne de commande, voici un script R pur qui effectue le même processus.</p>
+<p>Télécharger le <strong>script R :</strong> <a href="Scripts/Inspect_PDF_Script.R"><strong><code>Inspect_PDF_Script.R</code></strong></a></p>
+<section id="example-hpc-submission-script-exemple-de-script-de-soumission-hpc" class="level3" data-number="4.9.1">
+<h3 data-number="4.9.1" class="anchored" data-anchor-id="example-hpc-submission-script-exemple-de-script-de-soumission-hpc"><span class="header-section-number">4.9.1</span> Example HPC Submission Script // Exemple de script de soumission HPC</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=pdf_inspect</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --nodes=1</span></span>
@@ -715,17 +734,11 @@ div.csl-indent {
 <span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Run</span></span>
 <span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Starting PDF Inspection on </span><span class="va">$TARGET_DIR</span><span class="st">"</span></span>
 <span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> Inspect_PDF_Script.R <span class="st">"</span><span class="va">$TARGET_DIR</span><span class="st">"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-</section>
-<section id="references" class="level2" data-number="4.10">
-<h2 data-number="4.10" class="anchored" data-anchor-id="references"><span class="header-section-number">4.10</span> References</h2>
-<div id="refs" role="list" style="display: none">
-
-</div>
 
 
 <!-- -->
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -1187,8 +1200,8 @@ div.csl-indent {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./Inspect_Text_Notebook.html" class="pagination-link" aria-label="Text (.txt) and Markdown (.md) Files">
-        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Text (.txt) and Markdown (.md) Files</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./Inspect_Text_Notebook.html" class="pagination-link" aria-label="Text (.txt) and Markdown (.md) Files // Fichiers texte (.txt) et Markdown (.md)">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Text (.txt) and Markdown (.md) Files // Fichiers texte (.txt) et Markdown (.md)</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
@@ -1207,233 +1220,294 @@ div.csl-indent {
 <span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co">  target_dir: "data/Inspect_pdf/"</span></span>
 <span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## Overview</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## Overview // Aperçu</span></span>
 <span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>PDF is considered the standard for fixed-layout documents. However, not all PDFs are created in the same manner.</span>
 <span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Curation Goal"}</span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>Validate the archival suitability of PDF documents. Our objective is to distinguish between high-quality PDF/A files and "Image-Only" scans, ensuring content is searchable, accessible, and free from encryption that would lock data away.</span>
-<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>//</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>Le format PDF est considéré comme la norme pour les documents à mise en page fixe. Cependant, tous les fichiers PDF ne sont pas créés de la même manière.</span>
 <span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title="Preservation Risk"}</span>
-<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>Not all PDFs are equal. Encrypted files, image-only scans without OCR, and documents with external font dependencies pose significant risks for long-term accessibility and automated text mining.</span>
-<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>**This notebook evaluates PDF files on three critical dimensions:**</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Curation Goal // Objectif de la curation"}</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>Validate the archival suitability of PDF documents. Our objective is to distinguish between high-quality PDF/A files and "Image-Only" scans, ensuring content is searchable, accessible, and free from encryption that would lock data away.</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>//</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>Vérifier si les documents PDF sont adaptés à l'archivage. Notre objectif est de distinguer les fichiers PDF/A de haute qualité des numérisations « uniquement sous forme d'images », afin de garantir que le contenu soit consultable, accessible et exempt de tout cryptage susceptible d'en bloquer l'accès.</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**Security:** Detecting Encryption or password protection.</span>
-<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**Accessibility:** Categorizing files as Searchable or Image-Only documents.</span>
-<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**Metadata Quality:** Checking for embedded Title and Author fields.</span>
-<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title="Identifying Risks // Identification des risques"}</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>Not all PDFs are equal. Encrypted files, image-only scans without OCR, and documents with external font dependencies pose significant risks for long-term accessibility and automated text mining.</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>//</span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>Tous les fichiers PDF ne se valent pas. Les fichiers cryptés, les numérisations contenant uniquement des images sans OCR et les documents dépendant de polices externes présentent des risques importants pour l'accessibilité à long terme et l'exploration automatisée de textes.</span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a><span class="fu">## Setup</span></span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>**This notebook evaluates PDF files on three dimensions:**</span>
 <span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>We use <span class="in">`pdftools`</span> for PDF analysis and <span class="in">`tidyverse`</span> for reporting.</span>
-<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a><span class="fu">### R Packages</span></span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**Security:** Detecting Encryption or password protection.</span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**Accessibility:** Categorizing files as Searchable or Image-Only documents.</span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**Metadata Quality:** Checking for embedded Title and Author fields.</span>
 <span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(c("tidyverse", "pdftools", "rstudioapi"))</span></span>
-<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a><span class="fu">### Load libraries</span></span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a>// </span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a>**Ce cahier d'exercices évalue les fichiers PDF selon trois critères :**</span>
+<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**Sécurité :** détection d'un cryptage ou d'une protection par mot de passe.</span>
+<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**Accessibilité :** classification des fichiers en documents consultables ou en documents contenant uniquement des images.</span>
+<span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**Qualité des métadonnées :** vérification de la présence des champs « Titre » et « Auteur » intégrés.</span>
 <span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-52"><a href="#cb14-52" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb14-53"><a href="#cb14-53" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: load-libraries</span></span>
-<span id="cb14-54"><a href="#cb14-54" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb14-51"><a href="#cb14-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-52"><a href="#cb14-52" aria-hidden="true" tabindex="-1"></a><span class="fu">## Setup // Configuration</span></span>
+<span id="cb14-53"><a href="#cb14-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-54"><a href="#cb14-54" aria-hidden="true" tabindex="-1"></a>We use <span class="in">`pdftools`</span> for PDF analysis and <span class="in">`tidyverse`</span> for reporting.</span>
 <span id="cb14-55"><a href="#cb14-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-56"><a href="#cb14-56" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb14-57"><a href="#cb14-57" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pdftools)</span>
-<span id="cb14-58"><a href="#cb14-58" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rstudioapi)</span>
-<span id="cb14-59"><a href="#cb14-59" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb14-60"><a href="#cb14-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-61"><a href="#cb14-61" aria-hidden="true" tabindex="-1"></a><span class="fu">## Select Target Directory</span></span>
-<span id="cb14-62"><a href="#cb14-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-65"><a href="#cb14-65" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb14-66"><a href="#cb14-66" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: select-target-dir</span></span>
+<span id="cb14-56"><a href="#cb14-56" aria-hidden="true" tabindex="-1"></a>//</span>
+<span id="cb14-57"><a href="#cb14-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-58"><a href="#cb14-58" aria-hidden="true" tabindex="-1"></a>Nous utilisons <span class="in">`pdftools`</span> pour l'analyse des fichiers PDF et <span class="in">`tidyverse`</span> pour la création de rapports.</span>
+<span id="cb14-59"><a href="#cb14-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-60"><a href="#cb14-60" aria-hidden="true" tabindex="-1"></a><span class="fu">### R Packages // Packages R</span></span>
+<span id="cb14-61"><a href="#cb14-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-62"><a href="#cb14-62" aria-hidden="true" tabindex="-1"></a>The following R packages are required. If you don't have these packages, uncomment this code and run it once in your R console:</span>
+<span id="cb14-63"><a href="#cb14-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-64"><a href="#cb14-64" aria-hidden="true" tabindex="-1"></a>// </span>
+<span id="cb14-65"><a href="#cb14-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-66"><a href="#cb14-66" aria-hidden="true" tabindex="-1"></a>Les packages R suivants sont requis. Si vous ne disposez pas de ces packages, décommentez ce code et exécutez-le une fois dans votre console R :</span>
 <span id="cb14-67"><a href="#cb14-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-68"><a href="#cb14-68" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">interactive</span>() <span class="sc">&amp;&amp;</span> .Platform<span class="sc">$</span>OS.type <span class="sc">==</span> <span class="st">"windows"</span>) { </span>
-<span id="cb14-69"><a href="#cb14-69" aria-hidden="true" tabindex="-1"></a>  selected_dir <span class="ot">&lt;-</span> rstudioapi<span class="sc">::</span><span class="fu">selectDirectory</span>(<span class="at">caption =</span> <span class="st">"Select PDF Directory"</span>)</span>
-<span id="cb14-70"><a href="#cb14-70" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb14-71"><a href="#cb14-71" aria-hidden="true" tabindex="-1"></a>  selected_dir <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb14-72"><a href="#cb14-72" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-70"><a href="#cb14-70" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb14-71"><a href="#cb14-71" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(c("tidyverse", "pdftools", "rstudioapi"))</span></span>
+<span id="cb14-72"><a href="#cb14-72" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb14-73"><a href="#cb14-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-74"><a href="#cb14-74" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(selected_dir)) {</span>
-<span id="cb14-75"><a href="#cb14-75" aria-hidden="true" tabindex="-1"></a>  target_dir <span class="ot">&lt;-</span> selected_dir</span>
-<span id="cb14-76"><a href="#cb14-76" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb14-77"><a href="#cb14-77" aria-hidden="true" tabindex="-1"></a>  target_dir <span class="ot">&lt;-</span> params<span class="sc">$</span>target_dir</span>
-<span id="cb14-78"><a href="#cb14-78" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb14-79"><a href="#cb14-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-80"><a href="#cb14-80" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Analyzing directory:"</span>, target_dir))</span>
-<span id="cb14-81"><a href="#cb14-81" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb14-82"><a href="#cb14-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-83"><a href="#cb14-83" aria-hidden="true" tabindex="-1"></a><span class="fu">## Find PDF Files</span></span>
-<span id="cb14-84"><a href="#cb14-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-87"><a href="#cb14-87" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb14-88"><a href="#cb14-88" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: find-files</span></span>
-<span id="cb14-89"><a href="#cb14-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-90"><a href="#cb14-90" aria-hidden="true" tabindex="-1"></a>pdf_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(</span>
-<span id="cb14-91"><a href="#cb14-91" aria-hidden="true" tabindex="-1"></a>  <span class="at">path =</span> target_dir,</span>
-<span id="cb14-92"><a href="#cb14-92" aria-hidden="true" tabindex="-1"></a>  <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.pdf$"</span>, </span>
-<span id="cb14-93"><a href="#cb14-93" aria-hidden="true" tabindex="-1"></a>  <span class="at">recursive =</span> <span class="cn">TRUE</span>, </span>
-<span id="cb14-94"><a href="#cb14-94" aria-hidden="true" tabindex="-1"></a>  <span class="at">full.names =</span> <span class="cn">TRUE</span>, </span>
-<span id="cb14-95"><a href="#cb14-95" aria-hidden="true" tabindex="-1"></a>  <span class="at">ignore.case =</span> <span class="cn">TRUE</span></span>
-<span id="cb14-96"><a href="#cb14-96" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb14-97"><a href="#cb14-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-98"><a href="#cb14-98" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Found"</span>, <span class="fu">length</span>(pdf_files), <span class="st">"PDF files."</span>))</span>
-<span id="cb14-99"><a href="#cb14-99" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb14-100"><a href="#cb14-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-101"><a href="#cb14-101" aria-hidden="true" tabindex="-1"></a><span class="fu">## File inventory and inspection</span></span>
-<span id="cb14-102"><a href="#cb14-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-103"><a href="#cb14-103" aria-hidden="true" tabindex="-1"></a>We iterate through the files to extract metadata, check for encryption, and sample the text content to determine its accessibility status.</span>
-<span id="cb14-104"><a href="#cb14-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-107"><a href="#cb14-107" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb14-108"><a href="#cb14-108" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: generate-report</span></span>
-<span id="cb14-109"><a href="#cb14-109" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
-<span id="cb14-110"><a href="#cb14-110" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
-<span id="cb14-111"><a href="#cb14-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-112"><a href="#cb14-112" aria-hidden="true" tabindex="-1"></a><span class="fu">message</span>(<span class="st">"Generating PDF Report..."</span>)</span>
-<span id="cb14-113"><a href="#cb14-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-114"><a href="#cb14-114" aria-hidden="true" tabindex="-1"></a>results_list <span class="ot">&lt;-</span> <span class="fu">lapply</span>(pdf_files, <span class="cf">function</span>(file_path) {</span>
-<span id="cb14-115"><a href="#cb14-115" aria-hidden="true" tabindex="-1"></a>  fname <span class="ot">&lt;-</span> <span class="fu">basename</span>(file_path)</span>
-<span id="cb14-116"><a href="#cb14-116" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb14-117"><a href="#cb14-117" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>({</span>
-<span id="cb14-118"><a href="#cb14-118" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1. Metadata &amp; Security</span></span>
-<span id="cb14-119"><a href="#cb14-119" aria-hidden="true" tabindex="-1"></a>    info <span class="ot">&lt;-</span> pdftools<span class="sc">::</span><span class="fu">pdf_info</span>(file_path)</span>
-<span id="cb14-120"><a href="#cb14-120" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb14-121"><a href="#cb14-121" aria-hidden="true" tabindex="-1"></a>    <span class="co"># NEW: Capture Encryption Status explicitly</span></span>
-<span id="cb14-122"><a href="#cb14-122" aria-hidden="true" tabindex="-1"></a>    is_encrypted <span class="ot">&lt;-</span> <span class="fu">isTRUE</span>(info<span class="sc">$</span>encrypted)</span>
-<span id="cb14-123"><a href="#cb14-123" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb14-124"><a href="#cb14-124" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2. Text Extraction</span></span>
-<span id="cb14-125"><a href="#cb14-125" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If encrypted, text extraction might fail, so we wrap it or handle it</span></span>
-<span id="cb14-126"><a href="#cb14-126" aria-hidden="true" tabindex="-1"></a>    first_page_text <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>(pdftools<span class="sc">::</span><span class="fu">pdf_text</span>(file_path)[<span class="dv">1</span>], <span class="at">error =</span> <span class="cf">function</span>(e) <span class="st">""</span>)</span>
-<span id="cb14-127"><a href="#cb14-127" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb14-128"><a href="#cb14-128" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Handle NA/NULL text</span></span>
-<span id="cb14-129"><a href="#cb14-129" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="fu">is.na</span>(first_page_text) <span class="sc">||</span> <span class="fu">is.null</span>(first_page_text)) first_page_text <span class="ot">&lt;-</span> <span class="st">""</span></span>
-<span id="cb14-130"><a href="#cb14-130" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb14-131"><a href="#cb14-131" aria-hidden="true" tabindex="-1"></a>    char_count <span class="ot">&lt;-</span> <span class="fu">nchar</span>(<span class="fu">trimws</span>(first_page_text))</span>
-<span id="cb14-132"><a href="#cb14-132" aria-hidden="true" tabindex="-1"></a>    has_text <span class="ot">&lt;-</span> char_count <span class="sc">&gt;</span> <span class="dv">10</span> </span>
-<span id="cb14-133"><a href="#cb14-133" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb14-134"><a href="#cb14-134" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 3. Fonts</span></span>
-<span id="cb14-135"><a href="#cb14-135" aria-hidden="true" tabindex="-1"></a>    fonts <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>(pdftools<span class="sc">::</span><span class="fu">pdf_fonts</span>(file_path), <span class="at">error =</span> <span class="cf">function</span>(e) <span class="cn">NULL</span>)</span>
-<span id="cb14-136"><a href="#cb14-136" aria-hidden="true" tabindex="-1"></a>    font_names <span class="ot">&lt;-</span> <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(fonts)) <span class="fu">paste</span>(<span class="fu">head</span>(<span class="fu">unique</span>(fonts<span class="sc">$</span>name), <span class="dv">5</span>), <span class="at">collapse =</span> <span class="st">", "</span>) <span class="cf">else</span> <span class="st">"Unknown"</span></span>
-<span id="cb14-137"><a href="#cb14-137" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb14-138"><a href="#cb14-138" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Helper for metadata</span></span>
-<span id="cb14-139"><a href="#cb14-139" aria-hidden="true" tabindex="-1"></a>    get_meta <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb14-140"><a href="#cb14-140" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">is.null</span>(x) <span class="sc">||</span> <span class="fu">length</span>(x) <span class="sc">==</span> <span class="dv">0</span> <span class="sc">||</span> x <span class="sc">==</span> <span class="st">""</span>) <span class="fu">return</span>(<span class="st">"Unknown"</span>)</span>
-<span id="cb14-141"><a href="#cb14-141" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(<span class="fu">as.character</span>(x))</span>
-<span id="cb14-142"><a href="#cb14-142" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb14-143"><a href="#cb14-143" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-144"><a href="#cb14-144" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return valid tibble with explicit types</span></span>
-<span id="cb14-145"><a href="#cb14-145" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tibble</span>(</span>
-<span id="cb14-146"><a href="#cb14-146" aria-hidden="true" tabindex="-1"></a>      <span class="at">FileName =</span> fname,</span>
-<span id="cb14-147"><a href="#cb14-147" aria-hidden="true" tabindex="-1"></a>      <span class="at">Pages =</span> <span class="fu">as.integer</span>(info<span class="sc">$</span>pages),</span>
-<span id="cb14-148"><a href="#cb14-148" aria-hidden="true" tabindex="-1"></a>      <span class="at">Encrypted =</span> <span class="fu">as.logical</span>(is_encrypted), <span class="co"># &lt;--- NEW COLUMN</span></span>
-<span id="cb14-149"><a href="#cb14-149" aria-hidden="true" tabindex="-1"></a>      <span class="at">Author =</span> <span class="fu">get_meta</span>(info<span class="sc">$</span>keys<span class="sc">$</span>Author),</span>
-<span id="cb14-150"><a href="#cb14-150" aria-hidden="true" tabindex="-1"></a>      <span class="at">Title =</span> <span class="fu">get_meta</span>(info<span class="sc">$</span>keys<span class="sc">$</span>Title),</span>
-<span id="cb14-151"><a href="#cb14-151" aria-hidden="true" tabindex="-1"></a>      <span class="at">Creator =</span> <span class="fu">get_meta</span>(info<span class="sc">$</span>keys<span class="sc">$</span>Creator),</span>
-<span id="cb14-152"><a href="#cb14-152" aria-hidden="true" tabindex="-1"></a>      <span class="at">Created =</span> <span class="fu">as.character</span>(info<span class="sc">$</span>created),</span>
-<span id="cb14-153"><a href="#cb14-153" aria-hidden="true" tabindex="-1"></a>      <span class="at">HasText =</span> <span class="fu">as.logical</span>(has_text),</span>
-<span id="cb14-154"><a href="#cb14-154" aria-hidden="true" tabindex="-1"></a>      <span class="at">FirstPageChars =</span> <span class="fu">as.integer</span>(char_count),</span>
-<span id="cb14-155"><a href="#cb14-155" aria-hidden="true" tabindex="-1"></a>      <span class="at">Fonts =</span> <span class="fu">as.character</span>(font_names),</span>
-<span id="cb14-156"><a href="#cb14-156" aria-hidden="true" tabindex="-1"></a>      <span class="at">Status =</span> <span class="st">"Success"</span></span>
-<span id="cb14-157"><a href="#cb14-157" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb14-158"><a href="#cb14-158" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb14-159"><a href="#cb14-159" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
-<span id="cb14-160"><a href="#cb14-160" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tibble</span>(</span>
-<span id="cb14-161"><a href="#cb14-161" aria-hidden="true" tabindex="-1"></a>      <span class="at">FileName =</span> fname,</span>
-<span id="cb14-162"><a href="#cb14-162" aria-hidden="true" tabindex="-1"></a>      <span class="at">Pages =</span> <span class="fu">as.integer</span>(<span class="cn">NA</span>),</span>
-<span id="cb14-163"><a href="#cb14-163" aria-hidden="true" tabindex="-1"></a>      <span class="at">Encrypted =</span> <span class="fu">as.logical</span>(<span class="cn">NA</span>),</span>
-<span id="cb14-164"><a href="#cb14-164" aria-hidden="true" tabindex="-1"></a>      <span class="at">Author =</span> <span class="fu">as.character</span>(<span class="cn">NA</span>),</span>
-<span id="cb14-165"><a href="#cb14-165" aria-hidden="true" tabindex="-1"></a>      <span class="at">Title =</span> <span class="fu">as.character</span>(<span class="cn">NA</span>),</span>
-<span id="cb14-166"><a href="#cb14-166" aria-hidden="true" tabindex="-1"></a>      <span class="at">Creator =</span> <span class="fu">as.character</span>(<span class="cn">NA</span>),</span>
-<span id="cb14-167"><a href="#cb14-167" aria-hidden="true" tabindex="-1"></a>      <span class="at">Created =</span> <span class="fu">as.character</span>(<span class="cn">NA</span>),</span>
-<span id="cb14-168"><a href="#cb14-168" aria-hidden="true" tabindex="-1"></a>      <span class="at">HasText =</span> <span class="fu">as.logical</span>(<span class="cn">NA</span>),</span>
-<span id="cb14-169"><a href="#cb14-169" aria-hidden="true" tabindex="-1"></a>      <span class="at">FirstPageChars =</span> <span class="fu">as.integer</span>(<span class="cn">NA</span>),</span>
-<span id="cb14-170"><a href="#cb14-170" aria-hidden="true" tabindex="-1"></a>      <span class="at">Fonts =</span> <span class="fu">as.character</span>(<span class="cn">NA</span>),</span>
-<span id="cb14-171"><a href="#cb14-171" aria-hidden="true" tabindex="-1"></a>      <span class="at">Status =</span> <span class="fu">paste</span>(<span class="st">"Failed:"</span>, e<span class="sc">$</span>message)</span>
-<span id="cb14-172"><a href="#cb14-172" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb14-173"><a href="#cb14-173" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb14-174"><a href="#cb14-174" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb14-175"><a href="#cb14-175" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-176"><a href="#cb14-176" aria-hidden="true" tabindex="-1"></a>report <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(results_list)</span>
-<span id="cb14-177"><a href="#cb14-177" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-178"><a href="#cb14-178" aria-hidden="true" tabindex="-1"></a><span class="co"># Display preview</span></span>
-<span id="cb14-179"><a href="#cb14-179" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"--- PDF Report Preview ---"</span>)</span>
-<span id="cb14-180"><a href="#cb14-180" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(report))</span>
-<span id="cb14-181"><a href="#cb14-181" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb14-182"><a href="#cb14-182" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-183"><a href="#cb14-183" aria-hidden="true" tabindex="-1"></a><span class="fu">## Save Results</span></span>
-<span id="cb14-184"><a href="#cb14-184" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-187"><a href="#cb14-187" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb14-188"><a href="#cb14-188" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: save-results</span></span>
-<span id="cb14-189"><a href="#cb14-189" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-190"><a href="#cb14-190" aria-hidden="true" tabindex="-1"></a>output_dir <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">"Results"</span>, <span class="st">"Inspect_pdf"</span>)</span>
-<span id="cb14-191"><a href="#cb14-191" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(output_dir, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb14-192"><a href="#cb14-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-193"><a href="#cb14-193" aria-hidden="true" tabindex="-1"></a>output_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(output_dir, <span class="fu">paste0</span>(<span class="st">"PDF_Report_"</span>, <span class="fu">Sys.Date</span>(), <span class="st">".csv"</span>))</span>
-<span id="cb14-194"><a href="#cb14-194" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-195"><a href="#cb14-195" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(report, output_file, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb14-196"><a href="#cb14-196" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-197"><a href="#cb14-197" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Report saved to:"</span>, output_file))</span>
-<span id="cb14-198"><a href="#cb14-198" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb14-199"><a href="#cb14-199" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-200"><a href="#cb14-200" aria-hidden="true" tabindex="-1"></a><span class="fu">## Curation Insights</span></span>
-<span id="cb14-201"><a href="#cb14-201" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-202"><a href="#cb14-202" aria-hidden="true" tabindex="-1"></a>Use the generated CSV report to guide your preservation actions:</span>
-<span id="cb14-203"><a href="#cb14-203" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-204"><a href="#cb14-204" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Encryption (Encrypted = TRUE):** Encrypted files cannot be migrated, indexed, or arguably "preserved." Curators must contact the depositor immediately to remove the password. If the password is lost, the file cannot be reused.</span>
-<span id="cb14-205"><a href="#cb14-205" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-206"><a href="#cb14-206" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Accessibility (TextStatus = "Image-Only"):** These are scanned images. They are readable by humans but invisible to search engines and screen readers (accessibility violation). You can run these files through an OCR tool (like Tesseract or Adobe Acrobat) to generate a text layer.</span>
-<span id="cb14-207"><a href="#cb14-207" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-208"><a href="#cb14-208" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Font Embedding (Fonts):** If Fonts is empty or lists generic names like "Helvetica" without embedding, the layout may break on future systems. the curator can convert the file to PDF/A-1b or PDF/A-2b, which forces font embedding.</span>
-<span id="cb14-209"><a href="#cb14-209" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-210"><a href="#cb14-210" aria-hidden="true" tabindex="-1"></a><span class="fu">## Additional Tools</span></span>
-<span id="cb14-211"><a href="#cb14-211" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-212"><a href="#cb14-212" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**VeraPDF:** This is the standard open-source validator for PDF/A compliance. It checks if fonts are embedded and if multimedia is excluded (see https://verapdf.org).</span>
-<span id="cb14-213"><a href="#cb14-213" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-214"><a href="#cb14-214" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Tesseract OCR:** Is an <span class="co">[</span><span class="ot">open-source engine</span><span class="co">](https://github.com/tesseract-ocr/tesseract)</span> for optical character recognition . It can take an "Image-Only" PDF and output a searchable text file or a new PDF with a text layer.</span>
+<span id="cb14-74"><a href="#cb14-74" aria-hidden="true" tabindex="-1"></a><span class="fu">### Load libraries // Charger les bibliothèques</span></span>
+<span id="cb14-75"><a href="#cb14-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-78"><a href="#cb14-78" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb14-79"><a href="#cb14-79" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: load-libraries</span></span>
+<span id="cb14-80"><a href="#cb14-80" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb14-81"><a href="#cb14-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-82"><a href="#cb14-82" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb14-83"><a href="#cb14-83" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pdftools)</span>
+<span id="cb14-84"><a href="#cb14-84" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rstudioapi)</span>
+<span id="cb14-85"><a href="#cb14-85" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-86"><a href="#cb14-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-87"><a href="#cb14-87" aria-hidden="true" tabindex="-1"></a><span class="fu">## Select a target directory // Sélectionnez un répertoire de destination</span></span>
+<span id="cb14-88"><a href="#cb14-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-89"><a href="#cb14-89" aria-hidden="true" tabindex="-1"></a>This block allows for interactive selection of the image directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.</span>
+<span id="cb14-90"><a href="#cb14-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-91"><a href="#cb14-91" aria-hidden="true" tabindex="-1"></a>//</span>
+<span id="cb14-92"><a href="#cb14-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-93"><a href="#cb14-93" aria-hidden="true" tabindex="-1"></a>Ce bloc permet de sélectionner de manière interactive le répertoire contenant les images. En cas d'exécution dans un environnement non interactif, le chemin par défaut est celui défini dans l'en-tête YAML.</span>
+<span id="cb14-94"><a href="#cb14-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-97"><a href="#cb14-97" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb14-98"><a href="#cb14-98" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: select-target-dir</span></span>
+<span id="cb14-99"><a href="#cb14-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-100"><a href="#cb14-100" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Try to select interactively if in RStudio</span></span>
+<span id="cb14-101"><a href="#cb14-101" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">interactive</span>() <span class="sc">&amp;&amp;</span> .Platform<span class="sc">$</span>OS.type <span class="sc">==</span> <span class="st">"windows"</span>) { </span>
+<span id="cb14-102"><a href="#cb14-102" aria-hidden="true" tabindex="-1"></a>  <span class="co"># .Platform check helps avoid errors in some non-interactive rendering contexts</span></span>
+<span id="cb14-103"><a href="#cb14-103" aria-hidden="true" tabindex="-1"></a>  selected_dir <span class="ot">&lt;-</span> rstudioapi<span class="sc">::</span><span class="fu">selectDirectory</span>(<span class="at">caption =</span> <span class="st">"Select Image Directory"</span>)</span>
+<span id="cb14-104"><a href="#cb14-104" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb14-105"><a href="#cb14-105" aria-hidden="true" tabindex="-1"></a>  selected_dir <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb14-106"><a href="#cb14-106" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-107"><a href="#cb14-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-108"><a href="#cb14-108" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Logic to determine final directory (Interactive vs Parameter)</span></span>
+<span id="cb14-109"><a href="#cb14-109" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(selected_dir)) {</span>
+<span id="cb14-110"><a href="#cb14-110" aria-hidden="true" tabindex="-1"></a>  target_dir <span class="ot">&lt;-</span> selected_dir</span>
+<span id="cb14-111"><a href="#cb14-111" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb14-112"><a href="#cb14-112" aria-hidden="true" tabindex="-1"></a>  target_dir <span class="ot">&lt;-</span> params<span class="sc">$</span>target_dir</span>
+<span id="cb14-113"><a href="#cb14-113" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-114"><a href="#cb14-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-115"><a href="#cb14-115" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Analyzing directory:"</span>, target_dir))</span>
+<span id="cb14-116"><a href="#cb14-116" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-117"><a href="#cb14-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-118"><a href="#cb14-118" aria-hidden="true" tabindex="-1"></a><span class="fu">## Find PDF Files // Rechercher des fichiers PDF</span></span>
+<span id="cb14-119"><a href="#cb14-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-122"><a href="#cb14-122" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb14-123"><a href="#cb14-123" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: find-files</span></span>
+<span id="cb14-124"><a href="#cb14-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-125"><a href="#cb14-125" aria-hidden="true" tabindex="-1"></a>pdf_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(</span>
+<span id="cb14-126"><a href="#cb14-126" aria-hidden="true" tabindex="-1"></a>  <span class="at">path =</span> target_dir,</span>
+<span id="cb14-127"><a href="#cb14-127" aria-hidden="true" tabindex="-1"></a>  <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.pdf$"</span>, </span>
+<span id="cb14-128"><a href="#cb14-128" aria-hidden="true" tabindex="-1"></a>  <span class="at">recursive =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb14-129"><a href="#cb14-129" aria-hidden="true" tabindex="-1"></a>  <span class="at">full.names =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb14-130"><a href="#cb14-130" aria-hidden="true" tabindex="-1"></a>  <span class="at">ignore.case =</span> <span class="cn">TRUE</span></span>
+<span id="cb14-131"><a href="#cb14-131" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-132"><a href="#cb14-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-133"><a href="#cb14-133" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Found"</span>, <span class="fu">length</span>(pdf_files), <span class="st">"PDF files."</span>))</span>
+<span id="cb14-134"><a href="#cb14-134" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-135"><a href="#cb14-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-136"><a href="#cb14-136" aria-hidden="true" tabindex="-1"></a><span class="fu">## File inventory and inspection // Inventaire et analyse des fichiers</span></span>
+<span id="cb14-137"><a href="#cb14-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-138"><a href="#cb14-138" aria-hidden="true" tabindex="-1"></a>We iterate through the files to extract metadata, check for encryption, and sample the text content to determine its accessibility status.</span>
+<span id="cb14-139"><a href="#cb14-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-140"><a href="#cb14-140" aria-hidden="true" tabindex="-1"></a>//</span>
+<span id="cb14-141"><a href="#cb14-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-142"><a href="#cb14-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-143"><a href="#cb14-143" aria-hidden="true" tabindex="-1"></a>Nous parcourons les fichiers pour en extraire les métadonnées, vérifier s'ils sont cryptés et analyser un échantillon du contenu textuel afin de déterminer leur niveau d'accessibilité.</span>
+<span id="cb14-144"><a href="#cb14-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-147"><a href="#cb14-147" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb14-148"><a href="#cb14-148" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: generate-report</span></span>
+<span id="cb14-149"><a href="#cb14-149" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
+<span id="cb14-150"><a href="#cb14-150" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb14-151"><a href="#cb14-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-152"><a href="#cb14-152" aria-hidden="true" tabindex="-1"></a><span class="fu">message</span>(<span class="st">"Generating PDF Report..."</span>)</span>
+<span id="cb14-153"><a href="#cb14-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-154"><a href="#cb14-154" aria-hidden="true" tabindex="-1"></a>results_list <span class="ot">&lt;-</span> <span class="fu">lapply</span>(pdf_files, <span class="cf">function</span>(file_path) {</span>
+<span id="cb14-155"><a href="#cb14-155" aria-hidden="true" tabindex="-1"></a>  fname <span class="ot">&lt;-</span> <span class="fu">basename</span>(file_path)</span>
+<span id="cb14-156"><a href="#cb14-156" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-157"><a href="#cb14-157" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>({</span>
+<span id="cb14-158"><a href="#cb14-158" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1. Metadata &amp; Security</span></span>
+<span id="cb14-159"><a href="#cb14-159" aria-hidden="true" tabindex="-1"></a>    info <span class="ot">&lt;-</span> pdftools<span class="sc">::</span><span class="fu">pdf_info</span>(file_path)</span>
+<span id="cb14-160"><a href="#cb14-160" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-161"><a href="#cb14-161" aria-hidden="true" tabindex="-1"></a>    <span class="co"># NEW: Capture Encryption Status explicitly</span></span>
+<span id="cb14-162"><a href="#cb14-162" aria-hidden="true" tabindex="-1"></a>    is_encrypted <span class="ot">&lt;-</span> <span class="fu">isTRUE</span>(info<span class="sc">$</span>encrypted)</span>
+<span id="cb14-163"><a href="#cb14-163" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-164"><a href="#cb14-164" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2. Text Extraction</span></span>
+<span id="cb14-165"><a href="#cb14-165" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If encrypted, text extraction might fail, so we wrap it or handle it</span></span>
+<span id="cb14-166"><a href="#cb14-166" aria-hidden="true" tabindex="-1"></a>    first_page_text <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>(pdftools<span class="sc">::</span><span class="fu">pdf_text</span>(file_path)[<span class="dv">1</span>], <span class="at">error =</span> <span class="cf">function</span>(e) <span class="st">""</span>)</span>
+<span id="cb14-167"><a href="#cb14-167" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-168"><a href="#cb14-168" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Handle NA/NULL text</span></span>
+<span id="cb14-169"><a href="#cb14-169" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="fu">is.na</span>(first_page_text) <span class="sc">||</span> <span class="fu">is.null</span>(first_page_text)) first_page_text <span class="ot">&lt;-</span> <span class="st">""</span></span>
+<span id="cb14-170"><a href="#cb14-170" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-171"><a href="#cb14-171" aria-hidden="true" tabindex="-1"></a>    char_count <span class="ot">&lt;-</span> <span class="fu">nchar</span>(<span class="fu">trimws</span>(first_page_text))</span>
+<span id="cb14-172"><a href="#cb14-172" aria-hidden="true" tabindex="-1"></a>    has_text <span class="ot">&lt;-</span> char_count <span class="sc">&gt;</span> <span class="dv">10</span> </span>
+<span id="cb14-173"><a href="#cb14-173" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-174"><a href="#cb14-174" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 3. Fonts</span></span>
+<span id="cb14-175"><a href="#cb14-175" aria-hidden="true" tabindex="-1"></a>    fonts <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>(pdftools<span class="sc">::</span><span class="fu">pdf_fonts</span>(file_path), <span class="at">error =</span> <span class="cf">function</span>(e) <span class="cn">NULL</span>)</span>
+<span id="cb14-176"><a href="#cb14-176" aria-hidden="true" tabindex="-1"></a>    font_names <span class="ot">&lt;-</span> <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(fonts)) <span class="fu">paste</span>(<span class="fu">head</span>(<span class="fu">unique</span>(fonts<span class="sc">$</span>name), <span class="dv">5</span>), <span class="at">collapse =</span> <span class="st">", "</span>) <span class="cf">else</span> <span class="st">"Unknown"</span></span>
+<span id="cb14-177"><a href="#cb14-177" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-178"><a href="#cb14-178" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Helper for metadata</span></span>
+<span id="cb14-179"><a href="#cb14-179" aria-hidden="true" tabindex="-1"></a>    get_meta <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb14-180"><a href="#cb14-180" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">is.null</span>(x) <span class="sc">||</span> <span class="fu">length</span>(x) <span class="sc">==</span> <span class="dv">0</span> <span class="sc">||</span> x <span class="sc">==</span> <span class="st">""</span>) <span class="fu">return</span>(<span class="st">"Unknown"</span>)</span>
+<span id="cb14-181"><a href="#cb14-181" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(<span class="fu">as.character</span>(x))</span>
+<span id="cb14-182"><a href="#cb14-182" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb14-183"><a href="#cb14-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-184"><a href="#cb14-184" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return valid tibble with explicit types</span></span>
+<span id="cb14-185"><a href="#cb14-185" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tibble</span>(</span>
+<span id="cb14-186"><a href="#cb14-186" aria-hidden="true" tabindex="-1"></a>      <span class="at">FileName =</span> fname,</span>
+<span id="cb14-187"><a href="#cb14-187" aria-hidden="true" tabindex="-1"></a>      <span class="at">Pages =</span> <span class="fu">as.integer</span>(info<span class="sc">$</span>pages),</span>
+<span id="cb14-188"><a href="#cb14-188" aria-hidden="true" tabindex="-1"></a>      <span class="at">Encrypted =</span> <span class="fu">as.logical</span>(is_encrypted), <span class="co"># &lt;--- NEW COLUMN</span></span>
+<span id="cb14-189"><a href="#cb14-189" aria-hidden="true" tabindex="-1"></a>      <span class="at">Author =</span> <span class="fu">get_meta</span>(info<span class="sc">$</span>keys<span class="sc">$</span>Author),</span>
+<span id="cb14-190"><a href="#cb14-190" aria-hidden="true" tabindex="-1"></a>      <span class="at">Title =</span> <span class="fu">get_meta</span>(info<span class="sc">$</span>keys<span class="sc">$</span>Title),</span>
+<span id="cb14-191"><a href="#cb14-191" aria-hidden="true" tabindex="-1"></a>      <span class="at">Creator =</span> <span class="fu">get_meta</span>(info<span class="sc">$</span>keys<span class="sc">$</span>Creator),</span>
+<span id="cb14-192"><a href="#cb14-192" aria-hidden="true" tabindex="-1"></a>      <span class="at">Created =</span> <span class="fu">as.character</span>(info<span class="sc">$</span>created),</span>
+<span id="cb14-193"><a href="#cb14-193" aria-hidden="true" tabindex="-1"></a>      <span class="at">HasText =</span> <span class="fu">as.logical</span>(has_text),</span>
+<span id="cb14-194"><a href="#cb14-194" aria-hidden="true" tabindex="-1"></a>      <span class="at">FirstPageChars =</span> <span class="fu">as.integer</span>(char_count),</span>
+<span id="cb14-195"><a href="#cb14-195" aria-hidden="true" tabindex="-1"></a>      <span class="at">Fonts =</span> <span class="fu">as.character</span>(font_names),</span>
+<span id="cb14-196"><a href="#cb14-196" aria-hidden="true" tabindex="-1"></a>      <span class="at">Status =</span> <span class="st">"Success"</span></span>
+<span id="cb14-197"><a href="#cb14-197" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb14-198"><a href="#cb14-198" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-199"><a href="#cb14-199" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
+<span id="cb14-200"><a href="#cb14-200" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tibble</span>(</span>
+<span id="cb14-201"><a href="#cb14-201" aria-hidden="true" tabindex="-1"></a>      <span class="at">FileName =</span> fname,</span>
+<span id="cb14-202"><a href="#cb14-202" aria-hidden="true" tabindex="-1"></a>      <span class="at">Pages =</span> <span class="fu">as.integer</span>(<span class="cn">NA</span>),</span>
+<span id="cb14-203"><a href="#cb14-203" aria-hidden="true" tabindex="-1"></a>      <span class="at">Encrypted =</span> <span class="fu">as.logical</span>(<span class="cn">NA</span>),</span>
+<span id="cb14-204"><a href="#cb14-204" aria-hidden="true" tabindex="-1"></a>      <span class="at">Author =</span> <span class="fu">as.character</span>(<span class="cn">NA</span>),</span>
+<span id="cb14-205"><a href="#cb14-205" aria-hidden="true" tabindex="-1"></a>      <span class="at">Title =</span> <span class="fu">as.character</span>(<span class="cn">NA</span>),</span>
+<span id="cb14-206"><a href="#cb14-206" aria-hidden="true" tabindex="-1"></a>      <span class="at">Creator =</span> <span class="fu">as.character</span>(<span class="cn">NA</span>),</span>
+<span id="cb14-207"><a href="#cb14-207" aria-hidden="true" tabindex="-1"></a>      <span class="at">Created =</span> <span class="fu">as.character</span>(<span class="cn">NA</span>),</span>
+<span id="cb14-208"><a href="#cb14-208" aria-hidden="true" tabindex="-1"></a>      <span class="at">HasText =</span> <span class="fu">as.logical</span>(<span class="cn">NA</span>),</span>
+<span id="cb14-209"><a href="#cb14-209" aria-hidden="true" tabindex="-1"></a>      <span class="at">FirstPageChars =</span> <span class="fu">as.integer</span>(<span class="cn">NA</span>),</span>
+<span id="cb14-210"><a href="#cb14-210" aria-hidden="true" tabindex="-1"></a>      <span class="at">Fonts =</span> <span class="fu">as.character</span>(<span class="cn">NA</span>),</span>
+<span id="cb14-211"><a href="#cb14-211" aria-hidden="true" tabindex="-1"></a>      <span class="at">Status =</span> <span class="fu">paste</span>(<span class="st">"Failed:"</span>, e<span class="sc">$</span>message)</span>
+<span id="cb14-212"><a href="#cb14-212" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb14-213"><a href="#cb14-213" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb14-214"><a href="#cb14-214" aria-hidden="true" tabindex="-1"></a>})</span>
 <span id="cb14-215"><a href="#cb14-215" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-216"><a href="#cb14-216" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Google AI:** Extractd text and data from images and documents using <span class="co">[</span><span class="ot">AI capabilities</span><span class="co">](https://cloud.google.com/use-cases/ocr)</span>. See a use case in another <span class="co">[</span><span class="ot">chapter of this book</span><span class="co">](/Inspect_OCR_Notebook.qmd)</span>.</span>
+<span id="cb14-216"><a href="#cb14-216" aria-hidden="true" tabindex="-1"></a>report <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(results_list)</span>
 <span id="cb14-217"><a href="#cb14-217" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-218"><a href="#cb14-218" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Ghostscript:** This is a <span class="co">[</span><span class="ot">command-line interpreter</span><span class="co">](https://ghostscript.com/)</span> often used to repair corrupted PDFs or convert standard PDFs into PDF/A format.</span>
-<span id="cb14-219"><a href="#cb14-219" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-220"><a href="#cb14-220" aria-hidden="true" tabindex="-1"></a><span class="fu">## Using the Non-Interactive R Script</span></span>
-<span id="cb14-221"><a href="#cb14-221" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-222"><a href="#cb14-222" aria-hidden="true" tabindex="-1"></a>For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.</span>
-<span id="cb14-223"><a href="#cb14-223" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-224"><a href="#cb14-224" aria-hidden="true" tabindex="-1"></a>Download the **R Script:** [**`Inspect_PDF_Script.R`**](Scripts/Inspect_PDF_Script.R)</span>
-<span id="cb14-225"><a href="#cb14-225" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-226"><a href="#cb14-226" aria-hidden="true" tabindex="-1"></a><span class="fu">### Example HPC Submission Script</span></span>
-<span id="cb14-227"><a href="#cb14-227" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-228"><a href="#cb14-228" aria-hidden="true" tabindex="-1"></a><span class="in">``` bash</span></span>
-<span id="cb14-229"><a href="#cb14-229" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb14-230"><a href="#cb14-230" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=pdf_inspect</span></span>
-<span id="cb14-231"><a href="#cb14-231" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --nodes=1</span></span>
-<span id="cb14-232"><a href="#cb14-232" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --ntasks=1</span></span>
-<span id="cb14-233"><a href="#cb14-233" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=00:30:00</span></span>
-<span id="cb14-234"><a href="#cb14-234" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mem=8G</span></span>
-<span id="cb14-235"><a href="#cb14-235" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=logs/pdf_inspect_%j.log</span></span>
+<span id="cb14-218"><a href="#cb14-218" aria-hidden="true" tabindex="-1"></a><span class="co"># Display preview</span></span>
+<span id="cb14-219"><a href="#cb14-219" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"--- PDF Report Preview ---"</span>)</span>
+<span id="cb14-220"><a href="#cb14-220" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(report))</span>
+<span id="cb14-221"><a href="#cb14-221" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-222"><a href="#cb14-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-223"><a href="#cb14-223" aria-hidden="true" tabindex="-1"></a><span class="fu">## Save Results // Enregistrer les résultats</span></span>
+<span id="cb14-224"><a href="#cb14-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-227"><a href="#cb14-227" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb14-228"><a href="#cb14-228" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: save-results</span></span>
+<span id="cb14-229"><a href="#cb14-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-230"><a href="#cb14-230" aria-hidden="true" tabindex="-1"></a>output_dir <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">"Results"</span>, <span class="st">"Inspect_pdf"</span>)</span>
+<span id="cb14-231"><a href="#cb14-231" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(output_dir, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb14-232"><a href="#cb14-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-233"><a href="#cb14-233" aria-hidden="true" tabindex="-1"></a>output_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(output_dir, <span class="fu">paste0</span>(<span class="st">"PDF_Report_"</span>, <span class="fu">Sys.Date</span>(), <span class="st">".csv"</span>))</span>
+<span id="cb14-234"><a href="#cb14-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-235"><a href="#cb14-235" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(report, output_file, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb14-236"><a href="#cb14-236" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-237"><a href="#cb14-237" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load R</span>
-<span id="cb14-238"><a href="#cb14-238" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-239"><a href="#cb14-239" aria-hidden="true" tabindex="-1"></a><span class="co"># Define target directory</span></span>
-<span id="cb14-240"><a href="#cb14-240" aria-hidden="true" tabindex="-1"></a><span class="va">TARGET_DIR</span><span class="op">=</span><span class="st">"/scratch/user/project_data/documents"</span></span>
+<span id="cb14-237"><a href="#cb14-237" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Report saved to:"</span>, output_file))</span>
+<span id="cb14-238"><a href="#cb14-238" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-239"><a href="#cb14-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-240"><a href="#cb14-240" aria-hidden="true" tabindex="-1"></a><span class="fu">## Curation Insights // Aperçu de la curation</span></span>
 <span id="cb14-241"><a href="#cb14-241" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-242"><a href="#cb14-242" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare output folders</span></span>
-<span id="cb14-243"><a href="#cb14-243" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> Results/Inspect_pdf</span>
-<span id="cb14-244"><a href="#cb14-244" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> logs</span>
+<span id="cb14-242"><a href="#cb14-242" aria-hidden="true" tabindex="-1"></a>Use the generated CSV report to guide your actions:</span>
+<span id="cb14-243"><a href="#cb14-243" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-244"><a href="#cb14-244" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Encryption (Encrypted = TRUE):** Encrypted files cannot be migrated, indexed, or preserved. Contact the depositor to discuss removing the password. If the password is lost, the file cannot be reused.</span>
 <span id="cb14-245"><a href="#cb14-245" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-246"><a href="#cb14-246" aria-hidden="true" tabindex="-1"></a><span class="co"># Run</span></span>
-<span id="cb14-247"><a href="#cb14-247" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Starting PDF Inspection on </span><span class="va">$TARGET_DIR</span><span class="st">"</span></span>
-<span id="cb14-248"><a href="#cb14-248" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> Inspect_PDF_Script.R <span class="st">"</span><span class="va">$TARGET_DIR</span><span class="st">"</span></span>
-<span id="cb14-249"><a href="#cb14-249" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb14-250"><a href="#cb14-250" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-251"><a href="#cb14-251" aria-hidden="true" tabindex="-1"></a><span class="fu">## References</span></span>
-<span id="cb14-252"><a href="#cb14-252" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-253"><a href="#cb14-253" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
-<span id="cb14-254"><a href="#cb14-254" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb14-246"><a href="#cb14-246" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Accessibility (TextStatus = "Image-Only"):** These are scanned images. They are readable by humans but invisible to search engines and screen readers (accessibility violation). You can run these files through an OCR tool like Tesseract or Adobe Acrobat to generate a text layer.</span>
+<span id="cb14-247"><a href="#cb14-247" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-248"><a href="#cb14-248" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Font Embedding (Fonts):** If Fonts is empty or lists generic names like "Helvetica" without embedding, the layout may break on future systems. the curator can convert the file to PDF/A-1b or PDF/A-2b, which forces font embedding.</span>
+<span id="cb14-249"><a href="#cb14-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-250"><a href="#cb14-250" aria-hidden="true" tabindex="-1"></a>//</span>
+<span id="cb14-251"><a href="#cb14-251" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-252"><a href="#cb14-252" aria-hidden="true" tabindex="-1"></a>Utilisez le rapport CSV généré pour orienter vos actions :</span>
+<span id="cb14-253"><a href="#cb14-253" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-254"><a href="#cb14-254" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Chiffrement (Encrypted = TRUE) :** Les fichiers chiffrés ne peuvent être ni migrés, ni indexés, ni conservés. Contactez le déposant pour discuter de la suppression du mot de passe. Si le mot de passe est perdu, le fichier ne pourra pas être réutilisé.</span>
+<span id="cb14-255"><a href="#cb14-255" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-256"><a href="#cb14-256" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Accessibilité (TextStatus = « Image-Only ») :** Il s'agit d'images numérisées. Elles sont lisibles par les humains mais invisibles pour les moteurs de recherche et les lecteurs d'écran (violation de l'accessibilité). Vous pouvez traiter ces fichiers à l'aide d'un outil OCR tel que Tesseract ou Adobe Acrobat afin de générer une couche de texte.</span>
+<span id="cb14-257"><a href="#cb14-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-258"><a href="#cb14-258" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Intégration des polices (Fonts) :** Si le champ « Fonts » est vide ou contient des noms génériques tels que « Helvetica » sans intégration, la mise en page risque d'être altérée sur les systèmes futurs. Le conservateur peut convertir le fichier au format PDF/A-1b ou PDF/A-2b, ce qui force l'intégration des polices.</span>
+<span id="cb14-259"><a href="#cb14-259" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-260"><a href="#cb14-260" aria-hidden="true" tabindex="-1"></a><span class="fu">## Additional Tools // Outils supplémentaires</span></span>
+<span id="cb14-261"><a href="#cb14-261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-262"><a href="#cb14-262" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**VeraPDF:** This is the standard open-source validator for PDF/A compliance. It checks if fonts are embedded and if multimedia is excluded (see https://verapdf.org).</span>
+<span id="cb14-263"><a href="#cb14-263" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-264"><a href="#cb14-264" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Tesseract OCR:** Is an <span class="co">[</span><span class="ot">open-source engine</span><span class="co">](https://github.com/tesseract-ocr/tesseract)</span> for optical character recognition . It can take an "Image-Only" PDF and output a searchable text file or a new PDF with a text layer.</span>
+<span id="cb14-265"><a href="#cb14-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-266"><a href="#cb14-266" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Google AI:** Extractd text and data from images and documents using <span class="co">[</span><span class="ot">AI capabilities</span><span class="co">](https://cloud.google.com/use-cases/ocr)</span>. See a use case in another <span class="co">[</span><span class="ot">chapter of this book</span><span class="co">](/Inspect_OCR_Notebook.qmd)</span>.</span>
+<span id="cb14-267"><a href="#cb14-267" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-268"><a href="#cb14-268" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Ghostscript:** This is a <span class="co">[</span><span class="ot">command-line interpreter</span><span class="co">](https://ghostscript.com/)</span> often used to repair corrupted PDFs or convert standard PDFs into PDF/A format.</span>
+<span id="cb14-269"><a href="#cb14-269" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-270"><a href="#cb14-270" aria-hidden="true" tabindex="-1"></a>//</span>
+<span id="cb14-271"><a href="#cb14-271" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-272"><a href="#cb14-272" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**VeraPDF :** Il s'agit du validateur open source de référence pour la conformité au format PDF/A. Il vérifie si les polices sont intégrées et si les éléments multimédias sont exclus (voir https://verapdf.org).</span>
+<span id="cb14-273"><a href="#cb14-273" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-274"><a href="#cb14-274" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Tesseract OCR :** Il s'agit d'un <span class="co">[</span><span class="ot">moteur open source</span><span class="co">](https://github.com/tesseract-ocr/tesseract)</span> dédié à la reconnaissance optique de caractères. Il peut prendre un PDF « Image-Only » et générer un fichier texte consultable ou un nouveau PDF avec un calque de texte.</span>
+<span id="cb14-275"><a href="#cb14-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-276"><a href="#cb14-276" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Google AI :** Extrait du texte et des données à partir d'images et de documents à l'aide de <span class="co">[</span><span class="ot">fonctionnalités d'IA</span><span class="co">](https://cloud.google.com/use-cases/ocr)</span>. Découvrez un cas d'utilisation dans un autre <span class="co">[</span><span class="ot">chapitre de ce livre</span><span class="co">](/Inspect_OCR_Notebook.qmd)</span>.</span>
+<span id="cb14-277"><a href="#cb14-277" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-278"><a href="#cb14-278" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Ghostscript :** Il s'agit d'un <span class="co">[</span><span class="ot">interpréteur en ligne de commande</span><span class="co">](https://ghostscript.com/)</span> souvent utilisé pour réparer des PDF corrompus ou convertir des PDF standard au format PDF/A.</span>
+<span id="cb14-279"><a href="#cb14-279" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-280"><a href="#cb14-280" aria-hidden="true" tabindex="-1"></a><span class="fu">## Using the Non-Interactive R Script // Utilisation du script R non interactif</span></span>
+<span id="cb14-281"><a href="#cb14-281" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-282"><a href="#cb14-282" aria-hidden="true" tabindex="-1"></a>For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.</span>
+<span id="cb14-283"><a href="#cb14-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-284"><a href="#cb14-284" aria-hidden="true" tabindex="-1"></a>Download the **R Script:** [**`Inspect_PDF_Script.R`**](Scripts/Inspect_PDF_Script.R)</span>
+<span id="cb14-285"><a href="#cb14-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-286"><a href="#cb14-286" aria-hidden="true" tabindex="-1"></a>//</span>
+<span id="cb14-287"><a href="#cb14-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-288"><a href="#cb14-288" aria-hidden="true" tabindex="-1"></a>Pour les utilisateurs qui souhaitent exécuter cette analyse sur un serveur, dans le cadre d'un traitement par lots ou depuis la ligne de commande, voici un script R pur qui effectue le même processus.</span>
+<span id="cb14-289"><a href="#cb14-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-290"><a href="#cb14-290" aria-hidden="true" tabindex="-1"></a>Télécharger le **script R :** [**`Inspect_PDF_Script.R`**](Scripts/Inspect_PDF_Script.R)</span>
+<span id="cb14-291"><a href="#cb14-291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-292"><a href="#cb14-292" aria-hidden="true" tabindex="-1"></a><span class="fu">### Example HPC Submission Script // Exemple de script de soumission HPC</span></span>
+<span id="cb14-293"><a href="#cb14-293" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-294"><a href="#cb14-294" aria-hidden="true" tabindex="-1"></a><span class="in">``` bash</span></span>
+<span id="cb14-295"><a href="#cb14-295" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb14-296"><a href="#cb14-296" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=pdf_inspect</span></span>
+<span id="cb14-297"><a href="#cb14-297" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --nodes=1</span></span>
+<span id="cb14-298"><a href="#cb14-298" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --ntasks=1</span></span>
+<span id="cb14-299"><a href="#cb14-299" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=00:30:00</span></span>
+<span id="cb14-300"><a href="#cb14-300" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mem=8G</span></span>
+<span id="cb14-301"><a href="#cb14-301" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=logs/pdf_inspect_%j.log</span></span>
+<span id="cb14-302"><a href="#cb14-302" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-303"><a href="#cb14-303" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load R</span>
+<span id="cb14-304"><a href="#cb14-304" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-305"><a href="#cb14-305" aria-hidden="true" tabindex="-1"></a><span class="co"># Define target directory</span></span>
+<span id="cb14-306"><a href="#cb14-306" aria-hidden="true" tabindex="-1"></a><span class="va">TARGET_DIR</span><span class="op">=</span><span class="st">"/scratch/user/project_data/documents"</span></span>
+<span id="cb14-307"><a href="#cb14-307" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-308"><a href="#cb14-308" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare output folders</span></span>
+<span id="cb14-309"><a href="#cb14-309" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> Results/Inspect_pdf</span>
+<span id="cb14-310"><a href="#cb14-310" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> logs</span>
+<span id="cb14-311"><a href="#cb14-311" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-312"><a href="#cb14-312" aria-hidden="true" tabindex="-1"></a><span class="co"># Run</span></span>
+<span id="cb14-313"><a href="#cb14-313" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Starting PDF Inspection on </span><span class="va">$TARGET_DIR</span><span class="st">"</span></span>
+<span id="cb14-314"><a href="#cb14-314" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> Inspect_PDF_Script.R <span class="st">"</span><span class="va">$TARGET_DIR</span><span class="st">"</span></span>
+<span id="cb14-315"><a href="#cb14-315" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
