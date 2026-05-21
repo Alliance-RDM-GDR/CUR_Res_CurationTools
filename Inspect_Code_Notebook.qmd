@@ -12,39 +12,53 @@ params:
   target_dir: "."
 ---
 
-## Overview
+## Overview // Aperçu
 
 This notebook provides a static analysis framework for auditing R code (`.R`) and literate programming documents (`.qmd`, `.Rmd`).
 
-::: {.callout-note title="Curation Goal"}
-Static analysis refers to the examination of source code without executing it. Our objective is to safely assess code quality, reproducibility, and potential security risks without triggering harmful scripts.
+//
+
+Ce cahier de notes fournit un cadre d'analyse statique permettant de vérifier le code R (`.R`) et les documents de programmation littéraire (`.qmd`, `.Rmd`).
+
+::: {.callout-note title="Curation Goal // Objectif de la curation"}
+Static analysis refers to the examination of source code without executing it. Our objective is to safely assess code quality, reproducibility, and potential security risks without triggering harmful scripts. // L'analyse statique consiste à examiner le code source sans l'exécuter. Notre objectif est d'évaluer en toute sécurité la qualité du code, sa reproductibilité et les risques potentiels pour la sécurité sans déclencher de scripts nuisibles.
 :::
 
-::: {.callout-warning title="Preservation Risk"}
-"Code rot" is a pervasive issue in research curation. Scripts that run perfectly on a researcher's laptop often fail in archival environments due to undocumented dependencies, absolute paths (e.g., `setwd()`), or outdated package versions [@stodden2010].
+::: {.callout-warning title="Identifying Risks // Identification des risques"}
+"Code rot" is a pervasive issue in research. Scripts that run perfectly on a researcher's laptop often fail in other environments due to undocumented dependencies, absolute paths (e.g., `setwd()`), or outdated package versions [@stodden2010]. // La « dégradation du code » est un problème très répandu dans le domaine de la recherche. Les scripts qui fonctionnent parfaitement sur l'ordinateur portable d'un chercheur échouent souvent dans d'autres environnements en raison de dépendances non documentées, de chemins absolus (par exemple, `setwd()`) ou de versions obsolètes des paquets [@stodden2010].
 :::
 
-**Key Curation Objectives:**
+**This notebook evaluates code files on three levels:**
 
 1.  **Structural/syntax Validation:** Verify that script files contain syntactically valid R code.
 2.  **Dependency Mapping:** Extract explicit and implicit package calls to assist in environment reconstruction.
 3.  **Risk Assessment:** Detect commands that threaten reproducibility or security.
 
+//
+
+**Ce cahier d'exercices évalue les fichiers de code à trois niveaux :**
+
+1.  **Validation structurelle/syntaxique :** Vérifier que les fichiers de script contiennent du code R syntaxiquement valide.
+2.  **Cartographie des dépendances :** Extraire les appels explicites et implicites aux paquets afin de faciliter la reconstitution de l'environnement.
+3.  **Évaluation des risques :** Détecter les commandes qui compromettent la reproductibilité ou la sécurité.
+
 ------------------------------------------------------------------------
 
-## Setup
+## Setup // Configuration
 
-We utilize **`tidyverse`** for data manipulation and **`rstudioapi`** for interactive directory selection.
+We use **`tidyverse`** for data manipulation and **`rstudioapi`** for interactive directory selection.
 
-### Load Libraries
+//
 
-If you do not have the required packages, run this command once in your R console:
+Nous utilisons **`tidyverse`** pour la manipulation des données et **`rstudioapi`** pour la sélection interactive des répertoires.
+
+### R Packages // Packages R
 
 ```{r}
 # install.packages(c("DT", "tidyverse", "rstudioapi", "readr", "tools"))
 ```
 
-### Load libraries
+### Load libraries // Charger les bibliothèques
 
 ```{r}
 #| label: load-libraries
@@ -57,9 +71,13 @@ library(readr)
 library(tools)
 ```
 
-## Select Target Directory
+## Select a target directory // Sélectionnez un répertoire de destination
 
-Select the directory containing the code files to be analyzed. If running interactively, a dialog box will appear; otherwise, the script defaults to the parameter defined in the YAML header.
+This block allows for interactive selection of the image directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.
+
+//
+
+Ce bloc permet de sélectionner de manière interactive le répertoire contenant les images. En cas d'exécution dans un environnement non interactif, le chemin par défaut est celui défini dans l'en-tête YAML.
 
 ```{r}
 #| label: select-target-dir
@@ -82,9 +100,13 @@ print(paste("Analyzing directory:", target_dir))
 
 ```
 
-## Find Code Files
+## Find Code Files // Rechercher des fichier de code
 
-We scan the directory for `.R`, `.qmd`, and `.Rmd` files.
+We scan the directory for `.R`, `.qmd`, and `.Rmd` files. Other file extensions can be added by adding the extension inside the parentheses of the pattern line.
+
+//
+
+Nous analysons le répertoire à la recherche de fichiers `.R`, `.qmd` et `.Rmd`. D'autres extensions de fichiers peuvent être ajoutées en les indiquant entre parenthèses dans la ligne de motif.
 
 ```{r}
 #| label: find-files
@@ -101,9 +123,9 @@ print(paste("Found", length(code_files), "code files."))
 head(code_files)
 ```
 
-## Code Analysis Function
+## Analyze Code Function // Fonction d'analyse de code
 
-Static Analysis involves examining the source code without executing it. This is safer for curators than running untrusted scripts. We parse the code to check for syntax errors and use Regular Expressions (Regex) to identify dependencies and risks.This function performs four checks per file:
+Static Analysis involves examining the source code without executing it. This is safer for curators than running untrusted scripts. We parse the code to check for syntax errors and use Regular Expressions (Regex) to identify dependencies and risks. This function performs four checks per file:
 
 -   Safe Reading: Uses readr::read_lines to handle encoding nuances.
 
@@ -112,6 +134,18 @@ Static Analysis involves examining the source code without executing it. This is
 -   Comment Stripping: Removes comments to prevent false positives (e.g., commented-out libraries).
 
 -   Pattern Matching: Scans for dependencies, risky commands, and secrets.
+
+//
+
+L'analyse statique consiste à examiner le code source sans l'exécuter. Cette méthode est plus sûre pour les modérateurs que l'exécution de scripts non fiables. Nous analysons le code pour détecter les erreurs de syntaxe et utilisons des expressions régulières (Regex) pour identifier les dépendances et les risques. Cette fonction effectue quatre vérifications par fichier :
+
+-   Lecture sécurisée : utilise readr::read_lines pour gérer les nuances d'encodage.
+
+-   Vérification syntaxique : utilise la fonction `parse()` de R pour vérifier l'intégrité structurelle.
+
+-   Suppression des commentaires : supprime les commentaires pour éviter les faux positifs (par exemple, les bibliothèques commentées).
+
+-   Correspondance de motifs : recherche les dépendances, les commandes à risque et les secrets.
 
 ```{r}
 #| label: define-analysis-function
@@ -206,9 +240,13 @@ analyze_r_file <- function(file_path) {
 }
 ```
 
-## Execute Analysis
+## Execute Analysis // Exécuter l'analyse
 
 We map the analysis function over the list of files detected in the previous step.
+
+//
+
+Nous appliquons la fonction d'analyse à la liste des fichiers détectés à l'étape précédente.
 
 ```{r}
 #| label: run-analysis
@@ -226,9 +264,13 @@ if (length(code_files) > 0) {
 }
 ```
 
-## Visualization: Dependency Ecosystem
+## Visualization: Dependency Ecosystem // Visualisation : Écosystème des dépendances
 
 Understanding the software environment is critical for long-term preservation. This chart illustrates the most frequently used packages across the analyzed codebase, helping curators prioritize which libraries to document in renv.lock or DESCRIPTION files.
+
+//
+
+Il est essentiel de bien comprendre l'environnement logiciel pour assurer la conservation à long terme. Ce graphique présente les paquets les plus fréquemment utilisés dans l'ensemble du code analysé, ce qui aide les conservateurs à déterminer quelles bibliothèques documenter en priorité dans les fichiers renv.lock ou DESCRIPTION.
 
 ```{r}
 #| label: viz-dependencies
@@ -261,9 +303,7 @@ if (nrow(report) > 0 && any(report$Packages != "")) {
 }
 ```
 
-## Save Results
-
-The full analysis report is exported to a CSV file for auditing and distribution
+## Save Results // Enregistrer les résultats
 
 ```{r}
 #| label: save-results
@@ -279,7 +319,7 @@ write_csv(report, output_file)
 message("Report successfully saved to: ", output_file)
 ```
 
-## Curation Insights
+## Curation Insights // Aperçu de la curation
 
 Use the report to prioritize fixes:
 
@@ -293,7 +333,21 @@ Use the report to prioritize fixes:
 
 -   Environment Reconstruction: The Packages column provides the raw material for building a DESCRIPTION file or renv.lock. Without this list, future users must guess which software versions to install.
 
-## Additional Tools for Researchers
+//
+
+Utilisez le rapport pour hiérarchiser les corrections :
+
+-   Reproductibilité (Packages) : si le champ « Packages » est vide pour un script, vérifiez s'il repose uniquement sur R de base ou si le chercheur part du principe que les paquets sont préchargés.
+
+-   Portabilité (AbsPathsFound) : tout fichier pour lequel AbsPathsFound est supérieur à 0 nécessite une attention particulière. Demandez au chercheur de remplacer les chemins d'accès tels que C:/Users/Dan/Project/Data par des chemins relatifs tels que ./Data ou d'utiliser le package here.
+
+-   Sécurité (PotentialTokens) : si Potential_Secrets \> 0, inspectez MANUELLEMENT le fichier. Ne publiez pas de code contenant des clés API ou des identifiants actifs.
+
+-   Intégrité syntaxique (Syntax_Check) : Si la colonne contient un message d'erreur (par exemple, « symbole inattendu »), le script est corrompu et ne s'exécutera pas. Ces fichiers doivent être signalés pour une correction immédiate par l'auteur.
+
+-   Reconstruction de l'environnement : la colonne Packages fournit les données brutes nécessaires à la création d'un fichier DESCRIPTION ou renv.lock. Sans cette liste, les futurs utilisateurs devront deviner quelles versions logicielles installer.
+
+## Additional Tools // Outils supplémentaires
 
 To prevent these issues before curation, researchers may consider adopting the following tools:
 
@@ -303,15 +357,31 @@ To prevent these issues before curation, researchers may consider adopting the f
 
 -   Docker (Containerization): A technology that packages the entire operating system, code, and data into a single executable unit, providing the gold standard for reproducibility [@boettiger2015].
 
-## Using the Non-Interactive R Script
+//
 
-For users who want to run this analysis on a server (HPC), in a batch job, or from the command line, here is the pure R script version.
+Pour prévenir ces problèmes avant la curation, les chercheurs peuvent envisager d'adopter les outils suivants :
 
-### The `Inspect_Code_Script.R` Script
+-   `renv` (gestion des paquets) : un outil permettant de créer des environnements reproductibles. Il génère un fichier de verrouillage (renv.lock) qui enregistre la version exacte de chaque paquet utilisé, garantissant ainsi que le projet puisse être restauré sur une autre machine [@renv].
+
+-   `lintr` (analyse statique) : un paquet qui vérifie automatiquement le code à la recherche d'erreurs de syntaxe, de violations de style et de bogues potentiels au fur et à mesure que vous l'écrivez [@lintr].
+
+-   Docker (conteneurisation) : une technologie qui regroupe l'ensemble du système d'exploitation, du code et des données en une seule unité exécutable, offrant ainsi la référence absolue en matière de reproductibilité [@boettiger2015].
+
+## Using the Non-Interactive R Script // Utilisation du script R non interactif
+
+For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
 
 Download the **R Script:** [**`Inspect_Code_Script.R`**](Scripts/Inspect_Code_Script.R)
 
-### Example HPC Submission Script (`Inspect_Code_submit.sh`)
+//
+
+Pour les utilisateurs qui souhaitent exécuter cette analyse sur un serveur, dans le cadre d'un traitement par lots ou depuis la ligne de commande, voici un script R pur qui effectue le même processus.
+
+Télécharger le **script R :** [**`Inspect_Code_Script.R`**](Scripts/Inspect_Code_Script.R)
+
+### Example HPC Submission Script // Exemple de script de soumission HPC
+
+`Inspect_Code_submit.sh`
 
 ``` bash
 #!/bin/bash
@@ -329,8 +399,3 @@ DATA_DIR="/scratch/your_user/your_project/code_dir"
 # Run Script
 Rscript Scripts/Inspect_Code_Script.R $DATA_DIR
 ```
-
-## References
-
-::: {#refs}
-:::

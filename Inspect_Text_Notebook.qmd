@@ -1,5 +1,5 @@
 ---
-title: "Text (.txt) and Markdown (.md) Files"
+title: "Text (.txt) and Markdown (.md) Files // Fichiers texte (.txt) et Markdown (.md)"
 author: "Data Curation Team"
 date: "2025-12-18"
 format: 
@@ -13,37 +13,63 @@ params:
   target_dir: "data/Inspect_Text/"
 ---
 
-## Overview
+## Overview // Aperçu
 
-Text files are the simplest form of documentation. However, they are often prone to encoding and structural issues that impede interoperability.
+Text files are the simplest form of documentation. However, they are susceptible to encoding and structural issues that impede interoperability.
 
-::: {.callout-note title="Curation Goal"}
-Ensure universal readability and "Archival Readiness" of text documents. Our objective is to validate UTF-8 encoding, identify "invisible" characters (BOM), and normalize line endings to ensure documents remain readable across all operating systems.
+//
+
+Les fichiers texte constituent la forme la plus simple de documentation. Ils sont toutefois sujets à des problèmes d'encodage et de structure qui nuisent à leur interopérabilité.
+
+::: {.callout-note title="Curation Goal // Objectif de la curation"}
+Ensure universal readability of text documents. Our objective is to validate UTF-8 encoding, identify "invisible" characters (BOM), and normalize line endings to ensure documents remain readable across all operating systems.
+//
+Garantir la lisibilité universelle des documents texte. Notre objectif est de vérifier l'encodage UTF-8, d'identifier les caractères « invisibles » (BOM) et de normaliser les fins de ligne afin de garantir que les documents restent lisibles sur tous les systèmes d'exploitation.
 :::
 
-::: {.callout-warning title="Preservation Risk"}
+::: {.callout-warning title="Identifying Risks // Identification des risques"}
 Character corruption ("Mojibake") caused by legacy encodings (e.g., Windows-1252) and "link rot" from broken external URLs are the primary threats to the long-term usability of plain text documentation.
+//
+La corruption des caractères (« Mojibake ») due à des encodages obsolètes (par exemple, Windows-1252) et la « pourriture des liens » résultant d'URL externes inactives constituent les principales menaces pour la pérennité de la documentation en texte brut.
 :::
 
-**Key Curation Objectives:**
+**This notebook evaluates text files on three levels:**
 
 1.  **Encoding Validation:** Detect character encoding and ensure compliance with the UTF-8 standard.
 2.  **Structural Integrity:** Identify Byte Order Marks (BOM) and mixed line endings (CRLF/LF).
 3.  **Link & Security Scan:** Extract external URLs and scan for accidental PII leaks (e.g., email addresses).
 
+//
+
+**Ce notebook analyse les fichiers texte à trois niveaux :**
+
+1.  **Validation de l'encodage :** Détecter l'encodage des caractères et s'assurer de la conformité à la norme UTF-8.
+2.  **Intégrité structurelle :** Identifier les marqueurs d'ordre des octets (BOM) et les fins de ligne mixtes (CRLF/LF).
+3.  **Analyse des liens et de la sécurité :** extraire les URL externes et rechercher les fuites accidentelles d'informations personnelles identifiables (par exemple, les adresses e-mail).
+
 ------------------------------------------------------------------------
 
-## Setup
+## Setup // Configuration
 
 We use `readr` for encoding detection and `stringr` for link extraction.
 
-### R Packages
+//
+
+Nous utilisons `readr` pour la détection des encodages et `stringr` pour l'extraction des liens.
+
+### R Packages // Packages R
+
+The following R packages are required. If you don't have these packages, uncomment this code and run it once in your R console:
+
+// 
+
+Les packages R suivants sont requis. Si vous ne disposez pas de ces packages, décommentez ce code et exécutez-le une fois dans votre console R :
 
 ```{r}
 # install.packages(c("tidyverse", "readr", "rstudioapi", "stringr"))
 ```
 
-### Load libraries
+### Load libraries // Charger les bibliothèques
 
 ```{r}
 #| label: load-libraries
@@ -55,17 +81,25 @@ library(stringr)    # For Regex (Links/Emails)
 library(rstudioapi) # For directory selection
 ```
 
-## Select Target Directory
+## Select a target directory // Sélectionnez un répertoire de destination
+
+This block allows for interactive selection of the image directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.
+
+//
+
+Ce bloc permet de sélectionner de manière interactive le répertoire contenant les images. En cas d'exécution dans un environnement non interactif, le chemin par défaut est celui défini dans l'en-tête YAML.
 
 ```{r}
 #| label: select-target-dir
 
+# 1. Try to select interactively if in RStudio
 if (interactive() && .Platform$OS.type == "windows") { 
-  selected_dir <- rstudioapi::selectDirectory(caption = "Select Text Directory")
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select Excel Directory")
 } else {
   selected_dir <- NULL
 }
 
+# 2. Logic to determine final directory (Interactive vs Parameter)
 if (!is.null(selected_dir)) {
   target_dir <- selected_dir
 } else {
@@ -75,9 +109,13 @@ if (!is.null(selected_dir)) {
 print(paste("Analyzing directory:", target_dir))
 ```
 
-## Inventory and Inspection
+## Inventory and Inspection // Inventaire et analyse
 
 We scan for .txt, .md, .csv, and .rmd files. The inspection extracts encoding confidence, checks for the hidden BOM, identifies line endings, and scans for PII (Emails).
+
+//
+
+Nous recherchons les fichiers aux extensions .txt, .md, .csv et .rmd. L'analyse évalue la fiabilité de l'encodage, vérifie la présence d'une nomenclature cachée, identifie les fins de ligne et recherche les données à caractère personnel (courriels).
 
 ```{r}
 #| label: extraction-logic
@@ -166,9 +204,13 @@ print("--- Text Report Preview ---")
 head(report)
 ```
 
-## Visualization
+## Visualization // Visualization
 
 We can visualize the distribution of detected encodings. Ideally, the repository should be 100% UTF-8 (or ASCII). Any "ISO-8859" or "Windows-1252" files are candidates for remediation.
+
+//
+
+Nous pouvons visualiser la répartition des encodages détectés. Idéalement, le référentiel devrait être entièrement au format UTF-8 (ou ASCII). Tout fichier au format « ISO-8859 » ou « Windows-1252 » doit faire l'objet d'une correction.
 
 ```{r}
 #| label: visual-text
@@ -188,7 +230,7 @@ if (nrow(report) > 0) {
 }
 ```
 
-## Save Results
+## Save Results // Enregistrer les résultats
 
 ```{r}
 #| label: save-results
@@ -202,17 +244,27 @@ write.csv(report, output_file, row.names = FALSE)
 print(paste("Report saved to:", output_file))
 ```
 
-## Curation Insights
+## Curation Insights // Aperçu de la curation
 
 Use the generated CSV to perform these checks:
 
--   **PII Check (Email_Count \> 0):** Text files (especially Readmes) often contain developer contact info.Verify if these emails are personal (e.g., gmail.com) or professional.
+-   **PII Check (Email_Count \> 0):** Text files (especially READMEs) often contain contact information. Verify if these emails are personal (e.g., gmail.com) or professional.
 
 -   **Encoding (Encoding != UTF-8):** Legacy files (Windows-1252) or other encodings may display corrupted characters on the web. It is recommended to convert them to UTF-8 using procedures like `iconv` (see below).
 
--   **BOM (HasBOM = TRUE):** The Byte Order Mark (BOM) is often unnecessary for UTF-8 and can break some scripts (e.g., shebang lines in bash). Curators can remove the BOM if the file is intended for code execution.
+-   **BOM (HasBOM = TRUE):** The Byte Order Mark (BOM) is often unnecessary for UTF-8 and can break some scripts (e.g., shebang lines in bash). Curators can remove the BOM if the file is intended for code execution. Confirm with the researcher that these are safe to remove.
 
-## Additional Tools
+//
+
+Utilisez le fichier CSV généré pour effectuer les vérifications suivantes :
+
+-   **Vérification des données à caractère personnel (Email_Count > 0) :** Les fichiers texte (en particulier les fichiers README) contiennent souvent des coordonnées. Vérifiez si ces adresses e-mail sont personnelles (par exemple, gmail.com) ou professionnelles.
+
+-   **Encodage (Encoding != UTF-8) :** Les fichiers hérités (Windows-1252) ou d'autres encodages peuvent afficher des caractères corrompus sur le Web. Il est recommandé de les convertir en UTF-8 à l'aide de procédures telles que `iconv` (voir ci-dessous).
+
+-   **BOM (HasBOM = TRUE) :** La marque d'ordre des octets (BOM) est souvent inutile pour l'UTF-8 et peut perturber certains scripts (par exemple, les lignes shebang dans bash). Les conservateurs peuvent supprimer la BOM si le fichier est destiné à l'exécution de code. Vérifiez auprès du chercheur que leur suppression ne présente aucun risque.
+
+## Additional Tools // Outils supplémentaires
 
 -   **iconv:** The standard [command-line tool](https://pubs.opengroup.org/onlinepubs/007904975/functions/iconv.html) for converting text encodings (e.g., iconv -f WINDOWS-1252 -t UTF-8 in.txt \> out.txt).
 
@@ -220,13 +272,29 @@ Use the generated CSV to perform these checks:
 
 -   **Internet Archive Wayback Machine:** Use this [website](https://web.archive.org/) to find live versions of broken URLs.
 
-## Using the Non-Interactive R Script
+//
 
-For users who want to run this analysis on a server (HPC), in a batch job, or from the command line, here is the pure R script version.
+-   **iconv :** L'[outil en ligne de commande](https://pubs.opengroup.org/onlinepubs/007904975/functions/iconv.html) standard pour convertir les encodages de texte (par exemple, iconv -f WINDOWS-1252 -t UTF-8 in.txt \> out.txt).
+
+-   **dos2unix :** Un [outil](https://linux.die.net/man/1/dos2unix) permettant de normaliser les fins de ligne (en convertissant les CRLF de Windows en LF d'Unix). Cela peut s'avérer utile pour garantir le bon fonctionnement des scripts sur les clusters Linux.
+
+-   **Internet Archive Wayback Machine :** utilisez ce [site web](https://web.archive.org/) pour trouver des versions actives d'URL qui ne fonctionnent plus.
+
+## Using the Non-Interactive R Script // Utilisation du script R non interactif
+
+For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
 
 Download the **R Script:** [**`Inspect_Text_Script.R`**](Scripts/Inspect_Text_Script.R)
 
-### Example HPC Submission Script (`Inspect_Text_submit.sh`)
+//
+
+Pour les utilisateurs qui souhaitent exécuter cette analyse sur un serveur, dans le cadre d'un traitement par lots ou depuis la ligne de commande, voici un script R pur qui effectue le même processus.
+
+Télécharger le **script R :** [**`Inspect_Text_Script.R`**](Scripts/Inspect_Text_Script.R)
+
+### Example HPC Submission Script // Exemple de script de soumission HPC
+
+`Inspect_Text_submit.sh`
 
 ``` bash
 #!/bin/bash
@@ -250,8 +318,3 @@ mkdir -p logs
 echo "Starting Text Inspection on $TARGET_DIR"
 Rscript Inspect_Text_Script.R "$TARGET_DIR"
 ```
-
-## References
-
-::: {#refs}
-:::

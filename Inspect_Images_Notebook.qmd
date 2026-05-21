@@ -1,5 +1,5 @@
 ---
-title: "Image Quality Control"
+title: "Image Quality Control // Contrôle de la qualité de l'image"
 author: "Natalie Williams"
 date: "2025-10-14"
 format: 
@@ -12,16 +12,28 @@ params:
   target_dir: "data/Inspect_Images/" 
 ---
 
-## Overview
+## Overview // Aperçu
 
-This notebook provides a workflow for performing standardized quality control on image files. Images are complex digital objects composed of technical properties and embedded metadata (EXIF/IPTC).
+This notebook provides a workflow for performing standardized quality control on image files. Images are complex digital objects composed of technical properties and embedded metadata (EXIF/IPTC). 
 
-::: {.callout-note title="Curation Goal"}
+// 
+
+Ce cahier de travail présente une procédure permettant d'effectuer un contrôle qualité standardisé sur des fichiers image. Les images sont des objets numériques complexes composés de propriétés techniques et de métadonnées intégrées (EXIF/IPTC).
+
+::: {.callout-note title="Curation Goal // Objectif de la curation"}
 Perform standardized quality control and metadata harvesting. Our objective is to validate technical properties (dimensions, colorspace), calculate fixity checksums, and extract deep archival metadata to ensure long-term accessibility and provenance.
+
+// 
+
+Effectuer un contrôle qualité standardisé et la collecte de métadonnées. Notre objectif est de valider les propriétés techniques (dimensions, espace colorimétrique), de calculer les sommes de contrôle de l'intégrité et d'extraire des métadonnées d'archivage approfondies afin de garantir l'accessibilité à long terme et la traçabilité des documents.
 :::
 
-::: {.callout-warning title="Preservation Risk"}
+::: {.callout-warning title="Identifying Risks // Identification des risques"}
 Loss of embedded metadata during format conversion, "bit-rot" corruption, and accidental privacy leaks through GPS coordinates (EXIF) are the primary risks to the integrity and ethical sharing of digital image collections.
+
+//
+
+La perte de métadonnées intégrées lors de la conversion de format, la détérioration due à la « dégradation des bits » et les fuites accidentelles de données personnelles via les coordonnées GPS (EXIF) constituent les principaux risques pour l'intégrité et le partage éthique des collections d'images numériques.
 :::
 
 **This notebook integrates three specialized R packages:**
@@ -30,23 +42,43 @@ Loss of embedded metadata during format conversion, "bit-rot" corruption, and ac
 -   **`magick`**: Validating file headers and technical properties [@magick].
 -   **`exiftoolr`**: Harvesting deep metadata (Camera, GPS, Software) [@exiftoolr].
 
+// 
+
+**Ce cahier intègre trois paquets R spécialisés :**
+
+-   **`digest`** : calcul des sommes de contrôle MD5 pour la vérification de l'intégrité et la détection des doublons [@digest].
+-   **`magick`** : validation des en-têtes de fichiers et des propriétés techniques [@magick].
+-   **`exiftoolr`** : Extraction de métadonnées approfondies (appareil photo, GPS, logiciel) [@exiftoolr].
+
 ------------------------------------------------------------------------
 
-## One-time setup
+## Setup // Configuration
 
 Before running this notebook, ensure the required R packages and the `ExifTool` command-line software are installed.
 
-### R Packages
+//
 
-The following R packages are required. If you don't have them, uncomment this code and run it once in your R console:
+Avant d'exécuter ce notebook, assurez-vous que les packages R requis et le logiciel en ligne de commande `ExifTool` sont installés.
+
+### R Packages // Packages R
+
+The following R packages are required. If you don't have these packages, uncomment this code and run it once in your R console:
+
+// 
+
+Les packages R suivants sont requis. Si vous ne disposez pas de ces packages, décommentez ce code et exécutez-le une fois dans votre console R :
 
 ```{r}
 # install.packages(c("tidyverse", "digest", "magick", "exiftoolr", "rstudioapi"))
 ```
 
-### ExifTool software
+### ExifTool software // Logiciel ExifTool
 
-The `exiftoolr` package is a wrapper around a command-line tool called **ExifTool**. You must install this tool for the detailed metadata extraction to work. **Run the following command *once* in your console to install the software.**
+The `exiftoolr` package is a wrapper around a command-line tool called **ExifTool**. You must install this tool for the detailed metadata extraction to work. **Run the following command *once* in your console to install the software**.
+
+//
+
+Le package `exiftoolr` est une interface pour un outil en ligne de commande appelé **ExifTool**. Vous devez installer cet outil pour que l'extraction détaillée des métadonnées fonctionne. **Exécutez la commande suivante *une seule fois* dans votre console pour installer le logiciel**.
 
 ```{r}
 # exiftoolr::install_exiftool()
@@ -54,9 +86,7 @@ The `exiftoolr` package is a wrapper around a command-line tool called **ExifToo
 
 ------------------------------------------------------------------------
 
-## Load libraries
-
-Load all the necessary libraries for the session.
+## Load libraries // Charger les bibliothèques
 
 ```{r}
 #| label: load-libraries
@@ -71,9 +101,13 @@ library(rstudioapi)
 
 ------------------------------------------------------------------------
 
-## Select a target directory
+## Select a target directory // Sélectionnez un répertoire de destination
 
 This block allows for interactive selection of the image directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.
+
+//
+
+Ce bloc permet de sélectionner de manière interactive le répertoire contenant les images. En cas d'exécution dans un environnement non interactif, le chemin par défaut est celui défini dans l'en-tête YAML.
 
 ```{r}
 #| label: select-target-dir
@@ -96,9 +130,13 @@ if (!is.null(selected_dir)) {
 print(paste("Analyzing directory:", target_dir))
 ```
 
-### Find Image Files
+### Find Image Files // Rechercher des fichiers image
 
-Here, we calculate an MD5 Checksum for every file. This alphanumeric string acts as a unique fingerprint. If a single bit of the file changes in the future (due to disk failure or accidental modification) [@rosenthal2010], this checksum will change, alerting the curator to corruption.
+Here, we locate any image files and calculate an MD5 Checksum for each. This alphanumeric string acts as a unique fingerprint. If a single bit of the file changes in the future (due to disk failure or accidental modification) [@rosenthal2010], this checksum will change. We will be using the checksums to identify duplicate images.
+
+//
+
+Ici, nous localisons tous les fichiers image et calculons une somme de contrôle MD5 pour chacun d'entre eux. Cette chaîne alphanumérique fait office d'empreinte digitale unique. Si un seul bit du fichier venait à changer à l'avenir (à la suite d'une panne de disque ou d'une modification accidentelle) [@rosenthal2010], cette somme de contrôle changerait. Nous utiliserons ces sommes de contrôle pour identifier les images en double.
 
 ```{r}
 #| label: inventory-fixity
@@ -127,9 +165,13 @@ head(file_inventory)
 
 ------------------------------------------------------------------------
 
-## Technical Validation using `magick`
+## Technical Validation using `magick` // Validation technique à l'aide de `magick`
 
 The `magick` package allow us to confirm these files are readable and for extracting basic technical properties. This step loops through each file, reads its information, and collects it into a single table.
+
+//
+
+Le package `magick` nous permet de vérifier que ces fichiers sont lisibles et d'en extraire les propriétés techniques de base. Cette étape parcourt chaque fichier, en lit les informations et les rassemble dans un seul tableau.
 
 ```{r}
 #| message: false
@@ -165,9 +207,13 @@ print("Technical validation complete.")
 
 ------------------------------------------------------------------------
 
-## Detailed EXIF Metadata with `exiftoolr`
+## Detailed EXIF Metadata with `exiftoolr` // Métadonnées EXIF détaillées avec `exiftoolr`
 
 This step uses `exiftoolr` to extract all available embedded metadata from the image files. This can include hundreds of fields detailing everything from the camera settings and lens information to GPS coordinates and software versions. Please note that the output can have many columns.
+
+//
+
+Cette étape utilise `exiftoolr` pour extraire toutes les métadonnées intégrées disponibles des fichiers image. Cela peut inclure des centaines de champs détaillant tout, des réglages de l'appareil photo et des informations sur l'objectif aux coordonnées GPS et aux versions logicielles. Veuillez noter que le résultat peut comporter de nombreuses colonnes.
 
 ```{r}
 #| label: exif-extraction
@@ -194,7 +240,7 @@ if(length(common_cols) > 0) {
 
 ------------------------------------------------------------------------
 
-## Curation Intelligence
+## Compile Flags // Indicateurs de compilation
 
 We now merge the three data streams (Inventory, Magick, Exif) to perform automated quality control. We apply logic to "flag" files that deviate from the norm or pose risks.
 
@@ -207,6 +253,20 @@ The Flagging Logic:
 -   **Dimension_Outlier:** Images that do not match the Mode (most common) width/height of the dataset.
 
 -   **Corrupt:** Files that magick failed to read.
+
+//
+
+Nous fusionnons désormais les trois flux de données (Inventory, Magick, Exif) afin d'effectuer un contrôle qualité automatisé. Nous appliquons une logique pour « marquer » les fichiers qui s'écartent de la norme ou présentent des risques.
+
+La logique de marquage :
+
+-   **Duplicate_File :** Fichiers partageant exactement la même somme de contrôle MD5 (stockage redondant).
+
+-   **Privacy_Risk :** Fichiers contenant des données de latitude GPS (nécessite une vérification).
+
+-   **Dimension_Outlier :** Images dont la largeur/hauteur ne correspond pas à la valeur modale (la plus courante) de l'ensemble de données.
+
+-   **Corrupt :** Fichiers que Magick n'a pas pu lire.
 
 ```{r}
 #| label: merge-and-flag
@@ -283,29 +343,51 @@ print(paste("Curation report saved to:", output_file))
 
 ------------------------------------------------------------------------
 
-## Curation Insights
+## Curation Insights // Conseils pour la curation
 
 Use the generated CSV to perform these checks:
 
--   **Privacy Risks (GPS):** Filter the CSV for flag_privacy_gps == "HAS_GPS_DATA". These images contain embedded location coordinates (Latitude/Longitude). If the dataset involves human subjects or protected species, these coordinates must be scrubbed using ExifTool (-gps:all=) before publication to prevent "mosaic effect" re-identification.
+-   **Privacy Risks (GPS):** Filter the CSV for flag_privacy_gps == "HAS_GPS_DATA". These images contain embedded location coordinates (Latitude/Longitude). If the dataset involves human subjects or protected species, these coordinates must be scrubbed using ExifTool (-gps:all=) before publication to prevent "mosaic effect" re-identification. Discuss with the researcher about reducing the precision of the coordinates or removing them altogether.
 
--   **Format Obsolescence:** Check the format_magick column. While .jpg and .tiff are standard, proprietary raw formats (e.g., .CR2, .NEF, .ARW) are less stable for long-term preservation. It is recommended to retain the raw file for the "preservation master" but generate a standard TIFF or JPEG 2000 copy for the "access derivative."
+-   **Format Obsolescence:** Check the format_magick column. While .jpg and .tiff are standard, proprietary raw formats (e.g., .CR2, .NEF, .ARW) are less stable for long-term preservation. Discuss with the researcher about transforming these files to a standard format such as TIFF or JPEG.
 
 -   **Digital Fixity (Duplicates):** Filter for flag_duplicate == "DUPLICATE". These files share the exact same MD5 hash, meaning they are bit-for-bit identical, even if they have different filenames.
 
-## Additional Tools & Resources
+//
+
+Utilisez le fichier CSV généré pour effectuer les vérifications suivantes :
+
+-   **Risques liés à la confidentialité (GPS) :** Filtrez le fichier CSV en recherchant flag_privacy_gps == « HAS_GPS_DATA ». Ces images contiennent des coordonnées de localisation intégrées (latitude/longitude). Si l'ensemble de données concerne des sujets humains ou des espèces protégées, ces coordonnées doivent être effacées à l'aide d'ExifTool (-gps:all=) avant publication afin d'éviter toute réidentification par « effet de mosaïque ». Discutez avec le chercheur de la possibilité de réduire la précision des coordonnées ou de les supprimer complètement.
+
+-   **Obsolescence du format :** Vérifiez la colonne format_magick. Alors que les formats .jpg et .tiff sont standard, les formats bruts propriétaires (par exemple, .CR2, .NEF, .ARW) sont moins stables pour la conservation à long terme. Discutez avec le chercheur de la possibilité de convertir ces fichiers vers un format standard tel que TIFF ou JPEG.
+
+-   **Fermeté numérique (doublons) :** Filtrez sur flag_duplicate == « DUPLICATE ». Ces fichiers partagent exactement le même hachage MD5, ce qui signifie qu’ils sont identiques bit à bit, même s’ils ont des noms de fichiers différents.
+
+## Additional Tools & Resources // Outils et ressources supplémentaires 
 
 While R is excellent for batch processing and statistical summaries, visual and command-line tools are often required for deep analysis or manual correction.
 
--   **ExifTool (Command Line):** The industry standard for reading, writing, and editing metadata. Unlike the R wrapper, the direct command line allows you to write data (e.g., scrubbing GPS tags) (see https://https://exiftool.org/).
+-   **ExifTool (Command Line):** The industry standard for reading, writing, and editing metadata. In addition to the functionality from the R wrapper, the direct command line also allows you to write data (e.g., scrubbing GPS tags) (see https://https://exiftool.org/).
 
 -   **JHOVE (JSTOR/Harvard Object Validation Environment):** A widely used [digital preservation tool](https://jhove.openpreservation.org/). It performs stricter format validation than magick. It can verify if a file claims to be a TIFF but violates the specific version 6.0 specification.
 
 -   **Tesseract OCR:** Is an optical [character recognition engine](https://github.com/tesseract-ocr/tesseract). It is essential for "Content Analysis." It can scan thousands of images to detect text, helping curators flag files that contain sensitive documents (PII) which might have been mixed into a photo dataset.
 
--   **ImageMagick (GUI/CLI):** It is a [tool](ImageMagick.org) Useful for batch converting proprietary raw formats into preservation-ready TIFFs.
+-   **ImageMagick (GUI/CLI):** It is a [tool](ImageMagick.org) useful for batch file format transformations, such as proprietary image formats to TIFF.
 
-## Using the Non-Interactive R Script
+//
+
+Si R est idéal pour le traitement par lots et les résumés statistiques, des outils visuels et en ligne de commande sont souvent nécessaires pour une analyse approfondie ou une correction manuelle.
+
+-   **ExifTool (ligne de commande) :** La norme industrielle pour la lecture, l'écriture et la modification des métadonnées. Outre les fonctionnalités offertes par le wrapper R, la ligne de commande directe vous permet également d'écrire des données (par exemple, effacer les balises GPS) (voir https://https://exiftool.org/).
+
+-   **JHOVE (JSTOR/Harvard Object Validation Environment) :** Un [outil de préservation numérique](https://jhove.openpreservation.org/) largement utilisé. Il effectue une validation de format plus stricte que magick. Il peut vérifier si un fichier prétend être un TIFF mais enfreint la spécification de la version 6.0.
+
+-   **Tesseract OCR :** Moteur de [reconnaissance optique de caractères](https://github.com/tesseract-ocr/tesseract). Indispensable pour l’« analyse de contenu ». Il peut analyser des milliers d’images pour détecter du texte, aidant ainsi les conservateurs à signaler les fichiers contenant des documents sensibles (informations personnelles identifiables) qui auraient pu se retrouver dans un ensemble de données photographiques.
+
+-   **ImageMagick (GUI/CLI) :** C'est un [outil](ImageMagick.org) utile pour les transformations de format de fichiers par lots, par exemple pour convertir des formats d'image propriétaires en TIFF.
+
+## Using the Non-Interactive R Script // Utilisation du script R non interactif
 
 For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
 
@@ -313,7 +395,15 @@ For users who want to run this analysis on a server, in a batch job, or from the
 
 Download the **R Script:** [**`Inspect_Images_Script.R`**](Scripts/Inspect_Images_Script.R)
 
-### Example HPC Submission Script
+//
+
+Pour les utilisateurs qui souhaitent exécuter cette analyse sur un serveur, dans le cadre d'un traitement par lots ou depuis la ligne de commande, voici un script R pur qui effectue le même processus.
+
+**Prérequis :** \* R avec les paquets `tidyverse`, `magick` et `exiftoolr` installés. \* Le logiciel en ligne de commande **ExifTool** doit être installé sur le système.
+
+Télécharger le **script R :** [**`Inspect_Images_Script.R`**](Scripts/Inspect_Images_Script.R)
+
+### Example HPC Submission Script // Exemple de script de soumission CHP
 
 ``` bash
 #!/bin/bash

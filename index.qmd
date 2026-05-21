@@ -1,48 +1,68 @@
 ---
-title: "Research Data Curator's Toolbox"
-subtitle: "A Practical Guide for Data Management"
+title: "Research Data Curator's Toolbox // Boîte à outils du curateur de données de recherche"
+subtitle: "A Practical Guide for Data Management // Un guide pratique de la gestion des données"
 format: 
   html:
     toc: false
 ---
 
 ::: {.column-screen .hero-banner .text-center}
-<h1 style="color: white; font-weight: 700; font-family: 'Ubuntu', sans-serif;">Research Data Curator's Toolbox</h1>
+<h1 style="color: white; font-weight: 700; font-family: &#39;Ubuntu&#39;, sans-serif;">
 
-<p style="font-size: 1.5rem; opacity: 0.9; font-family: 'Montserrat', sans-serif;">Expert Workflows for Digital Curation</p>
+Research Data Curator's Toolbox // Boîte à outils du curateur de données de recherche
+
+</h1>
+
+<p style="font-size: 1.5rem; opacity: 0.9; font-family: &#39;Montserrat&#39;, sans-serif;">
+
+Expert Workflows for Data Curation // Workflows spécialisés pour la curation de données
+
+</p>
 :::
 
-::: {.callout-important title="Work in Progress"}
-This resource is currently under development. Please note that the French version is in progress. For feedback, questions, or suggestions, please contact us at [curators@frdr-dfdr.ca](mailto:curators@frdr-dfdr.ca).
+::: {.callout-important title="Work in Progress // Travaux en cours"}
+This resource is currently under development. Please note that the French version is in progress. If you would like a particular selection translated, or provide feedback, questions, or suggestions, please contact us at [curators\@frdr-dfdr.ca](mailto:curators@frdr-dfdr.ca). // Cette ressource est actuellement en cours d'élaboration. Veuillez noter que la version française est en cours de rédaction. Si vous souhaitez qu'une partie spécifique soit traduite, ou si vous avez des commentaires, des questions ou des suggestions, n'hésitez pas à nous contacter à l'adresse [curators\@frdr-dfdr.ca](mailto:curators@frdr-dfdr.ca).
 :::
 
-## Welcome
+## Welcome // Bienvenue
 
-This guide provides a collection of documented R workflows to support Research Data Management (RDM) from the moment data is ingested to its final archival reporting. Our goal is to empower curators to transform raw submissions into FAIR (Findable, Accessible, Interoperable, Reusable) research objects.
+This guide provides a collection of documented R workflows to support data curation from the moment data is ingested to its final published state. Our goal is to empower curators to transform raw submissions into FAIR (Findable, Accessible, Interoperable, Reusable) research objects. // Ce guide rassemble une série de workflows R documentés destinés à faciliter la gestion des données, depuis leur collecte jusqu'à leur publication finale. Notre objectif est de donner aux gestionnaires de données les moyens de transformer les données brutes en objets de recherche FAIR (facilement repérables, accessibles, interopérables et réutilisables).
 
 :::::: grid
 ::: {.g-col-12 .g-col-md-4 .nav-card .p-3}
-<h3 class="nav-card-title">🛠️ Triage & Inspect</h3>
+<h3 class="nav-card-title">
 
-Automated analysis of file extensions, formats, and basic integrity to identify immediate risks.
+🛠️ Inspect // Inspecter
+
+</h3>
+
+Automated analysis of file extensions, formats, and basic integrity to identify immediate risks. // Analyse automatisée des extensions de fichiers, des formats et de l'intégrité de base afin d'identifier les risques immédiats.
 :::
 
 ::: {.g-col-12 .g-col-md-4 .nav-card .p-3}
-<h3 class="nav-card-title">🔍 Deep Validation</h3>
+<h3 class="nav-card-title">
 
-Specialized inspection for Tabular, Spatial, and Scientific data to ensure internal consistency.
+🔍 Validate // Valider
+
+</h3>
+
+Specialized inspection for Tabular, Spatial, and Scientific data to ensure internal consistency. // Contrôle spécialisé des données tabulaires, spatiales et scientifiques visant à garantir leur cohérence interne.
 :::
 
 ::: {.g-col-12 .g-col-md-4 .nav-card .p-3}
-<h3 class="nav-card-title">📊 Systematic Reporting</h3>
+<h3 class="nav-card-title">
 
-Generation of standardized curation reports, metadata summaries, and risk logs for depositors.
+📊 Report // Rapport
+
+</h3>
+
+Generation of standardized curation reports, metadata summaries, and risk logs for depositors. // Génération de rapports de conservation normalisés, de résumés de métadonnées et de registres des risques à l'intention des déposants.
 :::
 ::::::
 
 ------------------------------------------------------------------------
 
-### How to use this Guide
+### How to use this Guide // Comment utiliser ce guide
 
 Each chapter introduces a specific curation task or file format. Within each notebook, you will find:
 
@@ -50,3 +70,14 @@ Each chapter introduces a specific curation task or file format. Within each not
 2.  **Automated Checks**: R code snippets that perform technical inspection.
 3.  **Curation Insights**: Guidance on how to interpret flags and risks.
 4.  **Non-Interactive Scripts**: Standalone R scripts for batch processing in HPC or server environments.
+
+// \
+Chaque chapitre présente une tâche de curation ou un format de fichier spécifique. Dans chaque cahier, vous trouverez :
+
+1.  **Objectifs de curation** : ce que nous recherchons et pourquoi c'est important.
+
+2.  **Contrôles automatisés** : extraits de code R permettant d'effectuer des vérifications techniques.
+
+3.  **Conseils de curation** : des indications sur la manière d'interpréter les alertes et les risques.
+
+4.  **Scripts non interactifs** : scripts R autonomes destinés au traitement par lots dans des environnements CHP ou sur serveur.

@@ -13,16 +13,24 @@ params:
 bibliography: references.bib
 ---
 
-## Overview
+## Overview // Aperçu
 
-The **Tag Image File Format (TIFF)** is the standard for scientific imaging (microscopy, astronomy, geospatial). Unlike standard photos, TIFFs can hold high bit-depths and multi-page stacks.
+The **Tag Image File Format (TIFF)** is the standard for scientific imaging such as microscopy, astronomy, and geospatial sciences. Unlike standard photos, TIFFs can hold high bit-depths and multi-page stacks.
 
-::: {.callout-note title="Curation Goal"}
-Validate scientific integrity and technical metadata. Our objective is to detect hidden lossy compression (e.g., JPEG inside TIFF), inventory multi-page stacks, and extract embedded metadata (ImageJ tags) that are crucial for pixel-based analysis.
+//
+
+Le **format TIFF (Tag Image File Format)** est la norme en matière d'imagerie scientifique, notamment en microscopie, en astronomie et dans les sciences géospatiales. Contrairement aux photos classiques, les fichiers TIFF peuvent prendre en charge des profondeurs de bits élevées et des séries d'images multipages.
+
+::: {.callout-note title="Curation Goal // Objectif de la curation"}
+Validate scientific integrity and technical metadata. Detect hidden lossy compression (e.g., JPEG inside TIFF), inventory multi-page stacks, and extract embedded metadata (ImageJ tags) that are crucial for pixel-based analysis.
+//
+Vérifier l'intégrité scientifique et les métadonnées techniques. Détecter les compressions avec perte cachées (par exemple, un fichier JPEG à l'intérieur d'un fichier TIFF), recenser les piles de pages multiples et extraire les métadonnées intégrées (balises ImageJ) qui sont essentielles à l'analyse au niveau des pixels.
 :::
 
-::: {.callout-warning title="Preservation Risk"}
-Hidden lossy compression and the loss of proprietary metadata during format conversion are primary risks. Scientific TIFFs often appear "black" or empty in standard viewers, leading to accidental deletion or incorrect processing if not properly inspected.
+::: {.callout-warning title="Identifying Risks // Identification des risques"}
+Hidden lossy compression and the loss of proprietary metadata during format conversion are primary risks. Scientific TIFFs often appear black or empty in standard viewers, leading to accidental deletion or incorrect processing if not properly inspected.
+//
+La compression avec perte cachée et la perte de métadonnées propriétaires lors de la conversion de format constituent les principaux risques. Les fichiers TIFF scientifiques apparaissent souvent noirs ou vides dans les visionneuses standard, ce qui peut entraîner leur suppression accidentelle ou un traitement incorrect s'ils ne sont pas correctement vérifiés.
 :::
 
 **This notebook employs a multi-strategy approach to inspection:**
@@ -31,21 +39,37 @@ Hidden lossy compression and the loss of proprietary metadata during format conv
 2.  **ImageMagick Fallback:** Inferring properties for non-standard headers.
 3.  **Text Mining:** Scanning generic "Description" fields for hidden scientific metadata.
 
+//
+
+**Ce cahier adopte une approche multi-stratégies pour l'inspection :**
+
+1.  **Extraction LibTIFF :** analyse des en-têtes IFD bruts à la recherche de balises standard telles que celles relatives à la compression.
+2.  **Solution de secours ImageMagick :** déduction des propriétés pour les en-têtes non standard.
+3.  **Exploration de texte :** analyse des champs « Description » génériques à la recherche de métadonnées scientifiques cachées.
+
 ------------------------------------------------------------------------
 
-## Setup
+## Setup // Configuration
 
 We use the `ijtiff` package, which is designed for scientific image handling and correctly processes multi-page and high-bit-depth files.
 
-### R Packages
+//
 
-If you do not have the required packages, run this command once in your R console:
+Nous utilisons le package `ijtiff`, conçu pour le traitement d'images scientifiques et capable de traiter correctement les fichiers multipages et ceux à grande profondeur de bits.
+
+### R Packages // Packages R
+
+The following R packages are required. If you don't have these packages, uncomment this code and run it once in your R console:
+
+// 
+
+Les packages R suivants sont requis. Si vous ne disposez pas de ces packages, décommentez ce code et exécutez-le une fois dans votre console R :
 
 ```{r}
 # install.packages(c("tidyverse", "tiff", "magick", "stringr", "rstudioapi"))
 ```
 
-### Load libraries
+### Load libraries // Charger les bibliothèques
 
 ```{r}
 #| label: setup
@@ -59,11 +83,13 @@ library(stringr)    # Text Mining
 library(rstudioapi) # UI interaction
 ```
 
-## Select Target Directory
+## Select a target directory // Sélectionnez un répertoire de destination
 
-Select the folder containing the TiFF files.
+This block allows for interactive selection of the image directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.
 
-**Note:** If running interactively, a dialog box will appear. Otherwise, it defaults to the target_dir parameter.
+//
+
+Ce bloc permet de sélectionner de manière interactive le répertoire contenant les images. En cas d'exécution dans un environnement non interactif, le chemin par défaut est celui défini dans l'en-tête YAML.
 
 ```{r}
 #| label: select-target-dir
@@ -84,9 +110,13 @@ print(paste("Analyzing directory:", target_dir))
 
 ```
 
-## Inventory of files
+## Inventory of TIFF files // Liste des fichiers TIFF
 
 We scan for `.tif` and `.tiff` files.
+
+//
+
+Nous recherchons les fichiers `.tif` et `.tiff`.
 
 ```{r}
 #| label: inventory
@@ -102,9 +132,13 @@ tiff_files <- list.files(
 print(paste("Found", length(tiff_files), "TIFF files."))
 ```
 
-## Deep Header Inspection
+## Deep Header Inspection // Inspection approfondie de l'en-tête
 
 This function scans all file attributes for keywords (e.g., "depth", "compression") to find metadata even if it uses non-standard tag names.
+
+//
+
+Cette fonction analyse tous les attributs des fichiers à la recherche de mots-clés (par exemple, « depth », « compression ») afin de trouver des métadonnées, même si celles-ci utilisent des noms de balises non standard.
 
 ```{r}
 #| label: inspection-logic
@@ -183,9 +217,7 @@ print("--- Deep Inspection Preview ---")
 print(head(report))
 ```
 
-## Save Results
-
-Save the report to a CSV file for review.
+## Save Results // Enregistrer les résultats
 
 ```{r}
 #| label: save-results
@@ -199,31 +231,57 @@ write.csv(report, output_file, row.names = FALSE)
 print(paste("Report saved to:", output_file))
 ```
 
-## Curation Insights
+## Curation Insights // Aperçu de curation
 
-Use this report to verify scientific integrity:
+Use this report to verify file integrity:
 
 -   **Bit Depth (16 or 32):** These are true scientific images. Do not convert them to JPG or PNG, as those formats are typically limited to 8-bit and will discard data precision. If BitDepth remains "Unknown", the file likely lacks a proper header.
 
 -   **Compression:** Recommended (Uncompressed, LZW, Deflate, Packbits); Not recommended (JPEG, OldJPEG). If you see JPEG compression inside a TIFF, the data integrity for pixel-based analysis is compromised.
 
--   **Color Space (Gray vs sRGB):** Scientific microscopy data is typically Gray (intensity only). If a raw microscope file is sRGB, it may have been converted or screenshotted, potentially losing its dynamic range.
+-   **Color Space (Gray vs sRGB):** Scientific microscopy data is typically Gray (intensity only). If a raw microscope file is sRGB, it may have been converted or taken from a screenshot, potentially losing its dynamic range.
 
-## Additional Tools
+//
 
--   **ImageJ / Fiji:** The absolute standard [open-source software](https://imagej.net/software/fiji/downloads) for viewing and analyzing scientific TIFFs (microscopy, astronomy). It handles multi-page stacks and high-bit-depth data that confuse standard viewers [@schindelin2012].
+Utilisez ce rapport pour vérifier l'intégrité des données :
+
+-   **Profondeur de bits (16 ou 32) :** Il s'agit de véritables images scientifiques. Ne les convertissez pas au format JPG ou PNG, car ces formats sont généralement limités à 8 bits et entraîneraient une perte de précision des données. Si la profondeur de bits reste « Inconnue », le fichier ne dispose probablement pas d'un en-tête correct.
+
+-   **Compression :** Recommandée (Non compressé, LZW, Deflate, Packbits) ; Non recommandée (JPEG, OldJPEG). Si vous constatez une compression JPEG dans un fichier TIFF, l'intégrité des données pour l'analyse au niveau des pixels est compromise.
+
+-   **Espace colorimétrique (Gris vs sRGB) :** Les données de microscopie scientifique sont généralement en gris (intensité uniquement). Si un fichier brut de microscope est en sRGB, il a peut-être été converti ou provient d'une capture d'écran, ce qui peut entraîner une perte de sa plage dynamique.
+
+## Additional Tools // Outils supplémentaires
+
+-   **ImageJ / Fiji:** Standard [open-source software](https://imagej.net/software/fiji/downloads) for viewing and analyzing scientific TIFFs (e.g. microscopy, astronomy). It handles multi-page stacks and high-bit-depth data that confuse standard viewers [@schindelin2012].
 
 -   **Bio-Formats:** A [library](https://www.openmicroscopy.org/bio-formats/) specifically designed to read proprietary life sciences image formats (e.g., .czi, .lif) and convert them to standard OME-TIFF (see the [Bio-Formats](https://bio-formats.readthedocs.io/en/v8.3.0/about/index.html) documentation).
 
 -   **ExifTool:** A robust [command-line tool](https://exiftool.org/) for reading and writing embedded metadata (EXIF, IPTC, XMP) in images (see the [documentation](https://exiftool.org/exiftool_pod.html)).
 
-## Using the Non-Interactive R Script
+//
 
-For users who want to run this analysis on a server (HPC), in a batch job, or from the command line, here is the pure R script version.
+-   **ImageJ / Fiji :** [logiciel libre](https://imagej.net/software/fiji/downloads) standard destiné à la visualisation et à l'analyse de fichiers TIFF scientifiques (par exemple, en microscopie ou en astronomie). Il prend en charge les piles d'images multipages et les données à grande profondeur de bits qui posent problème aux visionneuses standard [@schindelin2012].
+
+- **Bio-Formats :** Une [bibliothèque](https://www.openmicroscopy.org/bio-formats/) spécialement conçue pour lire les formats d'image propriétaires des sciences de la vie (par exemple, .czi, .lif) et les convertir au format OME-TIFF standard (voir la documentation [Bio-Formats](https://bio-formats. readthedocs.io/en/v8.3.0/about/index.html).
+
+-   **ExifTool :** Un [outil en ligne de commande](https://exiftool.org/) robuste permettant de lire et d'écrire des métadonnées intégrées (EXIF, IPTC, XMP) dans les images (voir la [documentation](https://exiftool.org/exiftool_pod.html
+
+## Using the Non-Interactive R Script // Utilisation du script R non interactif
+
+For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
 
 Download the **R Script:** [**`Inspect_tiff_Script.R`**](Scripts/Inspect_tiff_Script.R)
 
-### Example HPC Submission Script (`Inspect_tiff_submit.sh`)
+//
+
+Pour les utilisateurs qui souhaitent exécuter cette analyse sur un serveur, dans le cadre d'un traitement par lots ou depuis la ligne de commande, voici un script R pur qui effectue le même processus.
+
+Télécharger le **script R :** [**`Inspect_tiff_Script.R`**](Scripts/Inspect_tiff_Script.R)
+
+### Example HPC Submission Script // Exemple de script de soumission HPC
+
+`Inspect_tiff_submit.sh`
 
 ``` bash
 #!/bin/bash
@@ -252,8 +310,3 @@ mkdir -p logs
 echo "Starting TIFF Deep Scan on $DATA_DIR"
 Rscript Inspect_tiff_Script.R "$DATA_DIR"
 ```
-
-## References
-
-::: {#refs}
-:::

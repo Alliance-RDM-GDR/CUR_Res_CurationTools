@@ -1,5 +1,5 @@
 ---
-title: "NetCDF Files"
+title: "NetCDF Files // Fichiers NetCDF"
 author: "Natalie Williams"
 date: "2025-10-16"
 format: 
@@ -12,16 +12,24 @@ params:
   target_dir: "data/Inspect_nc/"
 ---
 
-## Overview
+## Overview // Aperçu
 
 [NetCDF](https://www.ogc.org/standards/netcdf/) (Network Common Data Form) is the OGC standard for storing multidimensional scientific data.
 
-::: {.callout-note title="Curation Goal"}
+//
+
+[NetCDF](https://www.ogc.org/standards/netcdf/) (Network Common Data Format) est la norme de l'OGC pour le stockage de données scientifiques multidimensionnelles.
+
+::: {.callout-note title="Curation Goal // Objectif de la curation"}
 Validate the self-describing nature of scientific data. Our objective is to ensure NetCDF files follow community conventions (CF Conventions) and contain sufficient metadata (units, dimensions, and CRS) for reliable future reuse.
+//
+Vérifier que les données scientifiques sont auto-descriptives. Notre objectif est de garantir que les fichiers NetCDF respectent les conventions de la communauté (conventions CF) et contiennent suffisamment de métadonnées (unités, dimensions et SRC) pour permettre une réutilisation fiable à l'avenir.
 :::
 
-::: {.callout-warning title="Preservation Risk"}
+::: {.callout-warning title="Identifying Risks // Identification des risques"}
 NetCDF defines *how* to store data, but not *what* it represents. Non-compliance with the Climate and Forecast (CF) conventions renders the data contextually unusable, as software cannot reliably interpret physical units or spatial alignment.
+//
+NetCDF définit *comment* stocker les données, mais pas *ce qu’elles représentent*. Le non-respect des conventions « Climate and Forecast » (CF) rend les données inutilisables dans leur contexte, car les logiciels ne peuvent pas interpréter de manière fiable les unités physiques ou l’alignement spatial.
 :::
 
 **This notebook evaluates NetCDF files on three levels:**
@@ -30,15 +38,31 @@ NetCDF defines *how* to store data, but not *what* it represents. Non-compliance
 2.  **Spatial Awareness:** Detecting Coordinate Reference Systems (CRS).
 3.  **Data Health:** Scanning for empty datasets (100% NaNs).
 
+//
+
+**Ce notebook évalue les fichiers NetCDF à trois niveaux :**
+
+1.  **Conformité des métadonnées :** vérification des attributs globaux tels que `Conventions` ou `institution`.
+2.  **Reconnaissance spatiale :** détection des systèmes de référence de coordonnées (SRC).
+3.  **Intégrité des données :** analyse à la recherche d'ensembles de données vides (100 % de NaN).
+
 ------------------------------------------------------------------------
 
-## Setup
+## Setup // Configuration
 
 Before running this notebook, you need to ensure the required R packages are installed.
 
-### R Packages
+//
 
-The following R packages are required. If you don't have them, run this code once in your R console:
+Avant d'exécuter ce notebook, vous devez vous assurer que les paquets R requis sont installés.
+
+### R Packages // Packages R
+
+The following R packages are required. If you don't have these packages, uncomment this code and run it once in your R console:
+
+// 
+
+Les packages R suivants sont requis. Si vous ne disposez pas de ces packages, décommentez ce code et exécutez-le une fois dans votre console R :
 
 ```{r}
 # install.packages(c("tidyverse", "tidync", "ncmeta", "rstudioapi"))
@@ -46,9 +70,7 @@ The following R packages are required. If you don't have them, run this code onc
 
 ------------------------------------------------------------------------
 
-## Load Libraries
-
-This chunk loads all the necessary libraries for the session.
+### Load libraries // Charger les bibliothèques
 
 ```{r}
 #| label: load-libraries
@@ -62,11 +84,13 @@ library(rstudioapi) # For directory selection
 
 ------------------------------------------------------------------------
 
-## Select target directory with NetCDF files
+## Select a target directory // Sélectionnez un répertoire de destination
 
-This section identifies the directory to be analyzed and finds all `.nc` files within it.
+This block allows for interactive selection of the image directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.
 
-> **Note:** If you are running this interactively in RStudio, a dialog box will appear. If you are rendering this document (where no user interaction is possible), it will default to the `params$target_dir` defined in the YAML header.
+//
+
+Ce bloc permet de sélectionner de manière interactive le répertoire contenant les images. En cas d'exécution dans un environnement non interactif, le chemin par défaut est celui défini dans l'en-tête YAML.
 
 ```{r}
 #| label: select-target-dir
@@ -88,9 +112,13 @@ if (!is.null(selected_dir)) {
 print(paste("Analyzing directory:", target_dir))
 ```
 
-### Find NetCDF files
+### Inventory of NetCDF files // Liste des fichiers NetCDF
 
 Now we scan the selected directory for all `.nc` files.
+
+//
+
+Nous allons maintenant rechercher tous les fichiers `.nc` dans le répertoire sélectionné.
 
 ```{r}
 #| label: find-files
@@ -111,9 +139,13 @@ head(nc_files)
 
 ------------------------------------------------------------------------
 
-## Usability scan
+## Usability scan // Analyse de l'utilisabilité
 
 This phase evaluates the "fitness for use." We check if the files contain valid spatial coordinates (CRS) and if the data variables actually contain numbers (Data Health).
+
+//
+
+Cette phase évalue la « pertinence d'utilisation ». Nous vérifions si les fichiers contiennent des coordonnées spatiales valides (SCS) et si les variables de données contiennent bien des valeurs numériques (intégrité des données).
 
 ```{r}
 #| label: inventory-logic
@@ -197,9 +229,13 @@ print(paste("Inventory complete for", nrow(inventory_results), "files."))
 head(inventory_results)
 ```
 
-## Metadata Extraction
+## Metadata Extraction // Extraction des métadonnées
 
 Now, we perform a deep extraction of all attributes to create detailed documentation.
+
+//
+
+Nous procédons à présent à une extraction approfondie de tous les attributs afin de créer une documentation détaillée.
 
 ```{r}
 #| label: deep-extraction
@@ -240,9 +276,13 @@ print("Deep extraction complete.")
 
 ------------------------------------------------------------------------
 
-## Reshape metadata for comparison
+## Reshape metadata for comparison // Réorganisation des métadonnées à des fins de comparaison
 
 We reshape the metadata into two summary tables: one for Global Attributes (file-level) and one for Variable Attributes (variable-level).
+
+//
+
+Nous réorganisons les métadonnées en deux tableaux récapitulatifs : l'un pour les attributs globaux (au niveau du fichier) et l'autre pour les attributs des variables (au niveau de la variable).
 
 ```{r}
 #| label: reshape-attributes
@@ -278,9 +318,7 @@ head(nc_variables_with_attributes)
 
 ------------------------------------------------------------------------
 
-## Save Summary Reports
-
-Finally, we save the most useful summary tables to `.csv` files for documentation and further analysis.
+## Save Results // Enregistrer les résultats
 
 ```{r}
 #| label: save-results
@@ -303,21 +341,33 @@ print(paste("All reports saved to:", output_dir))
 
 ------------------------------------------------------------------------
 
-## Curation Insights
+## Curation Insights // Aperçu de curation
 
-Use the generated reports to guide your preservation actions:
+Use the generated reports to guide your curation actions:
 
 -   **Spatial Awareness (HasCRS):** Files marked "No Spatial Grid" lack standard latitude/longitude coordinates or a grid_mapping attribute. These files will have difficulties to load in GIS software. Check if they are non-spatial (e.g., time-series at a single station) or if the metadata is missing.
 
--   **Data Health (DataHealth):** Files marked "⚠️ All NaNs" are likely empty shells—the model ran but produced no output. You can verify these files manually and exclude them from the archive.
+-   **Data Health (DataHealth):** Files marked "⚠️ All NaNs" are likely empty shells—the model ran but produced no output. Verify these files manually then confirm with the researcher you can exclude them from the archive.
 
 -   **Metadata Compliance:** In the NetCDF_Global_Attributes CSV, the curator can check for the attribute Conventions = "CF-1.x" and verify fullfilment of gold standards.
 
-## Additional Tools & Resources
+//
 
-### Verify consistent global attributes
+-   **Informations spatiales (HasCRS) :** Les fichiers portant la mention « No Spatial Grid » ne contiennent pas de coordonnées de latitude/longitude standard ni d'attribut grid_mapping. Ces fichiers risquent de ne pas s'importer correctement dans un logiciel SIG. Vérifiez s'il s'agit de données non spatiales (par exemple, des séries chronologiques provenant d'une seule station) ou si les métadonnées sont manquantes.
+
+- **Intégrité des données (DataHealth) :** Les fichiers marqués « ⚠️ All NaNs » sont probablement des fichiers vides : le modèle a été exécuté mais n'a produit aucun résultat. Vérifiez ces fichiers manuellement, puis confirmez auprès du chercheur que vous pouvez les exclure de l'archive.
+
+-   **Conformité des métadonnées :** Dans le fichier CSV NetCDF_Global_Attributes, le conservateur peut vérifier la présence de l'attribut Conventions = « CF-1.x » et s'assurer du respect des normes de référence.
+
+## Additional Tools & Resources // Outils et ressources supplémentaires
+
+### Verify consistent global attributes // Vérifier la cohérence des attributs globaux
 
 Verify if all files in a dataset have the same `title`, `institution`, `source`, and CF `Conventions`.
+
+// 
+
+Vérifier si tous les fichiers d'un ensemble de données possèdent les mêmes attributs `title`, `institution`, `source` et `Conventions` de CF.
 
 ```{r}
 #| label: curation-check-global
@@ -336,9 +386,13 @@ if (nrow(nc_attributes_global) > 0) {
 }
 ```
 
-### Check for essential variable attributes
+### Check for essential variable attributes // Vérification des attributs essentiels des variables
 
 For data to be reusable, variables should always have attributes like `long_name` and `units`. This section allows checking for missing attributes across all variables.
+
+//
+
+Pour que les données soient réutilisables, les variables doivent toujours comporter des attributs tels que `long_name` et `units`. Cette section permet de vérifier si des attributs manquent dans l'ensemble des variables.
 
 ```{r}
 #| label: curation-check-var-attr
@@ -363,15 +417,29 @@ if (nrow(nc_variables_with_attributes) > 0) {
 
 -   **NCO (NetCDF Operators):** A [toolkit](https://nco.sourceforge.net/) to perform arithmetic and attribute editing on NetCDF files [@zender2008].
 
-## Using the Non-Interactive R Script
+//
+
+-   **CDO (Climate Data Operators) :** Il s'agit d'une [suite d'outils en ligne de commande](https://code.mpimet.mpg.de/projects/cdo) permettant de manipuler et d'analyser des données NetCDF. C'est la norme industrielle en matière de recalcul de maillage et d'agrégation statistique.
+
+- **Panoply :** Une [application](https://www.giss.nasa.gov/tools/panoply/) multiplateforme de la NASA qui trace des tableaux géoréférencés à partir de fichiers NetCDF. Excellent pour le « contrôle qualité visuel ».
+
+-   **NCO (NetCDF Operators) :** Une [boîte à outils](https://nco.sourceforge.net/) permettant d'effectuer des opérations arithmétiques et de modifier les attributs des fichiers NetCDF [@zender2008].
+
+## Using the Non-Interactive R Script // Utilisation du script R non interactif
 
 For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
 
-### The `Inspect_nc_Script.R` Script
-
 Download the **R Script:** [**`Inspect_nc_Script.R`**](Scripts/Inspect_nc_Script.R)
 
-### Example HPC Submission Script (`Inspect_nc_submit.sh`)
+//
+
+Pour les utilisateurs qui souhaitent exécuter cette analyse sur un serveur, dans le cadre d'un traitement par lots ou depuis la ligne de commande, voici un script R pur qui effectue le même processus.
+
+Télécharger le **script R :** [**`Inspect_nc_Script.R`**](Scripts/Inspect_nc_Script.R)
+
+### Example HPC Submission Script // Exemple de script de soumission HPC
+
+`Inspect_nc_submit.sh`
 
 ``` bash
 #!/bin/bash
@@ -397,8 +465,3 @@ mkdir -p logs
 echo "Starting NetCDF Inspection on $TARGET_DIR"
 Rscript Inspect_nc_Script.R "$TARGET_DIR"
 ```
-
-## References
-
-::: {#refs}
-:::

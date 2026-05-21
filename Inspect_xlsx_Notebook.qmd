@@ -1,5 +1,5 @@
 ---
-title: "Excel (.xls, .xlsx) Files"
+title: "Excel (.xls, .xlsx) Files // Fichiers Excel (.xls, .xlsx)"
 author: "Daniel Manrique-Castano"
 date: "2025-12-18"
 format: 
@@ -13,16 +13,24 @@ params:
   target_dir: "data/Inspect_xlsx/"
 ---
 
-## Overview
+## Overview // Aperçu
 
-Excel files are complex "containers" (Zip-compressed XML) that hold much more than raw data. They are considered high-risk formats for long-term preservation.
+Excel files are complex "containers" (Zip-compressed XML) that can hold much more than raw data. 
 
-::: {.callout-note title="Curation Goal"}
+//
+
+Les fichiers Excel sont des « conteneurs » complexes (XML compressé au format Zip) qui peuvent contenir bien plus que de simples données brutes.
+
+::: {.callout-note title="Curation Goal // Objectif de la curation"}
 Unpack the complex structure of Excel spreadsheets. Our objective is to identify hidden content, validate structural integrity, and detect external dependencies that may compromise the file's future usability.
+//
+Décortiquons la structure complexe des feuilles de calcul Excel. Notre objectif est d'identifier le contenu caché, de vérifier l'intégrité structurelle et de détecter les dépendances externes susceptibles de compromettre l'utilisation future du fichier.
 :::
 
-::: {.callout-warning title="Preservation Risk"}
-Proprietary macros (VBA), external cell links that break upon transfer, and hidden sheets containing sensitive scratch work or PII are significant threats to data integrity and privacy in archival settings.
+::: {.callout-warning title="Identifying Risks // Identification des risques"}
+Proprietary macros (VBA), external cell links that break upon transfer, and hidden sheets containing sensitive scratch work or PII are significant threats to data integrity and privacy.
+//
+Les macros propriétaires (VBA), les liens vers des cellules externes qui sont rompus lors du transfert et les feuilles masquées contenant des notes de travail sensibles ou des données à caractère personnel constituent des menaces importantes pour l'intégrité et la confidentialité des données.
 :::
 
 **This notebook combines two approaches:**
@@ -30,13 +38,28 @@ Proprietary macros (VBA), external cell links that break upon transfer, and hidd
 1.  **Structure Scan:** Checking for macros, external links, and hidden sheets.
 2.  **Content Preview:** Assessing if the file is a machine-readable table or a formatted report.
 
-## Setup
+//
+
+**Ce cahier combine deux approches :**
+
+1.  **Analyse de la structure :** recherche de macros, de liens externes et de feuilles masquées.
+2.  **Aperçu du contenu :** vérification du format du fichier (tableau lisible par une machine ou rapport formaté).
+
+## Setup // Configuration
 
 We use `readxl` for data reading and `tidyxl` for deep structural inspection of modern Excel files.
 
-### R Packages
+//
 
-If you don't have these packages installed, run this command once in your R console:
+Nous utilisons `readxl` pour la lecture des données et `tidyxl` pour l'analyse structurelle approfondie des fichiers Excel récents.
+
+### R Packages // Packages R
+
+The following R packages are required. If you don't have these packages, uncomment this code and run it once in your R console:
+
+// 
+
+Les packages R suivants sont requis. Si vous ne disposez pas de ces packages, décommentez ce code et exécutez-le une fois dans votre console R :
 
 ```{r}
 # install.packages(c("tidyverse", "readxl", "rstudioapi", "tidyxl"))
@@ -44,9 +67,7 @@ If you don't have these packages installed, run this command once in your R cons
 
 ------------------------------------------------------------------------
 
-## Load Libraries
-
-This chunk loads all the necessary libraries for the session.
+## Load libraries // Charger les bibliothèques
 
 ```{r}
 #| label: load-libraries
@@ -60,11 +81,13 @@ library(rstudioapi) # For directory selection
 
 ------------------------------------------------------------------------
 
-## Select Target Directory
+## Select a target directory // Sélectionnez un répertoire de destination
 
-This section identifies the directory to be analyzed and finds all Excel files within it.
+This block allows for interactive selection of the image directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.
 
-> **Note:** If you are running this interactively in RStudio, a dialog box will appear. If you are rendering this document (where no user interaction is possible), it will default to the `params$target_dir` defined in the YAML header.
+//
+
+Ce bloc permet de sélectionner de manière interactive le répertoire contenant les images. En cas d'exécution dans un environnement non interactif, le chemin par défaut est celui défini dans l'en-tête YAML.
 
 ```{r}
 #| label: select-target-dir
@@ -86,9 +109,13 @@ if (!is.null(selected_dir)) {
 print(paste("Analyzing directory:", target_dir))
 ```
 
-### Find Excel Files
+## Find Excel Files // Rechercher les fichiers Excel
 
 Now we scan the selected directory for all `.xls` and `.xlsx` files.
+
+//
+
+Nous allons maintenant rechercher tous les fichiers `.xls` et `.xlsx` dans le répertoire sélectionné.
 
 ```{r}
 #| label: find-files
@@ -109,9 +136,13 @@ head(excel_files)
 
 ------------------------------------------------------------------------
 
-## Structural and content inspection
+## Structural and content inspection // Analyse structurelle et du contenu
 
 In this section, we iterate through each file. For .xlsx files, we perform a deep scan for hidden content. For legacy .xls, we rely on basic extraction.
+
+// 
+
+Dans cette section, nous parcourons chaque fichier. Pour les fichiers .xlsx, nous effectuons une analyse approfondie à la recherche de contenu masqué. Pour les anciens fichiers .xls, nous nous contentons d'une extraction de base.
 
 ```{r}
 #| label: inspection-logic
@@ -226,7 +257,7 @@ print("--- Excel Structure Report ---")
 head(summary_report)
 ```
 
-## Save results
+## Save results // Enregistrer les résultats
 
 ```{r}
 #| label: save-results
@@ -242,35 +273,57 @@ print(paste("Report saved to:", output_file))
 
 ------------------------------------------------------------------------
 
-## Curation Insights
+## Curation Insights // Aperçu de la curation
 
 Use the generated report to identify high-risk files:
 
--   **Macros (IsMacro = TRUE):** Macros are a risk for security and prone to obsolescence. .xlsm files contain code that may not run in the future or may be blocked by security software. Curators can ask depositors to remove macros and save as .xlsx unless the code is essential (in which case, the code can be archived as text).
+-   **Macros (IsMacro = TRUE):** Macros are a risk for security and prone to obsolescence. .xlsm files contain code that may not run in the future or may be blocked by security software. Curators can ask depositors to remove macros and save as .xlsx unless the code is essential (in which case, the code can be documented and stored as text).
 
--   **Hidden Sheets:** Hidden data often contains PII, messy scratchpads, or deprecated versions of the data. Curators can inspect these sheets manually, and if they are not needed, delete them to clean the dataset.
+-   **Hidden Sheets:** Hidden sheets often contain PII, messy scratchpads, or deprecated versions of the data. Curators can inspect these sheets manually, and if they are not needed, delete them to clean the dataset.
 
--   **Likely Non-Tabular (LikelyNonTabular = TRUE):** This implies that thw sheet is likely a report, chart, or form, not a raw data table. These sheets generally cannot be converted to CSV automatically and require manual review. To keep tabular data tidy, graphs and images must be removed and saved apart.
+-   **Likely Non-Tabular (LikelyNonTabular = TRUE):** This implies that the sheet is likely a report, chart, or form, rather than a raw data table. These sheets generally cannot be converted to CSV automatically and require manual review. To keep tabular data tidy, graphs and images should be removed and saved separately.
+
+//
+
+Utilisez le rapport généré pour identifier les fichiers à haut risque :
+
+-   **Macros (IsMacro = TRUE) :** Les macros constituent un risque pour la sécurité et sont susceptibles de devenir obsolètes. Les fichiers .xlsm contiennent du code qui pourrait ne plus fonctionner à l'avenir ou être bloqué par des logiciels de sécurité. Les conservateurs peuvent demander aux déposants de supprimer les macros et d'enregistrer les fichiers au format .xlsx, sauf si le code est essentiel (auquel cas, il peut être documenté et stocké sous forme de texte).
+
+-   **Feuilles masquées :** Les feuilles masquées contiennent souvent des informations personnelles identifiables, des brouillons désordonnés ou des versions obsolètes des données. Les conservateurs peuvent inspecter ces feuilles manuellement et, si elles ne sont pas nécessaires, les supprimer pour nettoyer l'ensemble de données.
+
+-   **Probablement non tabulaire (LikelyNonTabular = TRUE) :** Cela signifie que la feuille est probablement un rapport, un graphique ou un formulaire, plutôt qu'un tableau de données brutes. Ces feuilles ne peuvent généralement pas être converties automatiquement au format CSV et nécessitent une vérification manuelle. Pour que les données tabulaires restent ordonnées, les graphiques et les images doivent être supprimés et enregistrés séparément.
 
 ------------------------------------------------------------------------
 
-## Additional Tools
+## Additional Tools // Outils supplémentaires
 
 -   **LibreOffice Calc:** Excellent [open-source tool](https://www.libreoffice.org/discover/calc/) for batch converting legacy .xls files to modern open formats (.ods or .xlsx) via command line.
 
--   **OpenRefine:** is a [tool](https://openrefine.org/) for cleaning messy tabular data (e.g., untangling merged cells or fixing inconsistent headers) before archiving.
+-   **OpenRefine:** is a [tool](https://openrefine.org/) for cleaning messy tabular data (e.g., untangling merged cells or fixing inconsistent headers).
 
--   **VBA Remover:** These are a set of different tools to strip VBA from Excel files to sanitize them for preservation. Several are available on-line.
+-   **VBA Remover:** There are a set of different tools to strip VBA from Excel files to sanitize them. Several are available on-line.
 
-## Using the Non-Interactive R Script
+//
 
-For users who want to run this analysis on a server or from the command line, here is a pure R script that performs the same process.
+-   **LibreOffice Calc :** excellent [outil open source](https://www.libreoffice.org/discover/calc/) permettant de convertir par lots des fichiers .xls hérités vers des formats ouverts modernes (.ods ou .xlsx) via la ligne de commande.
 
-This "hybrid" script will: 1. If run **interactively** (e.g., in RStudio), pop up a dialog to select a **directory**. 2. If run **non-interactively** (e.g., on an HPC cluster), accept a **directory** path as a command-line argument. 3. Process **all** `.xls` and `.xlsx` files found in that directory.
+- **OpenRefine :** est un [outil](https://openrefine.org/) permettant de nettoyer des données tabulaires désordonnées (par exemple, démêler des cellules fusionnées ou corriger des en-têtes incohérents).
+
+- **VBA Remover :** il existe toute une série d'outils permettant de supprimer le VBA des fichiers Excel afin de les assainir. Plusieurs d'entre eux sont disponibles en ligne.
+
+##  Using the Non-Interactive R Script // Utilisation du script R non interactif
+
+For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
 
 Download the **R Script:** [**`Inspect_xlsx_Script.R`**](Scripts/Inspect_xlsx_Script.R)
 
-### Example HPC Submission Script (`submit_excel_check.sh`)
+//
+
+Pour les utilisateurs qui souhaitent exécuter cette analyse sur un serveur, dans le cadre d'un traitement par lots ou depuis la ligne de commande, voici un script R pur qui effectue le même processus.
+
+Télécharger le **script R :** [**`Inspect_xlsx_Script.R`**](Scripts/Inspect_xlsx_Script.R)
+
+### Example HPC Submission Script // Exemple de script de soumission HPC
 
 ``` bash
 #!/bin/bash
@@ -294,8 +347,3 @@ mkdir -p logs
 echo "Starting Excel Inspection on $TARGET_DIR"
 Rscript Inspect_xlsx_Script.R "$TARGET_DIR"
 ```
-
-## References
-
-::: {#refs}
-:::

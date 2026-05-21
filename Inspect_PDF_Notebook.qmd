@@ -13,37 +13,63 @@ params:
   target_dir: "data/Inspect_pdf/"
 ---
 
-## Overview
+## Overview // Aperçu
 
 PDF is considered the standard for fixed-layout documents. However, not all PDFs are created in the same manner.
 
-::: {.callout-note title="Curation Goal"}
+//
+
+Le format PDF est considéré comme la norme pour les documents à mise en page fixe. Cependant, tous les fichiers PDF ne sont pas créés de la même manière.
+
+::: {.callout-note title="Curation Goal // Objectif de la curation"}
 Validate the archival suitability of PDF documents. Our objective is to distinguish between high-quality PDF/A files and "Image-Only" scans, ensuring content is searchable, accessible, and free from encryption that would lock data away.
+//
+Vérifier si les documents PDF sont adaptés à l'archivage. Notre objectif est de distinguer les fichiers PDF/A de haute qualité des numérisations « uniquement sous forme d'images », afin de garantir que le contenu soit consultable, accessible et exempt de tout cryptage susceptible d'en bloquer l'accès.
 :::
 
-::: {.callout-warning title="Preservation Risk"}
+::: {.callout-warning title="Identifying Risks // Identification des risques"}
 Not all PDFs are equal. Encrypted files, image-only scans without OCR, and documents with external font dependencies pose significant risks for long-term accessibility and automated text mining.
+//
+Tous les fichiers PDF ne se valent pas. Les fichiers cryptés, les numérisations contenant uniquement des images sans OCR et les documents dépendant de polices externes présentent des risques importants pour l'accessibilité à long terme et l'exploration automatisée de textes.
 :::
 
-**This notebook evaluates PDF files on three critical dimensions:**
+**This notebook evaluates PDF files on three dimensions:**
 
 1.  **Security:** Detecting Encryption or password protection.
 2.  **Accessibility:** Categorizing files as Searchable or Image-Only documents.
 3.  **Metadata Quality:** Checking for embedded Title and Author fields.
 
+// 
+
+**Ce cahier d'exercices évalue les fichiers PDF selon trois critères :**
+
+1.  **Sécurité :** détection d'un cryptage ou d'une protection par mot de passe.
+2.  **Accessibilité :** classification des fichiers en documents consultables ou en documents contenant uniquement des images.
+3.  **Qualité des métadonnées :** vérification de la présence des champs « Titre » et « Auteur » intégrés.
+
 ------------------------------------------------------------------------
 
-## Setup
+## Setup // Configuration
 
 We use `pdftools` for PDF analysis and `tidyverse` for reporting.
 
-### R Packages
+//
+
+Nous utilisons `pdftools` pour l'analyse des fichiers PDF et `tidyverse` pour la création de rapports.
+
+### R Packages // Packages R
+
+The following R packages are required. If you don't have these packages, uncomment this code and run it once in your R console:
+
+// 
+
+Les packages R suivants sont requis. Si vous ne disposez pas de ces packages, décommentez ce code et exécutez-le une fois dans votre console R :
 
 ```{r}
 # install.packages(c("tidyverse", "pdftools", "rstudioapi"))
 ```
 
-### Load libraries
+### Load libraries // Charger les bibliothèques
 
 ```{r}
 #| label: load-libraries
@@ -54,17 +80,26 @@ library(pdftools)
 library(rstudioapi)
 ```
 
-## Select Target Directory
+## Select a target directory // Sélectionnez un répertoire de destination
+
+This block allows for interactive selection of the image directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.
+
+//
+
+Ce bloc permet de sélectionner de manière interactive le répertoire contenant les images. En cas d'exécution dans un environnement non interactif, le chemin par défaut est celui défini dans l'en-tête YAML.
 
 ```{r}
 #| label: select-target-dir
 
+# 1. Try to select interactively if in RStudio
 if (interactive() && .Platform$OS.type == "windows") { 
-  selected_dir <- rstudioapi::selectDirectory(caption = "Select PDF Directory")
+  # .Platform check helps avoid errors in some non-interactive rendering contexts
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select Image Directory")
 } else {
   selected_dir <- NULL
 }
 
+# 2. Logic to determine final directory (Interactive vs Parameter)
 if (!is.null(selected_dir)) {
   target_dir <- selected_dir
 } else {
@@ -74,7 +109,7 @@ if (!is.null(selected_dir)) {
 print(paste("Analyzing directory:", target_dir))
 ```
 
-## Find PDF Files
+## Find PDF Files // Rechercher des fichiers PDF
 
 ```{r}
 #| label: find-files
@@ -90,9 +125,14 @@ pdf_files <- list.files(
 print(paste("Found", length(pdf_files), "PDF files."))
 ```
 
-## File inventory and inspection
+## File inventory and inspection // Inventaire et analyse des fichiers
 
 We iterate through the files to extract metadata, check for encryption, and sample the text content to determine its accessibility status.
+
+//
+
+
+Nous parcourons les fichiers pour en extraire les métadonnées, vérifier s'ils sont cryptés et analyser un échantillon du contenu textuel afin de déterminer leur niveau d'accessibilité.
 
 ```{r}
 #| label: generate-report
@@ -170,7 +210,7 @@ print("--- PDF Report Preview ---")
 print(head(report))
 ```
 
-## Save Results
+## Save Results // Enregistrer les résultats
 
 ```{r}
 #| label: save-results
@@ -185,17 +225,27 @@ write.csv(report, output_file, row.names = FALSE)
 print(paste("Report saved to:", output_file))
 ```
 
-## Curation Insights
+## Curation Insights // Aperçu de la curation
 
-Use the generated CSV report to guide your preservation actions:
+Use the generated CSV report to guide your actions:
 
--   **Encryption (Encrypted = TRUE):** Encrypted files cannot be migrated, indexed, or arguably "preserved." Curators must contact the depositor immediately to remove the password. If the password is lost, the file cannot be reused.
+-   **Encryption (Encrypted = TRUE):** Encrypted files cannot be migrated, indexed, or preserved. Contact the depositor to discuss removing the password. If the password is lost, the file cannot be reused.
 
--   **Accessibility (TextStatus = "Image-Only"):** These are scanned images. They are readable by humans but invisible to search engines and screen readers (accessibility violation). You can run these files through an OCR tool (like Tesseract or Adobe Acrobat) to generate a text layer.
+-   **Accessibility (TextStatus = "Image-Only"):** These are scanned images. They are readable by humans but invisible to search engines and screen readers (accessibility violation). You can run these files through an OCR tool like Tesseract or Adobe Acrobat to generate a text layer.
 
 -   **Font Embedding (Fonts):** If Fonts is empty or lists generic names like "Helvetica" without embedding, the layout may break on future systems. the curator can convert the file to PDF/A-1b or PDF/A-2b, which forces font embedding.
 
-## Additional Tools
+//
+
+Utilisez le rapport CSV généré pour orienter vos actions :
+
+-   **Chiffrement (Encrypted = TRUE) :** Les fichiers chiffrés ne peuvent être ni migrés, ni indexés, ni conservés. Contactez le déposant pour discuter de la suppression du mot de passe. Si le mot de passe est perdu, le fichier ne pourra pas être réutilisé.
+
+-   **Accessibilité (TextStatus = « Image-Only ») :** Il s'agit d'images numérisées. Elles sont lisibles par les humains mais invisibles pour les moteurs de recherche et les lecteurs d'écran (violation de l'accessibilité). Vous pouvez traiter ces fichiers à l'aide d'un outil OCR tel que Tesseract ou Adobe Acrobat afin de générer une couche de texte.
+
+-   **Intégration des polices (Fonts) :** Si le champ « Fonts » est vide ou contient des noms génériques tels que « Helvetica » sans intégration, la mise en page risque d'être altérée sur les systèmes futurs. Le conservateur peut convertir le fichier au format PDF/A-1b ou PDF/A-2b, ce qui force l'intégration des polices.
+
+## Additional Tools // Outils supplémentaires
 
 -   **VeraPDF:** This is the standard open-source validator for PDF/A compliance. It checks if fonts are embedded and if multimedia is excluded (see https://verapdf.org).
 
@@ -205,13 +255,29 @@ Use the generated CSV report to guide your preservation actions:
 
 -   **Ghostscript:** This is a [command-line interpreter](https://ghostscript.com/) often used to repair corrupted PDFs or convert standard PDFs into PDF/A format.
 
-## Using the Non-Interactive R Script
+//
+
+-   **VeraPDF :** Il s'agit du validateur open source de référence pour la conformité au format PDF/A. Il vérifie si les polices sont intégrées et si les éléments multimédias sont exclus (voir https://verapdf.org).
+
+-   **Tesseract OCR :** Il s'agit d'un [moteur open source](https://github.com/tesseract-ocr/tesseract) dédié à la reconnaissance optique de caractères. Il peut prendre un PDF « Image-Only » et générer un fichier texte consultable ou un nouveau PDF avec un calque de texte.
+
+-   **Google AI :** Extrait du texte et des données à partir d'images et de documents à l'aide de [fonctionnalités d'IA](https://cloud.google.com/use-cases/ocr). Découvrez un cas d'utilisation dans un autre [chapitre de ce livre](/Inspect_OCR_Notebook.qmd).
+
+-   **Ghostscript :** Il s'agit d'un [interpréteur en ligne de commande](https://ghostscript.com/) souvent utilisé pour réparer des PDF corrompus ou convertir des PDF standard au format PDF/A.
+
+## Using the Non-Interactive R Script // Utilisation du script R non interactif
 
 For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
 
 Download the **R Script:** [**`Inspect_PDF_Script.R`**](Scripts/Inspect_PDF_Script.R)
 
-### Example HPC Submission Script
+//
+
+Pour les utilisateurs qui souhaitent exécuter cette analyse sur un serveur, dans le cadre d'un traitement par lots ou depuis la ligne de commande, voici un script R pur qui effectue le même processus.
+
+Télécharger le **script R :** [**`Inspect_PDF_Script.R`**](Scripts/Inspect_PDF_Script.R)
+
+### Example HPC Submission Script // Exemple de script de soumission HPC
 
 ``` bash
 #!/bin/bash
@@ -235,8 +301,3 @@ mkdir -p logs
 echo "Starting PDF Inspection on $TARGET_DIR"
 Rscript Inspect_PDF_Script.R "$TARGET_DIR"
 ```
-
-## References
-
-::: {#refs}
-:::

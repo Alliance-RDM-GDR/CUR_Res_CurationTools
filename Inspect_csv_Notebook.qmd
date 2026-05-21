@@ -1,5 +1,5 @@
 ---
-title: "CSV Files"
+title: "CSV Files // Fichiers CSV"
 author: "Natalie Williams"
 date: "2025-10-10"
 format: 
@@ -16,16 +16,16 @@ params:
   target_dir: "data/Inspect_csv/"
 ---
 
-## Overview
+## Overview // Aperçu
 
-This notebook provides a comprehensive toolkit for inspecting tabular data stored in **Comma Separated Values (CSV)** format. While seemingly simple, CSVs are the backbone of long-term data preservation due to their text-based, human-readable nature.
+This notebook provides a comprehensive toolkit for inspecting tabular data stored in **Comma Separated Values (CSV)** format. // Ce cahier de travail fournit une boîte à outils complète pour analyser les données tabulaires stockées au format **CSV (valeurs séparées par des virgules)**.
 
-::: {.callout-note title="Curation Goal"}
-Validate the integrity and "Archival Readiness" of tabular data. Our objective is to ensure files follow Tidy Data principles [@wickham2014], use universal encoding (UTF-8), and are free from structural defects that hinder automated processing.
+::: {.callout-note title="Curation Goal // Objectif de la curation"}
+Validate the integrity and "tidiness" of tabular data. Our objective is to ensure files follow Tidy Data principles [@wickham2014], use universal encoding (UTF-8), and are free from structural defects that hinder automated processing. // Vérifier l'intégrité et la « propreté » des données tabulaires. Notre objectif est de s'assurer que les fichiers respectent les principes de Tidy Data [@wickham2014], utilisent un encodage universel (UTF-8) et ne présentent aucun défaut structurel susceptible d'entraver leur traitement automatisé.
 :::
 
-::: {.callout-warning title="Preservation Risk"}
-The simplicity of CSV is its greatest risk. Lack of strict schema enforcement often leads to "ragged" rows, mixed data types in single columns, and encoding corruption that can render datasets contextually unusable [@broman2018].
+::: {.callout-warning title="Identifying Risks // Identification des risques"}
+The simplicity of CSV is its greatest risk. Lack of strict schema enforcement often leads to "ragged" rows, mixed data types in single columns, and encoding corruption that can render datasets contextually unusable [@broman2018]. // La simplicité du format CSV constitue son plus grand risque. L'absence d'application stricte d'un schéma conduit souvent à des lignes « irrégulières », à des types de données mélangés au sein d'une même colonne et à des problèmes d'encodage qui peuvent rendre les ensembles de données inutilisables dans certains contextes [@broman2018].
 :::
 
 **Curation Objectives:**
@@ -35,21 +35,37 @@ The simplicity of CSV is its greatest risk. Lack of strict schema enforcement of
 3.  **Content Profiling:** Generate statistical summaries to validate semantic meaning.
 4.  **Privacy Screening:** Scan for Personally Identifiable Information (PII).
 
+// 
+
+**Objectifs de la curation :**
+
+1.  **Conformité au format :** Vérifier que les fichiers utilisent l'encodage standard UTF-8.
+2.  **Intégrité structurelle :** Détecter les anomalies dans les données, telles que les lignes en double ou les formes non rectangulaires.
+3.  **Profilage du contenu :** Générer des résumés statistiques pour valider la signification sémantique.
+4.  **Contrôle de confidentialité :** Rechercher les informations personnelles identifiables (IPI).
 ------------------------------------------------------------------------
 
-## Setup
+## Setup // Configuration
 
-We utilize `tidyverse` for data manipulation, `skimr` for detailed profiling, and `DT` for interactive result exploration.
+We utilize `tidyverse` for data manipulation, `skimr` for detailed profiling, and `DT` for interactive result exploration. 
 
-### R Packages
+//
 
-If you do not have the required packages, run this command once in your R console:
+Nous utilisons `tidyverse` pour la manipulation des données, `skimr` pour l'analyse détaillée et `DT` pour l'exploration interactive des résultats.
+
+### R Packages // Packages R
+
+The following R packages are required. If you don't have these packages, uncomment this code and run it once in your R console:
+
+// 
+
+Les packages R suivants sont requis. Si vous ne disposez pas de ces packages, décommentez ce code et exécutez-le une fois dans votre console R :
 
 ```{r}
 # install.packages(c("tidyverse", "rstudioapi", "skimr", "DT", "tools"))
 ```
 
-### Load libraries
+### Load libraries // Charger les bibliothèques
 
 ```{r}
 #| label: load-libraries
@@ -65,9 +81,13 @@ library(rstudioapi)
 
 ------------------------------------------------------------------------
 
-## Select target directory
+## Select target directory // Sélectionner le répertoire cible
 
 First, we select the directory to analyze and find `.csv` files within it.
+
+// 
+
+Tout d'abord, nous sélectionnons le répertoire à analyser afin d'y rechercher les fichiers `.csv`.
 
 ```{r}
 #| label: select-target-dir
@@ -85,9 +105,13 @@ target_dir <- if (!is.null(selected_dir)) selected_dir else params$target_dir
 message("Analyzing directory: ", target_dir)
 ```
 
-### Inventory Files
+### Inventory Files // Fichiers d'inventaire
 
 We locate all .csv files and extract basic filesystem metadata (size, modification date).
+
+// 
+
+Nous localisons tous les fichiers .csv et extrayons les métadonnées de base du système de fichiers (taille, date de modification).
 
 ```{r}
 #| label: find-files
@@ -105,9 +129,9 @@ message("Found ", length(csv_files), " CSV files.")
 
 ------------------------------------------------------------------------
 
-## Batch Health Check
+## Batch Health Check // Contrôle d'intégrité par lots
 
-This section assesses the "Archival Readiness" of the files. We perform a high-level scan to detect structural defects that might prevent the file from being opened or interpreted correctly [@broman2018].
+This section performs a high-level scan to detect structural defects that might prevent the file from being opened or interpreted correctly [@broman2018].
 
 Metrics Calculated:
 
@@ -118,6 +142,20 @@ Metrics Calculated:
 -   Duplication: Exact duplicate rows often signal version control errors (e.g., pasting data twice).
 
 -   PII Flag: Detection of potential email addresses in text columns.
+
+//
+
+Cette section effectue une analyse de haut niveau afin de détecter les défauts structurels susceptibles d'empêcher l'ouverture ou l'interprétation correcte du fichier [@broman2018].
+
+Indicateurs calculés :
+
+-   Encodage : les encodages autres que UTF-8 (tels que Latin-1 ou Windows-1252) constituent une source majeure de perte de données lors du transfert entre systèmes d'exploitation.
+
+-   Exhaustivité : pourcentage de cellules non nulles. Un taux élevé de données manquantes indique souvent des erreurs de saisie ou un formatage incorrect (par exemple, des lignes vides).
+
+-   Duplication : les lignes exactement identiques signalent souvent des erreurs de contrôle de version (par exemple, le collage de données à deux reprises).
+
+-   Indicateur IPI : détection d'adresses e-mail potentielles dans les colonnes de texte.
 
 ```{r}
 #| label: batch-health-check
@@ -192,9 +230,13 @@ if (length(csv_files) > 0) {
 }
 ```
 
-## Visualization: Structural Overview
+## Visualization: Structural Overview // Visualisation : aperçu structurel
 
 We visualize the dimensions of the datasets. This helps identify outliers (e.g., empty files or unexpectedly small files in a time series).
+
+// 
+
+Nous visualisons les dimensions des ensembles de données. Cela permet d'identifier les valeurs aberrantes (par exemple, des fichiers vides ou des fichiers d'une taille inhabituellement petite dans une série chronologique).
 
 ```{r}
 #| label: viz-structure
@@ -213,7 +255,7 @@ ggplot(health_report, aes(x = Cols, y = Rows, size = Size_MB, color = Status)) +
   theme_minimal()
 ```
 
-## Detailed Batch Profiling
+## Detailed Batch Profiling // Analyse détaillée des lots
 
 Here, we generate a "Master Data Dictionary" that characterizes every variable in the dataset. This allows curators to spot Type Inconsistency (e.g., a "Weight" column that is numeric in one file but character in another due to "N/A" strings).
 
@@ -222,6 +264,16 @@ Here, we generate a "Master Data Dictionary" that characterizes every variable i
 -   Character: Unique counts, whitespace checks.
 
 -   Missing: NA counts per column.
+
+//
+
+Nous générons ici un « dictionnaire des données de référence » qui décrit chaque variable du jeu de données. Cela permet aux responsables de la qualité des données de repérer les incohérences de type (par exemple, une colonne « Poids » qui est de type numérique dans un fichier mais de type chaîne de caractères dans un autre en raison de chaînes « N/A »).
+
+-   Numérique : moyenne, écart-type, quartiles, histogrammes (sous forme de texte).
+
+-   Caractère : nombre d'occurrences uniques, vérification des espaces.
+
+-   Manquant : nombre de NA par colonne.
 
 ```{r}
 #| label: batch-profiling
@@ -251,13 +303,21 @@ if (length(csv_files) > 0) {
 
 ------------------------------------------------------------------------
 
-## Save Results
+## Save Results // Enregistrer les résultats
 
 We export two reports:
 
 -   Health Check: The high-level summary of file validity and risks.
 
 -   Detailed Profile: The granular statistics for every variable.
+
+//
+
+Nous exportons deux rapports :
+
+-   Bilan de santé : un résumé général de la validité des fichiers et des risques associés.
+
+-   Profil détaillé : des statistiques détaillées pour chaque variable.
 
 ```{r}
 #| label: save-results
@@ -280,7 +340,7 @@ message("2. ", profile_file)
 
 ------------------------------------------------------------------------
 
-## Curation Insights
+## Curation Insights // Aperçu de la curation
 
 -   **Rectangularity:** If Read Failed occurs in Table 1, the file may have "ragged rows" (varying numbers of columns per row). This violates the Tidy Data principle that "each type of observational unit forms a table".
 
@@ -288,7 +348,16 @@ message("2. ", profile_file)
 
 -   **Privacy:** If PII_Risk is TRUE, the file requires manual review. Publishing raw PII (like email addresses) is a severe ethical and legal violation.
 
-## Additional Tools for Researchers
+//
+
+-   **Rectangularité :** Si une erreur de lecture apparaît dans le tableau 1, le fichier peut contenir des « lignes irrégulières » (nombre variable de colonnes par ligne). Cela va à l'encontre du principe des données ordonnées selon lequel « chaque type d'unité d'observation forme un tableau ».
+
+-   **Hygiène de l'encodage :** les fichiers utilisant des encodages tels que ISO-8859-1 doivent être convertis en UTF-8 afin de garantir leur accessibilité à long terme.
+
+-   **Confidentialité :** Si PII_Risk est TRUE, le fichier nécessite une vérification manuelle. La publication de données à caractère personnel brutes (telles que des adresses e-mail) constitue une grave violation éthique et juridique.
+
+
+## Additional Tools for Researchers // Outils supplémentaires pour les chercheurs
 
 R is an excellent tool for data curation, but other tools are also available for cleaning messy tabular data.
 
@@ -298,23 +367,45 @@ R is an excellent tool for data curation, but other tools are also available for
 
 -   csvkit / xsv: Command-line utilities for slicing, dicing, and analyzing massive CSV files that are too large to open in Excel or R (https://csvkit.readthedocs.io).
 
-## Using the Non-Interactive R Script
+//
+
+R est un excellent outil pour la curation des données, mais d’autres outils sont également disponibles pour nettoyer des données tabulaires désorganisées.
+
+-   **OpenRefine :** La référence dans le domaine du nettoyage des données désorganisées. Il excelle dans la normalisation de textes incohérents (par exemple, « USA », « U.S.A. », « United States ») via des algorithmes de regroupement [@dewilde2013] (https://openrefine.org).
+
+-   **Frictionless Data (Table Schema) :** Une spécification permettant de définir un schéma (types, contraintes) pour les fichiers CSV. Elle permet de valider automatiquement les données par rapport à une structure définie [\@fowler2018](https://frictionlessdata.io/).
+
+-   csvkit / xsv : utilitaires en ligne de commande permettant de découper, de segmenter et d'analyser des fichiers CSV volumineux, trop lourds pour être ouverts dans Excel ou R (https://csvkit.readthedocs.io).
+
+## Using the Non-Interactive R Script // Utilisation du script R non interactif
 
 For users who want to run this analysis on a server or from the command line, a non-interactive version of this script is available.
 
--   **R Script:** [**`Inspect_csv_Script.R`**](Scripts/Inspect_csv_Script.R)
--   **Example SLURM Submission Script:** [**`FileCkecks_csv.sh`**](Scrum/FileCkecks_csv.sh)
+//
 
-### How to Use
+Pour les utilisateurs qui souhaitent effectuer cette analyse sur un serveur ou depuis la ligne de commande, une version non interactive de ce script est disponible.
 
--   **For RStudio:**
+-   **R Script // Script R :** [**`Inspect_csv_Script.R`**](Scripts/Inspect_csv_Script.R)
+
+### How to Use // Mode d'emploi
+
+-   **For RStudio // Pour RStudio**
 
 1.  Download the `Inspect_csv_Script.R` script.
-2.  Open in Rstudio and run the whole script. or run it from your terminal, passing the path to your data folder as an argument:
+2.  Open in Rstudio and run the whole script. or run it from your terminal, passing the path to your data folder as an argument.
 
--   **For clusters**
+//
 
-Alternatively, adapt the `FileCkecks_csv.sh` script to match your cluster's environment and your data path, then submit it using `sbatch`.
+1.  Téléchargez le script `Inspect_csv_Script.R`.
+2.  Ouvrez-le dans RStudio et exécutez l'intégralité du script. Vous pouvez également l'exécuter depuis votre terminal en passant le chemin d'accès à votre dossier de données en argument.
+
+-   **For clusters // Pour les clusters**
+
+Alternatively, adapt the following example HPC job script to match your cluster's environment and your data path, then submit it using `sbatch`.
+
+//
+
+Vous pouvez également adapter l'exemple de script de tâche CHP suivant à l'environnement de votre cluster et au chemin d'accès de vos données, puis le soumettre à l'aide de `sbatch`.
 
 ``` bash
 #!/bin/bash
@@ -333,8 +424,3 @@ OUTPUT_DIR="/scratch/your_user/csv_results"
 # Run Script
 Rscript Inspect_CSV_Script.R $DATA_DIR $OUTPUT_DIR
 ```
-
-## References
-
-::: {#refs}
-:::
