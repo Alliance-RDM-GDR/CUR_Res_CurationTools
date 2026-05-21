@@ -9,11 +9,11 @@ format:
 ::: {.column-screen .hero-banner .text-center}
 <h1 style="color: white; font-weight: 700; font-family: 'Ubuntu', sans-serif;">Research Data Curator's Toolbox</h1>
 
-<p style="font-size: 1.5rem; opacity: 0.9; font-family: 'Montserrat', sans-serif;">Expert Workflows for Digital Curation & Preservation</p>
+<p style="font-size: 1.5rem; opacity: 0.9; font-family: 'Montserrat', sans-serif;">Expert Workflows for Digital Curation</p>
 :::
 
 ::: {.callout-important title="Work in Progress"}
-This resource is currently under development. Please note that the French version is pending. For feedback, questions, or suggestions, please contact us at [curators@frdr-dfdr.ca](mailto:curators@frdr-dfdr.ca).
+This resource is currently under development. Please note that the French version is in progress. For feedback, questions, or suggestions, please contact us at [curators@frdr-dfdr.ca](mailto:curators@frdr-dfdr.ca).
 :::
 
 ## Welcome
@@ -34,7 +34,7 @@ Specialized inspection for Tabular, Spatial, and Scientific data to ensure inter
 :::
 
 ::: {.g-col-12 .g-col-md-4 .nav-card .p-3}
-<h3 class="nav-card-title">📊 Archival Reporting</h3>
+<h3 class="nav-card-title">📊 Systematic Reporting</h3>
 
 Generation of standardized curation reports, metadata summaries, and risk logs for depositors.
 :::
@@ -46,13 +46,7 @@ Generation of standardized curation reports, metadata summaries, and risk logs f
 
 Each chapter introduces a specific curation task or file format. Within each notebook, you will find:
 
-1.  **Curation Objectives**: What we are looking for and why it matters for preservation.
+1.  **Curation Objectives**: What we are looking for and why it matters.
 2.  **Automated Checks**: R code snippets that perform technical inspection.
 3.  **Curation Insights**: Guidance on how to interpret flags and risks.
 4.  **Non-Interactive Scripts**: Standalone R scripts for batch processing in HPC or server environments.
-
-::: callout-note
-## Preservation First
-
-This toolbox prioritizes long-term accessibility. We emphasize detecting proprietary lock-ins, zero-byte files, and privacy risks (PII) before data is published.
-:::
