@@ -14,7 +14,7 @@
     "href": "index.html#welcome",
     "title": "Research Data Curator’s Toolbox",
     "section": "",
-    "text": "🛠️ Triage & Inspect\n\nAutomated analysis of file extensions, formats, and basic integrity to identify immediate risks.\n\n\n\n🔍 Deep Validation\n\nSpecialized inspection for Tabular, Spatial, and Scientific data to ensure internal consistency.\n\n\n\n📊 Archival Reporting\n\nGeneration of standardized curation reports, metadata summaries, and risk logs for depositors.\n\n\n\n\n0.1.1 How to use this Guide\nEach chapter introduces a specific curation task or file format. Within each notebook, you will find:\n\nCuration Objectives: What we are looking for and why it matters for preservation.\nAutomated Checks: R code snippets that perform technical inspection.\nCuration Insights: Guidance on how to interpret flags and risks.\nNon-Interactive Scripts: Standalone R scripts for batch processing in HPC or server environments.\n\n\n\n\n\n\n\nNotePreservation First\n\n\n\nThis toolbox prioritizes long-term accessibility. We emphasize detecting proprietary lock-ins, zero-byte files, and privacy risks (PII) before data is published.",
+    "text": "🛠️ Triage & Inspect\n\nAutomated analysis of file extensions, formats, and basic integrity to identify immediate risks.\n\n\n\n🔍 Deep Validation\n\nSpecialized inspection for Tabular, Spatial, and Scientific data to ensure internal consistency.\n\n\n\n📊 Systematic Reporting\n\nGeneration of standardized curation reports, metadata summaries, and risk logs for depositors.\n\n\n\n\n0.1.1 How to use this Guide\nEach chapter introduces a specific curation task or file format. Within each notebook, you will find:\n\nCuration Objectives: What we are looking for and why it matters.\nAutomated Checks: R code snippets that perform technical inspection.\nCuration Insights: Guidance on how to interpret flags and risks.\nNon-Interactive Scripts: Standalone R scripts for batch processing in HPC or server environments.",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Research Data Curator's Toolbox</span>"
     ]
@@ -141,7 +141,7 @@
     "href": "Inspect_ipynb_Notebook.html#save-results",
     "title": "2  Jupyter Notebooks (.ipynb) Files",
     "section": "2.7 Save Results",
-    "text": "2.7 Save Results\nSave the report to a CSV file for review.\n\n\nCode\noutput_dir &lt;- \"Results/Inspect_ipynb\"\ndir.create(output_dir, recursive = TRUE, showWarnings = FALSE)\n\noutput_file &lt;- file.path(output_dir, paste0(\"Jupyter_Report_\", format(Sys.Date(), \"%Y%m%d\"), \".csv\"))\n\nwrite.csv(report, output_file, row.names = FALSE)\nprint(paste(\"Report saved to:\", output_file))\n\n\n[1] \"Report saved to: Results/Inspect_ipynb/Jupyter_Report_20260515.csv\"",
+    "text": "2.7 Save Results\nSave the report to a CSV file for review.\n\n\nCode\noutput_dir &lt;- \"Results/Inspect_ipynb\"\ndir.create(output_dir, recursive = TRUE, showWarnings = FALSE)\n\noutput_file &lt;- file.path(output_dir, paste0(\"Jupyter_Report_\", format(Sys.Date(), \"%Y%m%d\"), \".csv\"))\n\nwrite.csv(report, output_file, row.names = FALSE)\nprint(paste(\"Report saved to:\", output_file))\n\n\n[1] \"Report saved to: Results/Inspect_ipynb/Jupyter_Report_20260521.csv\"",
     "crumbs": [
       "Code and Software",
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Jupyter Notebooks (.ipynb) Files</span>"
@@ -445,7 +445,7 @@
     "href": "Inspect_PDF_Notebook.html#save-results",
     "title": "4  PDF (.pdf) Documents",
     "section": "4.6 Save Results",
-    "text": "4.6 Save Results\n\n\nCode\noutput_dir &lt;- file.path(\"Results\", \"Inspect_pdf\")\ndir.create(output_dir, recursive = TRUE, showWarnings = FALSE)\n\noutput_file &lt;- file.path(output_dir, paste0(\"PDF_Report_\", Sys.Date(), \".csv\"))\n\nwrite.csv(report, output_file, row.names = FALSE)\n\nprint(paste(\"Report saved to:\", output_file))\n\n\n[1] \"Report saved to: Results/Inspect_pdf/PDF_Report_2026-05-15.csv\"",
+    "text": "4.6 Save Results\n\n\nCode\noutput_dir &lt;- file.path(\"Results\", \"Inspect_pdf\")\ndir.create(output_dir, recursive = TRUE, showWarnings = FALSE)\n\noutput_file &lt;- file.path(output_dir, paste0(\"PDF_Report_\", Sys.Date(), \".csv\"))\n\nwrite.csv(report, output_file, row.names = FALSE)\n\nprint(paste(\"Report saved to:\", output_file))\n\n\n[1] \"Report saved to: Results/Inspect_pdf/PDF_Report_2026-05-21.csv\"",
     "crumbs": [
       "Documents & Unstructured Text",
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>PDF (.pdf) Documents</span>"
@@ -566,7 +566,7 @@
     "href": "Inspect_Text_Notebook.html#save-results",
     "title": "5  Text (.txt) and Markdown (.md) Files",
     "section": "5.6 Save Results",
-    "text": "5.6 Save Results\n\n\nCode\noutput_dir &lt;- \"Results/Inspect_Text\"\ndir.create(output_dir, recursive = TRUE, showWarnings = FALSE)\n\noutput_file &lt;- file.path(output_dir, paste0(\"Text_Report_\", format(Sys.Date(), \"%Y%m%d\"), \".csv\"))\n\nwrite.csv(report, output_file, row.names = FALSE)\nprint(paste(\"Report saved to:\", output_file))\n\n\n[1] \"Report saved to: Results/Inspect_Text/Text_Report_20260515.csv\"",
+    "text": "5.6 Save Results\n\n\nCode\noutput_dir &lt;- \"Results/Inspect_Text\"\ndir.create(output_dir, recursive = TRUE, showWarnings = FALSE)\n\noutput_file &lt;- file.path(output_dir, paste0(\"Text_Report_\", format(Sys.Date(), \"%Y%m%d\"), \".csv\"))\n\nwrite.csv(report, output_file, row.names = FALSE)\nprint(paste(\"Report saved to:\", output_file))\n\n\n[1] \"Report saved to: Results/Inspect_Text/Text_Report_20260521.csv\"",
     "crumbs": [
       "Documents & Unstructured Text",
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>Text (.txt) and Markdown (.md) Files</span>"
@@ -1013,7 +1013,7 @@
     "href": "Inspect_Containers_Notebook.html#save-results",
     "title": "8  Container/Archive (.zip, .tar, .7z) Formats",
     "section": "8.7 Save Results",
-    "text": "8.7 Save Results\nSave the report to a CSV file for review.\n\n\nCode\noutput_dir &lt;- \"Results/Inspect_Containers\"\ndir.create(output_dir, recursive = TRUE, showWarnings = FALSE)\n\noutput_file &lt;- file.path(output_dir, paste0(\"Container_Manifest_\", format(Sys.Date(), \"%Y%m%d\"), \".csv\"))\n\nwrite.csv(report, output_file, row.names = FALSE)\nprint(paste(\"Manifest saved to:\", output_file))\n\n\n[1] \"Manifest saved to: Results/Inspect_Containers/Container_Manifest_20260515.csv\"",
+    "text": "8.7 Save Results\nSave the report to a CSV file for review.\n\n\nCode\noutput_dir &lt;- \"Results/Inspect_Containers\"\ndir.create(output_dir, recursive = TRUE, showWarnings = FALSE)\n\noutput_file &lt;- file.path(output_dir, paste0(\"Container_Manifest_\", format(Sys.Date(), \"%Y%m%d\"), \".csv\"))\n\nwrite.csv(report, output_file, row.names = FALSE)\nprint(paste(\"Manifest saved to:\", output_file))\n\n\n[1] \"Manifest saved to: Results/Inspect_Containers/Container_Manifest_20260521.csv\"",
     "crumbs": [
       "General Data Curation",
       "<span class='chapter-number'>8</span>  <span class='chapter-title'>Container/Archive (.zip, .tar, .7z) Formats</span>"
@@ -1306,7 +1306,7 @@
     "href": "Inspect_xlsx_Notebook.html#save-results",
     "title": "10  Excel (.xls, .xlsx) Files",
     "section": "10.6 Save results",
-    "text": "10.6 Save results\n\n\nCode\noutput_dir &lt;- \"Results/Inspect_xlsx\"\ndir.create(output_dir, recursive = TRUE, showWarnings = FALSE)\n\noutput_file &lt;- file.path(output_dir, paste0(\"Excel_Structure_\", format(Sys.Date(), \"%Y%m%d\"), \".csv\"))\n\nwrite.csv(summary_report, output_file, row.names = FALSE)\nprint(paste(\"Report saved to:\", output_file))\n\n\n[1] \"Report saved to: Results/Inspect_xlsx/Excel_Structure_20260515.csv\"",
+    "text": "10.6 Save results\n\n\nCode\noutput_dir &lt;- \"Results/Inspect_xlsx\"\ndir.create(output_dir, recursive = TRUE, showWarnings = FALSE)\n\noutput_file &lt;- file.path(output_dir, paste0(\"Excel_Structure_\", format(Sys.Date(), \"%Y%m%d\"), \".csv\"))\n\nwrite.csv(summary_report, output_file, row.names = FALSE)\nprint(paste(\"Report saved to:\", output_file))\n\n\n[1] \"Report saved to: Results/Inspect_xlsx/Excel_Structure_20260521.csv\"",
     "crumbs": [
       "Tabular Data",
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>Excel (.xls, .xlsx) Files</span>"
@@ -1427,7 +1427,7 @@
     "href": "Inspect_sav_Notebook.html#save-the-results",
     "title": "11  SPSS Data (.sav) Files",
     "section": "11.6 Save the results",
-    "text": "11.6 Save the results\nWe save the resulting table to a CSV file. This CSV acts as the Data Dictionary for the curated deposit.\n\n\nCode\n#| label: save-results\n\noutput_dir &lt;- \"Results/Inspect_sav\"\ndir.create(output_dir, recursive = TRUE, showWarnings = FALSE)\n\noutput_file &lt;- file.path(output_dir, paste0(\"SPSS_Dictionary_\", format(Sys.Date(), \"%Y%m%d\"), \".csv\"))\n\nwrite.csv(report, output_file, row.names = FALSE)\nprint(paste(\"Data Dictionary saved to:\", output_file))\n\n\n[1] \"Data Dictionary saved to: Results/Inspect_sav/SPSS_Dictionary_20260515.csv\"",
+    "text": "11.6 Save the results\nWe save the resulting table to a CSV file. This CSV acts as the Data Dictionary for the curated deposit.\n\n\nCode\n#| label: save-results\n\noutput_dir &lt;- \"Results/Inspect_sav\"\ndir.create(output_dir, recursive = TRUE, showWarnings = FALSE)\n\noutput_file &lt;- file.path(output_dir, paste0(\"SPSS_Dictionary_\", format(Sys.Date(), \"%Y%m%d\"), \".csv\"))\n\nwrite.csv(report, output_file, row.names = FALSE)\nprint(paste(\"Data Dictionary saved to:\", output_file))\n\n\n[1] \"Data Dictionary saved to: Results/Inspect_sav/SPSS_Dictionary_20260521.csv\"",
     "crumbs": [
       "Tabular Data",
       "<span class='chapter-number'>11</span>  <span class='chapter-title'>SPSS Data (.sav) Files</span>"
@@ -1680,7 +1680,7 @@
     "href": "Inspect_sas7bdat_Notebook.html#save-results",
     "title": "13  SAS Data (.sas7bdat) Files",
     "section": "13.6 Save Results",
-    "text": "13.6 Save Results\nSave the dictionary to a CSV file for review.\n\n\nCode\noutput_dir &lt;- \"Results/Inspect_sas7bdat\"\ndir.create(output_dir, recursive = TRUE, showWarnings = FALSE)\n\noutput_file &lt;- file.path(output_dir, paste0(\"SAS_Dictionary_\", format(Sys.Date(), \"%Y%m%d\"), \".csv\"))\n\nwrite.csv(report, output_file, row.names = FALSE)\nprint(paste(\"Data Dictionary saved to:\", output_file))\n\n\n[1] \"Data Dictionary saved to: Results/Inspect_sas7bdat/SAS_Dictionary_20260515.csv\"",
+    "text": "13.6 Save Results\nSave the dictionary to a CSV file for review.\n\n\nCode\noutput_dir &lt;- \"Results/Inspect_sas7bdat\"\ndir.create(output_dir, recursive = TRUE, showWarnings = FALSE)\n\noutput_file &lt;- file.path(output_dir, paste0(\"SAS_Dictionary_\", format(Sys.Date(), \"%Y%m%d\"), \".csv\"))\n\nwrite.csv(report, output_file, row.names = FALSE)\nprint(paste(\"Data Dictionary saved to:\", output_file))\n\n\n[1] \"Data Dictionary saved to: Results/Inspect_sas7bdat/SAS_Dictionary_20260521.csv\"",
     "crumbs": [
       "Tabular Data",
       "<span class='chapter-number'>13</span>  <span class='chapter-title'>SAS Data (.sas7bdat) Files</span>"
@@ -1940,7 +1940,7 @@
     "href": "Inspect_json_Notebook.html#export-results",
     "title": "15  JSON Files",
     "section": "15.8 Export Results",
-    "text": "15.8 Export Results\n\n\nCode\noutput_dir &lt;- \"Results/Inspect_json\"\ndir.create(output_dir, recursive = TRUE, showWarnings = FALSE)\n\noutput_file &lt;- file.path(output_dir, paste0(\"JSON_Report_\", format(Sys.Date(), \"%Y%m%d\"), \".csv\"))\n\nwrite.csv(results, output_file, row.names = FALSE)\nprint(paste(\"Report saved to:\", output_file))\n\n\n[1] \"Report saved to: Results/Inspect_json/JSON_Report_20260515.csv\"",
+    "text": "15.8 Export Results\n\n\nCode\noutput_dir &lt;- \"Results/Inspect_json\"\ndir.create(output_dir, recursive = TRUE, showWarnings = FALSE)\n\noutput_file &lt;- file.path(output_dir, paste0(\"JSON_Report_\", format(Sys.Date(), \"%Y%m%d\"), \".csv\"))\n\nwrite.csv(results, output_file, row.names = FALSE)\nprint(paste(\"Report saved to:\", output_file))\n\n\n[1] \"Report saved to: Results/Inspect_json/JSON_Report_20260521.csv\"",
     "crumbs": [
       "Structured & Hierarchical Data",
       "<span class='chapter-number'>15</span>  <span class='chapter-title'>JSON Files</span>"
@@ -2061,7 +2061,7 @@
     "href": "Inspect_xml_Notebook.html#save-results",
     "title": "16  XML Files",
     "section": "16.6 Save Results",
-    "text": "16.6 Save Results\nSave the dictionary to a CSV file for review.\n\n\nCode\noutput_dir &lt;- \"Results/Inspect_xml\"\ndir.create(output_dir, recursive = TRUE, showWarnings = FALSE)\n\noutput_file &lt;- file.path(output_dir, paste0(\"XML_Structure_\", format(Sys.Date(), \"%Y%m%d\"), \".csv\"))\n\nwrite.csv(report, output_file, row.names = FALSE)\nprint(paste(\"Report saved to:\", output_file))\n\n\n[1] \"Report saved to: Results/Inspect_xml/XML_Structure_20260515.csv\"",
+    "text": "16.6 Save Results\nSave the dictionary to a CSV file for review.\n\n\nCode\noutput_dir &lt;- \"Results/Inspect_xml\"\ndir.create(output_dir, recursive = TRUE, showWarnings = FALSE)\n\noutput_file &lt;- file.path(output_dir, paste0(\"XML_Structure_\", format(Sys.Date(), \"%Y%m%d\"), \".csv\"))\n\nwrite.csv(report, output_file, row.names = FALSE)\nprint(paste(\"Report saved to:\", output_file))\n\n\n[1] \"Report saved to: Results/Inspect_xml/XML_Structure_20260521.csv\"",
     "crumbs": [
       "Structured & Hierarchical Data",
       "<span class='chapter-number'>16</span>  <span class='chapter-title'>XML Files</span>"
@@ -2376,7 +2376,7 @@
     "href": "Inspect_hdf5_Notebook.html#save-results",
     "title": "18  HDF5 Files",
     "section": "18.7 Save Results",
-    "text": "18.7 Save Results\nSave the dictionary to a CSV file for review.\n\n\nCode\n# Define output directory\noutput_dir &lt;- file.path(\"Results\", \"Inspect_hdf5\")\ndir.create(output_dir, recursive = TRUE, showWarnings = FALSE)\n\n# Define filename\noutput_file &lt;- file.path(output_dir, paste0(\"HDF5_Dictionary_\", Sys.Date(), \".csv\"))\n\n# Write CSV\nwrite.csv(report, output_file, row.names = FALSE)\n\nprint(paste(\"Data Dictionary saved to:\", output_file))\n\n\n[1] \"Data Dictionary saved to: Results/Inspect_hdf5/HDF5_Dictionary_2026-05-15.csv\"",
+    "text": "18.7 Save Results\nSave the dictionary to a CSV file for review.\n\n\nCode\n# Define output directory\noutput_dir &lt;- file.path(\"Results\", \"Inspect_hdf5\")\ndir.create(output_dir, recursive = TRUE, showWarnings = FALSE)\n\n# Define filename\noutput_file &lt;- file.path(output_dir, paste0(\"HDF5_Dictionary_\", Sys.Date(), \".csv\"))\n\n# Write CSV\nwrite.csv(report, output_file, row.names = FALSE)\n\nprint(paste(\"Data Dictionary saved to:\", output_file))\n\n\n[1] \"Data Dictionary saved to: Results/Inspect_hdf5/HDF5_Dictionary_2026-05-21.csv\"",
     "crumbs": [
       "Scientific & Multidimensional Data",
       "<span class='chapter-number'>18</span>  <span class='chapter-title'>HDF5 Files</span>"
@@ -2497,7 +2497,7 @@
     "href": "Inspect_mat_Notebook.html#exports-results",
     "title": "19  MATLAB (.mat) Files",
     "section": "19.6 Exports results",
-    "text": "19.6 Exports results\n\n\nCode\noutput_dir &lt;- \"Results/Inspect_mat\"\ndir.create(output_dir, recursive = TRUE, showWarnings = FALSE)\n\noutput_file &lt;- file.path(output_dir, paste0(\"MAT_Deep_Report_\", format(Sys.Date(), \"%Y%m%d\"), \".csv\"))\n\nwrite.csv(results, output_file, row.names = FALSE)\nprint(paste(\"Report saved to:\", output_file))\n\n\n[1] \"Report saved to: Results/Inspect_mat/MAT_Deep_Report_20260515.csv\"",
+    "text": "19.6 Exports results\n\n\nCode\noutput_dir &lt;- \"Results/Inspect_mat\"\ndir.create(output_dir, recursive = TRUE, showWarnings = FALSE)\n\noutput_file &lt;- file.path(output_dir, paste0(\"MAT_Deep_Report_\", format(Sys.Date(), \"%Y%m%d\"), \".csv\"))\n\nwrite.csv(results, output_file, row.names = FALSE)\nprint(paste(\"Report saved to:\", output_file))\n\n\n[1] \"Report saved to: Results/Inspect_mat/MAT_Deep_Report_20260521.csv\"",
     "crumbs": [
       "Scientific & Multidimensional Data",
       "<span class='chapter-number'>19</span>  <span class='chapter-title'>MATLAB (.mat) Files</span>"
@@ -2841,7 +2841,7 @@
     "href": "Inspect_Images_Notebook.html#curation-intelligence",
     "title": "21  Image Quality Control",
     "section": "21.7 Curation Intelligence",
-    "text": "21.7 Curation Intelligence\nWe now merge the three data streams (Inventory, Magick, Exif) to perform automated quality control. We apply logic to “flag” files that deviate from the norm or pose risks.\nThe Flagging Logic:\n\nDuplicate_File: Files sharing the exact same MD5 checksum (Redundant storage).\nPrivacy_Risk: Files containing GPSLatitude data (requires review).\nDimension_Outlier: Images that do not match the Mode (most common) width/height of the dataset.\nCorrupt: Files that magick failed to read.\n\n\n\nCode\n# 1. Merge all data sources\nfull_report &lt;- file_inventory %&gt;%\n  left_join(magick_results, by = \"file_path\") %&gt;%\n  left_join(exif_subset, by = c(\"file_path\" = \"SourceFile\"))\n\n# 2. Defensive Step: Ensure critical columns exist\n# If no files have GPS, these columns won't exist. We create them as NA to prevent errors.\ncols_to_ensure &lt;- c(\"GPSLatitude\", \"width\", \"height\")\n\nfor (col in cols_to_ensure) {\n  if (!col %in% names(full_report)) {\n    full_report[[col]] &lt;- NA\n  }\n}\n\n# 3. Calculate the \"Mode\" (most common) dimensions for outlier detection\nget_mode &lt;- function(v) {\n  # Remove NAs before calculating mode to avoid errors\n  v &lt;- na.omit(v)\n  if (length(v) == 0) return(NA)\n  uniqv &lt;- unique(v)\n  uniqv[which.max(tabulate(match(v, uniqv)))]\n}\n\nmode_width &lt;- get_mode(full_report$width)\nmode_height &lt;- get_mode(full_report$height)\n\n# 4. Apply Curation Flags\ncurated_data &lt;- full_report %&gt;%\n  group_by(md5_checksum) %&gt;%\n  mutate(is_duplicate = n() &gt; 1) %&gt;%\n  ungroup() %&gt;%\n  mutate(\n    flag_duplicate = ifelse(is_duplicate, \"DUPLICATE\", NA),\n    # Check if valid_image exists; if not, assume FALSE (safety check)\n    flag_corrupt = ifelse(exists(\"valid_image\") & !valid_image, \"CORRUPT\", NA),\n    # Safe check for GPS: if it was missing, we made it NA above, so this just returns NA\n    flag_privacy_gps = ifelse(!is.na(GPSLatitude), \"HAS_GPS_DATA\", NA),\n    # Safe check for outliers: handles cases where width/height might be NA\n    flag_outlier = ifelse(\n      !is.na(width) & !is.na(height) & (width != mode_width | height != mode_height), \n      \"DIMENSION_OUTLIER\", \n      NA\n    )\n  ) %&gt;%\n  # Combine flags into a single readable column\n  unite(\"curation_flags\", starts_with(\"flag_\"), sep = \"; \", na.rm = TRUE, remove = FALSE)\n\n# Preview flagged issues\nprint(\"--- Flagged Issues for Review ---\")\n\n\n[1] \"--- Flagged Issues for Review ---\"\n\n\nCode\ncurated_data %&gt;% \n  filter(curated_data$curation_flags != \"\") %&gt;%\n  select(filename, curation_flags) %&gt;%\n  head()\n\n\n# A tibble: 0 × 2\n# ℹ 2 variables: filename &lt;chr&gt;, curation_flags &lt;chr&gt;\n\n\n\n\nCode\noutput_dir &lt;- \"Results/Inspect_Images\"\ndir.create(output_dir, recursive = TRUE, showWarnings = FALSE)\n\ntimestamp &lt;- format(Sys.Date(), \"%Y%m%d\")\noutput_file &lt;- paste0(output_dir, \"/Curation_Report_Images_\", timestamp, \".csv\")\n\nwrite.csv(curated_data, output_file, row.names = FALSE)\n\nprint(paste(\"Curation report saved to:\", output_file))\n\n\n[1] \"Curation report saved to: Results/Inspect_Images/Curation_Report_Images_20260515.csv\"",
+    "text": "21.7 Curation Intelligence\nWe now merge the three data streams (Inventory, Magick, Exif) to perform automated quality control. We apply logic to “flag” files that deviate from the norm or pose risks.\nThe Flagging Logic:\n\nDuplicate_File: Files sharing the exact same MD5 checksum (Redundant storage).\nPrivacy_Risk: Files containing GPSLatitude data (requires review).\nDimension_Outlier: Images that do not match the Mode (most common) width/height of the dataset.\nCorrupt: Files that magick failed to read.\n\n\n\nCode\n# 1. Merge all data sources\nfull_report &lt;- file_inventory %&gt;%\n  left_join(magick_results, by = \"file_path\") %&gt;%\n  left_join(exif_subset, by = c(\"file_path\" = \"SourceFile\"))\n\n# 2. Defensive Step: Ensure critical columns exist\n# If no files have GPS, these columns won't exist. We create them as NA to prevent errors.\ncols_to_ensure &lt;- c(\"GPSLatitude\", \"width\", \"height\")\n\nfor (col in cols_to_ensure) {\n  if (!col %in% names(full_report)) {\n    full_report[[col]] &lt;- NA\n  }\n}\n\n# 3. Calculate the \"Mode\" (most common) dimensions for outlier detection\nget_mode &lt;- function(v) {\n  # Remove NAs before calculating mode to avoid errors\n  v &lt;- na.omit(v)\n  if (length(v) == 0) return(NA)\n  uniqv &lt;- unique(v)\n  uniqv[which.max(tabulate(match(v, uniqv)))]\n}\n\nmode_width &lt;- get_mode(full_report$width)\nmode_height &lt;- get_mode(full_report$height)\n\n# 4. Apply Curation Flags\ncurated_data &lt;- full_report %&gt;%\n  group_by(md5_checksum) %&gt;%\n  mutate(is_duplicate = n() &gt; 1) %&gt;%\n  ungroup() %&gt;%\n  mutate(\n    flag_duplicate = ifelse(is_duplicate, \"DUPLICATE\", NA),\n    # Check if valid_image exists; if not, assume FALSE (safety check)\n    flag_corrupt = ifelse(exists(\"valid_image\") & !valid_image, \"CORRUPT\", NA),\n    # Safe check for GPS: if it was missing, we made it NA above, so this just returns NA\n    flag_privacy_gps = ifelse(!is.na(GPSLatitude), \"HAS_GPS_DATA\", NA),\n    # Safe check for outliers: handles cases where width/height might be NA\n    flag_outlier = ifelse(\n      !is.na(width) & !is.na(height) & (width != mode_width | height != mode_height), \n      \"DIMENSION_OUTLIER\", \n      NA\n    )\n  ) %&gt;%\n  # Combine flags into a single readable column\n  unite(\"curation_flags\", starts_with(\"flag_\"), sep = \"; \", na.rm = TRUE, remove = FALSE)\n\n# Preview flagged issues\nprint(\"--- Flagged Issues for Review ---\")\n\n\n[1] \"--- Flagged Issues for Review ---\"\n\n\nCode\ncurated_data %&gt;% \n  filter(curated_data$curation_flags != \"\") %&gt;%\n  select(filename, curation_flags) %&gt;%\n  head()\n\n\n# A tibble: 0 × 2\n# ℹ 2 variables: filename &lt;chr&gt;, curation_flags &lt;chr&gt;\n\n\n\n\nCode\noutput_dir &lt;- \"Results/Inspect_Images\"\ndir.create(output_dir, recursive = TRUE, showWarnings = FALSE)\n\ntimestamp &lt;- format(Sys.Date(), \"%Y%m%d\")\noutput_file &lt;- paste0(output_dir, \"/Curation_Report_Images_\", timestamp, \".csv\")\n\nwrite.csv(curated_data, output_file, row.names = FALSE)\n\nprint(paste(\"Curation report saved to:\", output_file))\n\n\n[1] \"Curation report saved to: Results/Inspect_Images/Curation_Report_Images_20260521.csv\"",
     "crumbs": [
       "Image Data",
       "<span class='chapter-number'>21</span>  <span class='chapter-title'>Image Quality Control</span>"
@@ -2962,7 +2962,7 @@
     "href": "Inspect_Tiff_Notebook.html#save-results",
     "title": "22  TIFF (.tif, .tiff) Images",
     "section": "22.6 Save Results",
-    "text": "22.6 Save Results\nSave the report to a CSV file for review.\n\n\nCode\noutput_dir &lt;- \"Results/Inspect_tiff\"\ndir.create(output_dir, recursive = TRUE, showWarnings = FALSE)\n\noutput_file &lt;- file.path(output_dir, paste0(\"TIFF_DeepScan_\", format(Sys.Date(), \"%Y%m%d\"), \".csv\"))\n\nwrite.csv(report, output_file, row.names = FALSE)\nprint(paste(\"Report saved to:\", output_file))\n\n\n[1] \"Report saved to: Results/Inspect_tiff/TIFF_DeepScan_20260515.csv\"",
+    "text": "22.6 Save Results\nSave the report to a CSV file for review.\n\n\nCode\noutput_dir &lt;- \"Results/Inspect_tiff\"\ndir.create(output_dir, recursive = TRUE, showWarnings = FALSE)\n\noutput_file &lt;- file.path(output_dir, paste0(\"TIFF_DeepScan_\", format(Sys.Date(), \"%Y%m%d\"), \".csv\"))\n\nwrite.csv(report, output_file, row.names = FALSE)\nprint(paste(\"Report saved to:\", output_file))\n\n\n[1] \"Report saved to: Results/Inspect_tiff/TIFF_DeepScan_20260521.csv\"",
     "crumbs": [
       "Image Data",
       "<span class='chapter-number'>22</span>  <span class='chapter-title'>TIFF (.tif, .tiff) Images</span>"
