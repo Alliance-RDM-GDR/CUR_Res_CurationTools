@@ -14,6 +14,10 @@ The full documentation and interactive guide are available at:
 The workshop slide deck is published alongside the book at:
 **[https://alliance-rdm-gdr.github.io/CUR_Res_CurationTools/workshop/workshop.html](https://alliance-rdm-gdr.github.io/CUR_Res_CurationTools/workshop/workshop.html)**
 
+## HPC Execution Guide
+A reusable HPC execution guide, including the minimal `Fir` bundle and troubleshooting notes, is available in:
+**[workshop/HPC/HPC_Execution_Guide.md](workshop/HPC/HPC_Execution_Guide.md)**
+
 ## Key Features
 - **Automated Triage**: Rapid inspection of file extensions and basic fixity.
 - **Deep Validation**: Format-specific modules for Tabular (CSV, Excel, SPSS, SAS, Stata), Scientific (HDF5, NetCDF), and Geospatial (GeoPackage, TIFF) data.
