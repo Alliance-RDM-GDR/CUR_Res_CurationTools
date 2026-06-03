@@ -75,7 +75,7 @@ Each chapter introduces a specific curation task or file format. Within each not
 3.  **Curation Insights**: Guidance on how to interpret flags and risks.
 4.  **Non-Interactive Scripts**: Standalone R scripts for batch processing in HPC or server environments.
 
-// \
+//\
 Chaque chapitre présente une tâche de curation ou un format de fichier spécifique. Dans chaque cahier, vous trouverez :
 
 1.  **Objectifs de curation** : ce que nous recherchons et pourquoi c'est important.
