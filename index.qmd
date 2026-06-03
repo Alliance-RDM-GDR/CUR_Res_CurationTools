@@ -28,6 +28,10 @@ This resource is currently under development. Please note that the French versio
 
 This guide provides a collection of documented R workflows to support data curation from the moment data is ingested to its final published state. Our goal is to empower curators to transform raw submissions into FAIR (Findable, Accessible, Interoperable, Reusable) research objects. // Ce guide rassemble une série de workflows R documentés destinés à faciliter la gestion des données, depuis leur collecte jusqu'à leur publication finale. Notre objectif est de donner aux gestionnaires de données les moyens de transformer les données brutes en objets de recherche FAIR (facilement repérables, accessibles, interopérables et réutilisables).
 
+::: {.callout-tip title="Workshop Presentation"}
+An accompanying slide deck is available here: [Research Data Curator's Toolbox Workshop](workshop/workshop.html).
+:::
+
 :::::: grid
 ::: {.g-col-12 .g-col-md-4 .nav-card .p-3}
 <h3 class="nav-card-title">

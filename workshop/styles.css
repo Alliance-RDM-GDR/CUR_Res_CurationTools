@@ -1,0 +1,274 @@
+/*-- scss:rules --*/
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Ubuntu:ital,wght@0,400;0,500;0,700;1,400&display=swap');
+
+/* Main structural font setup */
+.reveal, 
+.reveal .slides, 
+.reveal .slides section, 
+.reveal p, 
+.reveal li, 
+.reveal span, 
+.reveal div, 
+.reveal table, 
+.reveal td,
+.reveal th {
+  font-family: 'Montserrat', sans-serif !important;
+  color: #32322F !important;
+}
+
+.reveal {
+  background-color: #FBFAFA !important;
+}
+
+/* Headers */
+.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+  color: #006666 !important; /* Dark Teal */
+  font-family: 'Ubuntu', sans-serif !important;
+  font-weight: 700 !important;
+  text-transform: none !important;
+}
+
+.reveal h1 {
+  font-weight: 500 !important; /* Ubuntu Medium for H1 */
+}
+
+.reveal h2 {
+  font-weight: 300 !important; /* Montserrat Light for H2 weight */
+  font-size: 1.3em !important;
+}
+
+.reveal h3 {
+  font-weight: 600 !important; /* Montserrat Semibold for H3 weight */
+}
+
+.reveal h4 {
+  font-weight: 700 !important; /* Montserrat Bold for H4 weight */
+}
+
+/* Special class for Title Slide or Dark background slides */
+.reveal .dark-slide h1, 
+.reveal .dark-slide h2, 
+.reveal .dark-slide h3, 
+.reveal .dark-slide p,
+.reveal .dark-slide li,
+.reveal .dark-slide span,
+.reveal .dark-slide div {
+  color: #FBFAFA !important;
+}
+
+.reveal .dark-slide h1, .reveal .dark-slide h3 {
+  color: #D6AB00 !important; /* Tomorrow Yellow accents on dark background titles */
+}
+
+/* Links */
+.reveal a {
+  color: #006666 !important;
+  text-decoration: underline !important;
+}
+
+.reveal a:hover {
+  color: #51BE9C !important; /* Bright Teal on hover */
+}
+
+/* Slide footer styling */
+.reveal .footer {
+  color: #B7B6B3 !important; /* Warm Grey */
+  font-size: 0.45em !important;
+  font-family: 'Montserrat', sans-serif !important;
+}
+
+/* List items spacing and styling */
+.reveal ul, .reveal ol {
+  font-family: 'Montserrat', sans-serif !important;
+  font-weight: 400 !important;
+}
+
+/* Highlight / Bold Text */
+.reveal strong {
+  color: #006666 !important;
+  font-weight: 700 !important;
+}
+
+/* Slide dividers / lines */
+.reveal hr {
+  border: 0;
+  height: 2px;
+  background-color: #D6AB00; /* Tomorrow Yellow */
+  margin: 20px 0;
+}
+
+/* Code block adjustments */
+.reveal pre code {
+  background: #32322F;
+  color: #FBFAFA;
+  border-radius: 4px;
+  padding: 10px;
+  font-family: monospace;
+}
+
+/* Native HTML select styling for RevealJS slides */
+.reveal select {
+  font-size: 0.45em !important;
+  height: 32px !important;
+  padding: 4px 8px !important;
+  font-family: 'Montserrat', sans-serif !important;
+  border: 1px solid #B7B6B3 !important;
+  border-radius: 4px !important;
+  background-color: #FBFAFA !important;
+  color: #32322F !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  margin-bottom: 10px !important;
+}
+
+/* Custom interactive execution buttons & action-button styling */
+.reveal .action-button,
+.reveal button.action-button {
+  background-color: #006666 !important;
+  color: #FBFAFA !important;
+  border: 1px solid #006666 !important;
+  font-family: 'Montserrat', sans-serif !important;
+  font-weight: 600 !important;
+  padding: 6px 12px !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+  font-size: 0.45em !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+  width: 100% !important;
+  margin-top: 6px !important;
+  box-sizing: border-box !important;
+  display: block !important;
+}
+
+.reveal .action-button:hover,
+.reveal button.action-button:hover {
+  background-color: #51BE9C !important;
+  border-color: #51BE9C !important;
+}
+
+/* Yellow styling for local explorer buttons */
+.reveal button.btn-success,
+.reveal .btn-success {
+  background-color: #D6AB00 !important;
+  color: #32322F !important;
+  border: 1px solid #D6AB00 !important;
+  font-family: 'Montserrat', sans-serif !important;
+  font-weight: 600 !important;
+  padding: 6px 12px !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+  font-size: 0.45em !important;
+  width: 100% !important;
+  margin-top: 6px !important;
+  box-sizing: border-box !important;
+  display: block !important;
+}
+
+.reveal button.btn-success:hover,
+.reveal .btn-success:hover {
+  background-color: #FBFAFA !important;
+  border-color: #D6AB00 !important;
+}
+
+/* Log outputs box - Absolute scaling matching code block */
+#out_extensions, #out_csv, #out_code,
+.reveal .shiny-text-output {
+  font-family: monospace !important;
+  font-size: 0.35em !important;
+  background-color: #32322F !important;
+  color: #FBFAFA !important;
+  padding: 6px !important;
+  border-radius: 4px !important;
+  margin-top: 8px !important;
+  max-height: 100px !important;
+  overflow-y: auto !important;
+  text-align: left !important;
+  white-space: pre-wrap !important;
+  border: 1px solid #B7B6B3 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  display: block !important;
+}
+
+/* Styling for the Right column card */
+.control-card {
+  background: rgba(0, 102, 102, 0.04);
+  border-left: 4px solid #D6AB00;
+  padding: 15px;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+/* Table output formatting for Reveal slides */
+.reveal .shiny-table-output table {
+  font-size: 0.6em !important;
+  margin: auto !important;
+  width: 100% !important;
+  border-collapse: collapse !important;
+  color: #32322F !important;
+}
+
+.reveal .shiny-table-output table th {
+  background-color: #006666 !important;
+  color: #FBFAFA !important;
+  padding: 6px 10px !important;
+  font-weight: 600 !important;
+  text-align: left !important;
+  white-space: nowrap !important;
+}
+
+.reveal .shiny-table-output table td {
+  padding: 6px 10px !important;
+  border-bottom: 1px solid #E5E5E5 !important;
+  white-space: nowrap !important;
+}
+
+.reveal .shiny-table-output table tr:nth-child(even) {
+  background-color: rgba(0, 102, 102, 0.02) !important;
+}
+
+.reveal .table-container {
+  font-size: 0.45em !important;
+  width: 100% !important;
+  max-height: 220px !important;
+  min-height: 120px !important;
+  overflow: scroll !important;
+  margin-top: 5px !important;
+  border: 1px solid #ddd !important;
+  border-radius: 4px !important;
+  background-color: #FBFAFA !important;
+}
+
+/* Compact adjustments for smaller slides */
+.reveal section.smaller h3 {
+  font-size: 1.1em !important;
+  margin-top: 10px !important;
+  margin-bottom: 5px !important;
+}
+
+.reveal section.smaller p {
+  font-size: 0.95em !important;
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+}
+
+.reveal section.smaller ul, 
+.reveal section.smaller ol {
+  margin-top: 4px !important;
+  margin-bottom: 4px !important;
+  padding-left: 20px !important;
+}
+
+.reveal section.smaller li {
+  margin-top: 2px !important;
+  margin-bottom: 2px !important;
+  line-height: 1.25 !important;
+  font-size: 0.9em !important;
+}
+
+.reveal section.smaller li li {
+  font-size: 0.85em !important;
+}
+
+

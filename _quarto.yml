@@ -1,6 +1,14 @@
 project:
   type: book
   output-dir: _book
+  resources:
+    - workshop/workshop.html
+    - workshop/workshop_files/**
+    - workshop/images/CodebookGenerator.png
+    - workshop/images/DataCuration_Toolbox.png
+    - workshop/images/extracted_p8_Image52.png
+    - workshop/images/extracted_p8_Image53.png
+    - workshop/images/extracted_p11_Image65.png
 
 book:
   title: "Research Data Curator’s Toolbox"
