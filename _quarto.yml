@@ -9,6 +9,7 @@ project:
     - workshop/images/extracted_p8_Image52.png
     - workshop/images/extracted_p8_Image53.png
     - workshop/images/extracted_p11_Image65.png
+    - workshop/images/qr-code.png
 
 book:
   title: "Research Data Curator’s Toolbox"

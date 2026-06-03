@@ -1337,6 +1337,15 @@ if (!is.null(df)) {
 
 ------------------------------------------------------------------------
 
+## Implementation in HPC clusters
+
+This toolbox provides R-scripts that can be executed in HPC cluters like [Fir](https://docs.alliancecan.ca/wiki/Fir) from the digital research Alliance of Canada.
+
+An example can be found [here](https://github.com/Alliance-RDM-GDR/CUR_Res_CurationTools/tree/main/workshop/HPC)
+
+
+------------------------------------------------------------------------
+
 ## Next Steps and Contributions
 
 This toolbox is open-source and evolving.
@@ -1366,6 +1375,8 @@ This toolbox is open-source and evolving.
 :::: {#second-column}
 ::: {style="text-align: center;font-size: 80%"}
 ### Slide Deck URL
+
+![](images/qr-code.png){fig-alt="QR code linking to the published workshop presentation" width="220px"}
 
 [Open the published presentation](https://alliance-rdm-gdr.github.io/CUR_Res_CurationTools/workshop/workshop.html)
 :::
