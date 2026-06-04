@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.6.39">
 
   <meta name="author" content="Curation Services Team | Digital Research Alliance of Canada">
-  <meta name="dcterms.date" content="2026-06-03">
+  <meta name="dcterms.date" content="2026-06-04">
   <title>Research Data Curator’s Toolbox</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -204,12 +204,12 @@ Curation Services Team | Digital Research Alliance of Canada
 </div>
 </div>
 
-  <p class="date">2026-06-03</p>
+  <p class="date">2026-06-04</p>
 </section>
 <section id="workshop-outline" class="slide level2 center">
 <h2>Workshop Outline</h2>
 <div class="columns">
-<div class="column" style="width: 40%; font-size: 0.8em;">
+<div class="column" style="width: 40%; font-size: 0.6em;">
 <h3 id="introduction-and-context">1. Introduction and Context</h3>
 <ul>
 <li><strong>The Curation Challenge:</strong> Scale and complexity.</li>
@@ -219,14 +219,13 @@ Curation Services Team | Digital Research Alliance of Canada
 </div><div class="column" style="width: 60%; font-size: 0.6em;">
 <h3 id="practical-demonstrations">2. Practical Demonstrations</h3>
 <ul>
-<li><strong>Module 1:</strong> High-Level Profiling (Extensions).</li>
-<li><strong>Module 2:</strong> Tabular Quality Control (CSV Check).</li>
-<li><strong>Module 3:</strong> Image Quality Control (Metadata and Fixity).</li>
-<li><strong>Module 4:</strong> HDF5 Structure and Metadata (Hierarchies).</li>
-<li><strong>Module 5:</strong> NetCDF Usability and Conventions (Arrays).</li>
-<li><strong>Module 6:</strong> PDF Archival Suitability (Security and Text).</li>
-<li><strong>Module 7:</strong> SQLite Database Manifest (Schemas).</li>
-<li><strong>Review:</strong> Summaries and collaborative curation.</li>
+<li>High-Level Profiling (Extensions).</li>
+<li>Tabular Quality Control (CSV Check).</li>
+<li>Image Quality Control (Metadata and Fixity).</li>
+<li>HDF5 (Hierarchies).</li>
+<li>NetCDF (Arrays).</li>
+<li>PDF (Security and Text).</li>
+<li>SQLite (Schemas).</li>
 </ul>
 </div></div>
 </section>
@@ -243,7 +242,7 @@ Curation Services Team | Digital Research Alliance of Canada
 <li><p><strong>R</strong>eusable</p></li>
 </ul>
 <h3 id="curation-vs.-preservation">Curation vs.&nbsp;Preservation</h3>
-<p>Curators are not preservationists. We organize, describe, clean, and encourage preservation-friendly formats, but do not perform raw preservation archiving.</p>
+<p>Our curators are not preservationists. We organize, describe, and clean files, and we encourage preservation-friendly formats, but we do not perform additional long-term preservation activities. Digital Preservation services works on these elements.</p>
 </div><div class="column" style="width: 50%; font-size: 0.85em;">
 <h3 id="generalist-repositories-frdr">Generalist Repositories (FRDR)</h3>
 <p>The <strong>Federated Research Data Repository </strong> (<a href="https://www.frdr-dfdr.ca/repo/">FRDR</a>) is a bilingual platform for sharing and preserving Canadian research data:</p>
@@ -263,7 +262,7 @@ Curation Services Team | Digital Research Alliance of Canada
 <ul>
 <li><p><strong>File Counts:</strong> A single dataset deposit can range from a few files up to <strong>100K+</strong> files.</p></li>
 <li><p><strong>Storage Size:</strong> Dataset storage requirements regularly scale from less than 1 GB up to <strong>1000+ GB</strong>.</p></li>
-<li><p><strong>Format Diversity:</strong> Hundreds of unique extensions dominated by <code>csv</code>, <code>pdf</code>, <code>jpg</code>, and <code>xlsx</code>.</p></li>
+<li><p><strong>Format Diversity:</strong> Hundreds of unique extensions, including <code>csv</code>, <code>pdf</code>, <code>jpg</code>, and <code>xlsx</code>.</p></li>
 </ul>
 </div><div class="column" style="width: 65%; text-align: center; layout-valign = center">
 <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
@@ -291,7 +290,7 @@ Growth of dataset size and file counts over time (Digital Research Alliance of C
 </div><div class="column" style="width: 60%; text-align: center;">
 <img data-src="images/extracted_p11_Image65.png" style="border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 100%;" alt="Data Curation Workflow Flowchart">
 <div style="font-size: 0.65em; margin-top: 5px; color: #555; font-style: italic;">
-FRDR interactive curation pipeline. Working with the researcher is a key aspect of this project
+FRDR interactive curation pipeline. Working with the researcher is an essential element of this project
 </div>
 </div></div>
 </section>
@@ -301,8 +300,8 @@ FRDR interactive curation pipeline. Working with the researcher is a key aspect 
 <li><p><strong>Dataset Heterogeneity:</strong> Number of files and format variety.</p></li>
 <li><p><strong>Many Files:</strong> How do you process quickly, securely, and consistently tens of thousands of files?</p></li>
 <li><p><strong>Large Files:</strong> Raw computing power and specialized memory are required to open, parse, and profile gigabyte-scale files without system crashes.</p></li>
-<li><p><strong>Varying Documentation:</strong> Missing READMEs, orphan numeric statistical variables, and obscure custom scripts.</p></li>
-<li><p><strong>Reproducibility and Security:</strong>Checking code reproducibility, scanning for hardcoded paths, and identifying potential PII (emails/keys) at scale.</p></li>
+<li><p><strong>Varying Documentation:</strong> Missing READMEs, orphaned variables, and obscure custom scripts.</p></li>
+<li><p><strong>Reproducibility and Security:</strong>Checking code reproducibility, scanning for hardcoded paths, and identifying potential Personally Identifying Information (PII) (emails/keys) at scale.</p></li>
 </ol>
 </section>
 <section id="research-data-curation-toolbox" class="slide level2 smaller center">
@@ -363,7 +362,7 @@ FRDR interactive curation pipeline. Working with the researcher is a key aspect 
 <ul>
 <li><em>Extension mismatch:</em> Finding hidden/falsified formats.</li>
 <li><em>Security risks:</em> Flagging unauthorized executables/junk.</li>
-<li><em>Preservation triage:</em> Estimating volume and complexity.</li>
+<li><em>Triage:</em> Estimating volume and complexity.</li>
 </ul></li>
 </ul>
 </div>
@@ -542,7 +541,7 @@ LIVE DIRECTORY METRICS
 <div class="column" style="width: 50%; font-size: 0.65em;">
 <div class="r-fit-text">
 <ul>
-<li><strong>Why:</strong> Tabular files often suffer from parsing errors, missing data, and PII leaks.</li>
+<li><strong>Why:</strong> Tabular files often suffer from parsing errors, missing data, and Personally Identifying Information (PII) leaks.</li>
 <li><strong>Obtained:</strong>
 <ul>
 <li>Validation of character encoding and schema (rows/cols).</li>
@@ -873,7 +872,7 @@ Privacy and Zero-Install
 <ul>
 <li><em>Privacy Risks:</em> Detecting GPS coordinate leaks (potential human subjects/protected species).</li>
 <li><em>Technical Outliers:</em> Identifying incorrect colorspaces or dimension outliers.</li>
-<li><em>Format Obsolescence:</em> Flagging proprietary raw formats for conversion to preservation-master TIFFs.</li>
+<li><em>Format Obsolescence:</em> Flagging proprietary raw formats for conversion to preservation-friendly TIFFs.</li>
 </ul></li>
 </ul>
 </div>
@@ -9138,7 +9137,7 @@ LIVE SQLITE METRICS
 </section>
 <section id="implementation-in-hpc-clusters" class="slide level2 center">
 <h2>Implementation in HPC clusters</h2>
-<p>This toolbox provides R-scripts that can be executed in HPC cluters like <a href="https://docs.alliancecan.ca/wiki/Fir">Fir</a> from the digital research Alliance of Canada.</p>
+<p>This toolbox provides R-scripts that can be executed in HPC cluters like <a href="https://docs.alliancecan.ca/wiki/Fir">Fir</a> from the Digital Research Alliance of Canada.</p>
 <p>An example can be found <a href="https://github.com/Alliance-RDM-GDR/CUR_Res_CurationTools/tree/main/workshop/HPC">here</a></p>
 </section>
 <section id="next-steps-and-contributions" class="slide level2 center">
@@ -9159,15 +9158,15 @@ LIVE SQLITE METRICS
 <div class="quarto-layout-panel" data-layout-ncol="2">
 <div class="quarto-layout-row">
 <div id="first-column" class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<section id="supporting-material" style="text-align: center;font-size: 80%">
-<h3>Supporting material</h3>
+<div style="text-align: center;font-size: 80%">
 <ul>
 <li><a href="https://www.eurobioimaging.eu/data-services/fair-image-data/">FAIR image data</a></li>
 <li><a href="https://training.galaxyproject.org/training-material/topics/imaging/tutorials/bioimage-metadata/tutorial.html">FAIR Bioimage Metadata</a></li>
 <li><a href="https://www.frdr-dfdr.ca/docs/en/depositing_data/">FRDR documentation</a></li>
 <li><a href="https://alliancecan.ca/en/services/research-data-management/learning-and-training/training-resources">Training resources</a> from the Alliance</li>
+<li><a href="https://explora.alliancecan.ca/">Explora portal</a></li>
 </ul>
-</section>
+</div>
 </div>
 <div id="second-column" class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <section id="slide-deck-url" style="text-align: center;font-size: 80%">
@@ -9183,7 +9182,7 @@ LIVE SQLITE METRICS
 <p>Contact us to ensure that your data is well prepared and can be effectively shared with the research community.</p>
 <ul>
 <li>Email: rdm-gdr@alliancecan.ca</li>
-<li>https://www.frdr-dfdr.ca/repo/</li>
+<li><a href="https://www.frdr-dfdr.ca/repo/">FRDR</a></li>
 </ul>
 </div>
 
