@@ -83,7 +83,7 @@ dir_choices <- setNames(all_paths, friendly_names)
 ## Workshop Outline 
 
 ::::: columns
-::: {.column style="width: 40%; font-size: 0.8em;"}
+::: {.column style="width: 40%; font-size: 0.6em;"}
 ### 1. Introduction and Context
 
 -   **The Curation Challenge:** Scale and complexity.
@@ -94,14 +94,13 @@ dir_choices <- setNames(all_paths, friendly_names)
 ::: {.column style="width: 60%; font-size: 0.6em;"}
 ### 2. Practical Demonstrations
 
--   **Module 1:** High-Level Profiling (Extensions).
--   **Module 2:** Tabular Quality Control (CSV Check).
--   **Module 3:** Image Quality Control (Metadata and Fixity).
--   **Module 4:** HDF5 Structure and Metadata (Hierarchies).
--   **Module 5:** NetCDF Usability and Conventions (Arrays).
--   **Module 6:** PDF Archival Suitability (Security and Text).
--   **Module 7:** SQLite Database Manifest (Schemas).
--   **Review:** Summaries and collaborative curation.
+-   High-Level Profiling (Extensions).
+-   Tabular Quality Control (CSV Check).
+-   Image Quality Control (Metadata and Fixity).
+-   HDF5 (Hierarchies).
+-   NetCDF (Arrays).
+-   PDF (Security and Text).
+-   SQLite (Schemas).
 :::
 :::::
 
@@ -123,7 +122,7 @@ Data curation is the **ongoing process** of managing research data throughout it
 - **R**eusable
 
 ### Curation vs. Preservation
-Curators are not preservationists. We organize, describe, clean, and encourage preservation-friendly formats, but do not perform raw preservation archiving.
+Our curators are not preservationists. We organize, describe, and clean files, and we encourage preservation-friendly formats, but we do not perform additional long-term preservation activities. Digital Preservation services works on these elements.
 :::
 
 ::: {.column style="width: 50%; font-size: 0.85em;"}
@@ -152,7 +151,7 @@ Modern curation repositories face exponential growth in both the **number of fil
 
 - **Storage Size:** Dataset storage requirements regularly scale from less than 1 GB up to **1000+ GB**.
 
-- **Format Diversity:** Hundreds of unique extensions dominated by `csv`, `pdf`, `jpg`, and `xlsx`.
+- **Format Diversity:** Hundreds of unique extensions, including `csv`, `pdf`, `jpg`, and `xlsx`.
 :::
 
 ::: {.column style="width: 65%; text-align: center; layout-valign = center"}
@@ -190,7 +189,7 @@ We utilize the Data Curation Network's **CURATED** steps to ensure datasets meet
 
 ::: {.column style="width: 60%; text-align: center;"}
 ![](images/extracted_p11_Image65.png){fig-alt="Data Curation Workflow Flowchart" style="border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 100%;"}
-<div style="font-size: 0.65em; margin-top: 5px; color: #555; font-style: italic;">FRDR interactive curation pipeline. Working with the researcher is a key aspect of this project</div>
+<div style="font-size: 0.65em; margin-top: 5px; color: #555; font-style: italic;">FRDR interactive curation pipeline. Working with the researcher is an essential element of this project</div>
 :::
 :::::
 
@@ -204,9 +203,9 @@ We utilize the Data Curation Network's **CURATED** steps to ensure datasets meet
 
 3. **Large Files:** Raw computing power and specialized memory are required to open, parse, and profile gigabyte-scale files without system crashes.
    
-4. **Varying Documentation:** Missing READMEs, orphan numeric statistical variables, and obscure custom scripts.
+4. **Varying Documentation:** Missing READMEs, orphaned variables, and obscure custom scripts.
    
-5. **Reproducibility and Security:**Checking code reproducibility, scanning for hardcoded paths, and identifying potential PII (emails/keys) at scale.
+5. **Reproducibility and Security:**Checking code reproducibility, scanning for hardcoded paths, and identifying potential Personally Identifying Information (PII) (emails/keys) at scale.
 
 ------------------------------------------------------------------------
 
@@ -256,7 +255,7 @@ First-stage triage to understand the scale and composition of incoming datasets.
 -   **Problems Solved:**
     -   *Extension mismatch:* Finding hidden/falsified formats.
     -   *Security risks:* Flagging unauthorized executables/junk.
-    -   *Preservation triage:* Estimating volume and complexity.
+    -   *Triage:* Estimating volume and complexity.
 :::
 :::
 -   **Key Tools Used:**
@@ -433,7 +432,7 @@ Automated structure and content validation for tabular data files.
 ::::: columns
 ::: {.column style="width: 50%; font-size: 0.65em;"}
 ::: {.r-fit-text}
--   **Why:** Tabular files often suffer from parsing errors, missing data, and PII leaks.
+-   **Why:** Tabular files often suffer from parsing errors, missing data, and Personally Identifying Information (PII) leaks.
 -   **Obtained:**
     -   Validation of character encoding and schema (rows/cols).
     -   Cell completeness percentage across variables.
@@ -644,7 +643,7 @@ Technical validation, fixity check, and metadata extraction for digital image co
 -   **Problems Solved:**
     -   *Privacy Risks:* Detecting GPS coordinate leaks (potential human subjects/protected species).
     -   *Technical Outliers:* Identifying incorrect colorspaces or dimension outliers.
-    -   *Format Obsolescence:* Flagging proprietary raw formats for conversion to preservation-master TIFFs.
+    -   *Format Obsolescence:* Flagging proprietary raw formats for conversion to preservation-friendly TIFFs.
 :::
 :::
 -   **Key Tools Used:**
@@ -1339,7 +1338,7 @@ if (!is.null(df)) {
 
 ## Implementation in HPC clusters
 
-This toolbox provides R-scripts that can be executed in HPC cluters like [Fir](https://docs.alliancecan.ca/wiki/Fir) from the digital research Alliance of Canada.
+This toolbox provides R-scripts that can be executed in HPC cluters like [Fir](https://docs.alliancecan.ca/wiki/Fir) from the Digital Research Alliance of Canada.
 
 An example can be found [here](https://github.com/Alliance-RDM-GDR/CUR_Res_CurationTools/tree/main/workshop/HPC)
 
@@ -1363,12 +1362,11 @@ This toolbox is open-source and evolving.
 ::::: {layout-ncol="2"}
 :::: {#first-column}
 ::: {style="text-align: center;font-size: 80%"}
-### Supporting material
-
 - [FAIR image data](https://www.eurobioimaging.eu/data-services/fair-image-data/) 
 - [FAIR Bioimage Metadata](https://training.galaxyproject.org/training-material/topics/imaging/tutorials/bioimage-metadata/tutorial.html)
 - [FRDR documentation](https://www.frdr-dfdr.ca/docs/en/depositing_data/)
-- [Training resources](https://alliancecan.ca/en/services/research-data-management/learning-and-training/training-resources) from the Alliance 
+- [Training resources](https://alliancecan.ca/en/services/research-data-management/learning-and-training/training-resources) from the Alliance
+- [Explora portal](https://explora.alliancecan.ca/)
 :::
 ::::
 
@@ -1389,5 +1387,5 @@ This toolbox is open-source and evolving.
 Contact us to ensure that your data is well prepared and can be effectively shared with the research community.
 
 -   Email: rdm-gdr\@alliancecan.ca
--   https://www.frdr-dfdr.ca/repo/
+-   [FRDR](https://www.frdr-dfdr.ca/repo/)
 :::
