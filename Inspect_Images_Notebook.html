@@ -102,9 +102,9 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-1c02106e02db7931e34c138ca3a33989.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-004b31d85c7bec8d41339570dea040a2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-1c02106e02db7931e34c138ca3a33989.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-3a0434ec8dbb91cf559f1b894f80063e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-f405560b62fb26e92e7ae32e65d77bb0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-3a0434ec8dbb91cf559f1b894f80063e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -798,7 +798,7 @@ div.csl-indent {
 </section>
 <section id="technical-validation-using-magick-validation-technique-à-laide-de-magick" class="level2" data-number="21.5">
 <h2 data-number="21.5" class="anchored" data-anchor-id="technical-validation-using-magick-validation-technique-à-laide-de-magick"><span class="header-section-number">21.5</span> Technical Validation using <code>magick</code> // Validation technique à l’aide de <code>magick</code></h2>
-<p>The <code>magick</code> package allow us to confirm these files are readable and for extracting basic technical properties. This step loops through each file, reads its information, and collects it into a single table.</p>
+<p>The <code>magick</code> package allow us to confirm these files are readable and extract basic technical properties. This step loops through each file, reads its information, and collects it into a single table.</p>
 <p>//</p>
 <p>Le package <code>magick</code> nous permet de vérifier que ces fichiers sont lisibles et d’en extraire les propriétés techniques de base. Cette étape parcourt chaque fichier, en lit les informations et les rassemble dans un seul tableau.</p>
 <div class="cell">
@@ -968,7 +968,7 @@ div.csl-indent {
 <span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Curation report saved to:"</span>, output_file))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Curation report saved to: Results/Inspect_Images/Curation_Report_Images_20260604.csv"</code></pre>
+<pre><code>[1] "Curation report saved to: Results/Inspect_Images/Curation_Report_Images_20260703.csv"</code></pre>
 </div>
 </div>
 <hr>
@@ -978,14 +978,14 @@ div.csl-indent {
 <p>Use the generated CSV to perform these checks:</p>
 <ul>
 <li><p><strong>Privacy Risks (GPS):</strong> Filter the CSV for flag_privacy_gps == “HAS_GPS_DATA”. These images contain embedded location coordinates (Latitude/Longitude). If the dataset involves human subjects or protected species, these coordinates must be scrubbed using ExifTool (-gps:all=) before publication to prevent “mosaic effect” re-identification. Discuss with the researcher about reducing the precision of the coordinates or removing them altogether.</p></li>
-<li><p><strong>Format Obsolescence:</strong> Check the format_magick column. While .jpg and .tiff are standard, proprietary raw formats (e.g., .CR2, .NEF, .ARW) are less stable for long-term preservation. Discuss with the researcher about transforming these files to a standard format such as TIFF or JPEG.</p></li>
+<li><p><strong>Format Obsolescence:</strong> Check the format_magick column. While .png and .tiff are standard, proprietary raw formats (e.g., .CR2, .NEF, .ARW) are less stable for long-term preservation. Discuss with the researcher about transforming these files to a standard lossless format such as TIFF or PNG.</p></li>
 <li><p><strong>Digital Fixity (Duplicates):</strong> Filter for flag_duplicate == “DUPLICATE”. These files share the exact same MD5 hash, meaning they are bit-for-bit identical, even if they have different filenames.</p></li>
 </ul>
 <p>//</p>
 <p>Utilisez le fichier CSV généré pour effectuer les vérifications suivantes :</p>
 <ul>
 <li><p><strong>Risques liés à la confidentialité (GPS) :</strong> Filtrez le fichier CSV en recherchant flag_privacy_gps == « HAS_GPS_DATA ». Ces images contiennent des coordonnées de localisation intégrées (latitude/longitude). Si l’ensemble de données concerne des sujets humains ou des espèces protégées, ces coordonnées doivent être effacées à l’aide d’ExifTool (-gps:all=) avant publication afin d’éviter toute réidentification par « effet de mosaïque ». Discutez avec le chercheur de la possibilité de réduire la précision des coordonnées ou de les supprimer complètement.</p></li>
-<li><p><strong>Obsolescence du format :</strong> Vérifiez la colonne format_magick. Alors que les formats .jpg et .tiff sont standard, les formats bruts propriétaires (par exemple, .CR2, .NEF, .ARW) sont moins stables pour la conservation à long terme. Discutez avec le chercheur de la possibilité de convertir ces fichiers vers un format standard tel que TIFF ou JPEG.</p></li>
+<li><p><strong>Obsolescence du format :</strong> Vérifiez la colonne format_magick. Alors que les formats .png et .tiff sont standard, les formats bruts propriétaires (par exemple, .CR2, .NEF, .ARW) sont moins stables pour la conservation à long terme. Discutez avec le chercheur de la possibilité de convertir ces fichiers vers un format standard tel que TIFF ou PNG.</p></li>
 <li><p><strong>Fermeté numérique (doublons) :</strong> Filtrez sur flag_duplicate == « DUPLICATE ». Ces fichiers partagent exactement le même hachage MD5, ce qui signifie qu’ils sont identiques bit à bit, même s’ils ont des noms de fichiers différents.</p></li>
 </ul>
 </section>
@@ -1561,16 +1561,16 @@ Rosenthal, David S. H. 2010. <span>“Bit Preservation: A Solved Problem?”</sp
 <span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## Overview // Aperçu</span></span>
 <span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>This notebook provides a workflow for performing standardized quality control on image files. Images are complex digital objects composed of technical properties and embedded metadata (EXIF/IPTC). </span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>This notebook provides a workflow for performing standardized quality control on image files. Images are complex digital objects composed of technical properties and embedded metadata (EXIF/IPTC).</span>
 <span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>// </span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>//</span>
 <span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>Ce cahier de travail présente une procédure permettant d'effectuer un contrôle qualité standardisé sur des fichiers image. Les images sont des objets numériques complexes composés de propriétés techniques et de métadonnées intégrées (EXIF/IPTC).</span>
 <span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Curation Goal // Objectif de la curation"}</span>
 <span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>Perform standardized quality control and metadata harvesting. Our objective is to validate technical properties (dimensions, colorspace), calculate fixity checksums, and extract deep archival metadata to ensure long-term accessibility and provenance.</span>
 <span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>// </span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>//</span>
 <span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>Effectuer un contrôle qualité standardisé et la collecte de métadonnées. Notre objectif est de valider les propriétés techniques (dimensions, espace colorimétrique), de calculer les sommes de contrôle de l'intégrité et d'extraire des métadonnées d'archivage approfondies afin de garantir l'accessibilité à long terme et la traçabilité des documents.</span>
 <span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>:::</span>
@@ -1589,7 +1589,7 @@ Rosenthal, David S. H. 2010. <span>“Bit Preservation: A Solved Problem?”</sp
 <span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**`magick`**: Validating file headers and technical properties <span class="co">[</span><span class="ot">@magick</span><span class="co">]</span>.</span>
 <span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**`exiftoolr`**: Harvesting deep metadata (Camera, GPS, Software) <span class="co">[</span><span class="ot">@exiftoolr</span><span class="co">]</span>.</span>
 <span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a>// </span>
+<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a>//</span>
 <span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-47"><a href="#cb20-47" aria-hidden="true" tabindex="-1"></a>**Ce cahier intègre trois paquets R spécialisés :**</span>
 <span id="cb20-48"><a href="#cb20-48" aria-hidden="true" tabindex="-1"></a></span>
@@ -1611,7 +1611,7 @@ Rosenthal, David S. H. 2010. <span>“Bit Preservation: A Solved Problem?”</sp
 <span id="cb20-64"><a href="#cb20-64" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-65"><a href="#cb20-65" aria-hidden="true" tabindex="-1"></a>The following R packages are required. If you don't have these packages, uncomment this code and run it once in your R console:</span>
 <span id="cb20-66"><a href="#cb20-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-67"><a href="#cb20-67" aria-hidden="true" tabindex="-1"></a>// </span>
+<span id="cb20-67"><a href="#cb20-67" aria-hidden="true" tabindex="-1"></a>//</span>
 <span id="cb20-68"><a href="#cb20-68" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-69"><a href="#cb20-69" aria-hidden="true" tabindex="-1"></a>Les packages R suivants sont requis. Si vous ne disposez pas de ces packages, décommentez ce code et exécutez-le une fois dans votre console R :</span>
 <span id="cb20-70"><a href="#cb20-70" aria-hidden="true" tabindex="-1"></a></span>
@@ -1714,7 +1714,7 @@ Rosenthal, David S. H. 2010. <span>“Bit Preservation: A Solved Problem?”</sp
 <span id="cb20-177"><a href="#cb20-177" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-178"><a href="#cb20-178" aria-hidden="true" tabindex="-1"></a><span class="fu">## Technical Validation using `magick` // Validation technique à l'aide de `magick`</span></span>
 <span id="cb20-179"><a href="#cb20-179" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-180"><a href="#cb20-180" aria-hidden="true" tabindex="-1"></a>The <span class="in">`magick`</span> package allow us to confirm these files are readable and for extracting basic technical properties. This step loops through each file, reads its information, and collects it into a single table.</span>
+<span id="cb20-180"><a href="#cb20-180" aria-hidden="true" tabindex="-1"></a>The <span class="in">`magick`</span> package allow us to confirm these files are readable and extract basic technical properties. This step loops through each file, reads its information, and collects it into a single table.</span>
 <span id="cb20-181"><a href="#cb20-181" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-182"><a href="#cb20-182" aria-hidden="true" tabindex="-1"></a>//</span>
 <span id="cb20-183"><a href="#cb20-183" aria-hidden="true" tabindex="-1"></a></span>
@@ -1896,7 +1896,7 @@ Rosenthal, David S. H. 2010. <span>“Bit Preservation: A Solved Problem?”</sp
 <span id="cb20-367"><a href="#cb20-367" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-368"><a href="#cb20-368" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Privacy Risks (GPS):** Filter the CSV for flag_privacy_gps == "HAS_GPS_DATA". These images contain embedded location coordinates (Latitude/Longitude). If the dataset involves human subjects or protected species, these coordinates must be scrubbed using ExifTool (-gps:all=) before publication to prevent "mosaic effect" re-identification. Discuss with the researcher about reducing the precision of the coordinates or removing them altogether.</span>
 <span id="cb20-369"><a href="#cb20-369" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-370"><a href="#cb20-370" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Format Obsolescence:** Check the format_magick column. While .jpg and .tiff are standard, proprietary raw formats (e.g., .CR2, .NEF, .ARW) are less stable for long-term preservation. Discuss with the researcher about transforming these files to a standard format such as TIFF or JPEG.</span>
+<span id="cb20-370"><a href="#cb20-370" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Format Obsolescence:** Check the format_magick column. While .png and .tiff are standard, proprietary raw formats (e.g., .CR2, .NEF, .ARW) are less stable for long-term preservation. Discuss with the researcher about transforming these files to a standard lossless format such as TIFF or PNG.</span>
 <span id="cb20-371"><a href="#cb20-371" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-372"><a href="#cb20-372" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Digital Fixity (Duplicates):** Filter for flag_duplicate == "DUPLICATE". These files share the exact same MD5 hash, meaning they are bit-for-bit identical, even if they have different filenames.</span>
 <span id="cb20-373"><a href="#cb20-373" aria-hidden="true" tabindex="-1"></a></span>
@@ -1906,11 +1906,11 @@ Rosenthal, David S. H. 2010. <span>“Bit Preservation: A Solved Problem?”</sp
 <span id="cb20-377"><a href="#cb20-377" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-378"><a href="#cb20-378" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Risques liés à la confidentialité (GPS) :** Filtrez le fichier CSV en recherchant flag_privacy_gps == « HAS_GPS_DATA ». Ces images contiennent des coordonnées de localisation intégrées (latitude/longitude). Si l'ensemble de données concerne des sujets humains ou des espèces protégées, ces coordonnées doivent être effacées à l'aide d'ExifTool (-gps:all=) avant publication afin d'éviter toute réidentification par « effet de mosaïque ». Discutez avec le chercheur de la possibilité de réduire la précision des coordonnées ou de les supprimer complètement.</span>
 <span id="cb20-379"><a href="#cb20-379" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-380"><a href="#cb20-380" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Obsolescence du format :** Vérifiez la colonne format_magick. Alors que les formats .jpg et .tiff sont standard, les formats bruts propriétaires (par exemple, .CR2, .NEF, .ARW) sont moins stables pour la conservation à long terme. Discutez avec le chercheur de la possibilité de convertir ces fichiers vers un format standard tel que TIFF ou JPEG.</span>
+<span id="cb20-380"><a href="#cb20-380" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Obsolescence du format :** Vérifiez la colonne format_magick. Alors que les formats .png et .tiff sont standard, les formats bruts propriétaires (par exemple, .CR2, .NEF, .ARW) sont moins stables pour la conservation à long terme. Discutez avec le chercheur de la possibilité de convertir ces fichiers vers un format standard tel que TIFF ou PNG.</span>
 <span id="cb20-381"><a href="#cb20-381" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-382"><a href="#cb20-382" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Fermeté numérique (doublons) :** Filtrez sur flag_duplicate == « DUPLICATE ». Ces fichiers partagent exactement le même hachage MD5, ce qui signifie qu’ils sont identiques bit à bit, même s’ils ont des noms de fichiers différents.</span>
 <span id="cb20-383"><a href="#cb20-383" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-384"><a href="#cb20-384" aria-hidden="true" tabindex="-1"></a><span class="fu">## Additional Tools &amp; Resources // Outils et ressources supplémentaires </span></span>
+<span id="cb20-384"><a href="#cb20-384" aria-hidden="true" tabindex="-1"></a><span class="fu">## Additional Tools &amp; Resources // Outils et ressources supplémentaires</span></span>
 <span id="cb20-385"><a href="#cb20-385" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-386"><a href="#cb20-386" aria-hidden="true" tabindex="-1"></a>While R is excellent for batch processing and statistical summaries, visual and command-line tools are often required for deep analysis or manual correction.</span>
 <span id="cb20-387"><a href="#cb20-387" aria-hidden="true" tabindex="-1"></a></span>

@@ -100,7 +100,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-1c02106e02db7931e34c138ca3a33989.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-3a0434ec8dbb91cf559f1b894f80063e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -468,17 +468,17 @@ div.csl-indent {
 <p>Bridge the gap between “dark data” (unsearchable scanned PDFs) and FAIR data. Our objective is to extract text and structure from image-based documents, ensuring they become indexable and accessible for future research.</p>
 </div>
 </div>
-<div class="callout callout-style-default callout-warning callout-titled" title="Preservation Risk">
+<div class="callout callout-style-default callout-warning callout-titled" title="Identifying Risks">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Preservation Risk
+<span class="screen-reader-only">Warning</span>Identifying Risks
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Image-only documents are effectively invisible to automated indexing and assistive technologies. While AI-based OCR is powerful, it introduces risks of “hallucination,” privacy concerns when using cloud APIs, and dependency on proprietary service models.</p>
+<p>Image-only documents are effectively invisible to automated indexing and assistive technologies. While AI-based OCR is powerful, it introduces AI hallucination risks, privacy concerns when using cloud APIs, and dependency on proprietary service models.</p>
 </div>
 </div>
 <p><strong>Key Curation Objectives:</strong></p>
@@ -778,9 +778,9 @@ Warning
 </section>
 <section id="curation-and-pii-identification" class="level2" data-number="6.6">
 <h2 data-number="6.6" class="anchored" data-anchor-id="curation-and-pii-identification"><span class="header-section-number">6.6</span> Curation and PII identification</h2>
-<p>Now that we have extracted the text, we must analyze it for preservation risks. We will perform Content Analysis to:</p>
+<p>Now that we have extracted the text, we can analyze it to identify risks. We will perform Content Analysis to:</p>
 <ul>
-<li><p><strong>Detect PII:</strong> Automatically scan for sensitive patterns like Email Addresses or Social Security Numbers.</p></li>
+<li><p><strong>Detect PII:</strong> Automatically scan for sensitive patterns like Email Addresses or Social Insurance Numbers.</p></li>
 <li><p><strong>Assess Quality:</strong> Flag documents with low confidence scores (&lt; 85%), which usually indicate blurry scans or faint handwriting that require manual review.</p></li>
 <li><p><strong>Identify Empty Files:</strong> Flag files where the extraction resulted in empty strings, indicating potential errors or blank pages.</p></li>
 </ul>
@@ -790,13 +790,13 @@ Warning
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (run_ocr <span class="sc">&amp;&amp;</span> <span class="fu">exists</span>(<span class="st">"ocr_results"</span>)) {</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  curated_data <span class="ot">&lt;-</span> ocr_results <span class="sc">%&gt;%</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>      <span class="co"># 1. PII Regex Patterns (Emails and SSN-like formats)</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>      <span class="co"># 1. PII Regex Patterns (Emails and SIN-like formats)</span></span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">has_email =</span> <span class="fu">str_detect</span>(extracted_text, <span class="st">"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+</span><span class="sc">\\</span><span class="st">.[a-zA-Z]{2,}"</span>),</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">has_ssn =</span> <span class="fu">str_detect</span>(extracted_text, <span class="st">"</span><span class="sc">\\</span><span class="st">b</span><span class="sc">\\</span><span class="st">d{3}-</span><span class="sc">\\</span><span class="st">d{2}-</span><span class="sc">\\</span><span class="st">d{4}</span><span class="sc">\\</span><span class="st">b"</span>),</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">has_sin =</span> <span class="fu">str_detect</span>(extracted_text, <span class="st">"</span><span class="sc">\\</span><span class="st">b</span><span class="sc">\\</span><span class="st">d{3}-</span><span class="sc">\\</span><span class="st">d{3}-</span><span class="sc">\\</span><span class="st">d{3}</span><span class="sc">\\</span><span class="st">b"</span>),</span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>      </span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>      <span class="co"># 2. Apply Curation Flags</span></span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">flag_low_conf =</span> <span class="fu">ifelse</span>(ocr_confidence <span class="sc">&lt;</span> <span class="fl">0.85</span>, <span class="st">"LOW_CONFIDENCE"</span>, <span class="cn">NA</span>),</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">flag_pii =</span> <span class="fu">ifelse</span>(has_email <span class="sc">|</span> has_ssn, <span class="st">"POSSIBLE_PII"</span>, <span class="cn">NA</span>),</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">flag_pii =</span> <span class="fu">ifelse</span>(has_email <span class="sc">|</span> has_sin, <span class="st">"POSSIBLE_PII"</span>, <span class="cn">NA</span>),</span>
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Flag if the extracted text is suspiciously short (under 10 chars)</span></span>
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">flag_empty =</span> <span class="fu">ifelse</span>(<span class="fu">nchar</span>(extracted_text) <span class="sc">&lt;</span> <span class="dv">10</span>, <span class="st">"NO_TEXT_EXTRACTED"</span>, <span class="cn">NA</span>)</span>
 <span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
@@ -814,9 +814,9 @@ Warning
 </section>
 <section id="export-the-results" class="level2" data-number="6.7">
 <h2 data-number="6.7" class="anchored" data-anchor-id="export-the-results"><span class="header-section-number">6.7</span> Export the results</h2>
-<p>The following chunck performs_</p>
+<p>The following chunk performs:</p>
 <ul>
-<li><p><strong>Saves Sidecar Files:</strong> It creates a separate .txt file for every document containing its full extracted text. This is the archival best practice you asked for.</p></li>
+<li><p><strong>Saves Sidecar Files:</strong> It creates a separate .txt file for every document containing its full extracted text.</p></li>
 <li><p><strong>Saves the Metadata Report:</strong> It saves the CSV with all the flags and confidence scores, but excludes the massive text blocks to keep the CSV clean and usable.</p></li>
 </ul>
 <div class="cell">
@@ -858,38 +858,21 @@ Warning
 </section>
 <section id="curation-insights" class="level2" data-number="6.8">
 <h2 data-number="6.8" class="anchored" data-anchor-id="curation-insights"><span class="header-section-number">6.8</span> Curation Insights</h2>
-<p>Use the curation_flags and source columns in the generated CSV to guide your preservation actions:</p>
+<p>Use the curation_flags and source columns in the generated CSV to guide your curation actions:</p>
 <ul>
-<li><p><strong>NO_TEXT_EXTRACTED:</strong> This implies the file was successfully processed, but no readable text characters were found. The curator can visually verify the file. If it is a blank page, it can be excluded from the archival package to save storage. If it is an image without text (e.g., a photo of a landscape): This is expected; no action needed. If it contains text that was missed, it is likely that the image resolution is too low for OCR.</p></li>
-<li><p><strong>LOW_CONFIDENCE (&lt; 0.85):</strong> The AI was unsure about the character shapes. This is common in documents with artifacts, faint handwriting, or complex multi-column layouts. These files are “High Risk” for searchability and should not be rely on for indexing without human review.</p></li>
-<li><p><strong>POSSIBLE_PII (Privacy Risk):</strong> The script detected patterns matching Email Addresses or Social Security Numbers. This files must be quarantined immediately. Open the original PDF to verify if the data is sensitive and create a redacted derivative before making the dataset public.</p></li>
-<li><p><strong>Source Check (LOCAL_PDF_LAYOUT vs GOOGLE_DOC_AI):</strong> Files marked LOCAL_PDF_LAYOUT were read directly from the digital layer. These are usually 100% accurate. Focus your manual QC efforts on the files marked GOOGLE_DOC_AI, as these relied on visual pattern recognition and are more prone to “typos.”</p></li>
+<li><p><strong>NO_TEXT_EXTRACTED:</strong> This implies the file was successfully processed, but no readable text characters were found. The curator can visually verify the file. If it is a blank page, it can be excluded from the dataset to save storage. If it is an image without text (e.g., a photo of a landscape): This is expected; no action needed. If it contains text that was missed, it is likely that the image resolution is too low for OCR.</p></li>
+<li><p><strong>LOW_CONFIDENCE (&lt; 0.85):</strong> The AI was unsure about the character shapes. This is common in documents with artifacts, faint handwriting, or complex multi-column layouts. These files are “High Risk” for searchability and should not be relied on for indexing without human review.</p></li>
+<li><p><strong>POSSIBLE_PII (Privacy Risk):</strong> The script detected patterns matching Email Addresses or Social Insurance Numbers. Open the original PDF to verify if the data is sensitive and consider creating a redacted derivative or removing the file from the dataset before making the dataset public.</p></li>
+<li><p><strong>Source Check (LOCAL_PDF_LAYOUT vs GOOGLE_DOC_AI):</strong> Files marked LOCAL_PDF_LAYOUT were read directly from the digital layer. These are usually 100% accurate. Focus your manual QC efforts on the files marked GOOGLE_DOC_AI, as these relied on visual pattern recognition and are more prone to errors.</p></li>
 </ul>
-<p>Here are the Curation Insights and Additional Tools &amp; Resources sections, tailored specifically for the results generated by this hybrid OCR notebook. You can copy and paste this directly at the end of your .qmd file.</p>
-<p>Curation Insights Use the curation_flags and source columns in the generated CSV to guide your preservation actions:</p>
-<p>NO_TEXT_EXTRACTED:</p>
-<p>Context: The file was successfully processed, but no readable text characters were found.</p>
-<p>Action: Visually verify the file.</p>
-<p>If it is a blank page: Exclude it from the archival package to save storage.</p>
-<p>If it is an image without text (e.g., a photo of a landscape): This is expected; no action needed.</p>
-<p>If it contains text that was missed: The image resolution may be too low for OCR. Flag for manual transcription.</p>
-<p>LOW_CONFIDENCE (&lt; 0.85):</p>
-<p>Context: The AI was unsure about the character shapes. This is common in documents with coffee stains, faint handwriting, or complex multi-column layouts.</p>
-<p>Action: These files are “High Risk” for searchability. Do not rely on this text for indexing without human review.</p>
-<p>POSSIBLE_PII (Privacy Risk):</p>
-<p>Context: The script detected patterns matching Email Addresses or Social Security Numbers.</p>
-<p>Action: Quarantine these files immediately. Open the original PDF to verify if the data is sensitive. If so, you must create a redacted derivative before making the dataset public.</p>
-<p>Source Check (LOCAL_PDF_LAYOUT vs GOOGLE_DOC_AI):</p>
-<p>Context: Files marked LOCAL_PDF_LAYOUT were read directly from the digital layer.</p>
-<p>Action: These are usually 100% accurate. Focus your manual QC efforts on the files marked GOOGLE_DOC_AI, as these relied on visual pattern recognition and are more prone to “typos.”</p>
 </section>
 <section id="additional-tools-resources" class="level2" data-number="6.9">
 <h2 data-number="6.9" class="anchored" data-anchor-id="additional-tools-resources"><span class="header-section-number">6.9</span> Additional Tools &amp; Resources</h2>
 <p>While daiR provides state-of-the-art accuracy, other tools may be better suited for specific constraints (e.g., cost or data sovereignty).</p>
 <ul>
-<li><p><strong>Tesseract OCR:</strong> Is an optical <a href="https://github.com/tesseract-ocr/tesseract">character recognition engine</a>. It is essential for “Content Analysis.” It can scan thousands of images to detect text, helping curators flag files that contain sensitive documents (PII) which might have been mixed into a photo dataset.</p></li>
+<li><p><strong>Tesseract OCR:</strong> Is an <a href="https://github.com/tesseract-ocr/tesseract">optical character recognition engine</a>. It can be useful for “Content Analysis.” It can scan thousands of images to detect text, helping curators flag files that contain sensitive documents (PII) which might have been mixed into a photo dataset.</p></li>
 <li><p><strong>Apache Tika:</strong> Is a <a href="https://tika.apache.org/">toolkit</a> that detects and extracts metadata and text from over a thousand different file types (such as PPT, XLS, PDF). It is excellent for extracting text from “born-digital” files without OCR.</p></li>
-<li><p><strong>Label Studio:</strong> This <a href="https://labelstud.io/">utility</a> assists curators with “Low Confidence” scans, this open-source tool allows the set up a “Human-in-the-Loop” workflow to manually correct the OCR output.</p></li>
+<li><p><strong>Label Studio:</strong> This <a href="https://labelstud.io/">utility</a> assists curators with “Low Confidence” scans, this open-source tool allows a “Human-in-the-Loop” workflow to manually correct the OCR output.</p></li>
 </ul>
 </section>
 <section id="using-the-non-interactive-r-script" class="level2" data-number="6.10">
@@ -1418,8 +1401,8 @@ Hegghammer, Thomas. 2025. <em>daiR: Interface with Google Cloud Document AI API<
 <span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>Bridge the gap between "dark data" (unsearchable scanned PDFs) and FAIR data. Our objective is to extract text and structure from image-based documents, ensuring they become indexable and accessible for future research.</span>
 <span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title="Preservation Risk"}</span>
-<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>Image-only documents are effectively invisible to automated indexing and assistive technologies. While AI-based OCR is powerful, it introduces risks of "hallucination," privacy concerns when using cloud APIs, and dependency on proprietary service models.</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title="Identifying Risks"}</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>Image-only documents are effectively invisible to automated indexing and assistive technologies. While AI-based OCR is powerful, it introduces AI hallucination risks, privacy concerns when using cloud APIs, and dependency on proprietary service models.</span>
 <span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>**Key Curation Objectives:**</span>
@@ -1683,9 +1666,9 @@ Hegghammer, Thomas. 2025. <em>daiR: Interface with Google Cloud Document AI API<
 <span id="cb13-296"><a href="#cb13-296" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-297"><a href="#cb13-297" aria-hidden="true" tabindex="-1"></a><span class="fu">## Curation and PII identification</span></span>
 <span id="cb13-298"><a href="#cb13-298" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-299"><a href="#cb13-299" aria-hidden="true" tabindex="-1"></a>Now that we have extracted the text, we must analyze it for preservation risks. We will perform Content Analysis to:</span>
+<span id="cb13-299"><a href="#cb13-299" aria-hidden="true" tabindex="-1"></a>Now that we have extracted the text, we can analyze it to identify risks. We will perform Content Analysis to:</span>
 <span id="cb13-300"><a href="#cb13-300" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-301"><a href="#cb13-301" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Detect PII:** Automatically scan for sensitive patterns like Email Addresses or Social Security Numbers.</span>
+<span id="cb13-301"><a href="#cb13-301" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Detect PII:** Automatically scan for sensitive patterns like Email Addresses or Social Insurance Numbers.</span>
 <span id="cb13-302"><a href="#cb13-302" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-303"><a href="#cb13-303" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Assess Quality:** Flag documents with low confidence scores (<span class="sc">\&lt;</span> 85%), which usually indicate blurry scans or faint handwriting that require manual review.</span>
 <span id="cb13-304"><a href="#cb13-304" aria-hidden="true" tabindex="-1"></a></span>
@@ -1697,13 +1680,13 @@ Hegghammer, Thomas. 2025. <em>daiR: Interface with Google Cloud Document AI API<
 <span id="cb13-312"><a href="#cb13-312" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (run_ocr <span class="sc">&amp;&amp;</span> <span class="fu">exists</span>(<span class="st">"ocr_results"</span>)) {</span>
 <span id="cb13-313"><a href="#cb13-313" aria-hidden="true" tabindex="-1"></a>  curated_data <span class="ot">&lt;-</span> ocr_results <span class="sc">%&gt;%</span></span>
 <span id="cb13-314"><a href="#cb13-314" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb13-315"><a href="#cb13-315" aria-hidden="true" tabindex="-1"></a>      <span class="co"># 1. PII Regex Patterns (Emails and SSN-like formats)</span></span>
+<span id="cb13-315"><a href="#cb13-315" aria-hidden="true" tabindex="-1"></a>      <span class="co"># 1. PII Regex Patterns (Emails and SIN-like formats)</span></span>
 <span id="cb13-316"><a href="#cb13-316" aria-hidden="true" tabindex="-1"></a>      <span class="at">has_email =</span> <span class="fu">str_detect</span>(extracted_text, <span class="st">"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+</span><span class="sc">\\</span><span class="st">.[a-zA-Z]{2,}"</span>),</span>
-<span id="cb13-317"><a href="#cb13-317" aria-hidden="true" tabindex="-1"></a>      <span class="at">has_ssn =</span> <span class="fu">str_detect</span>(extracted_text, <span class="st">"</span><span class="sc">\\</span><span class="st">b</span><span class="sc">\\</span><span class="st">d{3}-</span><span class="sc">\\</span><span class="st">d{2}-</span><span class="sc">\\</span><span class="st">d{4}</span><span class="sc">\\</span><span class="st">b"</span>),</span>
+<span id="cb13-317"><a href="#cb13-317" aria-hidden="true" tabindex="-1"></a>      <span class="at">has_sin =</span> <span class="fu">str_detect</span>(extracted_text, <span class="st">"</span><span class="sc">\\</span><span class="st">b</span><span class="sc">\\</span><span class="st">d{3}-</span><span class="sc">\\</span><span class="st">d{3}-</span><span class="sc">\\</span><span class="st">d{3}</span><span class="sc">\\</span><span class="st">b"</span>),</span>
 <span id="cb13-318"><a href="#cb13-318" aria-hidden="true" tabindex="-1"></a>      </span>
 <span id="cb13-319"><a href="#cb13-319" aria-hidden="true" tabindex="-1"></a>      <span class="co"># 2. Apply Curation Flags</span></span>
 <span id="cb13-320"><a href="#cb13-320" aria-hidden="true" tabindex="-1"></a>      <span class="at">flag_low_conf =</span> <span class="fu">ifelse</span>(ocr_confidence <span class="sc">&lt;</span> <span class="fl">0.85</span>, <span class="st">"LOW_CONFIDENCE"</span>, <span class="cn">NA</span>),</span>
-<span id="cb13-321"><a href="#cb13-321" aria-hidden="true" tabindex="-1"></a>      <span class="at">flag_pii =</span> <span class="fu">ifelse</span>(has_email <span class="sc">|</span> has_ssn, <span class="st">"POSSIBLE_PII"</span>, <span class="cn">NA</span>),</span>
+<span id="cb13-321"><a href="#cb13-321" aria-hidden="true" tabindex="-1"></a>      <span class="at">flag_pii =</span> <span class="fu">ifelse</span>(has_email <span class="sc">|</span> has_sin, <span class="st">"POSSIBLE_PII"</span>, <span class="cn">NA</span>),</span>
 <span id="cb13-322"><a href="#cb13-322" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Flag if the extracted text is suspiciously short (under 10 chars)</span></span>
 <span id="cb13-323"><a href="#cb13-323" aria-hidden="true" tabindex="-1"></a>      <span class="at">flag_empty =</span> <span class="fu">ifelse</span>(<span class="fu">nchar</span>(extracted_text) <span class="sc">&lt;</span> <span class="dv">10</span>, <span class="st">"NO_TEXT_EXTRACTED"</span>, <span class="cn">NA</span>)</span>
 <span id="cb13-324"><a href="#cb13-324" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
@@ -1720,9 +1703,9 @@ Hegghammer, Thomas. 2025. <em>daiR: Interface with Google Cloud Document AI API<
 <span id="cb13-335"><a href="#cb13-335" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-336"><a href="#cb13-336" aria-hidden="true" tabindex="-1"></a><span class="fu">## Export the results</span></span>
 <span id="cb13-337"><a href="#cb13-337" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-338"><a href="#cb13-338" aria-hidden="true" tabindex="-1"></a>The following chunck performs<span class="sc">\_</span></span>
+<span id="cb13-338"><a href="#cb13-338" aria-hidden="true" tabindex="-1"></a>The following chunk performs\:</span>
 <span id="cb13-339"><a href="#cb13-339" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-340"><a href="#cb13-340" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Saves Sidecar Files:** It creates a separate .txt file for every document containing its full extracted text. This is the archival best practice you asked for.</span>
+<span id="cb13-340"><a href="#cb13-340" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Saves Sidecar Files:** It creates a separate .txt file for every document containing its full extracted text. </span>
 <span id="cb13-341"><a href="#cb13-341" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-342"><a href="#cb13-342" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Saves the Metadata Report:** It saves the CSV with all the flags and confidence scores, but excludes the massive text blocks to keep the CSV clean and usable.</span>
 <span id="cb13-343"><a href="#cb13-343" aria-hidden="true" tabindex="-1"></a></span>
@@ -1764,94 +1747,60 @@ Hegghammer, Thomas. 2025. <em>daiR: Interface with Google Cloud Document AI API<
 <span id="cb13-381"><a href="#cb13-381" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-382"><a href="#cb13-382" aria-hidden="true" tabindex="-1"></a><span class="fu">## Curation Insights</span></span>
 <span id="cb13-383"><a href="#cb13-383" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-384"><a href="#cb13-384" aria-hidden="true" tabindex="-1"></a>Use the curation_flags and source columns in the generated CSV to guide your preservation actions:</span>
+<span id="cb13-384"><a href="#cb13-384" aria-hidden="true" tabindex="-1"></a>Use the curation_flags and source columns in the generated CSV to guide your curation actions:</span>
 <span id="cb13-385"><a href="#cb13-385" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-386"><a href="#cb13-386" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**NO_TEXT_EXTRACTED:** This implies the file was successfully processed, but no readable text characters were found. The curator can visually verify the file. If it is a blank page, it can be excluded from the archival package to save storage. If it is an image without text (e.g., a photo of a landscape): This is expected; no action needed. If it contains text that was missed, it is likely that the image resolution is too low for OCR.</span>
+<span id="cb13-386"><a href="#cb13-386" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**NO_TEXT_EXTRACTED:** This implies the file was successfully processed, but no readable text characters were found. The curator can visually verify the file. If it is a blank page, it can be excluded from the dataset to save storage. If it is an image without text (e.g., a photo of a landscape): This is expected; no action needed. If it contains text that was missed, it is likely that the image resolution is too low for OCR.</span>
 <span id="cb13-387"><a href="#cb13-387" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-388"><a href="#cb13-388" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**LOW_CONFIDENCE (\&lt; 0.85):** The AI was unsure about the character shapes. This is common in documents with artifacts, faint handwriting, or complex multi-column layouts. These files are "High Risk" for searchability and should not be rely on for indexing without human review.</span>
+<span id="cb13-388"><a href="#cb13-388" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**LOW_CONFIDENCE (\&lt; 0.85):** The AI was unsure about the character shapes. This is common in documents with artifacts, faint handwriting, or complex multi-column layouts. These files are "High Risk" for searchability and should not be relied on for indexing without human review.</span>
 <span id="cb13-389"><a href="#cb13-389" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-390"><a href="#cb13-390" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**POSSIBLE_PII (Privacy Risk):** The script detected patterns matching Email Addresses or Social Security Numbers. This files must be quarantined immediately. Open the original PDF to verify if the data is sensitive and create a redacted derivative before making the dataset public.</span>
+<span id="cb13-390"><a href="#cb13-390" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**POSSIBLE_PII (Privacy Risk):** The script detected patterns matching Email Addresses or Social Insurance Numbers. Open the original PDF to verify if the data is sensitive and consider creating a redacted derivative or removing the file from the dataset before making the dataset public.</span>
 <span id="cb13-391"><a href="#cb13-391" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-392"><a href="#cb13-392" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Source Check (LOCAL_PDF_LAYOUT vs GOOGLE_DOC_AI):** Files marked LOCAL_PDF_LAYOUT were read directly from the digital layer. These are usually 100% accurate. Focus your manual QC efforts on the files marked GOOGLE_DOC_AI, as these relied on visual pattern recognition and are more prone to "typos."</span>
+<span id="cb13-392"><a href="#cb13-392" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Source Check (LOCAL_PDF_LAYOUT vs GOOGLE_DOC_AI):** Files marked LOCAL_PDF_LAYOUT were read directly from the digital layer. These are usually 100% accurate. Focus your manual QC efforts on the files marked GOOGLE_DOC_AI, as these relied on visual pattern recognition and are more prone to errors.</span>
 <span id="cb13-393"><a href="#cb13-393" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-394"><a href="#cb13-394" aria-hidden="true" tabindex="-1"></a>Here are the Curation Insights and Additional Tools &amp; Resources sections, tailored specifically for the results generated by this hybrid OCR notebook. You can copy and paste this directly at the end of your .qmd file.</span>
+<span id="cb13-394"><a href="#cb13-394" aria-hidden="true" tabindex="-1"></a><span class="fu">## Additional Tools &amp; Resources</span></span>
 <span id="cb13-395"><a href="#cb13-395" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-396"><a href="#cb13-396" aria-hidden="true" tabindex="-1"></a>Curation Insights Use the curation_flags and source columns in the generated CSV to guide your preservation actions:</span>
+<span id="cb13-396"><a href="#cb13-396" aria-hidden="true" tabindex="-1"></a>While daiR provides state-of-the-art accuracy, other tools may be better suited for specific constraints (e.g., cost or data sovereignty).</span>
 <span id="cb13-397"><a href="#cb13-397" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-398"><a href="#cb13-398" aria-hidden="true" tabindex="-1"></a>NO_TEXT_EXTRACTED:</span>
+<span id="cb13-398"><a href="#cb13-398" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Tesseract OCR:** Is an <span class="co">[</span><span class="ot">optical character recognition engine</span><span class="co">](https://github.com/tesseract-ocr/tesseract)</span>. It can be useful for "Content Analysis." It can scan thousands of images to detect text, helping curators flag files that contain sensitive documents (PII) which might have been mixed into a photo dataset.</span>
 <span id="cb13-399"><a href="#cb13-399" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-400"><a href="#cb13-400" aria-hidden="true" tabindex="-1"></a>Context: The file was successfully processed, but no readable text characters were found.</span>
+<span id="cb13-400"><a href="#cb13-400" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Apache Tika:** Is a <span class="co">[</span><span class="ot">toolkit</span><span class="co">](https://tika.apache.org/)</span> that detects and extracts metadata and text from over a thousand different file types (such as PPT, XLS, PDF). It is excellent for extracting text from "born-digital" files without OCR.</span>
 <span id="cb13-401"><a href="#cb13-401" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-402"><a href="#cb13-402" aria-hidden="true" tabindex="-1"></a>Action: Visually verify the file.</span>
+<span id="cb13-402"><a href="#cb13-402" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Label Studio:** This <span class="co">[</span><span class="ot">utility</span><span class="co">](https://labelstud.io/)</span> assists curators with "Low Confidence" scans, this open-source tool allows a "Human-in-the-Loop" workflow to manually correct the OCR output.</span>
 <span id="cb13-403"><a href="#cb13-403" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-404"><a href="#cb13-404" aria-hidden="true" tabindex="-1"></a>If it is a blank page: Exclude it from the archival package to save storage.</span>
+<span id="cb13-404"><a href="#cb13-404" aria-hidden="true" tabindex="-1"></a><span class="fu">## Using the Non-Interactive R Script</span></span>
 <span id="cb13-405"><a href="#cb13-405" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-406"><a href="#cb13-406" aria-hidden="true" tabindex="-1"></a>If it is an image without text (e.g., a photo of a landscape): This is expected; no action needed.</span>
+<span id="cb13-406"><a href="#cb13-406" aria-hidden="true" tabindex="-1"></a>For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.</span>
 <span id="cb13-407"><a href="#cb13-407" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-408"><a href="#cb13-408" aria-hidden="true" tabindex="-1"></a>If it contains text that was missed: The image resolution may be too low for OCR. Flag for manual transcription.</span>
+<span id="cb13-408"><a href="#cb13-408" aria-hidden="true" tabindex="-1"></a>**Prerequisites:** Set up the Google Cloud and account and corresponding OCR Document AI.</span>
 <span id="cb13-409"><a href="#cb13-409" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-410"><a href="#cb13-410" aria-hidden="true" tabindex="-1"></a>LOW_CONFIDENCE (<span class="sc">\&lt;</span> 0.85):</span>
+<span id="cb13-410"><a href="#cb13-410" aria-hidden="true" tabindex="-1"></a>Download the **R Script:** [**`Inspect_OCR_Script.R`**](Scripts/Inspect_OCR_Script.R)</span>
 <span id="cb13-411"><a href="#cb13-411" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-412"><a href="#cb13-412" aria-hidden="true" tabindex="-1"></a>Context: The AI was unsure about the character shapes. This is common in documents with coffee stains, faint handwriting, or complex multi-column layouts.</span>
+<span id="cb13-412"><a href="#cb13-412" aria-hidden="true" tabindex="-1"></a><span class="fu">### Example HPC Submission Script</span></span>
 <span id="cb13-413"><a href="#cb13-413" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-414"><a href="#cb13-414" aria-hidden="true" tabindex="-1"></a>Action: These files are "High Risk" for searchability. Do not rely on this text for indexing without human review.</span>
-<span id="cb13-415"><a href="#cb13-415" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-416"><a href="#cb13-416" aria-hidden="true" tabindex="-1"></a>POSSIBLE_PII (Privacy Risk):</span>
-<span id="cb13-417"><a href="#cb13-417" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-418"><a href="#cb13-418" aria-hidden="true" tabindex="-1"></a>Context: The script detected patterns matching Email Addresses or Social Security Numbers.</span>
-<span id="cb13-419"><a href="#cb13-419" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-420"><a href="#cb13-420" aria-hidden="true" tabindex="-1"></a>Action: Quarantine these files immediately. Open the original PDF to verify if the data is sensitive. If so, you must create a redacted derivative before making the dataset public.</span>
-<span id="cb13-421"><a href="#cb13-421" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-422"><a href="#cb13-422" aria-hidden="true" tabindex="-1"></a>Source Check (LOCAL_PDF_LAYOUT vs GOOGLE_DOC_AI):</span>
+<span id="cb13-414"><a href="#cb13-414" aria-hidden="true" tabindex="-1"></a><span class="in">``` bash</span></span>
+<span id="cb13-415"><a href="#cb13-415" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb13-416"><a href="#cb13-416" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=ocr_curation</span></span>
+<span id="cb13-417"><a href="#cb13-417" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --nodes=1</span></span>
+<span id="cb13-418"><a href="#cb13-418" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --ntasks=1</span></span>
+<span id="cb13-419"><a href="#cb13-419" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=4</span></span>
+<span id="cb13-420"><a href="#cb13-420" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mem=8G</span></span>
+<span id="cb13-421"><a href="#cb13-421" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=02:00:00</span></span>
+<span id="cb13-422"><a href="#cb13-422" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=logs/ocr_%j.log</span></span>
 <span id="cb13-423"><a href="#cb13-423" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-424"><a href="#cb13-424" aria-hidden="true" tabindex="-1"></a>Context: Files marked LOCAL_PDF_LAYOUT were read directly from the digital layer.</span>
+<span id="cb13-424"><a href="#cb13-424" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load R</span>
 <span id="cb13-425"><a href="#cb13-425" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-426"><a href="#cb13-426" aria-hidden="true" tabindex="-1"></a>Action: These are usually 100% accurate. Focus your manual QC efforts on the files marked GOOGLE_DOC_AI, as these relied on visual pattern recognition and are more prone to "typos."</span>
-<span id="cb13-427"><a href="#cb13-427" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-428"><a href="#cb13-428" aria-hidden="true" tabindex="-1"></a><span class="fu">## Additional Tools &amp; Resources</span></span>
-<span id="cb13-429"><a href="#cb13-429" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-430"><a href="#cb13-430" aria-hidden="true" tabindex="-1"></a>While daiR provides state-of-the-art accuracy, other tools may be better suited for specific constraints (e.g., cost or data sovereignty).</span>
-<span id="cb13-431"><a href="#cb13-431" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-432"><a href="#cb13-432" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Tesseract OCR:** Is an optical <span class="co">[</span><span class="ot">character recognition engine</span><span class="co">](https://github.com/tesseract-ocr/tesseract)</span>. It is essential for "Content Analysis." It can scan thousands of images to detect text, helping curators flag files that contain sensitive documents (PII) which might have been mixed into a photo dataset.</span>
+<span id="cb13-426"><a href="#cb13-426" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the target directory containing your documents</span></span>
+<span id="cb13-427"><a href="#cb13-427" aria-hidden="true" tabindex="-1"></a><span class="va">TARGET_DIR</span><span class="op">=</span><span class="st">"/scratch/user/project_data/documents"</span></span>
+<span id="cb13-428"><a href="#cb13-428" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-429"><a href="#cb13-429" aria-hidden="true" tabindex="-1"></a><span class="co"># Ensure service-account.json is in the current folder!</span></span>
+<span id="cb13-430"><a href="#cb13-430" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Starting OCR Curation Pipeline..."</span></span>
+<span id="cb13-431"><a href="#cb13-431" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> OCR_Curator_Script_Robust.R <span class="st">"</span><span class="va">$TARGET_DIR</span><span class="st">"</span></span>
+<span id="cb13-432"><a href="#cb13-432" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb13-433"><a href="#cb13-433" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-434"><a href="#cb13-434" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Apache Tika:** Is a <span class="co">[</span><span class="ot">toolkit</span><span class="co">](https://tika.apache.org/)</span> that detects and extracts metadata and text from over a thousand different file types (such as PPT, XLS, PDF). It is excellent for extracting text from "born-digital" files without OCR.</span>
+<span id="cb13-434"><a href="#cb13-434" aria-hidden="true" tabindex="-1"></a><span class="fu">## References</span></span>
 <span id="cb13-435"><a href="#cb13-435" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-436"><a href="#cb13-436" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Label Studio:** This <span class="co">[</span><span class="ot">utility</span><span class="co">](https://labelstud.io/)</span> assists curators with "Low Confidence" scans, this open-source tool allows the set up a "Human-in-the-Loop" workflow to manually correct the OCR output.</span>
-<span id="cb13-437"><a href="#cb13-437" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-438"><a href="#cb13-438" aria-hidden="true" tabindex="-1"></a><span class="fu">## Using the Non-Interactive R Script</span></span>
-<span id="cb13-439"><a href="#cb13-439" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-440"><a href="#cb13-440" aria-hidden="true" tabindex="-1"></a>For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.</span>
-<span id="cb13-441"><a href="#cb13-441" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-442"><a href="#cb13-442" aria-hidden="true" tabindex="-1"></a>**Prerequisites:** Set up the Google Cloud and account and corresponding OCR Document AI.</span>
-<span id="cb13-443"><a href="#cb13-443" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-444"><a href="#cb13-444" aria-hidden="true" tabindex="-1"></a>Download the **R Script:** [**`Inspect_OCR_Script.R`**](Scripts/Inspect_OCR_Script.R)</span>
-<span id="cb13-445"><a href="#cb13-445" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-446"><a href="#cb13-446" aria-hidden="true" tabindex="-1"></a><span class="fu">### Example HPC Submission Script</span></span>
-<span id="cb13-447"><a href="#cb13-447" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-448"><a href="#cb13-448" aria-hidden="true" tabindex="-1"></a><span class="in">``` bash</span></span>
-<span id="cb13-449"><a href="#cb13-449" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb13-450"><a href="#cb13-450" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=ocr_curation</span></span>
-<span id="cb13-451"><a href="#cb13-451" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --nodes=1</span></span>
-<span id="cb13-452"><a href="#cb13-452" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --ntasks=1</span></span>
-<span id="cb13-453"><a href="#cb13-453" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=4</span></span>
-<span id="cb13-454"><a href="#cb13-454" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mem=8G</span></span>
-<span id="cb13-455"><a href="#cb13-455" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=02:00:00</span></span>
-<span id="cb13-456"><a href="#cb13-456" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=logs/ocr_%j.log</span></span>
-<span id="cb13-457"><a href="#cb13-457" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-458"><a href="#cb13-458" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load R</span>
-<span id="cb13-459"><a href="#cb13-459" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-460"><a href="#cb13-460" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the target directory containing your documents</span></span>
-<span id="cb13-461"><a href="#cb13-461" aria-hidden="true" tabindex="-1"></a><span class="va">TARGET_DIR</span><span class="op">=</span><span class="st">"/scratch/user/project_data/documents"</span></span>
-<span id="cb13-462"><a href="#cb13-462" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-463"><a href="#cb13-463" aria-hidden="true" tabindex="-1"></a><span class="co"># Ensure service-account.json is in the current folder!</span></span>
-<span id="cb13-464"><a href="#cb13-464" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Starting OCR Curation Pipeline..."</span></span>
-<span id="cb13-465"><a href="#cb13-465" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> OCR_Curator_Script_Robust.R <span class="st">"</span><span class="va">$TARGET_DIR</span><span class="st">"</span></span>
-<span id="cb13-466"><a href="#cb13-466" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-467"><a href="#cb13-467" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-468"><a href="#cb13-468" aria-hidden="true" tabindex="-1"></a><span class="fu">## References</span></span>
-<span id="cb13-469"><a href="#cb13-469" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-470"><a href="#cb13-470" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
-<span id="cb13-471"><a href="#cb13-471" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-436"><a href="#cb13-436" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
+<span id="cb13-437"><a href="#cb13-437" aria-hidden="true" tabindex="-1"></a>:::</span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

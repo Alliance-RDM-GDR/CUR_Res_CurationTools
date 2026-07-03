@@ -100,7 +100,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-1c02106e02db7931e34c138ca3a33989.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-3a0434ec8dbb91cf559f1b894f80063e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -454,7 +454,7 @@ div.csl-indent {
 
 <section id="overview" class="level2" data-number="8.1">
 <h2 data-number="8.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">8.1</span> Overview</h2>
-<p>Curators often receive data packaged in containers like <strong>ZIP</strong>, <strong>TAR</strong>, or <strong>7-Zip</strong>. While convenient for transfer, these formats are “black boxes” that hide potential preservation risks.</p>
+<p>Curators often receive data packaged in containers like <strong>ZIP</strong>, <strong>TAR</strong>, or <strong>7-Zip</strong>. While convenient for transfer, these formats are “black boxes” that can hide potential data security risks.</p>
 <div class="callout callout-style-default callout-note callout-titled" title="Curation Goal">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -465,16 +465,16 @@ div.csl-indent {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>“Peek” inside compressed containers without full extraction. Our objective is to inventory contents, verify file integrity, and identify nested structures to ensure all data remains discoverable and accessible.</p>
+<p>Peek inside compressed containers without full extraction. Our objective is to inventory contents, verify file integrity, and identify nested structures to ensure all data remains discoverable and accessible.</p>
 </div>
 </div>
-<div class="callout callout-style-default callout-warning callout-titled" title="Preservation Risk">
+<div class="callout callout-style-default callout-warning callout-titled" title="Identifying Risks">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Preservation Risk
+<span class="screen-reader-only">Warning</span>Identifying Risks
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -517,7 +517,7 @@ div.csl-indent {
 </section>
 <section id="select-target-directory" class="level2" data-number="8.3">
 <h2 data-number="8.3" class="anchored" data-anchor-id="select-target-directory"><span class="header-section-number">8.3</span> Select Target Directory</h2>
-<p>Select the folder containing the TiFF files.</p>
+<p>Select the folder containing the archive files (e.g.&nbsp;zip, tar, gz, 7z).</p>
 <p><strong>Note:</strong> If running interactively, a dialog box will appear. Otherwise, it defaults to the target_dir parameter.</p>
 <div class="cell">
 <details class="code-fold">
@@ -543,7 +543,7 @@ div.csl-indent {
 </section>
 <section id="inventory-of-files" class="level2" data-number="8.4">
 <h2 data-number="8.4" class="anchored" data-anchor-id="inventory-of-files"><span class="header-section-number">8.4</span> Inventory of files</h2>
-<p>We scan for <code>.tif</code> and <code>.tiff</code> files.</p>
+<p>We scan for <code>.zip</code>, <code>.tar</code>, <code>.gz</code>, <code>.7z</code>, and <code>.rar</code> files.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -700,7 +700,7 @@ div.csl-indent {
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Manifest saved to:"</span>, output_file))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Manifest saved to: Results/Inspect_Containers/Container_Manifest_20260604.csv"</code></pre>
+<pre><code>[1] "Manifest saved to: Results/Inspect_Containers/Container_Manifest_20260703.csv"</code></pre>
 </div>
 </div>
 </section>
@@ -710,7 +710,7 @@ div.csl-indent {
 <ul>
 <li><p><strong>Compression Ratio &gt; 100:</strong> This is a potential Zip Bomb. A 500 MB file turning into 500 GB can fill a hard drive instantly. Inspect these files cautiously.</p></li>
 <li><p><strong>Status “Corrupt/Unreadable”:</strong> This implies the container header may be broken and the data inside is likely lost. Request a re-transfer from the depositor.</p></li>
-<li><p><strong>HasNestedArchives = TRUE:</strong> Preservation tools often fail to index “Zip inside a Zip.” In this case, the curator must unpack the outer layer and archive the inner files directly to ensure discoverability.</p></li>
+<li><p><strong>HasNestedArchives = TRUE:</strong> There is extra complexity in properly reviewing a Zip inside a Zip. If the above cautions are clear, then unpack the outer layer and review the inner archive formats directly. Consider discussing with the depositor ways to re-organize or re-package the dataset so that nested archive formats aren’t needed.</p></li>
 </ul>
 </section>
 <section id="additional-tools" class="level2" data-number="8.9">
@@ -1242,13 +1242,13 @@ div.csl-indent {
 <span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## Overview</span></span>
 <span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>Curators often receive data packaged in containers like **ZIP**, **TAR**, or **7-Zip**. While convenient for transfer, these formats are "black boxes" that hide potential preservation risks.</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>Curators often receive data packaged in containers like **ZIP**, **TAR**, or **7-Zip**. While convenient for transfer, these formats are "black boxes" that can hide potential data security risks.</span>
 <span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Curation Goal"}</span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>"Peek" inside compressed containers without full extraction. Our objective is to inventory contents, verify file integrity, and identify nested structures to ensure all data remains discoverable and accessible.</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>Peek inside compressed containers without full extraction. Our objective is to inventory contents, verify file integrity, and identify nested structures to ensure all data remains discoverable and accessible.</span>
 <span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title="Preservation Risk"}</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title="Identifying Risks"}</span>
 <span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>Archives are prone to bit-rot; a single corrupted bit in a solid archive can render the entire dataset unreadable. Furthermore, "Zip Bombs" can crash curation workstations, and nested archives often defy automated indexing systems.</span>
 <span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a></span>
@@ -1287,7 +1287,7 @@ div.csl-indent {
 <span id="cb15-64"><a href="#cb15-64" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-65"><a href="#cb15-65" aria-hidden="true" tabindex="-1"></a><span class="fu">## Select Target Directory</span></span>
 <span id="cb15-66"><a href="#cb15-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-67"><a href="#cb15-67" aria-hidden="true" tabindex="-1"></a>Select the folder containing the TiFF files.</span>
+<span id="cb15-67"><a href="#cb15-67" aria-hidden="true" tabindex="-1"></a>Select the folder containing the archive files (e.g. zip, tar, gz, 7z).</span>
 <span id="cb15-68"><a href="#cb15-68" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-69"><a href="#cb15-69" aria-hidden="true" tabindex="-1"></a>**Note:** If running interactively, a dialog box will appear. Otherwise, it defaults to the target_dir parameter.</span>
 <span id="cb15-70"><a href="#cb15-70" aria-hidden="true" tabindex="-1"></a></span>
@@ -1312,7 +1312,7 @@ div.csl-indent {
 <span id="cb15-91"><a href="#cb15-91" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-92"><a href="#cb15-92" aria-hidden="true" tabindex="-1"></a><span class="fu">## Inventory of files</span></span>
 <span id="cb15-93"><a href="#cb15-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-94"><a href="#cb15-94" aria-hidden="true" tabindex="-1"></a>We scan for <span class="in">`.tif`</span> and <span class="in">`.tiff`</span> files.</span>
+<span id="cb15-94"><a href="#cb15-94" aria-hidden="true" tabindex="-1"></a>We scan for <span class="in">`.zip`</span>, <span class="in">`.tar`</span>, <span class="in">`.gz`</span>, <span class="in">`.7z`</span>, and <span class="in">`.rar`</span> files.</span>
 <span id="cb15-95"><a href="#cb15-95" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-98"><a href="#cb15-98" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb15-99"><a href="#cb15-99" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: inventory</span></span>
@@ -1454,7 +1454,7 @@ div.csl-indent {
 <span id="cb15-241"><a href="#cb15-241" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-242"><a href="#cb15-242" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Status "Corrupt/Unreadable":** This implies the container header may be broken and the data inside is likely lost. Request a re-transfer from the depositor.</span>
 <span id="cb15-243"><a href="#cb15-243" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-244"><a href="#cb15-244" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**HasNestedArchives = TRUE:** Preservation tools often fail to index "Zip inside a Zip." In this case, the curator must unpack the outer layer and archive the inner files directly to ensure discoverability.</span>
+<span id="cb15-244"><a href="#cb15-244" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**HasNestedArchives = TRUE:** There is extra complexity in properly reviewing a Zip inside a Zip. If the above cautions are clear, then unpack the outer layer and review the inner archive formats directly. Consider discussing with the depositor ways to re-organize or re-package the dataset so that nested archive formats aren't needed.</span>
 <span id="cb15-245"><a href="#cb15-245" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-246"><a href="#cb15-246" aria-hidden="true" tabindex="-1"></a><span class="fu">## Additional Tools</span></span>
 <span id="cb15-247"><a href="#cb15-247" aria-hidden="true" tabindex="-1"></a></span>

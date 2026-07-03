@@ -102,9 +102,9 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-1c02106e02db7931e34c138ca3a33989.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-004b31d85c7bec8d41339570dea040a2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-1c02106e02db7931e34c138ca3a33989.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-3a0434ec8dbb91cf559f1b894f80063e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-f405560b62fb26e92e7ae32e65d77bb0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-3a0434ec8dbb91cf559f1b894f80063e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -571,7 +571,7 @@ div.csl-indent {
   <li><a href="#select-target-directory" id="toc-select-target-directory" class="nav-link" data-scroll-target="#select-target-directory"><span class="header-section-number">19.3</span> Select Target Directory</a></li>
   <li><a href="#find-matlab-files" id="toc-find-matlab-files" class="nav-link" data-scroll-target="#find-matlab-files"><span class="header-section-number">19.4</span> Find MATLAB files</a></li>
   <li><a href="#generate-metadata-report" id="toc-generate-metadata-report" class="nav-link" data-scroll-target="#generate-metadata-report"><span class="header-section-number">19.5</span> Generate Metadata Report</a></li>
-  <li><a href="#exports-results" id="toc-exports-results" class="nav-link" data-scroll-target="#exports-results"><span class="header-section-number">19.6</span> Exports results</a></li>
+  <li><a href="#export-results" id="toc-export-results" class="nav-link" data-scroll-target="#export-results"><span class="header-section-number">19.6</span> Export results</a></li>
   <li><a href="#curation-insights" id="toc-curation-insights" class="nav-link" data-scroll-target="#curation-insights"><span class="header-section-number">19.7</span> Curation Insights</a>
   <ul class="collapse">
   <li><a href="#notes-and-limitations" id="toc-notes-and-limitations" class="nav-link" data-scroll-target="#notes-and-limitations"><span class="header-section-number">19.7.1</span> Notes and limitations</a></li>
@@ -626,7 +626,7 @@ div.csl-indent {
 
 <section id="overview" class="level2" data-number="19.1">
 <h2 data-number="19.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">19.1</span> Overview</h2>
-<p>MAT-files are the proprietary binary data container format used by MATLAB. They are widely used in engineering and science but pose a significant challenge for long-term preservation.</p>
+<p>MAT-files are the proprietary binary data container format used by MATLAB. They are widely used in engineering but pose a significant challenge for long-term preservation.</p>
 <div class="callout callout-style-default callout-note callout-titled" title="Curation Goal">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -640,13 +640,13 @@ div.csl-indent {
 <p>Identify file versions and inventory internal variables. Our objective is to distinguish between classic Level 5 (v5) files and modern Level 7.3 (HDF5-based) files, ensuring the correct open-source libraries are used for long-term access.</p>
 </div>
 </div>
-<div class="callout callout-style-default callout-warning callout-titled" title="Preservation Risk">
+<div class="callout callout-style-default callout-warning callout-titled" title="Identifying Risks">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Preservation Risk
+<span class="screen-reader-only">Warning</span>Identifying Risks
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -863,8 +863,8 @@ div.csl-indent {
 </div>
 </div>
 </section>
-<section id="exports-results" class="level2" data-number="19.6">
-<h2 data-number="19.6" class="anchored" data-anchor-id="exports-results"><span class="header-section-number">19.6</span> Exports results</h2>
+<section id="export-results" class="level2" data-number="19.6">
+<h2 data-number="19.6" class="anchored" data-anchor-id="export-results"><span class="header-section-number">19.6</span> Export results</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -877,17 +877,17 @@ div.csl-indent {
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Report saved to:"</span>, output_file))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Report saved to: Results/Inspect_mat/MAT_Deep_Report_20260604.csv"</code></pre>
+<pre><code>[1] "Report saved to: Results/Inspect_mat/MAT_Deep_Report_20260703.csv"</code></pre>
 </div>
 </div>
 </section>
 <section id="curation-insights" class="level2" data-number="19.7">
 <h2 data-number="19.7" class="anchored" data-anchor-id="curation-insights"><span class="header-section-number">19.7</span> Curation Insights</h2>
-<p>Use the generated CSV report to guide your preservation actions:</p>
+<p>Use the generated CSV report to guide your curation actions:</p>
 <ul>
-<li><p><strong>Format Obsolescence (v5 vs v7.3):</strong> The version column identifies the file architecture. v7.3 are essentially HDF5 files. They require specialized libraries (rhdf5 in R, h5py in Python) to read. Consider creating a Codebook that maps the HDF5 paths (e.g., /group1/dataset_A) to their scientific meaning.</p></li>
-<li><p><strong>Workspace Dumps:</strong> Files with high object counts (&gt;50) and generic names (var1, temp, data_copy) are likely RAM demanding. These files request a data dictionary or a cleaned version containing only the final variables.</p></li>
-<li><p><strong>Complex Structures (H5T_COMPOUND):</strong> In v7.3 files, H5T_COMPOUND indicates complex nested tables (structs). These are difficult to convert to CSV. Recommend converting these specific tables to JSON or separate CSVs to preserve the hierarchy.</p></li>
+<li><p><strong>Format Obsolescence (v5 vs v7.3):</strong> The version column identifies the file architecture. v7.3 are essentially HDF5 files, but still require specialized libraries (rhdf5 in R, h5py in Python) to read. Consider creating a codebook that maps the HDF5 paths (e.g., /group1/dataset_A) to their scientific meaning.</p></li>
+<li><p><strong>Workspace Dumps:</strong> Files with high object counts (&gt;50) and generic names (var1, temp, data_copy) are likely RAM demanding. Consider requesting a data dictionary (if not already present in the dataset), or a cleaned version containing only the final variables.</p></li>
+<li><p><strong>Complex Structures (H5T_COMPOUND):</strong> In v7.3 files, H5T_COMPOUND indicates complex nested tables (structs). These are difficult to convert to CSV. If you are converting files, consider converting these specific tables to JSON or separate CSVs to preserve the hierarchy.</p></li>
 </ul>
 <section id="notes-and-limitations" class="level3" data-number="19.7.1">
 <h3 data-number="19.7.1" class="anchored" data-anchor-id="notes-and-limitations"><span class="header-section-number">19.7.1</span> Notes and limitations</h3>
@@ -1436,13 +1436,13 @@ div.csl-indent {
 <span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## Overview</span></span>
 <span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>MAT-files are the proprietary binary data container format used by MATLAB. They are widely used in engineering and science but pose a significant challenge for long-term preservation.</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>MAT-files are the proprietary binary data container format used by MATLAB. They are widely used in engineering but pose a significant challenge for long-term preservation.</span>
 <span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Curation Goal"}</span>
 <span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>Identify file versions and inventory internal variables. Our objective is to distinguish between classic Level 5 (v5) files and modern Level 7.3 (HDF5-based) files, ensuring the correct open-source libraries are used for long-term access.</span>
 <span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title="Preservation Risk"}</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title="Identifying Risks"}</span>
 <span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>Proprietary format lock-in is a major risk. Version 7.3 files require specialized HDF5 parsers, while older versions are opaque without MATLAB or compatible open-source alternatives like GNU Octave.</span>
 <span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a></span>
@@ -1632,7 +1632,7 @@ div.csl-indent {
 <span id="cb16-220"><a href="#cb16-220" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(results, <span class="dv">10</span>)</span>
 <span id="cb16-221"><a href="#cb16-221" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb16-222"><a href="#cb16-222" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-223"><a href="#cb16-223" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exports results</span></span>
+<span id="cb16-223"><a href="#cb16-223" aria-hidden="true" tabindex="-1"></a><span class="fu">## Export results</span></span>
 <span id="cb16-224"><a href="#cb16-224" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-227"><a href="#cb16-227" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb16-228"><a href="#cb16-228" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: save-results</span></span>
@@ -1648,13 +1648,13 @@ div.csl-indent {
 <span id="cb16-238"><a href="#cb16-238" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-239"><a href="#cb16-239" aria-hidden="true" tabindex="-1"></a><span class="fu">## Curation Insights</span></span>
 <span id="cb16-240"><a href="#cb16-240" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-241"><a href="#cb16-241" aria-hidden="true" tabindex="-1"></a>Use the generated CSV report to guide your preservation actions:</span>
+<span id="cb16-241"><a href="#cb16-241" aria-hidden="true" tabindex="-1"></a>Use the generated CSV report to guide your curation actions:</span>
 <span id="cb16-242"><a href="#cb16-242" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-243"><a href="#cb16-243" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Format Obsolescence (v5 vs v7.3):** The version column identifies the file architecture. v7.3 are essentially HDF5 files. They require specialized libraries (rhdf5 in R, h5py in Python) to read. Consider creating a Codebook that maps the HDF5 paths (e.g., /group1/dataset_A) to their scientific meaning.</span>
+<span id="cb16-243"><a href="#cb16-243" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Format Obsolescence (v5 vs v7.3):** The version column identifies the file architecture. v7.3 are essentially HDF5 files, but still require specialized libraries (rhdf5 in R, h5py in Python) to read. Consider creating a codebook that maps the HDF5 paths (e.g., /group1/dataset_A) to their scientific meaning.</span>
 <span id="cb16-244"><a href="#cb16-244" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-245"><a href="#cb16-245" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Workspace Dumps:** Files with high object counts (<span class="sc">\&gt;</span>50) and generic names (var1, temp, data_copy) are likely RAM demanding. These files request a data dictionary or a cleaned version containing only the final variables.</span>
+<span id="cb16-245"><a href="#cb16-245" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Workspace Dumps:** Files with high object counts (<span class="sc">\&gt;</span>50) and generic names (var1, temp, data_copy) are likely RAM demanding. Consider requesting a data dictionary (if not already present in the dataset), or a cleaned version containing only the final variables.</span>
 <span id="cb16-246"><a href="#cb16-246" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-247"><a href="#cb16-247" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Complex Structures (H5T_COMPOUND):** In v7.3 files, H5T_COMPOUND indicates complex nested tables (structs). These are difficult to convert to CSV. Recommend converting these specific tables to JSON or separate CSVs to preserve the hierarchy.</span>
+<span id="cb16-247"><a href="#cb16-247" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Complex Structures (H5T_COMPOUND):** In v7.3 files, H5T_COMPOUND indicates complex nested tables (structs). These are difficult to convert to CSV. If you are converting files, consider converting these specific tables to JSON or separate CSVs to preserve the hierarchy.</span>
 <span id="cb16-248"><a href="#cb16-248" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-249"><a href="#cb16-249" aria-hidden="true" tabindex="-1"></a><span class="fu">### Notes and limitations</span></span>
 <span id="cb16-250"><a href="#cb16-250" aria-hidden="true" tabindex="-1"></a></span>

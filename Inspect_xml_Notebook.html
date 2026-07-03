@@ -100,7 +100,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-1c02106e02db7931e34c138ca3a33989.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-3a0434ec8dbb91cf559f1b894f80063e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -453,7 +453,7 @@ div.csl-indent {
 
 <section id="overview" class="level2" data-number="16.1">
 <h2 data-number="16.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">16.1</span> Overview</h2>
-<p>XML (Extensible Markup Language) is a standard for storing structured data. In curation, we distinguish between “well-formedness” and “validity.”</p>
+<p>XML (Extensible Markup Language) is a standard for storing structured data. Here, we distinguish between “well-formedness” (file can be parsed) and “validity” (schema is consistent within and between files).</p>
 <div class="callout callout-style-default callout-note callout-titled" title="Curation Goal">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -467,13 +467,13 @@ div.csl-indent {
 <p>Ensure structural and semantic validity. Our objective is to verify that XML files are syntactically well-formed and conform to specific schemas (XSD), ensuring metadata adheres to community standards like DDI, TEI, or Dublin Core.</p>
 </div>
 </div>
-<div class="callout callout-style-default callout-warning callout-titled" title="Preservation Risk">
+<div class="callout callout-style-default callout-warning callout-titled" title="Identifying Risks">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Preservation Risk
+<span class="screen-reader-only">Warning</span>Identifying Risks
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -686,17 +686,17 @@ div.csl-indent {
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Report saved to:"</span>, output_file))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Report saved to: Results/Inspect_xml/XML_Structure_20260604.csv"</code></pre>
+<pre><code>[1] "Report saved to: Results/Inspect_xml/XML_Structure_20260703.csv"</code></pre>
 </div>
 </div>
 </section>
 <section id="curation-insights" class="level2" data-number="16.7">
 <h2 data-number="16.7" class="anchored" data-anchor-id="curation-insights"><span class="header-section-number">16.7</span> Curation Insights</h2>
-<p>Use the generated CSV to guide your preservation actions:</p>
+<p>Use the generated CSV to guide your curation actions:</p>
 <ul>
-<li><p><strong>Status (“Parsing Failed”):</strong> If the parsing fails, it may implicate the files are corrupted or contain syntax errors (e.g., unclosed tags). Curators may need to discuss with depositors the validity of these files.</p></li>
-<li><p><strong>Namespaces (Namespaces):</strong> It is avisable to look for standard prefixes like dc (Dublin Core) or mods. If a specific standard is detected, verify if the file strictly adheres to it (Schema Validation) .</p></li>
-<li><p><strong>Complexity (MaxDepth &gt; 50):</strong> Deeply nested XMLs can be difficult to process with standard XSLT tools. Curators can investigate these files manually.</p></li>
+<li><p><strong>Status (“Parsing Failed”):</strong> If the parsing fails, it may mean the files are corrupted or contain syntax errors (e.g., unclosed tags). Check against the source files and discuss with the depositor; you may need to request fresh files if they didn’t transfer properly.</p></li>
+<li><p><strong>Namespaces (Namespaces):</strong> Check for standard prefixes like dc (Dublin Core) or mods. If a specific standard is detected, verify if the file adheres to the designated schema.</p></li>
+<li><p><strong>Complexity (MaxDepth &gt; 50):</strong> Deeply nested XMLs can be difficult to process with standard XSLT tools. You may need to investigate these files manually.</p></li>
 </ul>
 </section>
 <section id="additional-tools" class="level2" data-number="16.8">
@@ -1226,13 +1226,13 @@ div.csl-indent {
 <span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## Overview</span></span>
 <span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>XML (Extensible Markup Language) is a standard for storing structured data. In curation, we distinguish between "well-formedness" and "validity."</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>XML (Extensible Markup Language) is a standard for storing structured data. Here, we distinguish between "well-formedness" (file can be parsed) and "validity" (schema is consistent within and between files).</span>
 <span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Curation Goal"}</span>
 <span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>Ensure structural and semantic validity. Our objective is to verify that XML files are syntactically well-formed and conform to specific schemas (XSD), ensuring metadata adheres to community standards like DDI, TEI, or Dublin Core.</span>
 <span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title="Preservation Risk"}</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title="Identifying Risks"}</span>
 <span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>Broken nesting structures, missing namespaces, and "XML Bombs" (recursive expansion risks) can crash archival parsers and lead to the permanent loss of structural context.</span>
 <span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a></span>
@@ -1420,13 +1420,13 @@ div.csl-indent {
 <span id="cb17-221"><a href="#cb17-221" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-222"><a href="#cb17-222" aria-hidden="true" tabindex="-1"></a><span class="fu">## Curation Insights</span></span>
 <span id="cb17-223"><a href="#cb17-223" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-224"><a href="#cb17-224" aria-hidden="true" tabindex="-1"></a>Use the generated CSV to guide your preservation actions:</span>
+<span id="cb17-224"><a href="#cb17-224" aria-hidden="true" tabindex="-1"></a>Use the generated CSV to guide your curation actions:</span>
 <span id="cb17-225"><a href="#cb17-225" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-226"><a href="#cb17-226" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Status ("Parsing Failed"):** If the parsing fails, it may implicate the files are corrupted or contain syntax errors (e.g., unclosed tags). Curators may need to discuss with depositors the validity of these files.</span>
+<span id="cb17-226"><a href="#cb17-226" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Status ("Parsing Failed"):** If the parsing fails, it may mean the files are corrupted or contain syntax errors (e.g., unclosed tags). Check against the source files and discuss with the depositor; you may need to request fresh files if they didn't transfer properly.</span>
 <span id="cb17-227"><a href="#cb17-227" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-228"><a href="#cb17-228" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Namespaces (Namespaces):** It is avisable to look for standard prefixes like dc (Dublin Core) or mods. If a specific standard is detected, verify if the file strictly adheres to it (Schema Validation) .</span>
+<span id="cb17-228"><a href="#cb17-228" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Namespaces (Namespaces):** Check for standard prefixes like dc (Dublin Core) or mods. If a specific standard is detected, verify if the file adheres to the designated schema.</span>
 <span id="cb17-229"><a href="#cb17-229" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-230"><a href="#cb17-230" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Complexity (MaxDepth \&gt; 50):** Deeply nested XMLs can be difficult to process with standard XSLT tools. Curators can investigate these files manually.</span>
+<span id="cb17-230"><a href="#cb17-230" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Complexity (MaxDepth \&gt; 50):** Deeply nested XMLs can be difficult to process with standard XSLT tools. You may need to investigate these files manually.</span>
 <span id="cb17-231"><a href="#cb17-231" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-232"><a href="#cb17-232" aria-hidden="true" tabindex="-1"></a><span class="fu">## Additional Tools</span></span>
 <span id="cb17-233"><a href="#cb17-233" aria-hidden="true" tabindex="-1"></a></span>

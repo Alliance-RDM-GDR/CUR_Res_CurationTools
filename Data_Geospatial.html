@@ -81,9 +81,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-1c02106e02db7931e34c138ca3a33989.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-004b31d85c7bec8d41339570dea040a2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-1c02106e02db7931e34c138ca3a33989.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-3a0434ec8dbb91cf559f1b894f80063e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-f405560b62fb26e92e7ae32e65d77bb0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-3a0434ec8dbb91cf559f1b894f80063e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -582,7 +582,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Geospatial data connects information to specific locations on the Earth’s surface. Curating this data requires ensuring that the spatial reference systems (CRS) are defined and that the geometric features are valid. This section provides tools for inspecting modern geospatial file formats.</p>
 <p><strong>Key Objectives:</strong></p>
 <ol type="1">
-<li><strong>CRS Verification:</strong> We check if the Coordinate Reference System is defined (e.g., EPSG codes). Data without a CRS is just a drawing; it cannot be placed on a map.</li>
+<li><strong>CRS Verification:</strong> We check if the Coordinate Reference System is defined (e.g., EPSG codes). Data without a CRS are just a drawing; they cannot be placed on a map.</li>
 <li><strong>Layer Inspection:</strong> We list the vector layers or raster bands contained within the file.</li>
 <li><strong>Feature Counting:</strong> We verify the number of geometric features (points, lines, polygons) to ensure data completeness.</li>
 </ol>
@@ -591,14 +591,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="supported-formats">Supported Formats</h2>
 <section id="geopackage-.gpkg" class="level3">
 <h3 class="anchored" data-anchor-id="geopackage-.gpkg">GeoPackage (<code>.gpkg</code>)</h3>
-<p>GeoPackage is the modern, open standard for geospatial data, designed to replace the legacy Shapefile. It is a SQLite container that can hold vector features, tile matrix sets, and attributes. - <strong>Our Approach:</strong> We connect to the internal database to list layers, check geometry types, and verify the spatial reference system.</p>
+<p>GeoPackage is an open standard for geospatial data. It is a SQLite container that can hold vector features, tile matrix sets, and attributes. - <strong>Our Approach:</strong> We connect to the internal database to list layers, check geometry types, and verify the spatial reference system.</p>
 </section>
 </section>
 <section id="common-curation-challenges" class="level2">
 <h2 class="anchored" data-anchor-id="common-curation-challenges">Common Curation Challenges</h2>
 <ul>
-<li><strong>Undefined CRS:</strong> The most common issue in geospatial curation. If the projection is missing, the data cannot be integrated with other layers.</li>
-<li><strong>Legacy Formats:</strong> While we focus on GeoPackage, curators often encounter Shapefiles. We encourage conversion to GeoPackage for better long-term preservation.</li>
+<li><strong>Undefined CRS:</strong> The most common issue in geospatial curation. If the projection is missing, the data cannot be integrated with other layers. <!-- -   **Legacy Formats:** While we focus on GeoPackage, curators often encounter Shapefiles. We encourage conversion to GeoPackage for better long-term preservation. --></li>
 <li><strong>Geometry Errors:</strong> Self-intersecting polygons or unclosed rings can cause analysis failures. Our tools provide a high-level check of feature validity.</li>
 </ul>
 
@@ -1094,20 +1093,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>**Key Objectives:**</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**CRS Verification:** We check if the Coordinate Reference System is defined (e.g., EPSG codes). Data without a CRS is just a drawing; it cannot be placed on a map.</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**CRS Verification:** We check if the Coordinate Reference System is defined (e.g., EPSG codes). Data without a CRS are just a drawing; they cannot be placed on a map.</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**Layer Inspection:** We list the vector layers or raster bands contained within the file.</span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**Feature Counting:** We verify the number of geometric features (points, lines, polygons) to ensure data completeness.</span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## Supported Formats</span></span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">### GeoPackage (`.gpkg`)</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>GeoPackage is the modern, open standard for geospatial data, designed to replace the legacy Shapefile. It is a SQLite container that can hold vector features, tile matrix sets, and attributes.</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Our Approach:** We connect to the internal database to list layers, check geometry types, and verify the spatial reference system.</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>GeoPackage is an open standard for geospatial data. It is a SQLite container that can hold vector features, tile matrix sets, and attributes. - **Our Approach:** We connect to the internal database to list layers, check geometry types, and verify the spatial reference system.</span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">## Common Curation Challenges</span></span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Undefined CRS:** The most common issue in geospatial curation. If the projection is missing, the data cannot be integrated with other layers.</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Legacy Formats:** While we focus on GeoPackage, curators often encounter Shapefiles. We encourage conversion to GeoPackage for better long-term preservation.</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- -   **Legacy Formats:** While we focus on GeoPackage, curators often encounter Shapefiles. We encourage conversion to GeoPackage for better long-term preservation. --&gt;</span></span>
 <span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Geometry Errors:** Self-intersecting polygons or unclosed rings can cause analysis failures. Our tools provide a high-level check of feature validity.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

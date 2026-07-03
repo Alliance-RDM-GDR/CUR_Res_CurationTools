@@ -81,9 +81,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-1c02106e02db7931e34c138ca3a33989.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-004b31d85c7bec8d41339570dea040a2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-1c02106e02db7931e34c138ca3a33989.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-3a0434ec8dbb91cf559f1b894f80063e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-f405560b62fb26e92e7ae32e65d77bb0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-3a0434ec8dbb91cf559f1b894f80063e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -592,7 +592,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="common-curation-challenges">Common Curation Challenges</h2>
 <ul>
 <li><strong>Hidden Metadata:</strong> Images often contain embedded information (EXIF) that the creator is unaware of. This can pose privacy risks (e.g., GPS tags) or provide valuable context (e.g., capture date). We make this invisible data visible.</li>
-<li><strong>Compression Artifacts:</strong> Repeated saving in lossy formats like JPEG degrades quality. We help identify the file format and properties to assess suitability for preservation.</li>
+<li><strong>Compression Artifacts:</strong> Repeated saving in lossy formats like JPEG degrades quality. We check the file format and properties to identify potential issues for long-term re-use.</li>
 <li><strong>Color Profiles:</strong> Missing color profiles can lead to inconsistent display across devices. We check for the presence of ICC profiles.</li>
 </ul>
 
@@ -1094,16 +1094,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## Supported Formats</span></span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>We support a wide range of standard image formats including:</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**JPEG (`.jpg`):** Standard for photography.</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**TIFF (`.tif`):** Standard for archival and high-quality imaging.</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**PNG (`.png`):** Standard for lossless web graphics.</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="fu">## Common Curation Challenges</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Hidden Metadata:** Images often contain embedded information (EXIF) that the creator is unaware of. This can pose privacy risks (e.g., GPS tags) or provide valuable context (e.g., capture date). We make this invisible data visible.</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Compression Artifacts:** Repeated saving in lossy formats like JPEG degrades quality. We help identify the file format and properties to assess suitability for preservation.</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Color Profiles:** Missing color profiles can lead to inconsistent display across devices. We check for the presence of ICC profiles.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>We support a wide range of standard image formats including: - **JPEG (`.jpg`):** Standard for photography. - **TIFF (`.tif`):** Standard for archival and high-quality imaging. - **PNG (`.png`):** Standard for lossless web graphics.</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">## Common Curation Challenges</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Hidden Metadata:** Images often contain embedded information (EXIF) that the creator is unaware of. This can pose privacy risks (e.g., GPS tags) or provide valuable context (e.g., capture date). We make this invisible data visible.</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Compression Artifacts:** Repeated saving in lossy formats like JPEG degrades quality. We check the file format and properties to identify potential issues for long-term re-use.</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Color Profiles:** Missing color profiles can lead to inconsistent display across devices. We check for the presence of ICC profiles.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

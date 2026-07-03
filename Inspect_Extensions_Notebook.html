@@ -102,9 +102,9 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-1c02106e02db7931e34c138ca3a33989.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-004b31d85c7bec8d41339570dea040a2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-1c02106e02db7931e34c138ca3a33989.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-3a0434ec8dbb91cf559f1b894f80063e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-f405560b62fb26e92e7ae32e65d77bb0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-3a0434ec8dbb91cf559f1b894f80063e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -634,7 +634,7 @@ div.csl-indent {
 
 <section id="overview" class="level2" data-number="7.1">
 <h2 data-number="7.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">7.1</span> Overview</h2>
-<p>This notebook performs the initial “Triage” of a data package by inventorying file extensions.</p>
+<p>This notebook performs the initial triage of a data package by inventorying file extensions.</p>
 <div class="callout callout-style-default callout-note callout-titled" title="Curation Goal">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -648,13 +648,13 @@ div.csl-indent {
 <p>Establish an initial inventory of all file types within a submission. Our objective is to distinguish between extension-based labels and internal format signatures to identify mislabeled, obsolete, or high-risk files.</p>
 </div>
 </div>
-<div class="callout callout-style-default callout-warning callout-titled" title="Preservation Risk">
+<div class="callout callout-style-default callout-warning callout-titled" title="Identifying Risks">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Preservation Risk
+<span class="screen-reader-only">Warning</span>Identifying Risks
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -743,7 +743,7 @@ div.csl-indent {
 </section>
 <section id="generate-file-inventory" class="level2" data-number="7.5">
 <h2 data-number="7.5" class="anchored" data-anchor-id="generate-file-inventory"><span class="header-section-number">7.5</span> Generate File Inventory</h2>
-<p>We construct a detailed table including the relative path (to locate files) and detectc risks.</p>
+<p>We construct a detailed table including the relative path to locate files and detect risks.</p>
 <p>Data Collected:</p>
 <ul>
 <li><p><strong>Path:</strong> The relative path to the file (critical for locating “bad” files).</p></li>
@@ -809,8 +809,8 @@ div.csl-indent {
 <span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-09a7cf61a10afe78252f" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-09a7cf61a10afe78252f">{"x":{"filter":"none","vertical":false,"caption":"<caption>Table 1: Full File Inventory with Risk Flags<\/caption>","data":[["1","2","3","4","5","6","7"],["CHIRPS_precipitation_1981-01-01.tif","CHIRPS_precipitation_1981-01-03.tif","CHIRTS_maximum_temperature_1983-01-07.tif","CHIRTS_maximum_temperature_1983-01-09.tif","Guyana_t2m_ERA5_1km_NearestNeighbour_Daily_19520201.nc","Guyana_t2m_ERA5_1km_NearestNeighbour_Daily_19520201.nc.aux.xml","README.txt"],[".tif",".tif",".tif",".tif",".nc",".xml",".txt"],[0.0018,0.0092,0.0292,0.0294,3.4629,0.0003,0.0068],["Clean","Clean","Clean","Clean","Clean","Clean","Clean"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>RelativePath<\/th>\n      <th>Extension<\/th>\n      <th>Size_MB<\/th>\n      <th>Risk_Flag<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"scrollX":true,"columnDefs":[{"className":"dt-right","targets":3},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"RelativePath","targets":1},{"name":"Extension","targets":2},{"name":"Size_MB","targets":3},{"name":"Risk_Flag","targets":4}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-adb968405abc96cda35e" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-adb968405abc96cda35e">{"x":{"filter":"none","vertical":false,"caption":"<caption>Table 1: Full File Inventory with Risk Flags<\/caption>","data":[["1","2","3","4","5","6","7"],["CHIRPS_precipitation_1981-01-01.tif","CHIRPS_precipitation_1981-01-03.tif","CHIRTS_maximum_temperature_1983-01-07.tif","CHIRTS_maximum_temperature_1983-01-09.tif","Guyana_t2m_ERA5_1km_NearestNeighbour_Daily_19520201.nc","Guyana_t2m_ERA5_1km_NearestNeighbour_Daily_19520201.nc.aux.xml","README.txt"],[".tif",".tif",".tif",".tif",".nc",".xml",".txt"],[0.0018,0.0092,0.0292,0.0294,3.4629,0.0003,0.0068],["Clean","Clean","Clean","Clean","Clean","Clean","Clean"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>RelativePath<\/th>\n      <th>Extension<\/th>\n      <th>Size_MB<\/th>\n      <th>Risk_Flag<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"scrollX":true,"columnDefs":[{"className":"dt-right","targets":3},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"RelativePath","targets":1},{"name":"Extension","targets":2},{"name":"Size_MB","targets":3},{"name":"Risk_Flag","targets":4}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
@@ -862,14 +862,14 @@ div.csl-indent {
 <span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-c358d4116a94de844e1a" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-c358d4116a94de844e1a">{"x":{"filter":"none","vertical":false,"caption":"<caption>Table 1: File Inventory with ExifTool Metadata<\/caption>","data":[["1","2","3","4","5","6","7"],["CHIRPS_precipitation_1981-01-01.tif","CHIRPS_precipitation_1981-01-03.tif","CHIRTS_maximum_temperature_1983-01-07.tif","CHIRTS_maximum_temperature_1983-01-09.tif","Guyana_t2m_ERA5_1km_NearestNeighbour_Daily_19520201.nc","Guyana_t2m_ERA5_1km_NearestNeighbour_Daily_19520201.nc.aux.xml","README.txt"],[".tif",".tif",".tif",".tif",".nc",".xml",".txt"],["image/tiff","image/tiff","image/tiff","image/tiff",null,"text/plain","text/plain"],["Clean","Clean","Clean","Clean","Clean","Clean","Clean"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>RelativePath<\/th>\n      <th>Extension<\/th>\n      <th>MIMEType<\/th>\n      <th>Risk_Flag<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"scrollX":true,"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"RelativePath","targets":1},{"name":"Extension","targets":2},{"name":"MIMEType","targets":3},{"name":"Risk_Flag","targets":4}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-28d91f8586f23fd752b4" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-28d91f8586f23fd752b4">{"x":{"filter":"none","vertical":false,"caption":"<caption>Table 1: File Inventory with ExifTool Metadata<\/caption>","data":[["1","2","3","4","5","6","7"],["CHIRPS_precipitation_1981-01-01.tif","CHIRPS_precipitation_1981-01-03.tif","CHIRTS_maximum_temperature_1983-01-07.tif","CHIRTS_maximum_temperature_1983-01-09.tif","Guyana_t2m_ERA5_1km_NearestNeighbour_Daily_19520201.nc","Guyana_t2m_ERA5_1km_NearestNeighbour_Daily_19520201.nc.aux.xml","README.txt"],[".tif",".tif",".tif",".tif",".nc",".xml",".txt"],["image/tiff","image/tiff","image/tiff","image/tiff",null,"text/plain","text/plain"],["Clean","Clean","Clean","Clean","Clean","Clean","Clean"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>RelativePath<\/th>\n      <th>Extension<\/th>\n      <th>MIMEType<\/th>\n      <th>Risk_Flag<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"scrollX":true,"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"RelativePath","targets":1},{"name":"Extension","targets":2},{"name":"MIMEType","targets":3},{"name":"Risk_Flag","targets":4}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
 <section id="extension-summary-and-visualization" class="level2" data-number="7.7">
 <h2 data-number="7.7" class="anchored" data-anchor-id="extension-summary-and-visualization"><span class="header-section-number">7.7</span> Extension Summary and visualization</h2>
-<p>We aggregate the inventory to visualize the dataset’s “content profile.” This helps curators identify if the submission matches the depositor’s description (e.g., “They said it was images, but I see mostly .docx files”).</p>
+<p>We aggregate the inventory to visualize the dataset’s content profile. This helps curators identify if the submission matches the depositor’s description (e.g., “They said it was images, but I see mostly .docx files”).</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -935,18 +935,18 @@ div.csl-indent {
 <section id="curation-insights" class="level2" data-number="7.9">
 <h2 data-number="7.9" class="anchored" data-anchor-id="curation-insights"><span class="header-section-number">7.9</span> Curation Insights</h2>
 <ul>
-<li><p><strong>Zero-Byte Risks:</strong> A file with 0 bytes is technically valid in the filesystem but semantically empty. It usually indicates a failed file transfer (e.g., an FTP interruption). These must be flagged to the depositor immediately.</p></li>
+<li><p><strong>Zero-Byte Risks:</strong> A file with 0 bytes is technically valid in the filesystem but semantically empty. It may indicate a failed file transfer (e.g., an FTP interruption). Check this is the case in the original deposit for this file, then check with the depositor to confirm the file is safe to remove.</p></li>
 <li><p><strong>Extension Mismatches:</strong> If you see a generic extension like .dat or .file, the depositor may have removed the extension. Use tools like DROID (see below) to identify the true format.</p></li>
 <li><p><strong>Corrupted Files:</strong> Filter for rows where the Warning column is not empty. ExifTool often detects truncated files that standard file system checks miss.</p></li>
 <li><p><strong>Preservation vs.&nbsp;Access:</strong> Distinguish between “Originals” (e.g., .wav, .tiff) and “Derivatives” (e.g., .mp3, .jpg). Ideally, the archive should preserve the uncompressed originals (see https://www.loc.gov/preservation/digital/formats/).</p></li>
-<li><p><strong>Metadata Privacy:</strong> Check the Author or GPS columns (if extracted). If these contain real names or locations for a de-identified dataset, the files must be scrubbed before publishing.</p></li>
+<li><p><strong>Metadata Privacy:</strong> Check the Author or GPS columns, if extracted. Check if these contain real names or locations for a de-identified dataset, and discuss with the depositor to confirm the files can and should be scrubbed before publishing.</p></li>
 </ul>
 </section>
 <section id="additional-tools-for-researchers" class="level2" data-number="7.10">
 <h2 data-number="7.10" class="anchored" data-anchor-id="additional-tools-for-researchers"><span class="header-section-number">7.10</span> Additional Tools for Researchers</h2>
-<p>This notebook performs allows file identification. Foor deep indetification, curators can rely on tools maintained by national archives.</p>
+<p>This notebook performs some file identification. Here are some other tools for file identification.</p>
 <ul>
-<li><p>Siegfried / DROID: The industry standard for <a href="nationalarchives.gov.uk/information-management/manage-information/preserving-digital-records/droid/">format identification</a>. It scans the file’s binary signature (Magic Number) and matches it against PRONOM, the technical registry maintained by The National Archives UK (see https://www.itforarchivists.com/siegfried).</p></li>
+<li><p><strong>Siegfried / DROID:</strong> A tool for <a href="nationalarchives.gov.uk/information-management/manage-information/preserving-digital-records/droid/">format identification</a>. It scans the file’s binary signature (Magic Number) and matches it against PRONOM, the technical registry maintained by The National Archives UK (see https://www.itforarchivists.com/siegfried).</p></li>
 <li><p><strong>Apache Tika:</strong> A <a href="tika.apache.org">toolkit</a> that detects thousands of file types and extracts metadata (e.g., Author, Date) from within the files.</p></li>
 <li><p><strong>FIDO (Format Identification for Digital Objects):</strong> A command-line tool designed for simplified integration into preservation pipelines (see https://openpreservation.org/tools/fido/).</p></li>
 </ul>
@@ -1490,13 +1490,13 @@ Wickham, Hadley, Mara Averick, Jennifer Bryan, et al. 2019. <em>Welcome to the <
 <span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## Overview</span></span>
 <span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>This notebook performs the initial "Triage" of a data package by inventorying file extensions.</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>This notebook performs the initial triage of a data package by inventorying file extensions.</span>
 <span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Curation Goal"}</span>
 <span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>Establish an initial inventory of all file types within a submission. Our objective is to distinguish between extension-based labels and internal format signatures to identify mislabeled, obsolete, or high-risk files.</span>
 <span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title="Preservation Risk"}</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title="Identifying Risks"}</span>
 <span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>A file extension is merely a textual label. Relying on it can hide malicious executables renamed as media files or proprietary formats that lack a long-term migration path <span class="co">[</span><span class="ot">@brown2013</span><span class="co">]</span>.</span>
 <span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a></span>
@@ -1585,7 +1585,7 @@ Wickham, Hadley, Mara Averick, Jennifer Bryan, et al. 2019. <em>Welcome to the <
 <span id="cb9-115"><a href="#cb9-115" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-116"><a href="#cb9-116" aria-hidden="true" tabindex="-1"></a><span class="fu">## Generate File Inventory</span></span>
 <span id="cb9-117"><a href="#cb9-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-118"><a href="#cb9-118" aria-hidden="true" tabindex="-1"></a>We construct a detailed table including the relative path (to locate files) and detectc risks.</span>
+<span id="cb9-118"><a href="#cb9-118" aria-hidden="true" tabindex="-1"></a>We construct a detailed table including the relative path to locate files and detect risks.</span>
 <span id="cb9-119"><a href="#cb9-119" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-120"><a href="#cb9-120" aria-hidden="true" tabindex="-1"></a>Data Collected:</span>
 <span id="cb9-121"><a href="#cb9-121" aria-hidden="true" tabindex="-1"></a></span>
@@ -1711,7 +1711,7 @@ Wickham, Hadley, Mara Averick, Jennifer Bryan, et al. 2019. <em>Welcome to the <
 <span id="cb9-245"><a href="#cb9-245" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-246"><a href="#cb9-246" aria-hidden="true" tabindex="-1"></a><span class="fu">## Extension Summary and visualization</span></span>
 <span id="cb9-247"><a href="#cb9-247" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-248"><a href="#cb9-248" aria-hidden="true" tabindex="-1"></a>We aggregate the inventory to visualize the dataset's "content profile." This helps curators identify if the submission matches the depositor's description (e.g., "They said it was images, but I see mostly .docx files").</span>
+<span id="cb9-248"><a href="#cb9-248" aria-hidden="true" tabindex="-1"></a>We aggregate the inventory to visualize the dataset's content profile. This helps curators identify if the submission matches the depositor's description (e.g., "They said it was images, but I see mostly .docx files").</span>
 <span id="cb9-249"><a href="#cb9-249" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-252"><a href="#cb9-252" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb9-253"><a href="#cb9-253" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: viz-extensions</span></span>
@@ -1770,7 +1770,7 @@ Wickham, Hadley, Mara Averick, Jennifer Bryan, et al. 2019. <em>Welcome to the <
 <span id="cb9-308"><a href="#cb9-308" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-309"><a href="#cb9-309" aria-hidden="true" tabindex="-1"></a><span class="fu">## Curation Insights</span></span>
 <span id="cb9-310"><a href="#cb9-310" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-311"><a href="#cb9-311" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Zero-Byte Risks:** A file with 0 bytes is technically valid in the filesystem but semantically empty. It usually indicates a failed file transfer (e.g., an FTP interruption). These must be flagged to the depositor immediately.</span>
+<span id="cb9-311"><a href="#cb9-311" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Zero-Byte Risks:** A file with 0 bytes is technically valid in the filesystem but semantically empty. It may indicate a failed file transfer (e.g., an FTP interruption). Check this is the case in the original deposit for this file, then check with the depositor to confirm the file is safe to remove.</span>
 <span id="cb9-312"><a href="#cb9-312" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-313"><a href="#cb9-313" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Extension Mismatches:** If you see a generic extension like .dat or .file, the depositor may have removed the extension. Use tools like DROID (see below) to identify the true format.</span>
 <span id="cb9-314"><a href="#cb9-314" aria-hidden="true" tabindex="-1"></a></span>
@@ -1778,13 +1778,13 @@ Wickham, Hadley, Mara Averick, Jennifer Bryan, et al. 2019. <em>Welcome to the <
 <span id="cb9-316"><a href="#cb9-316" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-317"><a href="#cb9-317" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Preservation vs. Access:** Distinguish between "Originals" (e.g., .wav, .tiff) and "Derivatives" (e.g., .mp3, .jpg). Ideally, the archive should preserve the uncompressed originals (see https://www.loc.gov/preservation/digital/formats/).</span>
 <span id="cb9-318"><a href="#cb9-318" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-319"><a href="#cb9-319" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Metadata Privacy:** Check the Author or GPS columns (if extracted). If these contain real names or locations for a de-identified dataset, the files must be scrubbed before publishing.</span>
+<span id="cb9-319"><a href="#cb9-319" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Metadata Privacy:** Check the Author or GPS columns, if extracted. Check if these contain real names or locations for a de-identified dataset, and discuss with the depositor to confirm the files can and should be scrubbed before publishing.</span>
 <span id="cb9-320"><a href="#cb9-320" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-321"><a href="#cb9-321" aria-hidden="true" tabindex="-1"></a><span class="fu">## Additional Tools for Researchers</span></span>
 <span id="cb9-322"><a href="#cb9-322" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-323"><a href="#cb9-323" aria-hidden="true" tabindex="-1"></a>This notebook performs allows file identification. Foor deep indetification, curators can rely on tools maintained by national archives.</span>
+<span id="cb9-323"><a href="#cb9-323" aria-hidden="true" tabindex="-1"></a>This notebook performs some file identification. Here are some other tools for file identification.</span>
 <span id="cb9-324"><a href="#cb9-324" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-325"><a href="#cb9-325" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Siegfried / DROID: The industry standard for <span class="co">[</span><span class="ot">format identification</span><span class="co">](nationalarchives.gov.uk/information-management/manage-information/preserving-digital-records/droid/)</span>. It scans the file's binary signature (Magic Number) and matches it against PRONOM, the technical registry maintained by The National Archives UK (see https://www.itforarchivists.com/siegfried).</span>
+<span id="cb9-325"><a href="#cb9-325" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Siegfried / DROID:** A tool for <span class="co">[</span><span class="ot">format identification</span><span class="co">](nationalarchives.gov.uk/information-management/manage-information/preserving-digital-records/droid/)</span>. It scans the file's binary signature (Magic Number) and matches it against PRONOM, the technical registry maintained by The National Archives UK (see https://www.itforarchivists.com/siegfried).</span>
 <span id="cb9-326"><a href="#cb9-326" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-327"><a href="#cb9-327" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Apache Tika:** A <span class="co">[</span><span class="ot">toolkit</span><span class="co">](tika.apache.org)</span> that detects thousands of file types and extracts metadata (e.g., Author, Date) from within the files.</span>
 <span id="cb9-328"><a href="#cb9-328" aria-hidden="true" tabindex="-1"></a></span>

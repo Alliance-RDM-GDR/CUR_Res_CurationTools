@@ -81,9 +81,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-1c02106e02db7931e34c138ca3a33989.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-004b31d85c7bec8d41339570dea040a2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-1c02106e02db7931e34c138ca3a33989.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-3a0434ec8dbb91cf559f1b894f80063e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-f405560b62fb26e92e7ae32e65d77bb0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-3a0434ec8dbb91cf559f1b894f80063e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -593,22 +593,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="supported-formats">Supported Formats</h2>
 <section id="netcdf-.nc" class="level3">
 <h3 class="anchored" data-anchor-id="netcdf-.nc">NetCDF (<code>.nc</code>)</h3>
-<p>Network Common Data Form (NetCDF) is the standard for climate, oceanography, and atmospheric sciences. - <strong>Our Approach:</strong> We extract global attributes and variable dimensions to verify compliance with conventions like CF (Climate and Forecast).</p>
+<p>Network Common Data Form (NetCDF) is commonly used in climate, oceanography, and atmospheric sciences. <strong>Our Approach:</strong> We extract global attributes and variable dimensions to verify compliance with conventions like CF (Climate and Forecast).</p>
 </section>
 <section id="hdf5-.h5-.hdf5" class="level3">
 <h3 class="anchored" data-anchor-id="hdf5-.h5-.hdf5">HDF5 (<code>.h5</code>, <code>.hdf5</code>)</h3>
-<p>Hierarchical Data Format version 5 (HDF5) is a high-performance container used in physics, engineering, and genomics. - <strong>Our Approach:</strong> We navigate the internal groups and datasets, reporting on the hierarchy and the properties of the stored data.</p>
+<p>Hierarchical Data Format version 5 (HDF5) is a high-performance container used in physics, engineering, and genomics. <strong>Our Approach:</strong> We navigate the internal groups and datasets, reporting on the hierarchy and the properties of the stored data.</p>
 </section>
 <section id="matlab-.mat" class="level3">
 <h3 class="anchored" data-anchor-id="matlab-.mat">MATLAB (<code>.mat</code>)</h3>
-<p>The standard format for MATLAB workspace variables, widely used in engineering and signal processing. - <strong>Our Approach:</strong> We list the variables saved in the workspace, their classes (e.g., double, struct), and their dimensions, allowing curators to understand the file content without needing a MATLAB license.</p>
+<p>The standard format for MATLAB workspace variables, widely used in engineering and signal processing. <strong>Our Approach:</strong> We list the variables saved in the workspace, and their classes (e.g., double, struct) and dimensions, allowing curators to understand the file content without needing a MATLAB license.</p>
 </section>
 </section>
 <section id="common-curation-challenges" class="level2">
 <h2 class="anchored" data-anchor-id="common-curation-challenges">Common Curation Challenges</h2>
 <ul>
 <li><strong>Missing Metadata:</strong> Binary files are “black boxes” without proper internal documentation. We emphasize the importance of checking for attributes like <code>units</code> and <code>standard_name</code>.</li>
-<li><strong>Proprietary Dependencies:</strong> While HDF5 and NetCDF are open, MATLAB files can be proprietary. We help identify the version and contents to assess long-term accessibility.</li>
+<li><strong>Proprietary Dependencies:</strong> While HDF5 and NetCDF are open, MATLAB files are proprietary. We help identify the version and contents to assess long-term accessibility.</li>
 <li><strong>Large Data Volumes:</strong> These files can be massive. Our tools are designed to inspect headers and metadata without loading the entire dataset into memory.</li>
 </ul>
 
@@ -1112,20 +1112,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">### NetCDF (`.nc`)</span></span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>Network Common Data Form (NetCDF) is the standard for climate, oceanography, and atmospheric sciences. - **Our Approach:** We extract global attributes and variable dimensions to verify compliance with conventions like CF (Climate and Forecast).</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>Network Common Data Form (NetCDF) is commonly used in climate, oceanography, and atmospheric sciences. **Our Approach:** We extract global attributes and variable dimensions to verify compliance with conventions like CF (Climate and Forecast).</span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">### HDF5 (`.h5`, `.hdf5`)</span></span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>Hierarchical Data Format version 5 (HDF5) is a high-performance container used in physics, engineering, and genomics. - **Our Approach:** We navigate the internal groups and datasets, reporting on the hierarchy and the properties of the stored data.</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>Hierarchical Data Format version 5 (HDF5) is a high-performance container used in physics, engineering, and genomics. **Our Approach:** We navigate the internal groups and datasets, reporting on the hierarchy and the properties of the stored data.</span>
 <span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="fu">### MATLAB (`.mat`)</span></span>
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>The standard format for MATLAB workspace variables, widely used in engineering and signal processing. - **Our Approach:** We list the variables saved in the workspace, their classes (e.g., double, struct), and their dimensions, allowing curators to understand the file content without needing a MATLAB license.</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>The standard format for MATLAB workspace variables, widely used in engineering and signal processing. **Our Approach:** We list the variables saved in the workspace, and their classes (e.g., double, struct) and dimensions, allowing curators to understand the file content without needing a MATLAB license.</span>
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="fu">## Common Curation Challenges</span></span>
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Missing Metadata:** Binary files are "black boxes" without proper internal documentation. We emphasize the importance of checking for attributes like <span class="in">`units`</span> and <span class="in">`standard_name`</span>.</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Proprietary Dependencies:** While HDF5 and NetCDF are open, MATLAB files can be proprietary. We help identify the version and contents to assess long-term accessibility.</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Proprietary Dependencies:** While HDF5 and NetCDF are open, MATLAB files are proprietary. We help identify the version and contents to assess long-term accessibility.</span>
 <span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Large Data Volumes:** These files can be massive. Our tools are designed to inspect headers and metadata without loading the entire dataset into memory.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
