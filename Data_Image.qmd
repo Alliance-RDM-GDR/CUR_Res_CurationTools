@@ -14,13 +14,10 @@ Images are a primary data source in fields ranging from digital humanities to mi
 
 ## Supported Formats
 
-We support a wide range of standard image formats including:
--   **JPEG (`.jpg`):** Standard for photography.
--   **TIFF (`.tif`):** Standard for archival and high-quality imaging.
--   **PNG (`.png`):** Standard for lossless web graphics.
+We support a wide range of standard image formats including: - **JPEG (`.jpg`):** Standard for photography. - **TIFF (`.tif`):** Standard for archival and high-quality imaging. - **PNG (`.png`):** Standard for lossless web graphics.
 
 ## Common Curation Challenges
 
 -   **Hidden Metadata:** Images often contain embedded information (EXIF) that the creator is unaware of. This can pose privacy risks (e.g., GPS tags) or provide valuable context (e.g., capture date). We make this invisible data visible.
--   **Compression Artifacts:** Repeated saving in lossy formats like JPEG degrades quality. We help identify the file format and properties to assess suitability for preservation.
+-   **Compression Artifacts:** Repeated saving in lossy formats like JPEG degrades quality. We check the file format and properties to identify potential issues for long-term re-use.
 -   **Color Profiles:** Missing color profiles can lead to inconsistent display across devices. We check for the presence of ICC profiles.

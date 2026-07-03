@@ -10,7 +10,7 @@ Unlike tabular data, structured data formats like JSON and XML allow for complex
 
 1.  **Hierarchy Visualization:** We map the nested structure of the files to understand the depth and complexity of the data.
 2.  **Schema Validation:** We check if the files conform to a standard structure or if they vary wildly within the dataset.
-3.  **Metadata Extraction:** We identify key keys, tags, and attributes that define the data's content.
+3.  **Metadata Extraction:** We identify keys, tags, and attributes that define the data's content.
 
 ## Supported Formats
 
@@ -20,7 +20,7 @@ JavaScript Object Notation (JSON) is the de facto standard for modern web APIs a
 
 ### XML (`.xml`)
 
-Extensible Markup Language (XML) is a robust, mature standard used heavily in document storage, scientific metadata, and enterprise systems. - **Our Approach:** We parse the document tree to identify the root element, count child nodes, and extract attributes. We also check for well-formedness to ensure the files can be processed by standard parsers.
+Extensible Markup Language (XML) is a robust, mature standard used heavily in document storage, scientific metadata, and enterprise systems. - **Our Approach:** We parse the document tree to identify the root element, count child nodes, and extract attributes. We also check to ensure the files can be processed by standard parsers.
 
 ## Common Curation Challenges
 

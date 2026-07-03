@@ -14,13 +14,13 @@ params:
 
 ## Overview
 
-MAT-files are the proprietary binary data container format used by MATLAB. They are widely used in engineering and science but pose a significant challenge for long-term preservation.
+MAT-files are the proprietary binary data container format used by MATLAB. They are widely used in engineering but pose a significant challenge for long-term preservation.
 
 ::: {.callout-note title="Curation Goal"}
 Identify file versions and inventory internal variables. Our objective is to distinguish between classic Level 5 (v5) files and modern Level 7.3 (HDF5-based) files, ensuring the correct open-source libraries are used for long-term access.
 :::
 
-::: {.callout-warning title="Preservation Risk"}
+::: {.callout-warning title="Identifying Risks"}
 Proprietary format lock-in is a major risk. Version 7.3 files require specialized HDF5 parsers, while older versions are opaque without MATLAB or compatible open-source alternatives like GNU Octave.
 :::
 
@@ -210,7 +210,7 @@ print(paste("Extracted", nrow(results), "objects from", length(unique(results$fi
 head(results, 10)
 ```
 
-## Exports results
+## Export results
 
 ```{r}
 #| label: save-results
@@ -226,13 +226,13 @@ print(paste("Report saved to:", output_file))
 
 ## Curation Insights
 
-Use the generated CSV report to guide your preservation actions:
+Use the generated CSV report to guide your curation actions:
 
--   **Format Obsolescence (v5 vs v7.3):** The version column identifies the file architecture. v7.3 are essentially HDF5 files. They require specialized libraries (rhdf5 in R, h5py in Python) to read. Consider creating a Codebook that maps the HDF5 paths (e.g., /group1/dataset_A) to their scientific meaning.
+-   **Format Obsolescence (v5 vs v7.3):** The version column identifies the file architecture. v7.3 are essentially HDF5 files, but still require specialized libraries (rhdf5 in R, h5py in Python) to read. Consider creating a codebook that maps the HDF5 paths (e.g., /group1/dataset_A) to their scientific meaning.
 
--   **Workspace Dumps:** Files with high object counts (\>50) and generic names (var1, temp, data_copy) are likely RAM demanding. These files request a data dictionary or a cleaned version containing only the final variables.
+-   **Workspace Dumps:** Files with high object counts (\>50) and generic names (var1, temp, data_copy) are likely RAM demanding. Consider requesting a data dictionary (if not already present in the dataset), or a cleaned version containing only the final variables.
 
--   **Complex Structures (H5T_COMPOUND):** In v7.3 files, H5T_COMPOUND indicates complex nested tables (structs). These are difficult to convert to CSV. Recommend converting these specific tables to JSON or separate CSVs to preserve the hierarchy.
+-   **Complex Structures (H5T_COMPOUND):** In v7.3 files, H5T_COMPOUND indicates complex nested tables (structs). These are difficult to convert to CSV. If you are converting files, consider converting these specific tables to JSON or separate CSVs to preserve the hierarchy.
 
 ### Notes and limitations
 

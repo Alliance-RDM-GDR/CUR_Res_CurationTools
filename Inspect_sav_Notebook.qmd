@@ -18,10 +18,10 @@ params:
 Unlike generic formats like CSV, SPSS files (`.sav`) utilize a **"Labelled Data"** paradigm where the codebook is embedded directly within the file [@wickham2023].
 
 ::: {.callout-note title="Curation Goal"}
-Extract and preserve the embedded codebook. Our objective is to inventory variable labels, value mappings, and missing value definitions to ensure the data's semantic meaning is not lost during long-term preservation.
+Extract the embedded codebook. Our objective is to inventory variable labels, value mappings, and missing value definitions to ensure the data's semantic meaning is not lost over time.
 :::
 
-::: {.callout-warning title="Preservation Risk"}
+::: {.callout-warning title="Identifying Risks"}
 The accidental loss of "Missing Value" definitions during conversion is a critical risk. If placeholder codes (e.g., `-99`, `999`) are not explicitly identified, they may be mistaken for valid numeric measurements, leading to biased statistical results.
 :::
 
@@ -29,13 +29,15 @@ The accidental loss of "Missing Value" definitions during conversion is a critic
 
 1.  **Dictionary Extraction:** Inventorying human-readable labels and value mappings.
 2.  **Missing Value Inventory:** Explicitly listing codes that should be treated as Nulls.
-3.  **Encoding Scan:** Checking for character corruption (Mojibake) in older datasets.
+3.  **Encoding Scan:** Checking for character corruption in older datasets.
 
 ## Setup
 
-We use the `haven` package to read SPSS files. It is specifically designed to handle the "labelled" vectors that are unique to statistical software like SPSS, SAS, and Stata.If you do not have the required packages, run this command once in your R console:
+We use the `haven` package to read SPSS files. It is specifically designed to handle the labelled vectors that are unique to statistical software like SPSS, SAS, and Stata. 
 
 ### R Packages
+
+If you do not have the required packages, run this command once in your R console:
 
 ```{r}
 # install.packages(c("tidyverse", "haven", "rstudioapi", "stringr"))
@@ -216,7 +218,7 @@ Use the generated CSV to perform these checks:
 
 ## Additional Tools
 
--   **PSPP:** I is an [open-source alternative](https://www.gnu.org/software/pspp/) to IBM SPSS Statistics. It allows curators to verify .sav files and provides a command-line interface for batch conversion without requiring a proprietary license.
+-   **PSPP:** An [open-source alternative](https://www.gnu.org/software/pspp/) to IBM SPSS Statistics. It allows curators to verify .sav files and provides a command-line interface for batch conversion without requiring a proprietary license.
 
 -   **StatTransfer:** A [commercial tool](https://stattransfer.com/) for converting between statistical formats (SAS, SPSS, Stata, R). It is effective at preserving missing value definitions and variable labels during migration.
 

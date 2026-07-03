@@ -8,18 +8,18 @@ Geospatial data connects information to specific locations on the Earth's surfac
 
 **Key Objectives:**
 
-1.  **CRS Verification:** We check if the Coordinate Reference System is defined (e.g., EPSG codes). Data without a CRS is just a drawing; it cannot be placed on a map.
+1.  **CRS Verification:** We check if the Coordinate Reference System is defined (e.g., EPSG codes). Data without a CRS are just a drawing; they cannot be placed on a map.
 2.  **Layer Inspection:** We list the vector layers or raster bands contained within the file.
 3.  **Feature Counting:** We verify the number of geometric features (points, lines, polygons) to ensure data completeness.
 
 ## Supported Formats
 
 ### GeoPackage (`.gpkg`)
-GeoPackage is the modern, open standard for geospatial data, designed to replace the legacy Shapefile. It is a SQLite container that can hold vector features, tile matrix sets, and attributes.
--   **Our Approach:** We connect to the internal database to list layers, check geometry types, and verify the spatial reference system.
+
+GeoPackage is an open standard for geospatial data. It is a SQLite container that can hold vector features, tile matrix sets, and attributes. - **Our Approach:** We connect to the internal database to list layers, check geometry types, and verify the spatial reference system.
 
 ## Common Curation Challenges
 
 -   **Undefined CRS:** The most common issue in geospatial curation. If the projection is missing, the data cannot be integrated with other layers.
--   **Legacy Formats:** While we focus on GeoPackage, curators often encounter Shapefiles. We encourage conversion to GeoPackage for better long-term preservation.
+<!-- -   **Legacy Formats:** While we focus on GeoPackage, curators often encounter Shapefiles. We encourage conversion to GeoPackage for better long-term preservation. -->
 -   **Geometry Errors:** Self-intersecting polygons or unclosed rings can cause analysis failures. Our tools provide a high-level check of feature validity.

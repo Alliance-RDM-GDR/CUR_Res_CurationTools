@@ -35,19 +35,23 @@ The simplicity of CSV is its greatest risk. Lack of strict schema enforcement of
 3.  **Content Profiling:** Generate statistical summaries to validate semantic meaning.
 4.  **Privacy Screening:** Scan for Personally Identifiable Information (PII).
 
-// 
+//
 
 **Objectifs de la curation :**
 
 1.  **Conformité au format :** Vérifier que les fichiers utilisent l'encodage standard UTF-8.
+
 2.  **Intégrité structurelle :** Détecter les anomalies dans les données, telles que les lignes en double ou les formes non rectangulaires.
+
 3.  **Profilage du contenu :** Générer des résumés statistiques pour valider la signification sémantique.
-4.  **Contrôle de confidentialité :** Rechercher les informations personnelles identifiables (IPI).
-------------------------------------------------------------------------
+
+4.  
+
+    ## **Contrôle de confidentialité :** Rechercher les informations personnelles identifiables (IPI).
 
 ## Setup // Configuration
 
-We utilize `tidyverse` for data manipulation, `skimr` for detailed profiling, and `DT` for interactive result exploration. 
+We utilize `tidyverse` for data manipulation, `skimr` for detailed profiling, and `DT` for interactive result exploration.
 
 //
 
@@ -57,7 +61,7 @@ Nous utilisons `tidyverse` pour la manipulation des données, `skimr` pour l'ana
 
 The following R packages are required. If you don't have these packages, uncomment this code and run it once in your R console:
 
-// 
+//
 
 Les packages R suivants sont requis. Si vous ne disposez pas de ces packages, décommentez ce code et exécutez-le une fois dans votre console R :
 
@@ -85,7 +89,7 @@ library(rstudioapi)
 
 First, we select the directory to analyze and find `.csv` files within it.
 
-// 
+//
 
 Tout d'abord, nous sélectionnons le répertoire à analyser afin d'y rechercher les fichiers `.csv`.
 
@@ -109,7 +113,7 @@ message("Analyzing directory: ", target_dir)
 
 We locate all .csv files and extract basic filesystem metadata (size, modification date).
 
-// 
+//
 
 Nous localisons tous les fichiers .csv et extrayons les métadonnées de base du système de fichiers (taille, date de modification).
 
@@ -234,7 +238,7 @@ if (length(csv_files) > 0) {
 
 We visualize the dimensions of the datasets. This helps identify outliers (e.g., empty files or unexpectedly small files in a time series).
 
-// 
+//
 
 Nous visualisons les dimensions des ensembles de données. Cela permet d'identifier les valeurs aberrantes (par exemple, des fichiers vides ou des fichiers d'une taille inhabituellement petite dans une série chronologique).
 
@@ -355,7 +359,6 @@ message("2. ", profile_file)
 -   **Hygiène de l'encodage :** les fichiers utilisant des encodages tels que ISO-8859-1 doivent être convertis en UTF-8 afin de garantir leur accessibilité à long terme.
 
 -   **Confidentialité :** Si PII_Risk est TRUE, le fichier nécessite une vérification manuelle. La publication de données à caractère personnel brutes (telles que des adresses e-mail) constitue une grave violation éthique et juridique.
-
 
 ## Additional Tools for Researchers // Outils supplémentaires pour les chercheurs
 

@@ -4,7 +4,7 @@ title: "Tabular Data"
 
 ## Overview
 
-Tabular data is one of the most common forms of research data, organizing information into rows and columns. This section covers tools for inspecting and curating tabular data across a variety of formats, from open standards like CSV to proprietary formats used by statistical software.
+Tabular data is one of the most common forms of research data, organizing information into rows and columns. This section covers tools for inspecting and curating tabular data across a variety of formats, from open formats like CSV to proprietary formats used by statistical software.
 
 **Key Objectives:**
 
@@ -19,7 +19,7 @@ We provide specialized notebooks for the following formats:
 ### Open Standards
 
 -   **CSV (`.csv`):** The most widely used format for exchange. We check for encoding (UTF-8), delimiters, and header consistency.
--   **Excel (`.xlsx`, `.xls`):** Ubiquitous in business and research. We inspect multiple sheets, hidden columns, and potential formatting issues.
+-   **Excel (`.xlsx`):** Ubiquitous in business and research. We inspect multiple sheets, hidden columns, and potential formatting issues.
 
 ### Statistical Software
 

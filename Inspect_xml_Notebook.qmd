@@ -15,13 +15,13 @@ params:
 
 ## Overview
 
-XML (Extensible Markup Language) is a standard for storing structured data. In curation, we distinguish between "well-formedness" and "validity."
+XML (Extensible Markup Language) is a standard for storing structured data. Here, we distinguish between "well-formedness" (file can be parsed) and "validity" (schema is consistent within and between files).
 
 ::: {.callout-note title="Curation Goal"}
 Ensure structural and semantic validity. Our objective is to verify that XML files are syntactically well-formed and conform to specific schemas (XSD), ensuring metadata adheres to community standards like DDI, TEI, or Dublin Core.
 :::
 
-::: {.callout-warning title="Preservation Risk"}
+::: {.callout-warning title="Identifying Risks"}
 Broken nesting structures, missing namespaces, and "XML Bombs" (recursive expansion risks) can crash archival parsers and lead to the permanent loss of structural context.
 :::
 
@@ -209,13 +209,13 @@ print(paste("Report saved to:", output_file))
 
 ## Curation Insights
 
-Use the generated CSV to guide your preservation actions:
+Use the generated CSV to guide your curation actions:
 
--   **Status ("Parsing Failed"):** If the parsing fails, it may implicate the files are corrupted or contain syntax errors (e.g., unclosed tags). Curators may need to discuss with depositors the validity of these files.
+-   **Status ("Parsing Failed"):** If the parsing fails, it may mean the files are corrupted or contain syntax errors (e.g., unclosed tags). Check against the source files and discuss with the depositor; you may need to request fresh files if they didn't transfer properly.
 
--   **Namespaces (Namespaces):** It is avisable to look for standard prefixes like dc (Dublin Core) or mods. If a specific standard is detected, verify if the file strictly adheres to it (Schema Validation) .
+-   **Namespaces (Namespaces):** Check for standard prefixes like dc (Dublin Core) or mods. If a specific standard is detected, verify if the file adheres to the designated schema.
 
--   **Complexity (MaxDepth \> 50):** Deeply nested XMLs can be difficult to process with standard XSLT tools. Curators can investigate these files manually.
+-   **Complexity (MaxDepth \> 50):** Deeply nested XMLs can be difficult to process with standard XSLT tools. You may need to investigate these files manually.
 
 ## Additional Tools
 

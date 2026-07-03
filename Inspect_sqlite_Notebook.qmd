@@ -20,7 +20,7 @@ params:
 From a curation perspective, SQLite is a highly sustainable format. [The Library of Congress](https://www.loc.gov/preservation/digital/formats/fdd/fdd000461.shtml) lists it as a preferred format for datasets due to its open specification and long-term stability. Our goal is to "unbox" the database to ensure all tables are documented and accessible.
 :::
 
-::: {.callout-warning title="Preservation Risk"}
+::: {.callout-warning title="Identifying Risks"}
 "Self-Contained" does not imply "Self-Documenting." A curator receiving a `.db` file often faces a **Black Box**. Without a schema map, relationships between tables (Foreign Keys) can be lost, making the data contextually unusable.
 :::
 
@@ -106,7 +106,7 @@ if (length(db_files) > 0) {
 
 ## Archival Reporting
 
-We save the database manifest to support long-term preservation documentation.
+We save the database manifest as supplementary documentation to support long-term re-use of the dataset.
 
 ```{r}
 #| label: save-results

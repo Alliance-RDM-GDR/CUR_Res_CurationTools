@@ -9,7 +9,7 @@ Documentation is the backbone of reproducible research. README files, codebooks,
 **Key Objectives:**
 
 1.  **Accessibility (OCR):** Ensure PDF documents contain searchable text, not just scanned images.
-2.  **Archival Formats:** Verify that documents are saved in stable, open formats (e.g., PDF/A for PDFs, UTF-8 text for READMEs).
+2.  **Preservation Friendly Formats:** Verify that documents are saved in stable, open formats (e.g., PDF/A for PDFs, UTF-8 text for READMEs).
 3.  **Metadata:** Extract embedded metadata (Author, Title) to ensure it matches the dataset description.
 4.  **Encoding:** Ensure plain text files use standard UTF-8 encoding to prevent "mojibake" (garbled characters).
 
@@ -22,4 +22,4 @@ Documentation is the backbone of reproducible research. README files, codebooks,
 
 -   **"Dead" PDFs:** Scanned documents that look like text but are actually images. These cannot be searched or indexed.
 -   **Proprietary Encodings:** Text files saved in Windows-1252 or MacRoman often display incorrectly on other systems.
--   **Broken Links:** Documentation often references external URLs that may no longer exist.
+-   **Broken Links:** Documentation may reference external URLs that no longer exist.

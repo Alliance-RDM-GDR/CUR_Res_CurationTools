@@ -12,26 +12,26 @@ params:
 
 ## Overview
 
-This notebook inspects **GeoPackage (`.gpkg`)** files—an open, standards-based, and self-describing format for transferring geospatial information.
+This notebook inspects **GeoPackage (`.gpkg`)** files—an open, standards-based, and self-describing format for geospatial information.
 
 ::: {.callout-note title="Curation Goal"}
 Validate structural and spatial integrity. Our objective is to inventory the layers within the GeoPackage database, verify Coordinate Reference Systems (CRS), and ensure all geometries conform to the Simple Features standard (ISO 19125).
 :::
 
-::: {.callout-warning title="Preservation Risk"}
+::: {.callout-warning title="Identifying Risks"}
 GeoPackage eliminates the multi-file fragility of Shapefiles. However, a missing CRS is a primary cause of non-reproducibility in spatial analysis, as it prevents data from correctly aligning with other map layers [@obe2021].
 :::
 
 **Curation Objectives:**
 
-1.  **CRS Validation:** Ensuring every layer has a defined coordinate system.
-2.  **Layer Inventory:** Mapping all datasets stored within the container.
-3.  **Geometry Profiling:** Determining topological types and feature counts.
-4.  **Standard Compliance:** Detecting invalid geometries (e.g., self-intersecting lines).
+1.  **CRS Validation:** Confirm every layer has a defined coordinate system.
+2.  **Layer Inventory:** Map all datasets stored within the container.
+3.  **Geometry Profiling:** Determine topological types and feature counts.
+4.  **Standard Compliance:** Detect invalid geometries (e.g., self-intersecting lines).
 
 ## Setup
 
-We utilize the **`sf`** package [@sf] for structural analysis, which provides an R implementation of the Simple Features standard [@pebesma2018] and `tmap`[@tmap] for thematic mapping. For visual inspection, we use **`leaflet`** [@leaflet].
+We use the **`sf`** package [@sf] for structural analysis, which provides an R implementation of the Simple Features standard [@pebesma2018] and `tmap`[@tmap] for thematic mapping. For visual inspection, we use **`leaflet`** [@leaflet].
 
 ### R Packages
 
@@ -65,7 +65,7 @@ if (!require("sf", quietly = TRUE)) {
 
 ## Batch Inventory
 
-A GeoPackage is a database that may contain multiple datasets. We rely on sf::st_layers(), which queries the SQLite metadata tables without loading the actual geometry. This allows for rapid scanning of large archives.
+A GeoPackage is a database that may contain multiple datasets. We use the st_layers() function in the sf package to query the SQLite metadata tables without loading the actual geometry. This allows for rapid scanning of large archives.
 
 ### Select Target Directory
 
@@ -109,9 +109,9 @@ message("Found ", length(gpkg_files), " GeoPackage files.")
 
 ## Batch Layer Analysis
 
-A GeoPackage is technically a relational database (SQLite). Therefore, we cannot simply "read the file"; we must query it to list its Layers (tables). The st_layers() function retrieves metadata without loading the heavy geometry data into memory.
+A GeoPackage is technically a relational database (SQLite). Therefore, we cannot simply "read the file"; we must query it to list its layers (tables). The st_layers() function retrieves metadata without loading the heavy geometry data into memory.
 
-**Key Metrics Extracted:**
+**Information Extracted:**
 
 -   **Layer Name:** The identifier within the database.
 
@@ -343,15 +343,15 @@ Based on the analysis above, curators should look for the following risks:
 
 -   **Missing CRS:** If the CRS column in Table 1 is "Missing" or NA, the file is technically incomplete. Without a CRS, the data cannot be reliably combined with other datasets.
 
--   **Geometry Validity:** The sf package enforces strict topological rules (e.g., polygon lines cannot cross themselves). If st_read throws an error, the geometry is likely invalid and may require repair in QGIS..
+-   **Geometry Validity:** The sf package enforces strict topological rules (e.g., polygon lines cannot cross themselves). If st_read throws an error, the geometry is likely invalid and may require repair in QGIS.
 
--   **Empty Layers:** Layers with Features = 0 are often artifacts of a failed export process and should be flagged for removal or documentation.
+-   **Empty Layers:** Layers with Features = 0 may be artifacts of a failed export process and should be flagged for removal or documentation. Confirm with the depositor that these featureless layers are correct.
 
 ## Additional tools
 
 While R is excellent for detection, other tools are often better suited for repairing geospatial data. Curators should be aware of:
 
--   **QGIS (Desktop GIS Software):** is a free, open-source, and extremely powerful Geographic Information System. It's the industry standard for working with geospatial data outside of an programming environment (https://qgis.org).
+-   **QGIS (Desktop GIS Software):** is a free, open-source, and powerful Geographic Information System. It's the industry standard for working with geospatial data outside of an programming environment (https://qgis.org).
 
 -   **DB Browser for SQLite (Database Tool):** Since a `.gpkg` file is fundamentally an SQLite database, you can use a database browser to inspect its raw structure (https://sqlitebrowser.org/).
 

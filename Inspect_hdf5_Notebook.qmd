@@ -14,20 +14,20 @@ params:
 
 ## Overview
 
-This notebook audits **Hierarchical Data Format version 5 (HDF5)** files (`.h5`, `.hdf5`). Unlike flat text files, [HDF5](https://support.hdfgroup.org/documentation/hdf5/latest/_h5_d_m__u_g.html) is a binary container that functions like a hard drive, capable of storing complex hierarchies of data within a single object.
+This notebook checks **Hierarchical Data Format version 5 (HDF5)** files (`.h5`, `.hdf5`). Unlike flat text files, [HDF5](https://support.hdfgroup.org/documentation/hdf5/latest/_h5_d_m__u_g.html) is a binary container that functions like a hard drive, capable of storing complex hierarchies of data within a single object.
 
 ::: {.callout-note title="Curation Goal"}
-Map the internal "filesystem-like" structure. Our objective is to inventory groups, datasets, and attributes, ensuring that the internal hierarchy is well-documented and remains navigable for future research.
+Map the internal filesystem-like structure to inventory groups, datasets, and attributes, ensuring that the internal hierarchy is well-documented and remains navigable for future research.
 :::
 
-::: {.callout-warning title="Preservation Risk"}
-HDF5 is a "Black Box." Data can be locked behind proprietary compression filters or rely on external links that break when files are moved. Without specific documentation, the internal layout is effectively invisible to standard archival tools.
+::: {.callout-warning title="Identifying Risks"}
+As a binary format, HDF5 is a black box. Data can be locked behind proprietary compression filters or rely on external links that break when files are moved. Without appropriate documentation, the internal layout is effectively invisible to standard archival tools.
 :::
 
 **Curation Objectives:**
 
 1.  **Inventory:** Map the internal directory structure (Groups vs. Datasets).
-2.  **Dependencies:** Detect required compression libraries (e.g., GZIP vs. Proprietary).
+2.  **Dependencies:** Detect required compression libraries (e.g., GZIP vs. proprietary).
 3.  **Integrity:** Identify external links that may break if files are moved.
 4.  **Metadata Extraction:** Verify that the data is self-describing through internal attributes.
 
@@ -248,7 +248,7 @@ if (exists("report") && nrow(report) > 0) {
       geom_bar(fill = "#4C78A8") +
       labs(
         title = "Compression Filters in Use",
-        subtitle = "'None' or 'GZIP' are preferred. Custom filters (e.g., LZF) require plugins.",
+        subtitle = "'None' or 'GZIP' are preferred. Custom filters (e.g., LZF) may require plugins.",
         x = "Compression Filter",
         y = "Number of Datasets"
       ) +
@@ -283,11 +283,11 @@ print(paste("Data Dictionary saved to:", output_file))
 
 Use the generated CSV to perform these checks:
 
--   **Proprietary Compression:** If the Compression column lists "SZIP" (Science Data Process) or "LZF," standard tools may fail to open the file in the future. GZIP (Deflate) is the safest standard.
+-   **Proprietary Compression:** If the Compression column lists "SZIP" (Science Data Process) or "LZF", standard tools may fail to open the file in the future. GZIP (Deflate) is the safest standard (lossless and open).
 
--   **External Links:** If Type is EXTERNAL_LINK, the file is not self-contained. It relies on a "target file" that must also be present in the directory. If missing, the link is broken.
+-   **External Links:** If Type is EXTERNAL_LINK, the file is not self-contained. It relies on a target file that must also be present in the directory. If missing, the link is broken. Check the remaining files in the dataset to confirm the target file is included. If it is not present, contact the depositor to discuss.
 
--   **Attribute Metadata:** HDF5 is "Self-Describing" only if the researcher adds attributes. If the Attributes column is empty for major datasets, the data units (e.g., "Meters" vs "Feet") are unknown.
+-   **Attribute Metadata:** HDF5 is "Self-Describing" only if the researcher adds attributes. If the Attributes column is empty for major datasets, the data units (e.g., "Meters" vs "Feet") are unknown without additional documentation outside the file. Check for this documentation in the rest of the dataset (e.g. README, data dictionary, codebook) or contact the depositor to request this information.
 
 ## Additional Tools & Resources
 
@@ -295,9 +295,9 @@ While R is excellent for scripted inspection, visual tools are often better for 
 
 -   **HDFView:** The official Java-based visual browser maintained by The HDF Group. It allows you to click through the hierarchy, plot simple graphs, and edit attributes manually (see https://hdfgroup.org/downloads/hdfview/).
 
--   **h5dump (Command Line):** A [utility](https://support.hdfgroup.org/documentation/hdf5/latest/_h5_t_o_o_l__d_p__u_g.html) that converts binary HDF5 content into human-readable text (ASCII or XML). It is essential for generating archival "dumps" of metadata.
+-   **h5dump (Command Line):** A [utility](https://support.hdfgroup.org/documentation/hdf5/latest/_h5_t_o_o_l__d_p__u_g.html) that converts binary HDF5 content into human-readable text (ASCII or XML). It is helpful for generating archival dumps of metadata.
 
--   **Panoply:** A cross-platform [data viewer](https://www.giss.nasa.gov/tools/panoply/) specifically for HDF5/NetCDF files that adhere to climate standards (CF Conventions).
+-   **Panoply:** A cross-platform [data viewer](https://www.giss.nasa.gov/tools/panoply/) specifically for HDF5 and NetCDF files that adheres to climate standards (CF Conventions).
 
 ## Using the Non-Interactive R Script
 

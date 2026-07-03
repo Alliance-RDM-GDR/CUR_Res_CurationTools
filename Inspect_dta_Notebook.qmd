@@ -14,13 +14,13 @@ params:
 
 ## Overview
 
-This notebook inspects **Stata (`.dta`)** files. Unlike simple text formats, Stata files are "self-describing" binary containers that bundle raw data with extensive metadata.
+This notebook inspects **Stata (`.dta`)** files. Unlike simple text formats, Stata files are self-describing binary containers that bundle raw data with extensive metadata.
 
 ::: {.callout-note title="Curation Goal"}
-Quantify "metadata richness" and archival readiness. Our objective is to extract embedded variable labels and "Extended Missing Values" (e.g., `.a`, `.b`) to ensure the dataset remains contextually usable after preservation.
+Quantify metadata richness and archival readiness. We want to extract embedded variable labels and "Extended Missing Values" (e.g., `.a`, `.b`) to ensure the dataset remains contextually usable.
 :::
 
-::: {.callout-warning title="Preservation Risk"}
+::: {.callout-warning title="Identifying Risks"}
 Proprietary lock-in is a primary concern. Furthermore, Stata's unique extended missing values are frequently lost when files are blindly converted to CSV, leading to data degradation if not properly documented.
 :::
 
@@ -197,7 +197,7 @@ if (length(dta_files) > 0) {
 
 ## Data Dictionary
 
-To facilitate curation, we extract the full schema of the dataset. This creates a "Codebook" in CSV format, listing every variable name alongside its internal label. This allows curators to check for consistency across years (e.g., ensuring Q1 always means "Age") without opening Stata.
+To facilitate curation, we extract the full schema of the dataset. This creates a codebook in CSV format, listing every variable name alongside its internal label. This allows curators to check for consistency across files (e.g., ensuring Q1 always means "Age") without opening Stata.
 
 ```{r}
 #| label: generate-dictionary
@@ -264,19 +264,19 @@ message("2. ", dict_file)
 
 ## Curation Insights
 
--   **Documentation Quality:** If Label_Coverage_Pct is low (\< 50%), the dataset is "Orphaned Data." Without an external PDF codebook, the variables v1, v2, etc., are meaningless.
+-   **Documentation Quality:** If Label_Coverage_Pct is low (\< 50%), the dataset may contain orphaned (undescribed and unknowable) data. Without an external codebook or data dictionary, the variables v1, v2, etc., risk losing meaningful value. Look for a codebook or data dictionary in the dataset, or request one from the depositor.
 
--   **Preservation Strategy:** If the file contains Value Labels (e.g., 1=Male), converting it to a plain CSV will result in data loss (you get 1, not Male). You must generate a setup script (R/SPSS/SAS) or use a format like CSV + DDI to preserve these mappings.
+-   **Information Retention:** If the file contains Value Labels (e.g., 1=Male), converting it to a plain CSV will result in data loss (you get 1, not Male). Consider generating a setup script (R/SPSS/SAS) or using a complementary pair of formats like CSV + DDI xml to retain these mappings if you convert the stata files to csv.
 
--   **Privacy:** Stata files often contain string variables with open-ended survey responses. If PII_Risk is flagged, these columns must be manually reviewed for names or emails.
+-   **Privacy:** Stata files often contain string variables with open-ended survey responses. If PII_Risk is flagged, these columns should be manually reviewed for names, emails, and other identifiers.
 
-## Additional Tool
+## Additional Tools
 
 Curators often need specialized tools to manage the transition from proprietary Stata files to open preservation formats.
 
--   **Stat/Transfer:** The industry-standard software for high-fidelity conversion between statistical formats (Stata, SPSS, SAS, R) while preserving variable labels and missing values (https://stattransfer.com).
+-   **Stat/Transfer:** A [commercial tool](https://stattransfer.com/) for converting between statistical formats (SAS, SPSS, Stata, R). It is effective at preserving missing value definitions and variable labels during migration.
 
--   **Colectica / DDI:** A suite of tools for documenting data using the Data Documentation Initiative (DDI) standard. It allows you to extract Stata metadata into XML for long-term archiving (https://colectica.com).
+-   **Colectica / DDI:** A suite of tools for documenting data using the Data Documentation Initiative (DDI) standard. It allows you to extract Stata metadata into XML for long-term use (https://colectica.com).
 
 -   **sjlabelled (R Package):** A powerful [R toolkit](https://cran.r-project.org/web/packages/sjlabelled/index.html) for dealing with labelled data. It allows you to modify, remove, or standardize variable labels programmatically [@lüdecke2018].
 

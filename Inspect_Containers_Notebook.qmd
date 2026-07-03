@@ -15,13 +15,13 @@ bibliography: references.bib
 
 ## Overview
 
-Curators often receive data packaged in containers like **ZIP**, **TAR**, or **7-Zip**. While convenient for transfer, these formats are "black boxes" that hide potential preservation risks.
+Curators often receive data packaged in containers like **ZIP**, **TAR**, or **7-Zip**. While convenient for transfer, these formats are "black boxes" that can hide potential data security risks.
 
 ::: {.callout-note title="Curation Goal"}
-"Peek" inside compressed containers without full extraction. Our objective is to inventory contents, verify file integrity, and identify nested structures to ensure all data remains discoverable and accessible.
+Peek inside compressed containers without full extraction. Our objective is to inventory contents, verify file integrity, and identify nested structures to ensure all data remains discoverable and accessible.
 :::
 
-::: {.callout-warning title="Preservation Risk"}
+::: {.callout-warning title="Identifying Risks"}
 Archives are prone to bit-rot; a single corrupted bit in a solid archive can render the entire dataset unreadable. Furthermore, "Zip Bombs" can crash curation workstations, and nested archives often defy automated indexing systems.
 :::
 
@@ -60,7 +60,7 @@ library(rstudioapi)
 
 ## Select Target Directory
 
-Select the folder containing the TiFF files.
+Select the folder containing the archive files (e.g. zip, tar, gz, 7z).
 
 **Note:** If running interactively, a dialog box will appear. Otherwise, it defaults to the target_dir parameter.
 
@@ -85,7 +85,7 @@ print(paste("Analyzing directory:", target_dir))
 
 ## Inventory of files
 
-We scan for `.tif` and `.tiff` files.
+We scan for `.zip`, `.tar`, `.gz`, `.7z`, and `.rar` files.
 
 ```{r}
 #| label: inventory
@@ -227,7 +227,7 @@ Use this report to ensure safety before ingesting:
 
 -   **Status "Corrupt/Unreadable":** This implies the container header may be broken and the data inside is likely lost. Request a re-transfer from the depositor.
 
--   **HasNestedArchives = TRUE:** Preservation tools often fail to index "Zip inside a Zip." In this case, the curator must unpack the outer layer and archive the inner files directly to ensure discoverability.
+-   **HasNestedArchives = TRUE:** There is extra complexity in properly reviewing a Zip inside a Zip. If the above cautions are clear, then unpack the outer layer and review the inner archive formats directly. Consider discussing with the depositor ways to re-organize or re-package the dataset so that nested archive formats aren't needed.
 
 ## Additional Tools
 

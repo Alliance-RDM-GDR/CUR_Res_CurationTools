@@ -14,16 +14,16 @@ params:
 
 ## Overview // Aperçu
 
-This notebook provides a workflow for performing standardized quality control on image files. Images are complex digital objects composed of technical properties and embedded metadata (EXIF/IPTC). 
+This notebook provides a workflow for performing standardized quality control on image files. Images are complex digital objects composed of technical properties and embedded metadata (EXIF/IPTC).
 
-// 
+//
 
 Ce cahier de travail présente une procédure permettant d'effectuer un contrôle qualité standardisé sur des fichiers image. Les images sont des objets numériques complexes composés de propriétés techniques et de métadonnées intégrées (EXIF/IPTC).
 
 ::: {.callout-note title="Curation Goal // Objectif de la curation"}
 Perform standardized quality control and metadata harvesting. Our objective is to validate technical properties (dimensions, colorspace), calculate fixity checksums, and extract deep archival metadata to ensure long-term accessibility and provenance.
 
-// 
+//
 
 Effectuer un contrôle qualité standardisé et la collecte de métadonnées. Notre objectif est de valider les propriétés techniques (dimensions, espace colorimétrique), de calculer les sommes de contrôle de l'intégrité et d'extraire des métadonnées d'archivage approfondies afin de garantir l'accessibilité à long terme et la traçabilité des documents.
 :::
@@ -42,7 +42,7 @@ La perte de métadonnées intégrées lors de la conversion de format, la dété
 -   **`magick`**: Validating file headers and technical properties [@magick].
 -   **`exiftoolr`**: Harvesting deep metadata (Camera, GPS, Software) [@exiftoolr].
 
-// 
+//
 
 **Ce cahier intègre trois paquets R spécialisés :**
 
@@ -64,7 +64,7 @@ Avant d'exécuter ce notebook, assurez-vous que les packages R requis et le logi
 
 The following R packages are required. If you don't have these packages, uncomment this code and run it once in your R console:
 
-// 
+//
 
 Les packages R suivants sont requis. Si vous ne disposez pas de ces packages, décommentez ce code et exécutez-le une fois dans votre console R :
 
@@ -167,7 +167,7 @@ head(file_inventory)
 
 ## Technical Validation using `magick` // Validation technique à l'aide de `magick`
 
-The `magick` package allow us to confirm these files are readable and for extracting basic technical properties. This step loops through each file, reads its information, and collects it into a single table.
+The `magick` package allow us to confirm these files are readable and extract basic technical properties. This step loops through each file, reads its information, and collects it into a single table.
 
 //
 
@@ -349,7 +349,7 @@ Use the generated CSV to perform these checks:
 
 -   **Privacy Risks (GPS):** Filter the CSV for flag_privacy_gps == "HAS_GPS_DATA". These images contain embedded location coordinates (Latitude/Longitude). If the dataset involves human subjects or protected species, these coordinates must be scrubbed using ExifTool (-gps:all=) before publication to prevent "mosaic effect" re-identification. Discuss with the researcher about reducing the precision of the coordinates or removing them altogether.
 
--   **Format Obsolescence:** Check the format_magick column. While .jpg and .tiff are standard, proprietary raw formats (e.g., .CR2, .NEF, .ARW) are less stable for long-term preservation. Discuss with the researcher about transforming these files to a standard format such as TIFF or JPEG.
+-   **Format Obsolescence:** Check the format_magick column. While .png and .tiff are standard, proprietary raw formats (e.g., .CR2, .NEF, .ARW) are less stable for long-term preservation. Discuss with the researcher about transforming these files to a standard lossless format such as TIFF or PNG.
 
 -   **Digital Fixity (Duplicates):** Filter for flag_duplicate == "DUPLICATE". These files share the exact same MD5 hash, meaning they are bit-for-bit identical, even if they have different filenames.
 
@@ -359,11 +359,11 @@ Utilisez le fichier CSV généré pour effectuer les vérifications suivantes :
 
 -   **Risques liés à la confidentialité (GPS) :** Filtrez le fichier CSV en recherchant flag_privacy_gps == « HAS_GPS_DATA ». Ces images contiennent des coordonnées de localisation intégrées (latitude/longitude). Si l'ensemble de données concerne des sujets humains ou des espèces protégées, ces coordonnées doivent être effacées à l'aide d'ExifTool (-gps:all=) avant publication afin d'éviter toute réidentification par « effet de mosaïque ». Discutez avec le chercheur de la possibilité de réduire la précision des coordonnées ou de les supprimer complètement.
 
--   **Obsolescence du format :** Vérifiez la colonne format_magick. Alors que les formats .jpg et .tiff sont standard, les formats bruts propriétaires (par exemple, .CR2, .NEF, .ARW) sont moins stables pour la conservation à long terme. Discutez avec le chercheur de la possibilité de convertir ces fichiers vers un format standard tel que TIFF ou JPEG.
+-   **Obsolescence du format :** Vérifiez la colonne format_magick. Alors que les formats .png et .tiff sont standard, les formats bruts propriétaires (par exemple, .CR2, .NEF, .ARW) sont moins stables pour la conservation à long terme. Discutez avec le chercheur de la possibilité de convertir ces fichiers vers un format standard tel que TIFF ou PNG.
 
 -   **Fermeté numérique (doublons) :** Filtrez sur flag_duplicate == « DUPLICATE ». Ces fichiers partagent exactement le même hachage MD5, ce qui signifie qu’ils sont identiques bit à bit, même s’ils ont des noms de fichiers différents.
 
-## Additional Tools & Resources // Outils et ressources supplémentaires 
+## Additional Tools & Resources // Outils et ressources supplémentaires
 
 While R is excellent for batch processing and statistical summaries, visual and command-line tools are often required for deep analysis or manual correction.
 

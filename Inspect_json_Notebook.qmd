@@ -17,10 +17,10 @@ params:
 **JSON (JavaScript Object Notation)** has become the de facto standard for data interchange, replacing XML in many research workflows due to its lightweight and human-readable nature.
 
 ::: {.callout-note title="Curation Goal"}
-Validate syntactic integrity and structural complexity. Our objective is to ensure JSON files are free from trailing commas or encoding errors and to document their hierarchical depth to facilitate future data flattening and analysis.
+Validate syntactic integrity and structural complexity. We want to ensure JSON files are free from trailing commas or encoding errors and to document their hierarchical depth to facilitate future data flattening and analysis.
 :::
 
-::: {.callout-warning title="Preservation Risk"}
+::: {.callout-warning title="Identifying Risks"}
 "Structural heterogeneity"—where records in the same dataset have different fields—and extreme nesting depths without a mandatory schema often lead to data that is syntactically valid but contextually unusable [@pezoa2016].
 :::
 
@@ -227,13 +227,13 @@ print(paste("Report saved to:", output_file))
 
 ## Curation Insights
 
-Use the generated CSV report to guide your preservation actions:
+Use the generated CSV report to guide your curation actions:
 
--   **Validity Check (is_valid):** Files marked FALSE are corrupt. Common causes include "Trailing Commas" (allowed in JavaScript but forbidden in standard JSON) or truncation (incomplete download). You can validate the syntax using a linter. If truncated, attempt to recover the source. If the error is encoding-related (e.g., "Invalid char"), check if the file is saved as UTF-8.
+-   **Validity Check (is_valid):** Files marked FALSE are corrupt. Common causes include trailing commas (allowed in JavaScript but forbidden in standard JSON) or truncation (incomplete download). You can validate the syntax using a linter. If truncated, attempt to recover from the source (you may have to request the researcher to provide you with a fresh file if it didn't transfer correctly). If the error is encoding-related (e.g., "Invalid char"), check if the file is saved as UTF-8.
 
--   **Structure Check (structure_type):** Files identified as list often contain nested hierarchies that cannot be easily flattened into a table. Ensure these files are documented with a data dictionary explaining the nesting logic.
+-   **Structure Check (structure_type):** Files identified as a list often contain nested hierarchies that cannot be easily flattened into a table. Ensure these files are documented with a data dictionary explaining the nesting logic.
 
--   **Complexity Check (max_depth \> 5):** Deeply nested files are difficult for future researchers to query without specialized tools. Curation best practice suggests generating a "JSON Schema" to validate that all files in the batch adhere to the same structure.
+-   **Complexity Check (max_depth \> 5):** Deeply nested files are difficult for future researchers to query without specialized tools. Curation best practice suggests generating a "JSON Schema" to confirm that all files in the batch have the same structure.
 
 ## Additional Tools
 

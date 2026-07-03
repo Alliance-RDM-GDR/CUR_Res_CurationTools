@@ -14,13 +14,13 @@ params:
 
 ## Overview
 
-This notebook performs the initial "Triage" of a data package by inventorying file extensions.
+This notebook performs the initial triage of a data package by inventorying file extensions.
 
 ::: {.callout-note title="Curation Goal"}
 Establish an initial inventory of all file types within a submission. Our objective is to distinguish between extension-based labels and internal format signatures to identify mislabeled, obsolete, or high-risk files.
 :::
 
-::: {.callout-warning title="Preservation Risk"}
+::: {.callout-warning title="Identifying Risks"}
 A file extension is merely a textual label. Relying on it can hide malicious executables renamed as media files or proprietary formats that lack a long-term migration path [@brown2013].
 :::
 
@@ -109,7 +109,7 @@ message("Inventorying directory: ", target_dir)
 
 ## Generate File Inventory
 
-We construct a detailed table including the relative path (to locate files) and detectc risks.
+We construct a detailed table including the relative path to locate files and detect risks.
 
 Data Collected:
 
@@ -235,7 +235,7 @@ if (nrow(inventory) > 0) {
 
 ## Extension Summary and visualization
 
-We aggregate the inventory to visualize the dataset's "content profile." This helps curators identify if the submission matches the depositor's description (e.g., "They said it was images, but I see mostly .docx files").
+We aggregate the inventory to visualize the dataset's content profile. This helps curators identify if the submission matches the depositor's description (e.g., "They said it was images, but I see mostly .docx files").
 
 ```{r}
 #| label: viz-extensions
@@ -294,7 +294,7 @@ if (nrow(inventory) > 0) {
 
 ## Curation Insights
 
--   **Zero-Byte Risks:** A file with 0 bytes is technically valid in the filesystem but semantically empty. It usually indicates a failed file transfer (e.g., an FTP interruption). These must be flagged to the depositor immediately.
+-   **Zero-Byte Risks:** A file with 0 bytes is technically valid in the filesystem but semantically empty. It may indicate a failed file transfer (e.g., an FTP interruption). Check this is the case in the original deposit for this file, then check with the depositor to confirm the file is safe to remove.
 
 -   **Extension Mismatches:** If you see a generic extension like .dat or .file, the depositor may have removed the extension. Use tools like DROID (see below) to identify the true format.
 
@@ -302,13 +302,13 @@ if (nrow(inventory) > 0) {
 
 -   **Preservation vs. Access:** Distinguish between "Originals" (e.g., .wav, .tiff) and "Derivatives" (e.g., .mp3, .jpg). Ideally, the archive should preserve the uncompressed originals (see https://www.loc.gov/preservation/digital/formats/).
 
--   **Metadata Privacy:** Check the Author or GPS columns (if extracted). If these contain real names or locations for a de-identified dataset, the files must be scrubbed before publishing.
+-   **Metadata Privacy:** Check the Author or GPS columns, if extracted. Check if these contain real names or locations for a de-identified dataset, and discuss with the depositor to confirm the files can and should be scrubbed before publishing.
 
 ## Additional Tools for Researchers
 
-This notebook performs allows file identification. Foor deep indetification, curators can rely on tools maintained by national archives.
+This notebook performs some file identification. Here are some other tools for file identification.
 
--   Siegfried / DROID: The industry standard for [format identification](nationalarchives.gov.uk/information-management/manage-information/preserving-digital-records/droid/). It scans the file's binary signature (Magic Number) and matches it against PRONOM, the technical registry maintained by The National Archives UK (see https://www.itforarchivists.com/siegfried).
+-   **Siegfried / DROID:** A tool for [format identification](nationalarchives.gov.uk/information-management/manage-information/preserving-digital-records/droid/). It scans the file's binary signature (Magic Number) and matches it against PRONOM, the technical registry maintained by The National Archives UK (see https://www.itforarchivists.com/siegfried).
 
 -   **Apache Tika:** A [toolkit](tika.apache.org) that detects thousands of file types and extracts metadata (e.g., Author, Date) from within the files.
 

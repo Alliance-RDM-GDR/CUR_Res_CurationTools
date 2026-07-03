@@ -14,7 +14,7 @@ In this section, we address the fundamental first steps of data curation that ap
 
 ## Why This Matters
 
-Data curation is built on a foundation of trust. If the basic file inventory is incorrect or if files are corrupted, any subsequent analysis or preservation effort is compromised. By standardizing these initial checks, we save time and prevent errors downstream.
+Data curation is built on a foundation of trust. If the basic file inventory is incorrect or if files are corrupted, any subsequent analysis or curation effort is compromised. By standardizing these initial checks, we save time and prevent errors downstream.
 
 ## Tools in This Section
 

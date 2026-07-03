@@ -21,8 +21,8 @@ Optical Character Recognition (OCR) is the process of converting images of text 
 Bridge the gap between "dark data" (unsearchable scanned PDFs) and FAIR data. Our objective is to extract text and structure from image-based documents, ensuring they become indexable and accessible for future research.
 :::
 
-::: {.callout-warning title="Preservation Risk"}
-Image-only documents are effectively invisible to automated indexing and assistive technologies. While AI-based OCR is powerful, it introduces risks of "hallucination," privacy concerns when using cloud APIs, and dependency on proprietary service models.
+::: {.callout-warning title="Identifying Risks"}
+Image-only documents are effectively invisible to automated indexing and assistive technologies. While AI-based OCR is powerful, it introduces AI hallucination risks, privacy concerns when using cloud APIs, and dependency on proprietary service models.
 :::
 
 **Key Curation Objectives:**
@@ -286,9 +286,9 @@ if (run_ocr) {
 
 ## Curation and PII identification
 
-Now that we have extracted the text, we must analyze it for preservation risks. We will perform Content Analysis to:
+Now that we have extracted the text, we can analyze it to identify risks. We will perform Content Analysis to:
 
--   **Detect PII:** Automatically scan for sensitive patterns like Email Addresses or Social Security Numbers.
+-   **Detect PII:** Automatically scan for sensitive patterns like Email Addresses or Social Insurance Numbers.
 
 -   **Assess Quality:** Flag documents with low confidence scores (\< 85%), which usually indicate blurry scans or faint handwriting that require manual review.
 
@@ -300,13 +300,13 @@ Now that we have extracted the text, we must analyze it for preservation risks. 
 if (run_ocr && exists("ocr_results")) {
   curated_data <- ocr_results %>%
     mutate(
-      # 1. PII Regex Patterns (Emails and SSN-like formats)
+      # 1. PII Regex Patterns (Emails and SIN-like formats)
       has_email = str_detect(extracted_text, "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"),
-      has_ssn = str_detect(extracted_text, "\\b\\d{3}-\\d{2}-\\d{4}\\b"),
+      has_sin = str_detect(extracted_text, "\\b\\d{3}-\\d{3}-\\d{3}\\b"),
       
       # 2. Apply Curation Flags
       flag_low_conf = ifelse(ocr_confidence < 0.85, "LOW_CONFIDENCE", NA),
-      flag_pii = ifelse(has_email | has_ssn, "POSSIBLE_PII", NA),
+      flag_pii = ifelse(has_email | has_sin, "POSSIBLE_PII", NA),
       # Flag if the extracted text is suspiciously short (under 10 chars)
       flag_empty = ifelse(nchar(extracted_text) < 10, "NO_TEXT_EXTRACTED", NA)
     ) %>%
@@ -323,9 +323,9 @@ if (run_ocr && exists("ocr_results")) {
 
 ## Export the results
 
-The following chunck performs\_
+The following chunk performs\:
 
--   **Saves Sidecar Files:** It creates a separate .txt file for every document containing its full extracted text. This is the archival best practice you asked for.
+-   **Saves Sidecar Files:** It creates a separate .txt file for every document containing its full extracted text. 
 
 -   **Saves the Metadata Report:** It saves the CSV with all the flags and confidence scores, but excludes the massive text blocks to keep the CSV clean and usable.
 
@@ -367,59 +367,25 @@ if (run_ocr && exists("curated_data")) {
 
 ## Curation Insights
 
-Use the curation_flags and source columns in the generated CSV to guide your preservation actions:
+Use the curation_flags and source columns in the generated CSV to guide your curation actions:
 
--   **NO_TEXT_EXTRACTED:** This implies the file was successfully processed, but no readable text characters were found. The curator can visually verify the file. If it is a blank page, it can be excluded from the archival package to save storage. If it is an image without text (e.g., a photo of a landscape): This is expected; no action needed. If it contains text that was missed, it is likely that the image resolution is too low for OCR.
+-   **NO_TEXT_EXTRACTED:** This implies the file was successfully processed, but no readable text characters were found. The curator can visually verify the file. If it is a blank page, it can be excluded from the dataset to save storage. If it is an image without text (e.g., a photo of a landscape): This is expected; no action needed. If it contains text that was missed, it is likely that the image resolution is too low for OCR.
 
--   **LOW_CONFIDENCE (\< 0.85):** The AI was unsure about the character shapes. This is common in documents with artifacts, faint handwriting, or complex multi-column layouts. These files are "High Risk" for searchability and should not be rely on for indexing without human review.
+-   **LOW_CONFIDENCE (\< 0.85):** The AI was unsure about the character shapes. This is common in documents with artifacts, faint handwriting, or complex multi-column layouts. These files are "High Risk" for searchability and should not be relied on for indexing without human review.
 
--   **POSSIBLE_PII (Privacy Risk):** The script detected patterns matching Email Addresses or Social Security Numbers. This files must be quarantined immediately. Open the original PDF to verify if the data is sensitive and create a redacted derivative before making the dataset public.
+-   **POSSIBLE_PII (Privacy Risk):** The script detected patterns matching Email Addresses or Social Insurance Numbers. Open the original PDF to verify if the data is sensitive and consider creating a redacted derivative or removing the file from the dataset before making the dataset public.
 
--   **Source Check (LOCAL_PDF_LAYOUT vs GOOGLE_DOC_AI):** Files marked LOCAL_PDF_LAYOUT were read directly from the digital layer. These are usually 100% accurate. Focus your manual QC efforts on the files marked GOOGLE_DOC_AI, as these relied on visual pattern recognition and are more prone to "typos."
-
-Here are the Curation Insights and Additional Tools & Resources sections, tailored specifically for the results generated by this hybrid OCR notebook. You can copy and paste this directly at the end of your .qmd file.
-
-Curation Insights Use the curation_flags and source columns in the generated CSV to guide your preservation actions:
-
-NO_TEXT_EXTRACTED:
-
-Context: The file was successfully processed, but no readable text characters were found.
-
-Action: Visually verify the file.
-
-If it is a blank page: Exclude it from the archival package to save storage.
-
-If it is an image without text (e.g., a photo of a landscape): This is expected; no action needed.
-
-If it contains text that was missed: The image resolution may be too low for OCR. Flag for manual transcription.
-
-LOW_CONFIDENCE (\< 0.85):
-
-Context: The AI was unsure about the character shapes. This is common in documents with coffee stains, faint handwriting, or complex multi-column layouts.
-
-Action: These files are "High Risk" for searchability. Do not rely on this text for indexing without human review.
-
-POSSIBLE_PII (Privacy Risk):
-
-Context: The script detected patterns matching Email Addresses or Social Security Numbers.
-
-Action: Quarantine these files immediately. Open the original PDF to verify if the data is sensitive. If so, you must create a redacted derivative before making the dataset public.
-
-Source Check (LOCAL_PDF_LAYOUT vs GOOGLE_DOC_AI):
-
-Context: Files marked LOCAL_PDF_LAYOUT were read directly from the digital layer.
-
-Action: These are usually 100% accurate. Focus your manual QC efforts on the files marked GOOGLE_DOC_AI, as these relied on visual pattern recognition and are more prone to "typos."
+-   **Source Check (LOCAL_PDF_LAYOUT vs GOOGLE_DOC_AI):** Files marked LOCAL_PDF_LAYOUT were read directly from the digital layer. These are usually 100% accurate. Focus your manual QC efforts on the files marked GOOGLE_DOC_AI, as these relied on visual pattern recognition and are more prone to errors.
 
 ## Additional Tools & Resources
 
 While daiR provides state-of-the-art accuracy, other tools may be better suited for specific constraints (e.g., cost or data sovereignty).
 
--   **Tesseract OCR:** Is an optical [character recognition engine](https://github.com/tesseract-ocr/tesseract). It is essential for "Content Analysis." It can scan thousands of images to detect text, helping curators flag files that contain sensitive documents (PII) which might have been mixed into a photo dataset.
+-   **Tesseract OCR:** Is an [optical character recognition engine](https://github.com/tesseract-ocr/tesseract). It can be useful for "Content Analysis." It can scan thousands of images to detect text, helping curators flag files that contain sensitive documents (PII) which might have been mixed into a photo dataset.
 
 -   **Apache Tika:** Is a [toolkit](https://tika.apache.org/) that detects and extracts metadata and text from over a thousand different file types (such as PPT, XLS, PDF). It is excellent for extracting text from "born-digital" files without OCR.
 
--   **Label Studio:** This [utility](https://labelstud.io/) assists curators with "Low Confidence" scans, this open-source tool allows the set up a "Human-in-the-Loop" workflow to manually correct the OCR output.
+-   **Label Studio:** This [utility](https://labelstud.io/) assists curators with "Low Confidence" scans, this open-source tool allows a "Human-in-the-Loop" workflow to manually correct the OCR output.
 
 ## Using the Non-Interactive R Script
 

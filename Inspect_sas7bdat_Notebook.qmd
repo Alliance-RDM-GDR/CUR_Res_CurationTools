@@ -21,11 +21,11 @@ SAS files (`.sas7bdat`) are a standard for clinical and statistical data. Howeve
 Ensure the completeness and interoperability of SAS datasets. Our objective is to verify that both data files and catalog files (`.sas7bcat`) are present, enabling the correct decoding of categorical variables and labels.
 :::
 
-::: {.callout-warning title="Preservation Risk"}
-Proprietary "CPORT" formats and missing catalog files are major risks. Without the associated formats, numeric codes in the data file become cryptic and contextually meaningless, requiring expensive proprietary software to recover.
+::: {.callout-warning title="Identifying Risks"}
+Proprietary CPORT formats and missing catalog files are major risks. Without the associated formats, numeric codes in the data file become cryptic and contextually meaningless.
 :::
 
-**This notebook performs a rigorous inventory:**
+**This notebook performs the following actions:**
 
 1.  **Catalog Check:** Scans for `.sas7bcat` files to ensure metadata isn't missing.
 2.  **Format Validation:** Distinguishes between open XPORT (.xpt) and proprietary CPORT formats.
@@ -35,7 +35,7 @@ Proprietary "CPORT" formats and missing catalog files are major risks. Without t
 
 ## Setup
 
-We use the `haven` package. It is the gold standard for reading SAS files in R and can handle both the data files and, if available, the catalog files.
+We use the `haven` package to read SAS files in R. It can handle both the data files and, if available, the catalog files.
 
 ### R Packages
 
@@ -52,7 +52,7 @@ If you do not have the required packages, run this command once in your R consol
 #| message: false
 
 library(tidyverse)
-library(haven)      # Primary reader (Gold Standard)
+library(haven)      # Primary reader 
 library(sas7bdat)   # Fallback reader
 library(rstudioapi) # For directory selection
 library(stringr)    # For encoding checks
@@ -87,7 +87,7 @@ print(paste("Analyzing directory:", target_dir))
 
 ## Find SAS Files
 
-We scan the directory for files ending in .sas7bdat.
+We scan the directory for files ending in .sas7bdat, .sas7bcat, or .xpt.
 
 ```{r}
 #| label: find-files
@@ -281,17 +281,17 @@ print(paste("Data Dictionary saved to:", output_file))
 
 Use the generated CSV to perform these checks:
 
--   **CPORT Detection:** Files flagged as Failed (XPORT/CPORT) are likely CPORT files. These are proprietary and the depositor needs to re-export them as standard XPORT (.xpt) or .sas7bdat using SAS.
+-   **CPORT Detection:** Files flagged as Failed (XPORT/CPORT) are likely CPORT files. These are proprietary, so check with the depositor if they can re-export them as standard XPORT (.xpt) or .sas7bdat using SAS.
 
--   **Missing Catalogs:** If you see categorical variables (e.g., Treatment values 1, 2) with empty ValueLabels and NO .sas7bcat files were found in the inventory step. In this case, the metadata is incomplete and a request for the missing .sas7bcat file must be done.
+-   **Missing Catalogs:** If you see categorical variables (e.g., Treatment values 1, 2) with empty ValueLabels and NO .sas7bcat files were found in the inventory step, then check the rest of the dataset for a data dictionary or codebook to see if this information is documented elsewhere. If you can't find anything, request a corresponding .sas7bcat file or other data dictionary or codebook so that this data can be properly understood.
 
--   **Encoding Issues:** Check the EncodingCheck column. If it says "Contains Special/Non-ASCII", verify the text. If the text renders unreadable characters (e.g., Ã± instead of ñ), the file was likely saved in WINDOWS-1252 but read as UTF-8. You may need to use read_sas(..., encoding = "latin1") to fix it.
+-   **Encoding Issues:** If the EncodingCheck column says "Contains Special/Non-ASCII", verify the text. If the text renders unreadable characters (e.g., Ã± instead of ñ), the file was likely saved in WINDOWS-1252 but read as UTF-8. You may need to use read_sas(..., encoding = "latin1") to fix it.
 
 ## Additional Tools
 
--   **SAS Universal Viewer:** It is a [free tool](https://support.sas.com/en/software/universal-viewer-support.html) from SAS Institute that allows you to view (but not edit) SAS datasets and catalogs without a full SAS license. It can be used to verify CPORT files.
+-   **SAS Universal Viewer:** A [free tool](https://support.sas.com/en/software/universal-viewer-support.html) from SAS Institute that allows you to view (but not edit) SAS datasets and catalogs without a full SAS license. It can be used to verify CPORT files.
 
--   **StatTransfer:** is a [commercial tool](https://stattransfer.com/) for converting between statistical formats (SAS, SPSS, Stata, R). This tool can handle effective CPORT conversion.
+-   **StatTransfer:** A [commercial tool](https://stattransfer.com/) for converting between statistical formats (SAS, SPSS, Stata, R). This tool can handle effective CPORT conversion.
 
 ## Using the Non-Interactive R Script
 

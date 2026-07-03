@@ -17,11 +17,11 @@ params:
 Jupyter Notebooks are **Literate Programming**, a paradigm introduced by Donald Knuth (1984), where code and natural language documentation are interwoven to create a "computational narrative." In data curation, preserving this narrative is as important as preserving the raw data.
 
 ::: {.callout-note title="Curation Goal"}
-Preserve the computational narrative. Our objective is to assess the structural integrity and documentation quality of notebooks to ensure they remain understandable and potentially reproducible for future researchers.
+Assess the structural integrity and documentation quality of notebooks to ensure they remain understandable and potentially reproducible for future researchers.
 :::
 
-::: {.callout-warning title="Preservation Risk"}
-Notebooks are notoriously difficult to re-execute. Studies show that as few as 4% of notebooks produce identical results over time due to non-linear execution, hidden state, and undocumented software environments [@pimentel2019].
+::: {.callout-warning title="Identifying Risks"}
+Notebooks are notoriously difficult to re-execute. Studies show that as few as 4% of notebooks produce identical results over time due to non-linear execution, hidden states, and undocumented software environments [@pimentel2019].
 :::
 
 **Key Curation Objectives:**
@@ -297,13 +297,13 @@ print(paste("Report saved to:", output_file))
 
 Use the generated CSV to perform these checks:
 
--   **Residual Outputs (has_outputs):** If TRUE, the notebook was saved with graphs, tables, or text logs visible. For archival purposes, it is generally recommended to clear all outputs (using nbstripout or the Jupyter interface). This reduces file size significantly and prevents the accidental leakage of sensitive data (PII) that might be displayed in a table output.
+-   **Residual Outputs (has_outputs):** If TRUE, the notebook was saved with graphs, tables, or text logs visible. Tho reduce file size and prevent accidentally leaking sensitive data (PII) that might be displayed in a table output, it is generally recommended to clear all outputs. To do this, you can use nbstripout or the Jupyter interface. 
 
 -   **Kernel Consistency:** Check for mismatches, such as a notebook using a python2 kernel when the project standard is python3, or a file named Analysis_R.ipynb that actually runs on a python kernel. These inconsistencies often break reproducibility. Ensure the kernel metadata matches the environment provided in requirements.txt or environment.yml.
 
--   **Format Obsolescence (nbformat):** The standard format version is currently 4.x.If you find notebooks with nbformat \< 4 (created before \~2015), they may not render correctly in modern JupyterLab. Convert them using nbconvert or open and re-save them in a modern interface.
+-   **Format Obsolescence (nbformat):** The standard format version is currently 4.x. If you find notebooks with nbformat \< 4 (created before \~2015), they may not render correctly in modern JupyterLab. Convert them using nbconvert or open and re-save them in a modern interface.
 
--   **JSON Validity:** Jupyter notebooks are just JSON text files. If the script fails to parse a file, it is likely a "Corrupt Notebook" (invalid JSON structure). Attempt to fix the JSON syntax manually in a text editor, or check if the file was truncated during a previous transfer.
+-   **JSON Validity:** Jupyter notebooks are just JSON text files. If the script fails to parse a file, it is likely a "Corrupt Notebook" (invalid JSON structure). You can attempt to fix the JSON syntax manually in a text editor, or check if the file was truncated during a previous transfer.
 
 ## Additional Tools & Resources
 
@@ -313,7 +313,7 @@ While R parses the metadata efficiently, these specialized tools are essential f
 
 -   **Jupytext:** This [utility](https://jupytext.readthedocs.io/en/latest/) converts .ipynb files into paired plain-text scripts (Markdown or Python/R scripts). This allows you to diff changes easily and preserves the code even if the notebook JSON corrupts.
 
--   **nbconvert:** The official [tool](https://nbconvert.readthedocs.io/en/latest/) to convert notebooks into static formats like HTML, PDF, or LaTeX. It is recommended to generate a static HTML or PDF copy of the notebook with outputs executed to ensure the visual results are preserved even if the code stops working in the future.
+-   **nbconvert:** The official [tool](https://nbconvert.readthedocs.io/en/latest/) to convert notebooks into static formats like HTML, PDF, or LaTeX. It is recommended to generate a static HTML or PDF copy of the notebook with outputs executed to ensure the visual results are retained even if the code stops working in the future.
 
 -   **Binder / Repo2Docker:** This [utility](https://mybinder.org/) allows you to build the exact software environment required to run the notebook.
 
