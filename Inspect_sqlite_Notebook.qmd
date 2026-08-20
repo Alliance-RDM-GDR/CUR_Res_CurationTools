@@ -12,7 +12,7 @@ params:
   target_dir: "data/Inspect_sqlite/"
 ---
 
-## 1. Overview
+## Overview
 
 **SQLite** is the most widely deployed database engine in the world (see [SQLite.org](https://sqlite.org/about.html)). Unlike client-server database management systems (DBMS) like PostgreSQL or Oracle, an SQLite database is a single, self-contained disk file.
 
@@ -114,9 +114,10 @@ We save the database manifest as supplementary documentation to support long-ter
 if (exists("db_inventory")) {
   output_dir <- "Results/Inspect_sqlite"
   dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
-  
+
+  dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
   timestamp <- format(Sys.Date(), "%Y%m%d")
-  write.csv(db_inventory, file.path(output_dir, paste0("Database_Manifest_", timestamp, ".csv")), row.names = FALSE)
+  write_excel_csv(db_inventory, file.path(output_dir, paste0("Database_Manifest_", dir_label, "_", timestamp, ".csv")))
   
   message("Report saved to: ", output_dir)
 }

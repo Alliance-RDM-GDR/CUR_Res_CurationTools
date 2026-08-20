@@ -7,25 +7,38 @@
 # Usage:   Rscript Inspect_json_Script.R <target_directory>
 # ==============================================================================
 
-# 1. Setup & Arguments ---------------------------------------------------------
-args <- commandArgs(trailingOnly = TRUE)
-
-# Validate arguments
-if (length(args) == 0) {
-  stop("Error: No target directory provided.\nUsage: Rscript Inspect_json_Script.R /path/to/json_files", call. = FALSE)
-}
-
-target_dir <- args[1]
-
-if (!dir.exists(target_dir)) {
-  stop(paste("Error: Directory not found:", target_dir), call. = FALSE)
-}
-
 # Load libraries silently to keep logs clean
 suppressPackageStartupMessages({
   library(tidyverse)
   library(jsonlite)
 })
+
+# 1. Setup & Arguments (Hybrid: Interactive / HPC) ------------------------------
+if (interactive()) {
+  message("Running in interactive mode. Please select a directory.")
+  if (requireNamespace("rstudioapi", quietly = TRUE)) {
+    target_dir <- rstudioapi::selectDirectory(caption = "Select JSON Directory")
+  } else {
+    stop("Package 'rstudioapi' is required for interactive selection.")
+  }
+  if (is.null(target_dir)) stop("No directory selected.")
+  output_dir <- file.path(getwd(), "Results/Inspect_json")
+} else {
+  args <- commandArgs(trailingOnly = TRUE)
+  if (length(args) == 0) {
+    stop("Error: No target directory provided.\nUsage: Rscript Inspect_json_Script.R /path/to/json_files [output_dir]", call. = FALSE)
+  }
+  target_dir <- args[1]
+  if (!dir.exists(target_dir)) {
+    stop(paste("Error: Directory not found:", target_dir), call. = FALSE)
+  }
+  output_dir <- if (length(args) >= 2) args[2] else file.path(getwd(), "Results/Inspect_json")
+}
+
+if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+# Label for output filenames: name of the folder that was explored
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
 
 message(paste("Starting JSON analysis on:", target_dir))
 
@@ -122,13 +135,9 @@ for (file_path in json_files) {
 # 5. Export Results ------------------------------------------------------------
 results <- bind_rows(json_summary_list)
 
-# Define output directory
-output_dir <- "Results/Inspect_json"
-if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
+output_file <- file.path(output_dir, paste0("JSON_Report_", dir_label, "_", format(Sys.Date(), "%Y%m%d"), ".csv"))
 
-output_file <- file.path(output_dir, paste0("JSON_Report_", format(Sys.Date(), "%Y%m%d"), ".csv"))
-
-write.csv(results, output_file, row.names = FALSE)
+write_excel_csv(results, output_file)
 
 message(paste("✅ Process Complete."))
 message(paste("   Analyzed:", nrow(results), "files"))

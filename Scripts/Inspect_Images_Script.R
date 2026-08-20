@@ -7,22 +7,6 @@
 # Outputs: SINGLE CSV Curation Report with Flags and Checksums.
 # ==============================================================================
 
-# 1. Setup and Arguments -------------------------------------------------------
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) == 0) {
-  stop("Error: No target directory provided. Usage: Rscript Inspect_Images_Script.R /path/to/images", call. = FALSE)
-}
-
-target_dir <- args[1]
-
-# Verify directory exists
-if (!dir.exists(target_dir)) {
-  stop(paste("Error: Directory not found:", target_dir), call. = FALSE)
-}
-
-message(paste("Starting analysis on:", target_dir))
-
 # Load required libraries silently
 suppressPackageStartupMessages({
   library(tidyverse)
@@ -30,6 +14,35 @@ suppressPackageStartupMessages({
   library(exiftoolr)
   library(digest)
 })
+
+# 1. Setup and Arguments (Hybrid: Interactive / HPC) ---------------------------
+if (interactive()) {
+  message("Running in interactive mode. Please select a directory.")
+  if (requireNamespace("rstudioapi", quietly = TRUE)) {
+    target_dir <- rstudioapi::selectDirectory(caption = "Select Images Directory")
+  } else {
+    stop("Package 'rstudioapi' is required for interactive selection.")
+  }
+  if (is.null(target_dir)) stop("No directory selected.")
+  output_dir <- file.path(getwd(), "Results/Inspect_Images")
+} else {
+  args <- commandArgs(trailingOnly = TRUE)
+  if (length(args) == 0) {
+    stop("Error: No target directory provided. Usage: Rscript Inspect_Images_Script.R /path/to/images [output_dir]", call. = FALSE)
+  }
+  target_dir <- args[1]
+  if (!dir.exists(target_dir)) {
+    stop(paste("Error: Directory not found:", target_dir), call. = FALSE)
+  }
+  output_dir <- if (length(args) >= 2) args[2] else file.path(getwd(), "Results/Inspect_Images")
+}
+
+if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+# Label for output filenames: name of the folder that was explored
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+
+message(paste("Starting analysis on:", target_dir))
 
 # ==============================================================================
 # 2. Inventory & Fixity (Checksums) --------------------------------------------
@@ -156,12 +169,9 @@ curated_data <- full_report %>%
 # ==============================================================================
 # 6. Save Results --------------------------------------------------------------
 # ==============================================================================
-output_dir <- "Results/Inspect_Images"
-if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
-
 timestamp <- format(Sys.Date(), "%Y%m%d")
-output_file <- paste0(output_dir, "/Curation_Report_Images_", timestamp, ".csv")
+output_file <- file.path(output_dir, paste0("Curation_Report_Images_", dir_label, "_", timestamp, ".csv"))
 
-write.csv(curated_data, output_file, row.names = FALSE)
+write_excel_csv(curated_data, output_file)
 
 message(paste("Success! Curation report saved to:", output_file))

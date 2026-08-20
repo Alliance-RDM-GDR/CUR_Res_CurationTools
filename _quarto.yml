@@ -28,7 +28,8 @@ book:
       chapters:
         - Inspect_PDF_Notebook.qmd
         - Inspect_Text_Notebook.qmd
-        - Inspect_OCR_Notebook.qmd
+        # OCR chapter intentionally hidden from the rendered book pending internal review.
+        # - Inspect_OCR_Notebook.qmd
 
 
     - part: Data_General.qmd

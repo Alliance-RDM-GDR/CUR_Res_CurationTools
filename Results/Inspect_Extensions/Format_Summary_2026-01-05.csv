@@ -1,5 +1,0 @@
-Extension,MIMEType,Risk_Flag,Count
-.tif,image/tiff,Clean,4
-.nc,NA,Clean,1
-.txt,text/plain,Clean,1
-.xml,text/plain,Clean,1

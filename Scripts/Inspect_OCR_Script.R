@@ -10,17 +10,6 @@
 
 # ==============================================================================
 
-# 1. Setup & Arguments ---------------------------------------------------------
-args <- commandArgs(trailingOnly = TRUE)
-if (length(args) == 0) {
-  stop("Error: No target directory provided.\nUsage: Rscript OCR_Curator_Script_Robust.R /path/to/documents", call. = FALSE)
-}
-target_dir <- args[1]
-
-if (!dir.exists(target_dir)) {
-  stop(paste("Error: Directory not found:", target_dir), call. = FALSE)
-}
-
 # Load libraries silently
 suppressPackageStartupMessages({
   library(tidyverse)
@@ -29,6 +18,33 @@ suppressPackageStartupMessages({
   library(httr)
   library(stringr)
 })
+
+# 1. Setup & Arguments (Hybrid: Interactive / HPC) -----------------------------
+if (interactive()) {
+  message("Running in interactive mode. Please select a directory.")
+  if (requireNamespace("rstudioapi", quietly = TRUE)) {
+    target_dir <- rstudioapi::selectDirectory(caption = "Select Documents Directory")
+  } else {
+    stop("Package 'rstudioapi' is required for interactive selection.")
+  }
+  if (is.null(target_dir)) stop("No directory selected.")
+  output_dir <- file.path(getwd(), "Results/OCR_Scan")
+} else {
+  args <- commandArgs(trailingOnly = TRUE)
+  if (length(args) == 0) {
+    stop("Error: No target directory provided.\nUsage: Rscript OCR_Curator_Script_Robust.R /path/to/documents [output_dir]", call. = FALSE)
+  }
+  target_dir <- args[1]
+  if (!dir.exists(target_dir)) {
+    stop(paste("Error: Directory not found:", target_dir), call. = FALSE)
+  }
+  output_dir <- if (length(args) >= 2) args[2] else file.path(getwd(), "Results/OCR_Scan")
+}
+
+if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+# Label for output filenames: name of the folder that was explored
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
 
 # --- CONFIGURATION (Based on your Project Details) ---
 my_proj_id <- "YOUR PROJECT ID"
@@ -159,9 +175,6 @@ curated_data <- inventory %>%
   unite("curation_flags", starts_with("flag_"), sep = "; ", na.rm = TRUE, remove = FALSE)
 
 # 4. Export Phase --------------------------------------------------------------
-output_dir <- "Results/OCR_Scan"
-if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
-
 # A. Save Sidecar Text Files (.txt)
 message("Saving individual text files...")
 curated_data %>%
@@ -172,12 +185,12 @@ curated_data %>%
   })
 
 # B. Save Metadata CSV (excluding full text)
-csv_file <- paste0(output_dir, "/Curation_Report_OCR_", format(Sys.Date(), "%Y%m%d"), ".csv")
+csv_file <- file.path(output_dir, paste0("Curation_Report_OCR_", dir_label, "_", format(Sys.Date(), "%Y%m%d"), ".csv"))
 
 final_export <- curated_data %>%
   select(filename, ocr_confidence, source, curation_flags, status)
 
-write.csv(final_export, csv_file, row.names = FALSE)
+write_excel_csv(final_export, csv_file)
 
 message(paste("✅ Process Complete."))
 message(paste("   Metadata saved to:", csv_file))

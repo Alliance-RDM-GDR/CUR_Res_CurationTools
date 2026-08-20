@@ -67,7 +67,7 @@ Les packages R suivants sont requis. Si vous ne disposez pas de ces packages, d�
 
 ------------------------------------------------------------------------
 
-## Load libraries // Charger les bibliothèques
+### Load Libraries // Charger les bibliothèques
 
 ```{r}
 #| label: load-libraries
@@ -81,7 +81,7 @@ library(rstudioapi) # For directory selection
 
 ------------------------------------------------------------------------
 
-## Select a target directory // Sélectionnez un répertoire de destination
+## Select Target Directory // Sélectionner le répertoire cible
 
 This block allows for interactive selection of the image directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.
 
@@ -136,7 +136,7 @@ head(excel_files)
 
 ------------------------------------------------------------------------
 
-## Structural and content inspection // Analyse structurelle et du contenu
+## Structural and Content Inspection // Analyse structurelle et du contenu
 
 In this section, we iterate through each file. For .xlsx files, we perform a deep scan for hidden content. For legacy .xls, we rely on basic extraction.
 
@@ -257,7 +257,7 @@ print("--- Excel Structure Report ---")
 head(summary_report)
 ```
 
-## Save results // Enregistrer les résultats
+## Save Results // Enregistrer les résultats
 
 ```{r}
 #| label: save-results
@@ -265,9 +265,10 @@ head(summary_report)
 output_dir <- "Results/Inspect_xlsx"
 dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
-output_file <- file.path(output_dir, paste0("Excel_Structure_", format(Sys.Date(), "%Y%m%d"), ".csv"))
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+output_file <- file.path(output_dir, paste0("Excel_Structure_", dir_label, "_", format(Sys.Date(), "%Y%m%d"), ".csv"))
 
-write.csv(summary_report, output_file, row.names = FALSE)
+write_excel_csv(summary_report, output_file)
 print(paste("Report saved to:", output_file))
 ```
 
@@ -311,7 +312,7 @@ Utilisez le rapport généré pour identifier les fichiers à haut risque :
 
 - **VBA Remover :** il existe toute une série d'outils permettant de supprimer le VBA des fichiers Excel afin de les assainir. Plusieurs d'entre eux sont disponibles en ligne.
 
-##  Using the Non-Interactive R Script // Utilisation du script R non interactif
+## Using the Non-Interactive R Script // Utilisation du script R non interactif
 
 For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
 

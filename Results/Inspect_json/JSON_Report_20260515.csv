@@ -1,4 +1,0 @@
-"filename","is_valid","structure_type","dimensions","top_level_keys","max_depth","error_msg"
-"chunks.json",TRUE,"list","2 elements","chunk_definitions, doc_write_time",4,NA
-"Code_and_Software.qmd.json",TRUE,"list","4 elements","title, markdown, formats, projectFormats",5,NA
-"Documents.qmd.json",TRUE,"list","4 elements","title, markdown, formats, projectFormats",5,NA

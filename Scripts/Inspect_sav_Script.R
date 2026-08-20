@@ -9,25 +9,39 @@
 # Usage:   Rscript Inspect_sav_Script.R <target_directory>
 # ==============================================================================
 
-# 1. Setup & Arguments ---------------------------------------------------------
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) == 0) {
-  stop("Error: No target directory provided.\nUsage: Rscript Inspect_sav_Script.R /path/to/spss_files", call. = FALSE)
-}
-
-target_dir <- args[1]
-
-if (!dir.exists(target_dir)) {
-  stop(paste("Error: Directory not found:", target_dir), call. = FALSE)
-}
-
 # Load libraries silently
 suppressPackageStartupMessages({
   library(tidyverse)
   library(haven)
   library(stringr)
 })
+
+# 1. Setup & Arguments (Hybrid: Interactive / HPC) ------------------------------
+if (interactive()) {
+  message("Running in interactive mode. Please select a directory.")
+  if (requireNamespace("rstudioapi", quietly = TRUE)) {
+    target_dir <- rstudioapi::selectDirectory(caption = "Select SPSS Directory")
+  } else {
+    stop("Package 'rstudioapi' is required for interactive selection.")
+  }
+  if (is.null(target_dir)) stop("No directory selected.")
+  output_dir <- file.path(getwd(), "Results/Inspect_sav")
+} else {
+  args <- commandArgs(trailingOnly = TRUE)
+  if (length(args) == 0) {
+    stop("Error: No target directory provided.\nUsage: Rscript Inspect_sav_Script.R /path/to/spss_files [output_dir]", call. = FALSE)
+  }
+  target_dir <- args[1]
+  if (!dir.exists(target_dir)) {
+    stop(paste("Error: Directory not found:", target_dir), call. = FALSE)
+  }
+  output_dir <- if (length(args) >= 2) args[2] else file.path(getwd(), "Results/Inspect_sav")
+}
+
+if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+# Label for output filenames: name of the folder that was explored
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
 
 message(paste("Starting SPSS analysis on:", target_dir))
 
@@ -127,12 +141,9 @@ message("Generating Data Dictionary...")
 report <- map_dfr(spss_files, process_spss_file)
 
 # 6. Export --------------------------------------------------------------------
-output_dir <- "Results/Inspect_sav"
-if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
+output_file <- file.path(output_dir, paste0("SPSS_Dictionary_", dir_label, "_", format(Sys.Date(), "%Y%m%d"), ".csv"))
 
-output_file <- file.path(output_dir, paste0("SPSS_Dictionary_", format(Sys.Date(), "%Y%m%d"), ".csv"))
-
-write.csv(report, output_file, row.names = FALSE)
+write_excel_csv(report, output_file)
 
 message(paste("✅ Process Complete."))
 message(paste("   Analyzed:", length(unique(report$FileName)), "files"))

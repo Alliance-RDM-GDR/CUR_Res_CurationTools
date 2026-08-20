@@ -69,7 +69,7 @@ Les packages R suivants sont requis. Si vous ne disposez pas de ces packages, d�
 # install.packages(c("tidyverse", "tiff", "magick", "stringr", "rstudioapi"))
 ```
 
-### Load libraries // Charger les bibliothèques
+### Load Libraries // Charger les bibliothèques
 
 ```{r}
 #| label: setup
@@ -83,7 +83,7 @@ library(stringr)    # Text Mining
 library(rstudioapi) # UI interaction
 ```
 
-## Select a target directory // Sélectionnez un répertoire de destination
+## Select Target Directory // Sélectionner le répertoire cible
 
 This block allows for interactive selection of the image directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.
 
@@ -110,7 +110,7 @@ print(paste("Analyzing directory:", target_dir))
 
 ```
 
-## Inventory of TIFF files // Liste des fichiers TIFF
+## Inventory of TIFF Files // Liste des fichiers TIFF
 
 We scan for `.tif` and `.tiff` files.
 
@@ -225,13 +225,14 @@ print(head(report))
 output_dir <- "Results/Inspect_tiff"
 dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
-output_file <- file.path(output_dir, paste0("TIFF_DeepScan_", format(Sys.Date(), "%Y%m%d"), ".csv"))
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+output_file <- file.path(output_dir, paste0("TIFF_DeepScan_", dir_label, "_", format(Sys.Date(), "%Y%m%d"), ".csv"))
 
-write.csv(report, output_file, row.names = FALSE)
+write_excel_csv(report, output_file)
 print(paste("Report saved to:", output_file))
 ```
 
-## Curation Insights // Aperçu de curation
+## Curation Insights // Aperçu de la curation
 
 Use this report to verify file integrity:
 

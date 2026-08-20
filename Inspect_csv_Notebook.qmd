@@ -69,7 +69,7 @@ Les packages R suivants sont requis. Si vous ne disposez pas de ces packages, d�
 # install.packages(c("tidyverse", "rstudioapi", "skimr", "DT", "tools"))
 ```
 
-### Load libraries // Charger les bibliothèques
+### Load Libraries // Charger les bibliothèques
 
 ```{r}
 #| label: load-libraries
@@ -85,7 +85,7 @@ library(rstudioapi)
 
 ------------------------------------------------------------------------
 
-## Select target directory // Sélectionner le répertoire cible
+## Select Target Directory // Sélectionner le répertoire cible
 
 First, we select the directory to analyze and find `.csv` files within it.
 
@@ -289,8 +289,9 @@ message("Generating detailed profiles...")
 safe_skim <- function(file_path) {
   tryCatch({
     df <- read_csv(file_path, show_col_types = FALSE)
-    skim(df) %>% 
-      as_tibble() %>% 
+    skim(df) %>%
+      as_tibble() %>%
+      select(-any_of("numeric.hist")) %>%  # sparkline glyphs: unreadable/fragile in a flat CSV
       mutate(FileName = basename(file_path)) %>%
       select(FileName, everything())
   }, error = function(e) NULL)
@@ -329,13 +330,16 @@ Nous exportons deux rapports :
 output_dir <- file.path("Results", "Inspect_CSV")
 if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
 
+# Label for output filenames: name of the folder that was explored
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+
 # File names
-health_file <- file.path(output_dir, paste0("CSV_Health_Check_", Sys.Date(), ".csv"))
-profile_file <- file.path(output_dir, paste0("CSV_Full_Profile_", Sys.Date(), ".csv"))
+health_file <- file.path(output_dir, paste0("CSV_Health_Check_", dir_label, "_", Sys.Date(), ".csv"))
+profile_file <- file.path(output_dir, paste0("CSV_Full_Profile_", dir_label, "_", Sys.Date(), ".csv"))
 
 # Save
-write_csv(health_report, health_file)
-write_csv(full_profile_data, profile_file)
+write_excel_csv(health_report, health_file)
+write_excel_csv(full_profile_data, profile_file)
 
 message("Reports saved:")
 message("1. ", health_file)
@@ -417,7 +421,7 @@ Vous pouvez également adapter l'exemple de script de tâche CHP suivant à l'en
 #SBATCH --time=00:30:00
 #SBATCH --job-name=csv_check
 
-# Load R module
+# Load R Module
 module load R
 
 # Define directories

@@ -54,7 +54,7 @@ library(rstudioapi) # For directory selection
 library(stringr)    # For encoding checks
 ```
 
-## Select Directory
+## Select Target Directory
 
 Select the folder containing the SPSS files you wish to inspect.
 
@@ -70,7 +70,7 @@ target_dir <- if (!is.null(selected_dir)) selected_dir else params$target_dir
 print(paste("Analyzing:", target_dir))
 ```
 
-## File inventory
+## File Inventory
 
 We scan the directory for files ending in .sav.
 
@@ -188,7 +188,7 @@ print("--- SPSS Data Dictionary Preview ---")
 head(report)
 ```
 
-## Save the results
+## Save Results
 
 We save the resulting table to a CSV file. This CSV acts as the Data Dictionary for the curated deposit.
 
@@ -200,9 +200,10 @@ We save the resulting table to a CSV file. This CSV acts as the Data Dictionary 
 output_dir <- "Results/Inspect_sav"
 dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
-output_file <- file.path(output_dir, paste0("SPSS_Dictionary_", format(Sys.Date(), "%Y%m%d"), ".csv"))
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+output_file <- file.path(output_dir, paste0("SPSS_Dictionary_", dir_label, "_", format(Sys.Date(), "%Y%m%d"), ".csv"))
 
-write.csv(report, output_file, row.names = FALSE)
+write_excel_csv(report, output_file)
 print(paste("Data Dictionary saved to:", output_file))
 ```
 

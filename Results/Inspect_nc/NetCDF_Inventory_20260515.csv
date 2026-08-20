@@ -1,7 +1,0 @@
-"FileName","Status","DimsSummary","VarCount","HasCRS","DataHealth"
-"Averaged_exceedance_TP_p99p0_ERA5.nc","Valid","longitude x latitude x season",2,"Georeferenced","Unknown"
-"Geopotential_orography.nc","Valid","longitude x latitude x time",1,"Georeferenced","Unknown"
-"TPp99p0_2001_2020_ERA5.nc","Valid","longitude x latitude",1,"Georeferenced","Unknown"
-"TPp99p0_2001_2020_IMERG.nc","Valid","longitude x latitude",1,"Georeferenced","Unknown"
-"TPp99p0_2001_2020_IMERG025grid.nc","Valid","lon x lat",1,"Georeferenced","Unknown"
-"WSp99p0_2001_2020_ERA5.nc","Valid","longitude x latitude",1,"Georeferenced","Unknown"

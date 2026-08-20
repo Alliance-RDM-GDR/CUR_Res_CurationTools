@@ -62,6 +62,9 @@ if (!dir.exists(output_dir)) {
   dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 }
 
+# Label for output filenames: name of the folder that was explored
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+
 message(sprintf("Starting analysis on: %s", target_dir))
 message(sprintf("Results will be saved to: %s", output_dir))
 
@@ -180,8 +183,8 @@ if (length(code_files) > 0) {
   report <- purrr::map_dfr(code_files, analyze_r_file)
   
   # 5. Save Results
-  output_file <- file.path(output_dir, paste0("Code_Inspection", Sys.Date(), ".csv"))
-  write_csv(report, output_file)
+  output_file <- file.path(output_dir, paste0("Code_Inspection_", dir_label, "_", Sys.Date(), ".csv"))
+  write_excel_csv(report, output_file)
   
   message(sprintf("Analysis complete. Report saved to: %s", output_file))
   

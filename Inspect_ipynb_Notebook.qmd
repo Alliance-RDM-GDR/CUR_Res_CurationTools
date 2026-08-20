@@ -44,7 +44,7 @@ If you do not have the required packages, run this command once in your R consol
 # install.packages(c("tidyverse", "jsonlite", "rstudioapi", "stringr"))
 ```
 
-### Load libraries
+### Load Libraries
 
 ```{r}
 #| label: load-libraries
@@ -287,9 +287,10 @@ Save the report to a CSV file for review.
 output_dir <- "Results/Inspect_ipynb"
 dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
-output_file <- file.path(output_dir, paste0("Jupyter_Report_", format(Sys.Date(), "%Y%m%d"), ".csv"))
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+output_file <- file.path(output_dir, paste0("Jupyter_Report_", dir_label, "_", format(Sys.Date(), "%Y%m%d"), ".csv"))
 
-write.csv(report, output_file, row.names = FALSE)
+write_excel_csv(report, output_file)
 print(paste("Report saved to:", output_file))
 ```
 
@@ -336,7 +337,7 @@ Download the **R Script:** [**`Inspect_ipynb_Script.R`**](Scripts/Inspect_ipynb_
 #SBATCH --mem=4G
 #SBATCH --output=logs/inspect_ipynb_%j.log
 
-# Load R module (Adjust based on your cluster's module name)
+# Load R Module (Adjust based on your cluster's module name)
 module load R
 
 # Define target directory containing notebooks

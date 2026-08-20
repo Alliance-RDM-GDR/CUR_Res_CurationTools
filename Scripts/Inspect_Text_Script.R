@@ -9,25 +9,39 @@
 # Usage:   Rscript Inspect_Text_Script.R <target_directory>
 # ==============================================================================
 
-# 1. Setup & Arguments ---------------------------------------------------------
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) == 0) {
-  stop("Error: No target directory provided.\nUsage: Rscript Inspect_Text_Script.R /path/to/text_files", call. = FALSE)
-}
-
-target_dir <- args[1]
-
-if (!dir.exists(target_dir)) {
-  stop(paste("Error: Directory not found:", target_dir), call. = FALSE)
-}
-
 # Load libraries silently
 suppressPackageStartupMessages({
   library(tidyverse)
   library(readr)
   library(stringr)
 })
+
+# 1. Setup & Arguments (Hybrid: Interactive / HPC) ------------------------------
+if (interactive()) {
+  message("Running in interactive mode. Please select a directory.")
+  if (requireNamespace("rstudioapi", quietly = TRUE)) {
+    target_dir <- rstudioapi::selectDirectory(caption = "Select Text Directory")
+  } else {
+    stop("Package 'rstudioapi' is required for interactive selection.")
+  }
+  if (is.null(target_dir)) stop("No directory selected.")
+  output_dir <- file.path(getwd(), "Results/Inspect_Text")
+} else {
+  args <- commandArgs(trailingOnly = TRUE)
+  if (length(args) == 0) {
+    stop("Error: No target directory provided.\nUsage: Rscript Inspect_Text_Script.R /path/to/text_files [output_dir]", call. = FALSE)
+  }
+  target_dir <- args[1]
+  if (!dir.exists(target_dir)) {
+    stop(paste("Error: Directory not found:", target_dir), call. = FALSE)
+  }
+  output_dir <- if (length(args) >= 2) args[2] else file.path(getwd(), "Results/Inspect_Text")
+}
+
+if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+# Label for output filenames: name of the folder that was explored
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
 
 message(paste("Starting Text analysis on:", target_dir))
 
@@ -115,10 +129,7 @@ message("Generating Text Report...")
 report <- map_dfr(text_files, inspect_text_file)
 
 # 5. Export --------------------------------------------------------------------
-output_dir <- "Results/Inspect_Text"
-if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
+output_file <- file.path(output_dir, paste0("Text_Report_", dir_label, "_", format(Sys.Date(), "%Y%m%d"), ".csv"))
 
-output_file <- file.path(output_dir, paste0("Text_Report_", format(Sys.Date(), "%Y%m%d"), ".csv"))
-
-write.csv(report, output_file, row.names = FALSE)
+write_excel_csv(report, output_file)
 message(paste("✅ Process Complete. Report saved to:", output_file))

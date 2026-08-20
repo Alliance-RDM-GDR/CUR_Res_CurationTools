@@ -71,7 +71,7 @@ To run this notebook, you need a Google Cloud Platform (GCP) account and a Servi
 Once created, copy the Processor ID (it looks like a1b2c3d4e5f6).
 :::
 
-### Load libraries
+### Load Libraries
 
 ```{r}
 #| label: setup
@@ -284,7 +284,7 @@ if (run_ocr) {
 }
 ```
 
-## Curation and PII identification
+## Curation and PII Identification
 
 Now that we have extracted the text, we can analyze it to identify risks. We will perform Content Analysis to:
 
@@ -321,7 +321,7 @@ if (run_ocr && exists("ocr_results")) {
 }
 ```
 
-## Export the results
+## Save Results
 
 The following chunk performs\:
 
@@ -336,7 +336,8 @@ if (run_ocr && exists("curated_data")) {
   # 1. Setup Output Directory
   output_dir <- "Results/Inspect_OCR"
   dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
-  
+  dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+
   # 2. Save Individual Text Files (Sidecars)
   # This loops through every file and writes its content to a matching .txt file
   curated_data %>%
@@ -350,12 +351,12 @@ if (run_ocr && exists("curated_data")) {
   # 3. Save Administrative Metadata (CSV)
   # We exclude the full text from the CSV to keep it clean, now that we have .txt files
   timestamp <- format(Sys.Date(), "%Y%m%d")
-  csv_file <- paste0(output_dir, "/Curation_Report_OCR_", timestamp, ".csv")
-  
+  csv_file <- file.path(output_dir, paste0("Curation_Report_OCR_", dir_label, "_", timestamp, ".csv"))
+
   final_export <- curated_data %>%
     select(filename, ocr_confidence, source, curation_flags, status) # Removed 'extracted_text'
-  
-  write.csv(final_export, csv_file, row.names = FALSE)
+
+  write_excel_csv(final_export, csv_file)
   
   print(paste("Process Complete."))
   print(paste("1. Metadata saved to:", csv_file))

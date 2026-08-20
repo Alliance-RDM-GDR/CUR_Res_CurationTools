@@ -8,25 +8,39 @@
 # Usage:   Rscript Inspect_mat_Script.R <target_directory>
 # ==============================================================================
 
-# 1. Setup & Arguments ---------------------------------------------------------
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) == 0) {
-  stop("Error: No target directory provided.\nUsage: Rscript Inspect_mat_Script.R /path/to/mat_files", call. = FALSE)
-}
-
-target_dir <- args[1]
-
-if (!dir.exists(target_dir)) {
-  stop(paste("Error: Directory not found:", target_dir), call. = FALSE)
-}
-
 # Load libraries silently
 suppressPackageStartupMessages({
   library(tidyverse)
   library(stringr)
   library(R.matlab) # For v5 files
 })
+
+# 1. Setup & Arguments (Hybrid: Interactive / HPC) ------------------------------
+if (interactive()) {
+  message("Running in interactive mode. Please select a directory.")
+  if (requireNamespace("rstudioapi", quietly = TRUE)) {
+    target_dir <- rstudioapi::selectDirectory(caption = "Select MAT-file Directory")
+  } else {
+    stop("Package 'rstudioapi' is required for interactive selection.")
+  }
+  if (is.null(target_dir)) stop("No directory selected.")
+  output_dir <- file.path(getwd(), "Results/Inspect_mat")
+} else {
+  args <- commandArgs(trailingOnly = TRUE)
+  if (length(args) == 0) {
+    stop("Error: No target directory provided.\nUsage: Rscript Inspect_mat_Script.R /path/to/mat_files [output_dir]", call. = FALSE)
+  }
+  target_dir <- args[1]
+  if (!dir.exists(target_dir)) {
+    stop(paste("Error: Directory not found:", target_dir), call. = FALSE)
+  }
+  output_dir <- if (length(args) >= 2) args[2] else file.path(getwd(), "Results/Inspect_mat")
+}
+
+if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+# Label for output filenames: name of the folder that was explored
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
 
 # Check for rhdf5 (Essential for v7.3)
 if (!require("rhdf5", quietly = TRUE)) {
@@ -131,12 +145,9 @@ message("Deep scanning structure (This may take time for large v7.3 files)...")
 results <- map_dfr(mat_files, inspect_mat_file)
 
 # 4. Export Phase --------------------------------------------------------------
-output_dir <- "Results/Inspect_mat"
-if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
+output_file <- file.path(output_dir, paste0("MAT_Deep_Report_", dir_label, "_", format(Sys.Date(), "%Y%m%d"), ".csv"))
 
-output_file <- file.path(output_dir, paste0("MAT_Deep_Report_", format(Sys.Date(), "%Y%m%d"), ".csv"))
-
-write.csv(results, output_file, row.names = FALSE)
+write_excel_csv(results, output_file)
 
 message(paste("✅ Process Complete."))
 message(paste("   Extracted:", nrow(results), "objects/variables"))

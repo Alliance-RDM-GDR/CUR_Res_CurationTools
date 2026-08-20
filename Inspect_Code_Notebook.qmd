@@ -58,7 +58,7 @@ Nous utilisons **`tidyverse`** pour la manipulation des données et **`rstudioap
 # install.packages(c("DT", "tidyverse", "rstudioapi", "readr", "tools"))
 ```
 
-### Load libraries // Charger les bibliothèques
+### Load Libraries // Charger les bibliothèques
 
 ```{r}
 #| label: load-libraries
@@ -71,7 +71,7 @@ library(readr)
 library(tools)
 ```
 
-## Select a target directory // Sélectionnez un répertoire de destination
+## Select Target Directory // Sélectionner le répertoire cible
 
 This block allows for interactive selection of the image directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.
 
@@ -100,7 +100,7 @@ print(paste("Analyzing directory:", target_dir))
 
 ```
 
-## Find Code Files // Rechercher des fichier de code
+## Find Code Files // Rechercher des fichiers de code
 
 We scan the directory for `.R`, `.qmd`, and `.Rmd` files. Other file extensions can be added by adding the extension inside the parentheses of the pattern line.
 
@@ -313,8 +313,9 @@ if (nrow(report) > 0 && any(report$Packages != "")) {
 output_dir <- file.path("Results", "Inspect_rCode")
 if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
 
-output_file <- file.path(output_dir, paste0("Code_Inspection_", Sys.Date(), ".csv"))
-write_csv(report, output_file)
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+output_file <- file.path(output_dir, paste0("Code_Inspection_", dir_label, "_", Sys.Date(), ".csv"))
+write_excel_csv(report, output_file)
 
 message("Report successfully saved to: ", output_file)
 ```
@@ -390,7 +391,7 @@ Télécharger le **script R :** [**`Inspect_Code_Script.R`**](Scripts/Inspect_Co
 #SBATCH --time=00:10:00
 #SBATCH --job-name=code_check
 
-# Load R module
+# Load R Module
 module load R
 
 # Define data directory

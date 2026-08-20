@@ -1,2 +1,0 @@
-"FileName","Conventions","history"
-"data/Inspect_nc/Geopotential_orography.nc","CF-1.6","2024-04-18 11:32:43 GMT by grib_to_netcdf-2.25.1: /opt/ecmwf/mars-client/bin/grib_to_netcdf.bin -S param -o /cache/data3/adaptor.mars.internal-1713439963.6283402-21017-13-6142edf8-1300-47e2-860e-b5f2ed4c736b.nc /cache/tmp/6142edf8-1300-47e2-860e-b5f2ed4c736b-adaptor.mars.internal-1713439960.242965-21017-21-tmp.grib"

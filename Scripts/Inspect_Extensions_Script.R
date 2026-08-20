@@ -16,25 +16,36 @@ suppressPackageStartupMessages({
 })
 
 # ------------------------------------------------------------------------------
-# 1. Directory Selection Logic
+# 1. Directory Selection Logic (Hybrid: Interactive / HPC)
 # ------------------------------------------------------------------------------
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) == 0) {
-  stop("Usage: Rscript Inspect_Extensions_Script.R <input_dir> [output_dir]", call. = FALSE)
-}
-
-target_dir <- args[1]
-# If output directory is provided, use it; otherwise default to "Results" in current WD
-output_dir <- if (length(args) >= 2) args[2] else file.path(getwd(), "Results")
-
-if (!dir.exists(target_dir)) {
-  stop(paste("Input directory does not exist:", target_dir))
+if (interactive()) {
+  message("Running in interactive mode. Please select a directory.")
+  if (requireNamespace("rstudioapi", quietly = TRUE)) {
+    target_dir <- rstudioapi::selectDirectory(caption = "Select Data Directory")
+  } else {
+    stop("Package 'rstudioapi' is required for interactive selection.")
+  }
+  if (is.null(target_dir)) stop("No directory selected.")
+  output_dir <- file.path(getwd(), "Results/Inspect_Extensions")
+} else {
+  args <- commandArgs(trailingOnly = TRUE)
+  if (length(args) == 0) {
+    stop("Usage: Rscript Inspect_Extensions_Script.R <input_dir> [output_dir]", call. = FALSE)
+  }
+  target_dir <- args[1]
+  if (!dir.exists(target_dir)) stop(paste("Input directory does not exist:", target_dir))
+  output_dir <- if (length(args) >= 2) args[2] else file.path(getwd(), "Results/Inspect_Extensions")
 }
 
 if (!dir.exists(output_dir)) {
   dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 }
+
+# Normalize to forward slashes so path arithmetic below is Windows-safe
+target_dir <- normalizePath(target_dir, winslash = "/", mustWork = TRUE)
+
+# Label for output filenames: name of the folder that was explored
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(target_dir))
 
 message(sprintf("Inventorying directory: %s", target_dir))
 message(sprintf("Results will be saved to: %s", output_dir))
@@ -60,7 +71,8 @@ if (length(all_files) > 0) {
   inventory <- tibble(FullPath = all_files) %>%
     mutate(
       FileName = basename(FullPath),
-      RelativePath = str_remove(FullPath, paste0(target_dir, "/?")),
+      FullPath = normalizePath(FullPath, winslash = "/", mustWork = FALSE),
+      RelativePath = str_remove(FullPath, fixed(paste0(target_dir, "/"))),
       
       # Extension normalization
       Extension = tolower(file_ext(FileName)),
@@ -93,32 +105,47 @@ if (length(all_files) > 0) {
   
   if (has_exiftool) {
     message("ExifTool detected. Extracting deep metadata (MIME types, Authors, Warnings)...")
-    
-    tryCatch({
-      # We ask for specific tags to keep the process efficient
-      tags_to_extract <- c("MIMEType", "FileType", "Author", "CreateDate", "Warning")
-      
-      # Run ExifTool (this handles batching internally)
-      exif_data <- exiftoolr::exif_read(inventory$FullPath, tags = tags_to_extract)
-      
-      # Clean up results
+
+    # We ask for specific tags to keep the process efficient
+    tags_to_extract <- c("MIMEType", "FileType", "Author", "CreateDate", "Warning")
+
+    # Read files one at a time: a single unreadable/unrecognized file (e.g. no
+    # extension, or a warning ExifTool emits outside the JSON stream) can
+    # otherwise corrupt the JSON for the whole batch and abort every file's metadata.
+    safe_exif_read <- purrr::safely(function(fp) {
+      exiftoolr::exif_read(fp, tags = tags_to_extract, quiet = TRUE)
+    })
+
+    exif_results <- purrr::map(inventory$FullPath, safe_exif_read)
+    n_failed <- sum(purrr::map_lgl(exif_results, ~ !is.null(.x$error)))
+    if (n_failed > 0) {
+      message(sprintf("Warning: ExifTool could not read metadata for %d file(s); leaving those blank.", n_failed))
+    }
+
+    exif_data <- purrr::map(exif_results, "result") %>%
+      purrr::compact() %>%
+      bind_rows()
+
+    if (nrow(exif_data) > 0) {
       # ExifTool returns 'SourceFile' which matches our 'FullPath'
-      exif_data <- exif_data %>% 
-        rename(FullPath = SourceFile)
-      
+      exif_data <- exif_data %>%
+        rename(FullPath = SourceFile) %>%
+        mutate(FullPath = normalizePath(FullPath, winslash = "/", mustWork = FALSE))
+
       # Remove 'FileName' if ExifTool returned it, to avoid duplicate cols in join
       if ("FileName" %in% names(exif_data)) {
         exif_data <- select(exif_data, -FileName)
       }
-      
+
       # Join with main inventory
       inventory <- left_join(inventory, exif_data, by = "FullPath")
-      
-    }, error = function(e) {
-      message("Warning: ExifTool execution failed despite being detected.")
-      message("Error details: ", e$message)
-    })
-    
+    }
+
+    # Ensure expected columns always exist, even if every read failed
+    for (col in c("MIMEType", "FileType", "Author", "CreateDate", "Warning")) {
+      if (!col %in% names(inventory)) inventory[[col]] <- NA_character_
+    }
+
   } else {
     message("----------------------------------------------------------------")
     message("NOTICE: ExifTool not found on this system.")
@@ -147,12 +174,12 @@ if (length(all_files) > 0) {
     mutate(Percent = round(100 * Count / sum(Count), 2))
   
   # Define Output Paths
-  summary_file <- file.path(output_dir, paste0("Format_Summary_HPC_", Sys.Date(), ".csv"))
-  inventory_file <- file.path(output_dir, paste0("Full_Inventory_ExifTool_HPC_", Sys.Date(), ".csv"))
+  summary_file <- file.path(output_dir, paste0("Format_Summary_HPC_", dir_label, "_", Sys.Date(), ".csv"))
+  inventory_file <- file.path(output_dir, paste0("Full_Inventory_ExifTool_HPC_", dir_label, "_", Sys.Date(), ".csv"))
   
-  # Save
-  write_csv(summary_table, summary_file)
-  write_csv(inventory, inventory_file)
+  # Save (write_excel_csv adds a UTF-8 BOM so Excel renders non-ASCII correctly)
+  write_excel_csv(summary_table, summary_file)
+  write_excel_csv(inventory, inventory_file)
   
   message("Analysis complete.")
   message(sprintf("Summary saved to: %s", summary_file))

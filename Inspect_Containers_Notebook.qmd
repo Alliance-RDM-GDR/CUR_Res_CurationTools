@@ -45,7 +45,7 @@ If you do not have the required packages, run this command once in your R consol
 # install.packages(c("tidyverse", "archive", "fs", "rstudioapi"))
 ```
 
-### Load libraries
+### Load Libraries
 
 ```{r}
 #| label: setup
@@ -83,7 +83,7 @@ print(paste("Analyzing directory:", target_dir))
 
 ```
 
-## Inventory of files
+## Inventory of Files
 
 We scan for `.zip`, `.tar`, `.gz`, `.7z`, and `.rar` files.
 
@@ -213,9 +213,10 @@ Save the report to a CSV file for review.
 output_dir <- "Results/Inspect_Containers"
 dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
-output_file <- file.path(output_dir, paste0("Container_Manifest_", format(Sys.Date(), "%Y%m%d"), ".csv"))
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+output_file <- file.path(output_dir, paste0("Container_Manifest_", dir_label, "_", format(Sys.Date(), "%Y%m%d"), ".csv"))
 
-write.csv(report, output_file, row.names = FALSE)
+write_excel_csv(report, output_file)
 print(paste("Manifest saved to:", output_file))
 ```
 

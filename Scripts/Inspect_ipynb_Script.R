@@ -7,25 +7,39 @@
 # Usage:   Rscript Inspect_ipynb_Script.R <target_directory>
 # ==============================================================================
 
-# 1. Setup & Arguments ---------------------------------------------------------
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) == 0) {
-  stop("Error: No target directory provided.\nUsage: Rscript Inspect_ipynb_Script.R /path/to/notebooks", call. = FALSE)
-}
-
-target_dir <- args[1]
-
-if (!dir.exists(target_dir)) {
-  stop(paste("Error: Directory not found:", target_dir), call. = FALSE)
-}
-
 # Load libraries silently
 suppressPackageStartupMessages({
   library(tidyverse)
   library(jsonlite)
   library(stringr)
 })
+
+# 1. Setup & Arguments (Hybrid: Interactive / HPC) ------------------------------
+if (interactive()) {
+  message("Running in interactive mode. Please select a directory.")
+  if (requireNamespace("rstudioapi", quietly = TRUE)) {
+    target_dir <- rstudioapi::selectDirectory(caption = "Select Notebooks Directory")
+  } else {
+    stop("Package 'rstudioapi' is required for interactive selection.")
+  }
+  if (is.null(target_dir)) stop("No directory selected.")
+  output_dir <- file.path(getwd(), "Results/Inspect_ipynb")
+} else {
+  args <- commandArgs(trailingOnly = TRUE)
+  if (length(args) == 0) {
+    stop("Error: No target directory provided.\nUsage: Rscript Inspect_ipynb_Script.R /path/to/notebooks [output_dir]", call. = FALSE)
+  }
+  target_dir <- args[1]
+  if (!dir.exists(target_dir)) {
+    stop(paste("Error: Directory not found:", target_dir), call. = FALSE)
+  }
+  output_dir <- if (length(args) >= 2) args[2] else file.path(getwd(), "Results/Inspect_ipynb")
+}
+
+if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+# Label for output filenames: name of the folder that was explored
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
 
 message(paste("Starting analysis on:", target_dir))
 
@@ -169,11 +183,8 @@ message("Parsing notebooks...")
 report <- purrr::map_dfr(ipynb_files, process_notebook)
 
 # 5. Export Results ------------------------------------------------------------
-output_dir <- "Results/Inspect_ipynb"
-if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
+output_file <- file.path(output_dir, paste0("Jupyter_Report_", dir_label, "_", format(Sys.Date(), "%Y%m%d"), ".csv"))
 
-output_file <- file.path(output_dir, paste0("Jupyter_Report_", format(Sys.Date(), "%Y%m%d"), ".csv"))
-
-write.csv(report, output_file, row.names = FALSE)
+write_excel_csv(report, output_file)
 
 message(paste("✅ Success! Report saved to:", output_file))

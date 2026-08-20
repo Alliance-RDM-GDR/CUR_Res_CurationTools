@@ -38,6 +38,9 @@ if (interactive()) {
 
 if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
+# Label for output filenames: name of the folder that was explored
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+
 message(sprintf("Inspecting CSVs in: %s", target_dir))
 message(sprintf("Results will be saved to: %s", output_dir))
 
@@ -116,8 +119,8 @@ analyze_csv_health <- function(file_path) {
 if (length(csv_files) > 0) {
   health_report <- purrr::map_dfr(csv_files, analyze_csv_health)
   
-  health_file <- file.path(output_dir, paste0("CSV_Health_Check", Sys.Date(), ".csv"))
-  write_csv(health_report, health_file)
+  health_file <- file.path(output_dir, paste0("CSV_Health_Check_", dir_label, "_", Sys.Date(), ".csv"))
+  write_excel_csv(health_report, health_file)
   message(sprintf("Health Check saved to: %s", health_file))
 }
 
@@ -129,8 +132,9 @@ message("--- Starting Detailed Profiling ---")
 safe_skim <- function(file_path) {
   tryCatch({
     df <- read_csv(file_path, show_col_types = FALSE)
-    skim(df) %>% 
-      as_tibble() %>% 
+    skim(df) %>%
+      as_tibble() %>%
+      select(-any_of("numeric.hist")) %>%  # sparkline glyphs: unreadable/fragile in a flat CSV
       mutate(FileName = basename(file_path)) %>%
       select(FileName, everything())
   }, error = function(e) NULL)
@@ -139,7 +143,7 @@ safe_skim <- function(file_path) {
 if (length(csv_files) > 0) {
   full_profile_data <- map_dfr(csv_files, safe_skim)
   
-  profile_file <- file.path(output_dir, paste0("CSV_Full_Profile", Sys.Date(), ".csv"))
-  write_csv(full_profile_data, profile_file)
+  profile_file <- file.path(output_dir, paste0("CSV_Full_Profile_", dir_label, "_", Sys.Date(), ".csv"))
+  write_excel_csv(full_profile_data, profile_file)
   message(sprintf("Detailed Profile saved to: %s", profile_file))
 }

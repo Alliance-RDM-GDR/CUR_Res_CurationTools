@@ -38,6 +38,9 @@ if (interactive()) {
 
 if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
+# Label for output filenames: name of the folder that was explored
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+
 message(sprintf("Inspecting Stata files in: %s", target_dir))
 message(sprintf("Results will be saved to: %s", output_dir))
 
@@ -124,8 +127,8 @@ analyze_dta_health <- function(file_path) {
 if (length(dta_files) > 0) {
   health_report <- purrr::map_dfr(dta_files, analyze_dta_health)
   
-  health_file <- file.path(output_dir, paste0("DTA_Health_Check_HPC_", Sys.Date(), ".csv"))
-  write_csv(health_report, health_file)
+  health_file <- file.path(output_dir, paste0("DTA_Health_Check_HPC_", dir_label, "_", Sys.Date(), ".csv"))
+  write_excel_csv(health_report, health_file)
   message(sprintf("Health Check saved to: %s", health_file))
 }
 
@@ -166,7 +169,7 @@ extract_dictionary <- function(file_path) {
 if (length(dta_files) > 0) {
   full_dictionary <- map_dfr(dta_files, extract_dictionary)
   
-  dict_file <- file.path(output_dir, paste0("DTA_Data_Dictionary_HPC_", Sys.Date(), ".csv"))
-  write_csv(full_dictionary, dict_file)
+  dict_file <- file.path(output_dir, paste0("DTA_Data_Dictionary_HPC_", dir_label, "_", Sys.Date(), ".csv"))
+  write_excel_csv(full_dictionary, dict_file)
   message(sprintf("Data Dictionary saved to: %s", dict_file))
 }

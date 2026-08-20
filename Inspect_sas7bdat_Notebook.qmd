@@ -45,7 +45,7 @@ If you do not have the required packages, run this command once in your R consol
 # install.packages(c("tidyverse", "haven", "sas7bdat", "rstudioapi", "stringr"))
 ```
 
-### Load libraries
+### Load Libraries
 
 ```{r}
 #| label: load-libraries
@@ -271,9 +271,10 @@ Save the dictionary to a CSV file for review.
 output_dir <- "Results/Inspect_sas7bdat"
 dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
-output_file <- file.path(output_dir, paste0("SAS_Dictionary_", format(Sys.Date(), "%Y%m%d"), ".csv"))
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+output_file <- file.path(output_dir, paste0("SAS_Dictionary_", dir_label, "_", format(Sys.Date(), "%Y%m%d"), ".csv"))
 
-write.csv(report, output_file, row.names = FALSE)
+write_excel_csv(report, output_file)
 print(paste("Data Dictionary saved to:", output_file))
 ```
 

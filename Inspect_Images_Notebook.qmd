@@ -72,7 +72,7 @@ Les packages R suivants sont requis. Si vous ne disposez pas de ces packages, d�
 # install.packages(c("tidyverse", "digest", "magick", "exiftoolr", "rstudioapi"))
 ```
 
-### ExifTool software // Logiciel ExifTool
+### ExifTool Software // Logiciel ExifTool
 
 The `exiftoolr` package is a wrapper around a command-line tool called **ExifTool**. You must install this tool for the detailed metadata extraction to work. **Run the following command *once* in your console to install the software**.
 
@@ -86,7 +86,7 @@ Le package `exiftoolr` est une interface pour un outil en ligne de commande appe
 
 ------------------------------------------------------------------------
 
-## Load libraries // Charger les bibliothèques
+### Load Libraries // Charger les bibliothèques
 
 ```{r}
 #| label: load-libraries
@@ -101,7 +101,7 @@ library(rstudioapi)
 
 ------------------------------------------------------------------------
 
-## Select a target directory // Sélectionnez un répertoire de destination
+## Select Target Directory // Sélectionner le répertoire cible
 
 This block allows for interactive selection of the image directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.
 
@@ -333,10 +333,11 @@ curated_data %>%
 output_dir <- "Results/Inspect_Images"
 dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
 timestamp <- format(Sys.Date(), "%Y%m%d")
-output_file <- paste0(output_dir, "/Curation_Report_Images_", timestamp, ".csv")
+output_file <- file.path(output_dir, paste0("Curation_Report_Images_", dir_label, "_", timestamp, ".csv"))
 
-write.csv(curated_data, output_file, row.names = FALSE)
+write_excel_csv(curated_data, output_file)
 
 print(paste("Curation report saved to:", output_file))
 ```
@@ -403,7 +404,7 @@ Pour les utilisateurs qui souhaitent exécuter cette analyse sur un serveur, dan
 
 Télécharger le **script R :** [**`Inspect_Images_Script.R`**](Scripts/Inspect_Images_Script.R)
 
-### Example HPC Submission Script // Exemple de script de soumission CHP
+### Example HPC Submission Script // Exemple de script de soumission HPC
 
 ``` bash
 #!/bin/bash

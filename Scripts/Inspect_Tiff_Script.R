@@ -10,24 +10,38 @@
 # Usage:   Rscript Inspect_tiff_Script.R <target_directory>
 # ==============================================================================
 
-# Setup & Arguments ---------------------------------------------------------
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) == 0) {
-  stop("Error: No target directory provided.\nUsage: Rscript Inspect_tiff_Script.R /path/to/tiff_files", call. = FALSE)
-}
-
-target_dir <- args[1]
-
-if (!dir.exists(target_dir)) {
-  stop(paste("Error: Directory not found:", target_dir), call. = FALSE)
-}
-
 # Load libraries silently
 suppressPackageStartupMessages({
   library(tidyverse)
   library(magick)
 })
+
+# Setup & Arguments (Hybrid: Interactive / HPC) ------------------------------
+if (interactive()) {
+  message("Running in interactive mode. Please select a directory.")
+  if (requireNamespace("rstudioapi", quietly = TRUE)) {
+    target_dir <- rstudioapi::selectDirectory(caption = "Select TIFF Directory")
+  } else {
+    stop("Package 'rstudioapi' is required for interactive selection.")
+  }
+  if (is.null(target_dir)) stop("No directory selected.")
+  output_dir <- file.path(getwd(), "Results/Inspect_tiff")
+} else {
+  args <- commandArgs(trailingOnly = TRUE)
+  if (length(args) == 0) {
+    stop("Error: No target directory provided.\nUsage: Rscript Inspect_tiff_Script.R /path/to/tiff_files [output_dir]", call. = FALSE)
+  }
+  target_dir <- args[1]
+  if (!dir.exists(target_dir)) {
+    stop(paste("Error: Directory not found:", target_dir), call. = FALSE)
+  }
+  output_dir <- if (length(args) >= 2) args[2] else file.path(getwd(), "Results/Inspect_tiff")
+}
+
+if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+# Label for output filenames: name of the folder that was explored
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
 
 message(paste("Starting TIFF analysis on:", target_dir))
 
@@ -115,12 +129,9 @@ message("Generating Deep Inspection Report...")
 report <- map_dfr(tiff_files, inspect_tiff_fuzzy)
 
 # Export --------------------------------------------------------------------
-output_dir <- "Results/Inspect_tiff"
-if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
+output_file <- file.path(output_dir, paste0("TIFF_DeepScan_", dir_label, "_", format(Sys.Date(), "%Y%m%d"), ".csv"))
 
-output_file <- file.path(output_dir, paste0("TIFF_DeepScan_", format(Sys.Date(), "%Y%m%d"), ".csv"))
-
-write.csv(report, output_file, row.names = FALSE)
+write_excel_csv(report, output_file)
 
 message(paste("✅ Process Complete."))
 message(paste("   Analyzed:", length(unique(report$FileName)), "files"))

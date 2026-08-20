@@ -46,7 +46,7 @@ If you don't have the `tidyverse` package installed, run this command once in yo
 
 ------------------------------------------------------------------------
 
-## Load libraries
+### Load Libraries
 
 This chunk loads the necessary library for the session.
 
@@ -76,7 +76,7 @@ if (is.null(exif_version())) {
 
 ------------------------------------------------------------------------
 
-## Select the target directory
+## Select Target Directory
 
 This section identifies the directory to be analyzed and creates a complete list of every file within it, including those in sub-folders and hidden files. The directory is set by the `target_dir` parameter at the top of this document.
 
@@ -128,6 +128,9 @@ Data Collected:
 
 message("Scanning files... This may take a moment for large directories.")
 
+# Normalize to forward slashes so path arithmetic below is Windows-safe
+target_dir <- normalizePath(target_dir, winslash = "/", mustWork = TRUE)
+
 # 1. Get all files recursively
 all_files <- list.files(
   path = target_dir,
@@ -139,14 +142,15 @@ all_files <- list.files(
 message("Found ", length(all_files), " total files.")
 
 if (length(all_files) > 0) {
-  
+
   # 2. Build Inventory Dataframe
   inventory <- tibble(FullPath = all_files) %>%
     mutate(
+      FullPath = normalizePath(FullPath, winslash = "/", mustWork = FALSE),
       FileName = basename(FullPath),
       # Calculate relative path for readability
-      RelativePath = str_remove(FullPath, paste0(target_dir, "/?")),
-      
+      RelativePath = str_remove(FullPath, fixed(paste0(target_dir, "/"))),
+
       # Extract extension: Get text after last dot, lowercase it.
       Extension = tolower(file_ext(FileName)),
       Extension = if_else(Extension == "", "(no extension)", paste0(".", Extension)),
@@ -197,29 +201,45 @@ This section goes beyond the filename. We use ExifTool to read the file headers.
 #| message: false
 
 if (nrow(inventory) > 0 && !is.null(exif_version())) {
-  
+
   message("Running ExifTool on ", nrow(inventory), " files...")
-  
+
   # We select specific tags to keep the report manageable
   tags_to_extract <- c("FileName", "MIMEType", "FileType", "Author", "CreateDate", "Warning", "ImageSize")
-  
-  tryCatch({
-    # Run ExifTool on the list of files
-    exif_data <- exif_read(inventory$FullPath, tags = tags_to_extract)
-    
+
+  # Read files one at a time: a single unreadable/unrecognized file (e.g. no
+  # extension, or a warning ExifTool emits outside the JSON stream) can
+  # otherwise corrupt the JSON for the whole batch and abort every file's metadata.
+  safe_exif_read <- purrr::safely(function(fp) {
+    exif_read(fp, tags = tags_to_extract, quiet = TRUE)
+  })
+
+  exif_results <- purrr::map(inventory$FullPath, safe_exif_read)
+  n_failed <- sum(purrr::map_lgl(exif_results, ~ !is.null(.x$error)))
+  if (n_failed > 0) {
+    message("Warning: ExifTool could not read metadata for ", n_failed, " file(s); leaving those blank.")
+  }
+
+  exif_data <- purrr::map(exif_results, "result") %>%
+    purrr::compact() %>%
+    bind_rows()
+
+  if (nrow(exif_data) > 0) {
     # Clean up column names (ExifTool returns "SourceFile" as the path)
     exif_data <- exif_data %>%
-      rename(FullPath = SourceFile) %>%
-      select(-FileName) # Remove duplicate filename col if present
-    
+      rename(FullPath = SourceFile)
+    if ("FileName" %in% names(exif_data)) exif_data <- select(exif_data, -FileName)
+
     # Join with main inventory
     inventory <- left_join(inventory, exif_data, by = "FullPath")
-    
-    message("Metadata extraction complete.")
-    
-  }, error = function(e) {
-    warning("ExifTool failed: ", e$message)
-  })
+  }
+
+  # Ensure expected columns always exist, even if every read failed
+  for (col in c("MIMEType", "FileType", "Author", "CreateDate", "Warning")) {
+    if (!col %in% names(inventory)) inventory[[col]] <- NA_character_
+  }
+
+  message("Metadata extraction complete.")
 }
 
 # Preview Combined Data
@@ -233,7 +253,7 @@ if (nrow(inventory) > 0) {
 }
 ```
 
-## Extension Summary and visualization
+## Extension Summary and Visualization
 
 We aggregate the inventory to visualize the dataset's content profile. This helps curators identify if the submission matches the depositor's description (e.g., "They said it was images, but I see mostly .docx files").
 
@@ -272,17 +292,20 @@ We export the full inventory to help curators locate and delete the specific fil
 output_dir <- file.path("Results", "Inspect_Extensions")
 if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
 
-summary_file <- file.path(output_dir, paste0("Format_Summary_", Sys.Date(), ".csv"))
-inventory_file <- file.path(output_dir, paste0("Full_Inventory_ExifTool_", Sys.Date(), ".csv"))
+# Label for output filenames: name of the folder that was explored
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+
+summary_file <- file.path(output_dir, paste0("Format_Summary_", dir_label, "_", Sys.Date(), ".csv"))
+inventory_file <- file.path(output_dir, paste0("Full_Inventory_ExifTool_", dir_label, "_", Sys.Date(), ".csv"))
 
 if (nrow(inventory) > 0) {
   # Generate summary
   summary_table <- inventory %>%
     count(Extension, MIMEType, Risk_Flag, name = "Count") %>%
     arrange(desc(Count))
-    
-  write_csv(summary_table, summary_file)
-  write_csv(inventory, inventory_file)
+
+  write_excel_csv(summary_table, summary_file)
+  write_excel_csv(inventory, inventory_file)
 
   message("Reports saved:")
   message("1. ", summary_file)
@@ -331,7 +354,7 @@ Download the **R Script:** [**`Inspect_Extensions_Script.R`**](Scripts/Inspect_E
 #SBATCH --time=00:30:00
 #SBATCH --job-name=ext_check_exif
 
-# Load R module
+# Load R Module
 module load R
 
 # Load Perl module (Often required for ExifTool to run)

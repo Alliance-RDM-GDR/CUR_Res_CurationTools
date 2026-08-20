@@ -45,7 +45,7 @@ If you do not have the required packages, run this command once in your R consol
 
 ```
 
-### Load libraries
+### Load Libraries
 
 ```{r}
 #| label: load-libraries
@@ -251,11 +251,12 @@ Save the dictionary to a CSV file for review.
 output_dir <- file.path("Results", "Inspect_DTA")
 if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
 
-health_file <- file.path(output_dir, paste0("DTA_Health_Check_", Sys.Date(), ".csv"))
-dict_file <- file.path(output_dir, paste0("DTA_Data_Dictionary_", Sys.Date(), ".csv"))
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+health_file <- file.path(output_dir, paste0("DTA_Health_Check_", dir_label, "_", Sys.Date(), ".csv"))
+dict_file <- file.path(output_dir, paste0("DTA_Data_Dictionary_", dir_label, "_", Sys.Date(), ".csv"))
 
-write_csv(health_report, health_file)
-write_csv(full_dictionary, dict_file)
+write_excel_csv(health_report, health_file)
+write_excel_csv(full_dictionary, dict_file)
 
 message("Reports saved:")
 message("1. ", health_file)
@@ -297,7 +298,7 @@ Download the **R Script:** [**`Inspect_dta_Script.R`**](Scripts/Inspect_dta_Scri
 #SBATCH --time=00:10:00
 #SBATCH --job-name=dta_check
 
-# Load R module
+# Load R Module
 module load R
 
 # Define data directory

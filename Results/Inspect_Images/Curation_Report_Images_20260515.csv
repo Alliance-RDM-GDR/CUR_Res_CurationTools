@@ -1,5 +1,0 @@
-"file_path","filename","md5_checksum","format_magick","width","height","colorspace","filesize_mb","valid_image","Megapixels","GPSLatitude","is_duplicate","curation_flags","flag_duplicate","flag_corrupt","flag_privacy_gps","flag_outlier"
-"data/Inspect_Images/CHIRPS_precipitation_1981-01-01.tif","CHIRPS_precipitation_1981-01-01.tif","aea0ea1f3e3dabd9a79a111c23a2d194","TIFF",110,164,"Gray",0,TRUE,0.01804,NA,FALSE,"",NA,NA,NA,NA
-"data/Inspect_Images/CHIRPS_precipitation_1981-01-03.tif","CHIRPS_precipitation_1981-01-03.tif","b35611fe6fcd0ee46e256b8ffd9d6fca","TIFF",110,164,"Gray",0.01,TRUE,0.01804,NA,FALSE,"",NA,NA,NA,NA
-"data/Inspect_Images/CHIRTS_maximum_temperature_1983-01-07.tif","CHIRTS_maximum_temperature_1983-01-07.tif","87496450b7b090fbbad0e9881a8edef1","TIFF",110,164,"Gray",0.03,TRUE,0.01804,NA,FALSE,"",NA,NA,NA,NA
-"data/Inspect_Images/CHIRTS_maximum_temperature_1983-01-09.tif","CHIRTS_maximum_temperature_1983-01-09.tif","206884ca8ae663d520ae9f1f51977723","TIFF",110,164,"Gray",0.03,TRUE,0.01804,NA,FALSE,"",NA,NA,NA,NA

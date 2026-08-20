@@ -40,6 +40,9 @@ if (interactive()) {
 
 if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
+# Label for output filenames: name of the folder that was explored
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+
 message(sprintf("Inspecting GeoPackages in: %s", target_dir))
 message(sprintf("Results will be saved to: %s", output_dir))
 
@@ -129,8 +132,8 @@ if (length(gpkg_files) > 0) {
   message("Extracting layer metadata...")
   layer_report <- purrr::map_dfr(gpkg_files, analyze_gpkg_layers)
   
-  output_file <- file.path(output_dir, paste0("GPKG_Layer_Report_HPC_", Sys.Date(), ".csv"))
-  write_csv(layer_report, output_file)
+  output_file <- file.path(output_dir, paste0("GPKG_Layer_Report_HPC_", dir_label, "_", Sys.Date(), ".csv"))
+  write_excel_csv(layer_report, output_file)
   
   message(sprintf("Analysis complete. Report saved to: %s", output_file))
   

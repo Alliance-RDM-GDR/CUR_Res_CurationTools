@@ -69,7 +69,7 @@ Les packages R suivants sont requis. Si vous ne disposez pas de ces packages, d�
 # install.packages(c("tidyverse", "pdftools", "rstudioapi"))
 ```
 
-### Load libraries // Charger les bibliothèques
+### Load Libraries // Charger les bibliothèques
 
 ```{r}
 #| label: load-libraries
@@ -80,7 +80,7 @@ library(pdftools)
 library(rstudioapi)
 ```
 
-## Select a target directory // Sélectionnez un répertoire de destination
+## Select Target Directory // Sélectionner le répertoire cible
 
 This block allows for interactive selection of the image directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.
 
@@ -125,7 +125,7 @@ pdf_files <- list.files(
 print(paste("Found", length(pdf_files), "PDF files."))
 ```
 
-## File inventory and inspection // Inventaire et analyse des fichiers
+## File Inventory and Inspection // Inventaire et analyse des fichiers
 
 We iterate through the files to extract metadata, check for encryption, and sample the text content to determine its accessibility status.
 
@@ -218,9 +218,10 @@ print(head(report))
 output_dir <- file.path("Results", "Inspect_pdf")
 dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
-output_file <- file.path(output_dir, paste0("PDF_Report_", Sys.Date(), ".csv"))
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+output_file <- file.path(output_dir, paste0("PDF_Report_", dir_label, "_", Sys.Date(), ".csv"))
 
-write.csv(report, output_file, row.names = FALSE)
+write_excel_csv(report, output_file)
 
 print(paste("Report saved to:", output_file))
 ```

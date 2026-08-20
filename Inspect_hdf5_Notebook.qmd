@@ -45,7 +45,7 @@ If you do not have the required packages, run this command once in your R consol
 # install.packages(c("tidyverse", "hdf5r", "rstudioapi"))
 ```
 
-### Load libraries
+### Load Libraries
 
 ```{r}
 #| label: load-libraries
@@ -271,10 +271,11 @@ output_dir <- file.path("Results", "Inspect_hdf5")
 dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
 # Define filename
-output_file <- file.path(output_dir, paste0("HDF5_Dictionary_", Sys.Date(), ".csv"))
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+output_file <- file.path(output_dir, paste0("HDF5_Dictionary_", dir_label, "_", Sys.Date(), ".csv"))
 
 # Write CSV
-write.csv(report, output_file, row.names = FALSE)
+write_excel_csv(report, output_file)
 
 print(paste("Data Dictionary saved to:", output_file))
 ```
@@ -316,7 +317,7 @@ Download the **R Script:** [**`Inspect_hdf5_Script.R`**](Scripts/Inspect_hdf5_Sc
 #SBATCH --time=00:20:00
 #SBATCH --job-name=hdf5_check
 
-# Load R module
+# Load R Module
 module load R
 
 # IMPORTANT: The 'hdf5r' package relies on the HDF5 system library.

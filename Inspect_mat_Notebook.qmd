@@ -45,7 +45,7 @@ If you don't have the packages installed, run this command once in your R consol
 if (!require("BiocManager", quietly = TRUE)) install.packages("BiocManager"); BiocManager::install("rhdf5")
 ```
 
-### Load libraries
+### Load Libraries
 
 ```{r}
 #| label: load-libraries
@@ -84,7 +84,7 @@ print(paste("Analyzing directory:", target_dir))
 
 ```
 
-## Find MATLAB files
+## Find MATLAB Files
 
 We scan the directory for files ending in .mat.
 
@@ -210,7 +210,7 @@ print(paste("Extracted", nrow(results), "objects from", length(unique(results$fi
 head(results, 10)
 ```
 
-## Export results
+## Save Results
 
 ```{r}
 #| label: save-results
@@ -218,9 +218,10 @@ head(results, 10)
 output_dir <- "Results/Inspect_mat"
 dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
-output_file <- file.path(output_dir, paste0("MAT_Deep_Report_", format(Sys.Date(), "%Y%m%d"), ".csv"))
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+output_file <- file.path(output_dir, paste0("MAT_Deep_Report_", dir_label, "_", format(Sys.Date(), "%Y%m%d"), ".csv"))
 
-write.csv(results, output_file, row.names = FALSE)
+write_excel_csv(results, output_file)
 print(paste("Report saved to:", output_file))
 ```
 
@@ -234,7 +235,7 @@ Use the generated CSV report to guide your curation actions:
 
 -   **Complex Structures (H5T_COMPOUND):** In v7.3 files, H5T_COMPOUND indicates complex nested tables (structs). These are difficult to convert to CSV. If you are converting files, consider converting these specific tables to JSON or separate CSVs to preserve the hierarchy.
 
-### Notes and limitations
+### Notes and Limitations
 
 MATLAB .mat files can vary significantly in format and complexity. We have some limitations to keep in mind:
 

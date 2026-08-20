@@ -45,7 +45,7 @@ If you don't have these packages installed, run this command once in your R cons
 
 ```
 
-## Load libraries
+### Load Libraries
 
 ```{r}
 
@@ -85,7 +85,7 @@ if (!is.null(selected_dir)) {
 print(paste("Analyzing directory:", target_dir))
 ```
 
-## Find Json files
+## Find JSON Files
 
 ```{r}
 #| label: find-files
@@ -211,7 +211,7 @@ ggplot(results %>% filter(is_valid), aes(x = structure_type, fill = structure_ty
   theme(legend.position = "none")
 ```
 
-## Export Results
+## Save Results
 
 ```{r}
 #| label: save-results
@@ -219,9 +219,10 @@ ggplot(results %>% filter(is_valid), aes(x = structure_type, fill = structure_ty
 output_dir <- "Results/Inspect_json"
 dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
-output_file <- file.path(output_dir, paste0("JSON_Report_", format(Sys.Date(), "%Y%m%d"), ".csv"))
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+output_file <- file.path(output_dir, paste0("JSON_Report_", dir_label, "_", format(Sys.Date(), "%Y%m%d"), ".csv"))
 
-write.csv(results, output_file, row.names = FALSE)
+write_excel_csv(results, output_file)
 print(paste("Report saved to:", output_file))
 ```
 
@@ -264,7 +265,7 @@ Alternatively, adapt the folling code script to match your cluster's environment
 #SBATCH --mem=4G
 #SBATCH --output=logs/inspect_json_%j.log
 
-# Load R module (Adjust based on your cluster's specific module name)
+# Load R Module (Adjust based on your cluster's specific module name)
 module load R
 
 # Define target directory containing JSON files

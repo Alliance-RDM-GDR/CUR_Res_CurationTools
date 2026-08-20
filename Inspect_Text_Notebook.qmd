@@ -69,7 +69,7 @@ Les packages R suivants sont requis. Si vous ne disposez pas de ces packages, d�
 # install.packages(c("tidyverse", "readr", "rstudioapi", "stringr"))
 ```
 
-### Load libraries // Charger les bibliothèques
+### Load Libraries // Charger les bibliothèques
 
 ```{r}
 #| label: load-libraries
@@ -81,7 +81,7 @@ library(stringr)    # For Regex (Links/Emails)
 library(rstudioapi) # For directory selection
 ```
 
-## Select a target directory // Sélectionnez un répertoire de destination
+## Select Target Directory // Sélectionner le répertoire cible
 
 This block allows for interactive selection of the image directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.
 
@@ -204,7 +204,7 @@ print("--- Text Report Preview ---")
 head(report)
 ```
 
-## Visualization // Visualization
+## Visualization // Visualisation
 
 We can visualize the distribution of detected encodings. Ideally, the repository should be 100% UTF-8 (or ASCII). Any "ISO-8859" or "Windows-1252" files are candidates for remediation.
 
@@ -238,9 +238,10 @@ if (nrow(report) > 0) {
 output_dir <- "Results/Inspect_Text"
 dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
-output_file <- file.path(output_dir, paste0("Text_Report_", format(Sys.Date(), "%Y%m%d"), ".csv"))
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+output_file <- file.path(output_dir, paste0("Text_Report_", dir_label, "_", format(Sys.Date(), "%Y%m%d"), ".csv"))
 
-write.csv(report, output_file, row.names = FALSE)
+write_excel_csv(report, output_file)
 print(paste("Report saved to:", output_file))
 ```
 

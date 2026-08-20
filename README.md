@@ -21,7 +21,6 @@ A reusable HPC execution guide, including the minimal `Fir` bundle and troublesh
 ## Key Features
 - **Automated Triage**: Rapid inspection of file extensions and basic fixity.
 - **Deep Validation**: Format-specific modules for Tabular (CSV, Excel, SPSS, SAS, Stata), Scientific (HDF5, NetCDF), and Geospatial (GeoPackage, TIFF) data.
-- **OCR Intelligence**: Document extraction using Google Cloud AI.
 - **Archival Reporting**: Generation of standardized curation logs and metadata summaries.
 
 ## Quick Start

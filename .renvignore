@@ -1,0 +1,11 @@
+# Paths renv should NOT scan when discovering package dependencies.
+# These hold generated output, archived/legacy content, or sample INPUT
+# fixtures (real-world scripts used as test data for Inspect_Code) rather
+# than code the toolbox itself needs to run.
+archive/
+data/
+Results/
+_book/
+_freeze/
+.quarto/
+renv/
