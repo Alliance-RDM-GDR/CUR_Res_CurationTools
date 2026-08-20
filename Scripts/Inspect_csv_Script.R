@@ -118,10 +118,50 @@ analyze_csv_health <- function(file_path) {
 
 if (length(csv_files) > 0) {
   health_report <- purrr::map_dfr(csv_files, analyze_csv_health)
-  
+
   health_file <- file.path(output_dir, paste0("CSV_Health_Check_", dir_label, "_", Sys.Date(), ".csv"))
   write_excel_csv(health_report, health_file)
   message(sprintf("Health Check saved to: %s", health_file))
+}
+
+# ------------------------------------------------------------------------------
+# 3b. Codebooks: describe the columns in Health_Check and Full_Profile
+# ------------------------------------------------------------------------------
+# Warn (rather than fail) if a report has columns the codebook doesn't
+# describe yet, so schema drift is visible instead of silently undocumented.
+warn_undocumented_columns <- function(data, codebook, report_name) {
+  undocumented <- setdiff(names(data), codebook$Variable)
+  if (length(undocumented) > 0) {
+    warning(sprintf(
+      "%s has column(s) not described in its codebook: %s. Update the codebook in this script.",
+      report_name, paste(undocumented, collapse = ", ")
+    ), call. = FALSE)
+  }
+}
+
+health_codebook <- tibble(
+  Variable = c("FileName", "Size_MB", "Encoding", "Rows", "Cols", "Pct_Complete",
+               "Duplicate_Rows", "PII_Risk", "Status"),
+  Type = c("Text", "Numeric", "Text", "Integer", "Integer", "Numeric (0-100)",
+           "Integer", "Logical", "Text"),
+  Description = c(
+    "Name of the CSV file (no path).",
+    "File size in megabytes.",
+    "Character encoding detected via readr::guess_encoding() (e.g. UTF-8, ISO-8859-1).",
+    "Number of data rows read.",
+    "Number of columns read.",
+    "Percentage of non-missing cells across the whole file.",
+    "Count of exact duplicate rows.",
+    "TRUE if an email-like pattern was found in a character column (checked in the first 1000 rows).",
+    'Either "Success", or "Read Failed: <error message>" if the file could not be parsed.'
+  )
+)
+
+if (length(csv_files) > 0) {
+  warn_undocumented_columns(health_report, health_codebook, "CSV_Health_Check")
+  codebook_file <- file.path(output_dir, "CSV_Health_Check_Codebook.csv")
+  write_excel_csv(health_codebook, codebook_file)
+  message(sprintf("Health Check codebook saved to: %s", codebook_file))
 }
 
 # ------------------------------------------------------------------------------
@@ -142,8 +182,45 @@ safe_skim <- function(file_path) {
 
 if (length(csv_files) > 0) {
   full_profile_data <- map_dfr(csv_files, safe_skim)
-  
+
   profile_file <- file.path(output_dir, paste0("CSV_Full_Profile_", dir_label, "_", Sys.Date(), ".csv"))
   write_excel_csv(full_profile_data, profile_file)
   message(sprintf("Detailed Profile saved to: %s", profile_file))
+
+  # Codebook: standard skimr summary-statistic columns, plus FileName which
+  # this script adds. character.* columns are NA for non-character variables,
+  # and numeric.* columns are NA for non-numeric variables — skimr only
+  # reports the statistics that apply to each variable's type.
+  profile_codebook <- tibble(
+    Variable = c("FileName", "skim_type", "skim_variable", "n_missing", "complete_rate",
+                 "character.min", "character.max", "character.empty", "character.n_unique",
+                 "character.whitespace", "numeric.mean", "numeric.sd", "numeric.p0",
+                 "numeric.p25", "numeric.p50", "numeric.p75", "numeric.p100"),
+    Type = c("Text", "Text", "Text", "Integer", "Numeric (0-1)", "Integer", "Integer",
+             "Integer", "Integer", "Integer", "Numeric", "Numeric", "Numeric",
+             "Numeric", "Numeric", "Numeric", "Numeric"),
+    Description = c(
+      "Which source file this row's statistics belong to (added by this script, not skimr).",
+      "R data type skimr assigned to the variable (character, numeric, logical, Date, ...).",
+      "Column name from the source CSV.",
+      "Count of missing (NA) values.",
+      "Proportion of non-missing values.",
+      "Shortest string length observed (character columns only).",
+      "Longest string length observed (character columns only).",
+      'Count of empty strings "" (character columns only).',
+      "Count of distinct values (character columns only).",
+      "Count of values that are entirely whitespace (character columns only).",
+      "Mean (numeric columns only).",
+      "Standard deviation (numeric columns only).",
+      "Minimum value (numeric columns only).",
+      "25th percentile (numeric columns only).",
+      "Median / 50th percentile (numeric columns only).",
+      "75th percentile (numeric columns only).",
+      "Maximum value (numeric columns only)."
+    )
+  )
+  warn_undocumented_columns(full_profile_data, profile_codebook, "CSV_Full_Profile")
+  profile_codebook_file <- file.path(output_dir, "CSV_Full_Profile_Codebook.csv")
+  write_excel_csv(profile_codebook, profile_codebook_file)
+  message(sprintf("Full Profile codebook saved to: %s", profile_codebook_file))
 }

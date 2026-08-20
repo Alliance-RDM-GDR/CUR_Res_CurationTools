@@ -180,7 +180,61 @@ if (length(all_files) > 0) {
   # Save (write_excel_csv adds a UTF-8 BOM so Excel renders non-ASCII correctly)
   write_excel_csv(summary_table, summary_file)
   write_excel_csv(inventory, inventory_file)
-  
+
+  # ----------------------------------------------------------------------------
+  # 5. Codebooks: describe the columns in Full_Inventory and Format_Summary
+  # ----------------------------------------------------------------------------
+  # Warn (rather than fail) if a report has columns the codebook doesn't
+  # describe yet, so schema drift is visible instead of silently undocumented.
+  warn_undocumented_columns <- function(data, codebook, report_name) {
+    undocumented <- setdiff(names(data), codebook$Variable)
+    if (length(undocumented) > 0) {
+      warning(sprintf(
+        "%s has column(s) not described in its codebook: %s. Update the codebook in this script.",
+        report_name, paste(undocumented, collapse = ", ")
+      ), call. = FALSE)
+    }
+  }
+
+  inventory_codebook <- tibble(
+    Variable = c("FullPath", "FileName", "RelativePath", "Extension", "Size_Bytes",
+                 "Size_MB", "Risk_Flag", "MIMEType", "FileType", "Author", "CreateDate", "Warning"),
+    Type = c("Text", "Text", "Text", "Text", "Integer", "Numeric", "Text",
+             "Text", "Text", "Text", "Text", "Text"),
+    Description = c(
+      "Absolute path to the file on disk at scan time.",
+      "File name only (no path).",
+      "Path relative to the scanned target directory.",
+      'Lowercased file extension including the leading dot; "(no extension)" if none.',
+      "File size in bytes.",
+      "File size in megabytes.",
+      '"Zero-Byte File", "System Junk" (.DS_Store, Thumbs.db, __MACOSX), "Executable" (.exe/.bat/.sh/.bin/.jar), or "Clean".',
+      "File type reported by ExifTool from the file's actual binary signature (may differ from Extension if the file is mislabeled); blank if ExifTool could not identify it or is unavailable.",
+      "File format/type name reported by ExifTool; blank under the same conditions as MIMEType.",
+      "Author metadata embedded in the file, when present and ExifTool could read it.",
+      "File creation date embedded in the file's metadata, when present.",
+      "Any warning ExifTool raised while reading the file (e.g. a corrupt or unrecognized structure)."
+    )
+  )
+  warn_undocumented_columns(inventory, inventory_codebook, "Full_Inventory_ExifTool")
+  inventory_codebook_file <- file.path(output_dir, "Full_Inventory_ExifTool_Codebook.csv")
+  write_excel_csv(inventory_codebook, inventory_codebook_file)
+
+  summary_codebook <- tibble(
+    Variable = c("Extension", "MIMEType", "Risk_Flag", "Count", "Percent"),
+    Type = c("Text", "Text", "Text", "Integer", "Numeric (0-100)"),
+    Description = c(
+      "Lowercased file extension, as in Full_Inventory_ExifTool.",
+      "File type reported by ExifTool, as in Full_Inventory_ExifTool.",
+      "Risk category, as in Full_Inventory_ExifTool.",
+      "Number of files sharing this Extension/MIMEType/Risk_Flag combination.",
+      "That count as a percentage of all files scanned."
+    )
+  )
+  warn_undocumented_columns(summary_table, summary_codebook, "Format_Summary")
+  summary_codebook_file <- file.path(output_dir, "Format_Summary_Codebook.csv")
+  write_excel_csv(summary_codebook, summary_codebook_file)
+
   message("Analysis complete.")
   message(sprintf("Summary saved to: %s", summary_file))
   message(sprintf("Full Inventory saved to: %s", inventory_file))
