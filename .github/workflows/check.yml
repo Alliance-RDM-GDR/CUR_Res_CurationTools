@@ -61,7 +61,7 @@ jobs:
           # yet — renv then falls back to compiling from source, and newer R
           # versions (4.5+) restrict C internals (e.g. ATTRIB()) that older
           # packages' bundled cpp11 headers rely on, so the build fails.
-          r-version: "4.4.1"
+          r-version: "4.4"
           use-public-rspm: true
 
       - name: Restore R packages from renv.lock
