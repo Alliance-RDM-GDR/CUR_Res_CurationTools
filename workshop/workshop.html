@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.6.39">
 
   <meta name="author" content="Curation Services Team | Digital Research Alliance of Canada">
-  <meta name="dcterms.date" content="2026-06-04">
+  <meta name="dcterms.date" content="2026-10-05">
   <title>Research Data Curator’s Toolbox</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -192,7 +192,7 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" class="quarto-title-block center">
+<section id="title-slide" data-notes="Hello everyone, and welcome! Thank you for joining us today. I’m part of the Curation Services Team at the Digital Research Alliance of Canada, and over the next while I’d like to share how we curate large datasets, and walk you through a toolbox of scripts that helps us do it faster and more consistently. Please feel free to interrupt me with questions at any point. This is meant to be a conversation." class="quarto-title-block center">
   <h1 class="title">Research Data Curator’s Toolbox</h1>
   <p class="subtitle">Workflows for curation of large datasets</p>
 
@@ -204,7 +204,7 @@ Curation Services Team | Digital Research Alliance of Canada
 </div>
 </div>
 
-  <p class="date">2026-06-04</p>
+  <p class="date">2026-10-05</p>
 </section>
 <section id="workshop-outline" class="slide level2 center">
 <h2>Workshop Outline</h2>
@@ -226,15 +226,31 @@ Curation Services Team | Digital Research Alliance of Canada
 <li>NetCDF (Arrays).</li>
 <li>PDF (Security and Text).</li>
 <li>SQLite (Schemas).</li>
+<li>Tidy Data Screen (Table Structure).</li>
+<li>README vs.&nbsp;Files (Documentation).</li>
+<li>Designing for Scale (Principles).</li>
 </ul>
 </div></div>
+<aside class="notes">
+<p>Here is our roadmap. We begin with a short introduction: what curation is, why large datasets are hard, and what the toolbox looks like. Then comes the practical part, nine short demonstrations, from a first look at file extensions to checking whether a README matches the files on disk. We close with a few ideas on designing for scale, how to run all of this on an HPC cluster, and how you can contribute. Everything I show today is open source.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="context-what-is-curation" class="slide level2 smaller center">
 <h2>Context: What is Curation?</h2>
 <div class="columns">
 <div class="column" style="width: 50%; font-size: 0.85em;">
 <h3 id="research-data-curation">Research Data Curation</h3>
-<p>Data curation is the <strong>ongoing process</strong> of managing research data throughout its lifecycle to make it <strong>FAIR</strong>:</p>
+<p>The <strong>ongoing process</strong> of managing research data so that it is <strong>FAIR</strong>:</p>
 <ul>
 <li><p><strong>F</strong>indable</p></li>
 <li><p><strong>A</strong>ccessible</p></li>
@@ -242,27 +258,40 @@ Curation Services Team | Digital Research Alliance of Canada
 <li><p><strong>R</strong>eusable</p></li>
 </ul>
 <h3 id="curation-vs.-preservation">Curation vs.&nbsp;Preservation</h3>
-<p>Our curators are not preservationists. We organize, describe, and clean files, and we encourage preservation-friendly formats, but we do not perform additional long-term preservation activities. Digital Preservation services works on these elements.</p>
+<p>We organize, describe and clean files. Long-term preservation is handled by Digital Preservation services.</p>
 </div><div class="column" style="width: 50%; font-size: 0.85em;">
 <h3 id="generalist-repositories-frdr">Generalist Repositories (FRDR)</h3>
-<p>The <strong>Federated Research Data Repository </strong> (<a href="https://www.frdr-dfdr.ca/repo/">FRDR</a>) is a bilingual platform for sharing and preserving Canadian research data:</p>
+<p>The <strong>Federated Research Data Repository</strong> (<a href="https://www.frdr-dfdr.ca/repo/">FRDR</a>) is a bilingual platform for sharing Canadian research data:</p>
 <ul>
-<li><p>Accepts <strong>well-documented</strong>, <strong>stand-alone</strong> research data.</p></li>
-<li><p>Supports medium-to-large sized datasets via <a href="https://www.globus.org/data-transfer"><strong>Globus file transfer</strong></a>.</p></li>
-<li><p>Features geographically distributed storage mirrored across multiple national host sites.</p></li>
+<li><p><strong>Well-documented</strong>, <strong>stand-alone</strong> data.</p></li>
+<li><p>Medium-to-large datasets via <a href="https://www.globus.org/data-transfer"><strong>Globus</strong></a>.</p></li>
+<li><p>Storage mirrored across national host sites.</p></li>
 </ul>
 </div></div>
+<aside class="notes">
+<p>Let’s start with a shared definition. Research data curation is the ongoing work of managing data so that it is FAIR: findable, accessible, interoperable and reusable. I want to flag one distinction up front: curation is not preservation. We organize, describe and clean files, while long-term preservation is handled by our Digital Preservation colleagues. On the right, FRDR, the Federated Research Data Repository, is where much of this work lands. It is bilingual, it handles medium-to-large datasets through Globus, and its storage is mirrored across national sites.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="the-scale-of-large-datasets" class="slide level2 smaller center">
 <h2>The Scale of Large Datasets</h2>
 <div class="columns">
 <div class="column" style="width: 35%; font-size: 0.8em;">
 <h3 id="growing-dataset-scale">Growing Dataset Scale</h3>
-<p>Modern curation repositories face exponential growth in both the <strong>number of files</strong> per dataset and the <strong>total storage size</strong>.</p>
+<p>Datasets keep growing in <strong>file count</strong> and <strong>storage size</strong>.</p>
 <ul>
-<li><p><strong>File Counts:</strong> A single dataset deposit can range from a few files up to <strong>100K+</strong> files.</p></li>
-<li><p><strong>Storage Size:</strong> Dataset storage requirements regularly scale from less than 1 GB up to <strong>1000+ GB</strong>.</p></li>
-<li><p><strong>Format Diversity:</strong> Hundreds of unique extensions, including <code>csv</code>, <code>pdf</code>, <code>jpg</code>, and <code>xlsx</code>.</p></li>
+<li><p><strong>File Counts:</strong> a few files up to <strong>100K+</strong>.</p></li>
+<li><p><strong>Storage Size:</strong> under 1 GB up to <strong>1000+ GB</strong>.</p></li>
+<li><p><strong>Format Diversity:</strong> hundreds of extensions (<code>csv</code>, <code>pdf</code>, <code>jpg</code>, <code>xlsx</code>).</p></li>
 </ul>
 </div><div class="column" style="width: 65%; text-align: center; layout-valign = center">
 <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
@@ -272,6 +301,19 @@ Curation Services Team | Digital Research Alliance of Canada
 Growth of dataset size and file counts over time (Digital Research Alliance of Canada).
 </div>
 </div></div>
+<aside class="notes">
+<p>Why do we talk about large datasets in particular? Because datasets keep growing, in two ways. In file count, from a handful of files up to more than a hundred thousand in a single deposit. And in size, from under a gigabyte to over a terabyte. On top of that, we see hundreds of different file extensions. The two charts show how both trends have climbed over time. This is the reality we design our workflows around.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="the-data-curation-workflow" class="slide level2 smaller center">
 <h2>The Data Curation Workflow</h2>
@@ -293,16 +335,42 @@ Growth of dataset size and file counts over time (Digital Research Alliance of C
 FRDR interactive curation pipeline. Working with the researcher is an essential element of this project
 </div>
 </div></div>
+<aside class="notes">
+<p>To give our work some structure, we follow the CURATED steps from the Data Curation Network: Check files and metadata, Understand and run the files, Request missing information, Augment metadata, Transform formats, Evaluate FAIRness, and Document everything along the way. The toolbox you will see today lives mostly in the first two steps, Check and Understand, because that is where automation saves us the most time. And notice the caption under the diagram: working with the researcher is essential. Tools support that conversation, they never replace it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="curation-challenges-and-bottlenecks" class="slide level2 smaller center">
 <h2>Curation Challenges and Bottlenecks</h2>
 <ol type="1">
 <li><p><strong>Dataset Heterogeneity:</strong> Number of files and format variety.</p></li>
-<li><p><strong>Many Files:</strong> How do you process quickly, securely, and consistently tens of thousands of files?</p></li>
-<li><p><strong>Large Files:</strong> Raw computing power and specialized memory are required to open, parse, and profile gigabyte-scale files without system crashes.</p></li>
+<li><p><strong>Many Files:</strong> processing tens of thousands of files quickly and consistently.</p></li>
+<li><p><strong>Large Files:</strong> gigabyte-scale files need serious computing power and memory.</p></li>
 <li><p><strong>Varying Documentation:</strong> Missing READMEs, orphaned variables, and obscure custom scripts.</p></li>
-<li><p><strong>Reproducibility and Security:</strong>Checking code reproducibility, scanning for hardcoded paths, and identifying potential Personally Identifying Information (PII) (emails/keys) at scale.</p></li>
+<li><p><strong>Reproducibility and Security:</strong> hardcoded paths and PII (emails, keys), checked at scale.</p></li>
 </ol>
+<aside class="notes">
+<p>So what makes this hard? Five things. First, heterogeneity: many formats and many layouts. Second, many files: how do you process tens of thousands of them quickly and consistently? Third, large files, which need serious computing power and memory. Fourth, documentation varies a lot, with missing READMEs and orphaned variables. And fifth, reproducibility and security: hardcoded paths, or personal information like emails and keys hiding inside files. Each demonstration that follows maps back to one or more of these challenges.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="research-data-curation-toolbox" class="slide level2 smaller center">
 <h2>Research Data Curation Toolbox</h2>
@@ -326,22 +394,44 @@ FRDR interactive curation pipeline. Working with the researcher is an essential 
 <p><strong>Note</strong></p>
 </div>
 <div class="callout-content">
-<p>These workflows leverage <a href="https://quarto.org/docs/guide/">Quarto notebooks/books</a> and automated R scripts to inspect datasets at scale, and generating structured reports.</p>
+<p>These workflows leverage <a href="https://quarto.org/docs/guide/">Quarto notebooks/books</a> and automated R scripts to inspect datasets at scale and generate structured reports.</p>
 </div>
 </div>
 </div>
-</section>
-<section class="slide level2 center">
-
+<aside class="notes">
+<p>This brings us to the toolbox. It is a collection of R, Python and Bash scripts, still in development, designed to do three things: profile directories and extensions automatically, dive deep into tabular and scientific data, and verify code reproducibility and safety. Each tool comes in two flavors: a Quarto notebook that explains every step, and a standalone script you can hand to a colleague or run on a cluster. Same logic, two ways to use it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section>
 <section id="practical-demonstrations-1" class="title-slide slide level1 center">
 <h1>Practical Demonstrations</h1>
-
+<aside class="notes">
+<p>Time for the hands-on part. For every module I will follow the same rhythm: first why it matters, then the core logic of the script, and finally the results it produced on sample data. The tables and panels you will see were generated by the scripts themselves, not mocked up.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="module-1-high-level-profiling" class="slide level2 smaller center">
 <h2>Module 1: High-Level Profiling</h2>
-<p>First-stage triage to understand the scale and composition of incoming datasets.</p>
+<p>First-stage triage of an incoming dataset.</p>
 <div class="columns">
 <div class="column" style="width: 50%; font-size: 0.65em;">
 <div class="r-fit-text">
@@ -349,9 +439,9 @@ FRDR interactive curation pipeline. Working with the researcher is an essential 
 <li><strong>Why:</strong> Manual directory inspection is limited at scale.</li>
 <li><strong>Obtained:</strong>
 <ul>
-<li>Complete inventory of extensions and sizes.</li>
-<li>Deep file metadata (author, dates, MIME types).</li>
-<li>Risk flags (empty, system junk, executables).</li>
+<li>Inventory of extensions and sizes.</li>
+<li>Deep metadata (author, dates, MIME type).</li>
+<li>Risk flags (empty, junk, executables).</li>
 </ul></li>
 </ul>
 </div>
@@ -360,21 +450,30 @@ FRDR interactive curation pipeline. Working with the researcher is an essential 
 <ul>
 <li><strong>Problems Solved:</strong>
 <ul>
-<li><em>Extension mismatch:</em> Finding hidden/falsified formats.</li>
-<li><em>Security risks:</em> Flagging unauthorized executables/junk.</li>
-<li><em>Triage:</em> Estimating volume and complexity.</li>
+<li><em>Extension mismatch:</em> hidden or falsified formats.</li>
+<li><em>Security risks:</em> executables and junk.</li>
+<li><em>Triage:</em> volume and complexity.</li>
+<li><em>Scale:</em> ExifTool runs up to 2,000 files; the inventory always completes.</li>
 </ul></li>
 </ul>
 </div>
 </div><ul>
-<li><strong>Key Tools Used:</strong>
-<ul>
-<li><strong>R (<code>tidyverse</code>):</strong> For data sorting and triage.</li>
-<li><strong><code>ExifTool</code> (Perl):</strong> Extracting deep file metadata.</li>
-<li><strong><code>exiftoolr</code>:</strong> R wrapper for ExifTool.</li>
-</ul></li>
+<li><strong>Tools:</strong> <code>tidyverse</code>, <code>ExifTool</code>, <code>exiftoolr</code>.</li>
 </ul>
 </div>
+<aside class="notes">
+<p>Module one: high-level profiling. Whenever a dataset arrives, this is the very first thing we run. Inspecting a directory by hand does not scale, so the script builds an inventory of every file: its extension, its size, and basic risk flags such as empty files, system junk or executables. It can also read deep metadata with ExifTool, like the author, the dates, and the real MIME type. That is how we catch a file whose extension says one thing but whose content says another. One design note: ExifTool is slow, so above two thousand files the script skips that step, but it always completes the inventory.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2 center">
 
@@ -407,7 +506,7 @@ FRDR interactive curation pipeline. Working with the researcher is an essential 
 <span id="cb1-24"><a href=""></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"Clean"</span></span>
 <span id="cb1-25"><a href=""></a>  ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div style="font-size: 0.75em; margin-top: 10px; font-style: italic; color: #555;">
-<p><em>Note: This code block represents the core logic. You can consult the complete <a href="file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_Extensions_Script.R">Inspect_Extensions_Script.R</a> or the interactive <a href="file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_Extensions_Notebook.qmd">Inspect_Extensions_Notebook.qmd</a> for full deep metadata extraction (ExifTool) and output details.</em></p>
+<p><em>Core logic only. Full version: <a href="file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_Extensions_Script.R">script</a> | <a href="file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_Extensions_Notebook.qmd">notebook</a>.</em></p>
 </div>
 </div><div class="column" style="width: 40%;">
 <div class="control-card">
@@ -420,6 +519,19 @@ Execution Parameters
 </div>
 </div>
 </div></div>
+<aside class="notes">
+<p>Here is the heart of the script, simplified. It lists every file recursively, builds a table with the name, extension and size, and applies a few simple rules to assign a risk flag. On the right you can see the exact command we run. If you would like the complete version, the links under the code open the script and the notebook.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2 center">
 
@@ -533,20 +645,33 @@ LIVE DIRECTORY METRICS
 </div>
 </div>
 </div>
+<aside class="notes">
+<p>And here are the results on our sample folder. The panel on the left summarizes what the script found: how many files, the total volume, and any warnings. In this case the folder is clean. The table on the right is the full inventory, and you can scroll through it. On a real deposit, this is where we would spot zero-byte files or surprising formats.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="module-2-tabular-quality-control" class="slide level2 smaller center">
 <h2>Module 2: Tabular Quality Control</h2>
-<p>Automated structure and content validation for tabular data files.</p>
+<p>Automated structure and content checks for tabular files.</p>
 <div class="columns">
 <div class="column" style="width: 50%; font-size: 0.65em;">
 <div class="r-fit-text">
 <ul>
-<li><strong>Why:</strong> Tabular files often suffer from parsing errors, missing data, and Personally Identifying Information (PII) leaks.</li>
+<li><strong>Why:</strong> Tabular files hide parsing errors, gaps and PII leaks.</li>
 <li><strong>Obtained:</strong>
 <ul>
-<li>Validation of character encoding and schema (rows/cols).</li>
-<li>Cell completeness percentage across variables.</li>
-<li>Duplicate/redundant record counts and email PII risk checks.</li>
+<li>Encoding and schema (rows, columns).</li>
+<li>Completeness percentage.</li>
+<li>Duplicate rows and email PII checks.</li>
 </ul></li>
 </ul>
 </div>
@@ -555,27 +680,35 @@ LIVE DIRECTORY METRICS
 <ul>
 <li><strong>Problems Solved:</strong>
 <ul>
-<li><em>Parsing issues:</em> Spotting encoding or structure corruption.</li>
-<li><em>Data gaps:</em> Measuring missing values automatically.</li>
-<li><em>Privacy risks:</em> Checking for raw email/contact details.</li>
+<li><em>Parsing issues:</em> encoding or structure corruption.</li>
+<li><em>Data gaps:</em> missing values, measured.</li>
+<li><em>Privacy risks:</em> raw emails and contacts.</li>
 </ul></li>
 </ul>
 </div>
 </div><ul>
-<li><strong>Key Tools Used:</strong>
-<ul>
-<li><strong>R (<code>tidyverse</code>):</strong> Core data ingestion and cleaning framework.</li>
-<li><strong><code>readr</code>:</strong> Fast parsing and auto-encoding detection.</li>
-<li><strong><code>skimr</code>:</strong> Detailed statistical profiling of distributions.</li>
-</ul></li>
+<li><strong>Tools:</strong> <code>tidyverse</code>, <code>readr</code>, <code>skimr</code>.</li>
 </ul>
 </div>
+<aside class="notes">
+<p>Module two: tabular quality control. CSV files look simple, but they hide plenty of problems: odd encodings, missing values, duplicated rows, even email addresses in a column nobody remembered. The script reads every CSV and reports its encoding, its rows and columns, the percentage of complete cells, the duplicate rows, and whether it spotted anything that looks like an email address. It also profiles every variable in detail with the skimr package. And each report ships with a codebook that explains its columns, so nobody has to guess what “percent complete” means.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2 center">
 
 <div class="columns">
 <div class="column" style="width: 60%; font-size: 0.55em;">
-<h3 id="core-script-logic.">Core Script Logic.</h3>
+<h3 id="core-script-logic-1">Core Script Logic</h3>
 <div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="co"># Inspect_csv_Script.R</span></span>
 <span id="cb2-2"><a href=""></a><span class="co"># 1. Scans CSVs and runs a health check</span></span>
 <span id="cb2-3"><a href=""></a>analyze_csv_health <span class="ot">&lt;-</span> <span class="cf">function</span>(file_path) {</span>
@@ -598,7 +731,7 @@ LIVE DIRECTORY METRICS
 <span id="cb2-20"><a href=""></a>  )</span>
 <span id="cb2-21"><a href=""></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div style="font-size: 0.75em; margin-top: 10px; font-style: italic; color: #555;">
-<p><em>Note: This code block represents the core logic. You can consult the complete <a href="file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_csv_Script.R">Inspect_csv_Script.R</a> or the interactive <a href="file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_csv_Notebook.qmd">Inspect_csv_Notebook.qmd</a> for full encoding, completeness, and detailed column profiling.</em></p>
+<p><em>Core logic only. Full version: <a href="file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_csv_Script.R">script</a> | <a href="file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_csv_Notebook.qmd">notebook</a>.</em></p>
 </div>
 </div><div class="column" style="width: 40%;">
 <div class="control-card">
@@ -611,6 +744,19 @@ Execution Parameters
 </div>
 </div>
 </div></div>
+<aside class="notes">
+<p>The core idea is straightforward: read each file, count rows and columns, count the missing cells to get a completeness percentage, and use a regular expression to search the text columns for email patterns. These are simple checks, but when you run them across hundreds of files, they save hours.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2 center">
 
@@ -814,6 +960,19 @@ LIVE TABULAR METRICS
 
 </div>
 </div></div>
+<aside class="notes">
+<p>On our sample folder, fifteen CSV files were audited and all of them parsed correctly. The panel gives us the total volume, how many files were read successfully, and it raises a flag for problems like duplicates or possible personal information. When one of those flags lights up, that is our cue to open the file and take a careful look. The table on the right gives the per-file detail: encoding, rows, columns and completeness.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="documenting-data-tables" class="slide level2 smaller center">
 <h2>Documenting data tables</h2>
@@ -826,9 +985,9 @@ LIVE TABULAR METRICS
 Bilingual Documentation
 </div>
 <ul>
-<li><strong>Interactive Editing:</strong> Edit labels, types, and units in real-time using <code>rhandsontable</code>.</li>
-<li><strong>Auto-Profiling:</strong> Automatically detects factor levels, missing values, ranges, and types.</li>
-<li><strong>Bilingual Interface:</strong> Instantly toggle UI between English and French.</li>
+<li><strong>Interactive Editing:</strong> labels, types and units.</li>
+<li><strong>Auto-Profiling:</strong> types, ranges, missing values.</li>
+<li><strong>Bilingual Interface:</strong> English and French.</li>
 </ul>
 </div>
 <div class="control-card" style="font-size: 0.85em; padding: 12px;">
@@ -836,9 +995,9 @@ Bilingual Documentation
 Privacy and Zero-Install
 </div>
 <ul>
-<li><strong>Zero-Server:</strong> Powered by Shinylive, compiles and runs entirely in the client’s browser.</li>
-<li><strong>Local Privacy:</strong> Data remains local to the browser. Zero persistence or leakage risk.</li>
-<li><strong>Form Support:</strong> Seamless CSV, TSV, and XLSX support up to 30 MB.</li>
+<li><strong>Zero-Server:</strong> runs entirely in your browser (Shinylive).</li>
+<li><strong>Local Privacy:</strong> your data never leaves the browser.</li>
+<li><strong>Formats:</strong> CSV, TSV and XLSX up to 30 MB.</li>
 </ul>
 </div>
 </div>
@@ -848,19 +1007,32 @@ Privacy and Zero-Install
 <p>📦 <strong>Explore the App:</strong> &nbsp; <a href="https://alliance-rdm-gdr.github.io/RDM_Codebook_App/">Interactive Live Demo</a> &nbsp;|&nbsp; 📖 <a href="https://github.com/Alliance-RDM-GDR/RDM_Codebook_App">GitHub Repository</a></p>
 </div>
 </div></div>
+<aside class="notes">
+<p>A quick detour that connects with what we just saw. Once you know what is inside a table, you need to document it. For that we built the Codebook Generator, a small app that profiles a table and lets you edit labels, types and units. It works in English and in French, and it runs entirely in your browser, so your data never leaves your computer. There is a live demo link on the slide if you would like to try it after the workshop.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="module-3-image-quality-control" class="slide level2 smaller center">
 <h2>Module 3: Image Quality Control</h2>
-<p>Technical validation, fixity check, and metadata extraction for digital image collections.</p>
+<p>Technical validation, fixity and metadata for image collections.</p>
 <div class="columns">
 <div class="column" style="width: 50%; font-size: 0.65em;">
 <div class="r-fit-text">
 <ul>
-<li><strong>Why:</strong> Images are complex digital objects that can contain hidden metadata (like GPS coordinates) or have corrupt file headers.</li>
+<li><strong>Why:</strong> Images can carry hidden GPS coordinates or corrupt headers.</li>
 <li><strong>Obtained:</strong>
 <ul>
-<li>Basic properties (width, height, format, colorspace).</li>
-<li>MD5 checksum calculation for fixity and duplicate detection.</li>
+<li>Width, height, format, colorspace.</li>
+<li>MD5 checksum for fixity and duplicates.</li>
 <li>Embedded Exif metadata.</li>
 </ul></li>
 </ul>
@@ -870,27 +1042,35 @@ Privacy and Zero-Install
 <ul>
 <li><strong>Problems Solved:</strong>
 <ul>
-<li><em>Privacy Risks:</em> Detecting GPS coordinate leaks (potential human subjects/protected species).</li>
-<li><em>Technical Outliers:</em> Identifying incorrect colorspaces or dimension outliers.</li>
-<li><em>Format Obsolescence:</em> Flagging proprietary raw formats for conversion to preservation-friendly TIFFs.</li>
+<li><em>Privacy risks:</em> GPS leaks (people, protected species).</li>
+<li><em>Outliers:</em> wrong colorspace or dimensions.</li>
+<li><em>Obsolescence:</em> raw formats to convert to TIFF.</li>
 </ul></li>
 </ul>
 </div>
 </div><ul>
-<li><strong>Key Tools Used:</strong>
-<ul>
-<li><strong><code>magick</code>:</strong> Validates file headers and basic image geometry.</li>
-<li><strong><code>exiftoolr</code>:</strong> Harvesting camera and GPS metadata.</li>
-<li><strong><code>digest</code>:</strong> MD5 hashing for integrity checks.</li>
-</ul></li>
+<li><strong>Tools:</strong> <code>magick</code>, <code>exiftoolr</code>, <code>digest</code>.</li>
 </ul>
 </div>
+<aside class="notes">
+<p>Module three: images. Images are deceptively complex. They can carry hidden GPS coordinates in their metadata, which matters a great deal when the photos involve people or protected species. The script checks that each file opens, records width, height, format and colorspace, and computes an MD5 checksum, which serves two purposes: fixity, and detecting duplicates. It also reads the embedded Exif metadata, and flags outliers, such as an image whose dimensions differ from the rest of the collection.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2 center">
 
 <div class="columns">
 <div class="column" style="width: 60%; font-size: 0.55em;">
-<h3 id="core-script-logic-1">Core Script Logic</h3>
+<h3 id="core-script-logic-2">Core Script Logic</h3>
 <div class="sourceCode" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="co"># Inspect_Images_Script.R</span></span>
 <span id="cb3-2"><a href=""></a><span class="co"># 1. Hashing for Fixity</span></span>
 <span id="cb3-3"><a href=""></a>file_inventory <span class="ot">&lt;-</span> file_inventory <span class="sc">%&gt;%</span></span>
@@ -910,7 +1090,7 @@ Privacy and Zero-Install
 <span id="cb3-17"><a href=""></a>    <span class="at">flag_privacy_gps =</span> <span class="fu">ifelse</span>(<span class="sc">!</span><span class="fu">is.na</span>(GPSLatitude), <span class="st">"HAS_GPS_DATA"</span>, <span class="cn">NA</span>)</span>
 <span id="cb3-18"><a href=""></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div style="font-size: 0.75em; margin-top: 10px; font-style: italic; color: #555;">
-<p><em>Note: This code block represents the core logic. You can consult the complete <a href="file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_Images_Script.R">Inspect_Images_Script.R</a> or the interactive <a href="file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_Images_Notebook.qmd">Inspect_Images_Notebook.qmd</a> for full properties extraction, flagging, and output details.</em></p>
+<p><em>Core logic only. Full version: <a href="file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_Images_Script.R">script</a> | <a href="file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_Images_Notebook.qmd">notebook</a>.</em></p>
 </div>
 </div><div class="column" style="width: 40%;">
 <div class="control-card">
@@ -919,10 +1099,23 @@ Execution Parameters
 </div>
 <div style="font-size: 0.45em; margin-bottom: 4px; font-family: 'Montserrat';">
 <strong>Target Directory:</strong> <code>data/</code><br> <strong>Script:</strong> <code>Inspect_Images_Script.R</code><br> <strong>Command:</strong><br>
-<pre style="margin-top: 4px; margin-bottom: 0px; font-size: 0.85em; padding: 4px; background: #32322F; color: #FBFAFA; border-radius: 4px;">Rscript Inspect_Images_Script.R data/ Results/</pre>
+<pre style="margin-top: 4px; margin-bottom: 0px; font-size: 0.85em; padding: 4px; background: #32322F; color: #FBFAFA; border-radius: 4px;">Rscript Inspect_Images_Script.R data/ Results/Inspect_Images/</pre>
 </div>
 </div>
 </div></div>
+<aside class="notes">
+<p>In the core logic, we hash every file, open each one with magick to validate its header and read its geometry, and then apply the curation flags: duplicate, corrupt, GPS present, and dimension outlier. The flags are plain text, so you can filter the results table directly.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2 center">
 
@@ -1045,21 +1238,33 @@ LIVE IMAGE METRICS
 </div>
 </div>
 </div>
+<aside class="notes">
+<p>Here are the results for four sample images. The panel summarizes corruption, duplicates, embedded GPS data and dimension outliers, and here everything came back healthy. In a real collection, the GPS flag is the one we take most seriously, and we would talk with the researcher about removing those coordinates or reducing their precision.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="module-4-hdf5-structure-and-metadata" class="slide level2 smaller center">
 <h2>Module 4: HDF5 Structure and Metadata</h2>
-<p>Hierarchical data structure, object mapping, and attribute harvesting for HDF5 files.</p>
+<p>Hierarchy, object mapping and attributes of HDF5 files.</p>
 <div class="columns">
 <div class="column" style="width: 50%; font-size: 0.65em;">
 <div class="r-fit-text">
 <ul>
-<li><strong>Why:</strong> HDF5 is a complex binary “black box” containing nested groups and datasets.</li>
+<li><strong>Why:</strong> HDF5 is a binary “black box” of nested groups and datasets.</li>
 <li><strong>Obtained:</strong>
 <ul>
-<li>Internal structure map (Groups, Datasets, and Links).</li>
-<li>Data type and dimension validation.</li>
-<li>Compression filter details (GZIP, SZIP, LZF).</li>
-<li>Embedded user-defined metadata attributes.</li>
+<li>Map of groups, datasets and links.</li>
+<li>Data types and dimensions.</li>
+<li>Compression filters and user attributes.</li>
 </ul></li>
 </ul>
 </div>
@@ -1068,25 +1273,35 @@ LIVE IMAGE METRICS
 <ul>
 <li><strong>Problems Solved:</strong>
 <ul>
-<li><em>Proprietary Compression:</em> Detecting custom/proprietary filters that prevent reading data.</li>
-<li><em>Broken Dependencies:</em> Identifying external links pointing to missing target files.</li>
-<li><em>Missing Documentation:</em> Auditing whether datasets are self-describing via attributes.</li>
+<li><em>Proprietary compression:</em> filters that block reading.</li>
+<li><em>Broken links:</em> external files that are missing.</li>
+<li><em>Missing documentation:</em> datasets without attributes.</li>
 </ul></li>
 </ul>
 </div>
 </div><ul>
-<li><strong>Key Tools Used:</strong>
-<ul>
-<li><strong><code>hdf5r</code>:</strong> Recursive structural inventory and creation property list checks.</li>
-</ul></li>
+<li><strong>Tools:</strong> <code>hdf5r</code>.</li>
 </ul>
 </div>
+<aside class="notes">
+<p>Module four: HDF5. This format is wonderful for scientific data, but from the outside it is a black box: groups inside groups, datasets, attributes. The script opens each file and maps the whole hierarchy: groups, datasets and links, their data types and dimensions, the compression filters in use, and the user attributes. Why does that matter? Some compression filters are proprietary and can lock future users out, external links can point to files that were never deposited, and datasets without attributes leave their units a mystery.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2 center">
 
 <div class="columns">
 <div class="column" style="width: 60%; font-size: 0.55em;">
-<h3 id="core-script-logic-2">Core Script Logic</h3>
+<h3 id="core-script-logic-3">Core Script Logic</h3>
 <div class="sourceCode" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="co"># Inspect_hdf5_Script.R</span></span>
 <span id="cb4-2"><a href=""></a><span class="co"># 1. Open file and list recursively</span></span>
 <span id="cb4-3"><a href=""></a>h5f <span class="ot">&lt;-</span> H5File<span class="sc">$</span><span class="fu">new</span>(file_path, <span class="at">mode =</span> <span class="st">"r"</span>)</span>
@@ -1102,7 +1317,7 @@ LIVE IMAGE METRICS
 <span id="cb4-13"><a href=""></a>  <span class="co"># Flag external dependency risk</span></span>
 <span id="cb4-14"><a href=""></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div style="font-size: 0.75em; margin-top: 10px; font-style: italic; color: #555;">
-<p><em>Note: This code block represents the core logic. You can consult the complete <a href="file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_hdf5_Script.R">Inspect_hdf5_Script.R</a> or the interactive <a href="file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_hdf5_Notebook.qmd">Inspect_hdf5_Notebook.qmd</a> for full mapping and attribute audits.</em></p>
+<p><em>Core logic only. Full version: <a href="file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_hdf5_Script.R">script</a> | <a href="file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_hdf5_Notebook.qmd">notebook</a>.</em></p>
 </div>
 </div><div class="column" style="width: 40%;">
 <div class="control-card">
@@ -1115,6 +1330,19 @@ Execution Parameters
 </div>
 </div>
 </div></div>
+<aside class="notes">
+<p>The logic is a recursive walk through the file. For every dataset we read the dimensions and the data type, ask for the compression filters, and mark any link that points to an external file as a dependency risk.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2 center">
 
@@ -8452,20 +8680,33 @@ LIVE HDF5 METRICS
 </div>
 </div>
 </div>
+<aside class="notes">
+<p>On our sample, the script found 730 objects: 390 datasets and 340 groups. There are no external links and no risky compression filters, so the panel gives it a clean bill of health. The table lists every object with its path, type, dimensions and compression. In practice, it is an instant table of contents for the file.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="module-5-netcdf-usability-and-conventions" class="slide level2 smaller center">
 <h2>Module 5: NetCDF Usability and Conventions</h2>
-<p>Multidimensional array validation, Climate and Forecast (CF) metadata compliance, and coordinate checks for NetCDF files.</p>
+<p>Array, CF-convention and coordinate checks for NetCDF files.</p>
 <div class="columns">
 <div class="column" style="width: 50%; font-size: 0.65em;">
 <div class="r-fit-text">
 <ul>
-<li><strong>Why:</strong> NetCDF stores spatial grid arrays. Without metadata conventions, data variable dimensions and physical units cannot be parsed.</li>
+<li><strong>Why:</strong> Without metadata conventions, grids and units cannot be interpreted.</li>
 <li><strong>Obtained:</strong>
 <ul>
-<li>Spatial reference check (Coordinate Reference System / grid mapping).</li>
-<li>Compliance with Climate and Forecast (CF) metadata conventions.</li>
-<li>Data sparsity evaluation (detecting empty array variables).</li>
+<li>Spatial reference (CRS / grid mapping).</li>
+<li>Climate and Forecast (CF) conventions.</li>
+<li>Empty-array detection.</li>
 </ul></li>
 </ul>
 </div>
@@ -8474,24 +8715,33 @@ LIVE HDF5 METRICS
 <ul>
 <li><strong>Problems Solved:</strong>
 <ul>
-<li><em>Non-compliance:</em> Identifying files lacking standard <code>Conventions</code> or global attributes.</li>
-<li><em>Sparsity:</em> Flagging empty datasets (e.g., arrays containing 100% NaNs).</li>
-<li><em>Georeferencing gaps:</em> Detecting missing CRS parameters which prevent GIS mapping.</li>
+<li><em>Non-compliance:</em> missing <code>Conventions</code> attribute.</li>
+<li><em>Sparsity:</em> variables that are 100% NaN.</li>
+<li><em>Georeferencing gaps:</em> no CRS for GIS.</li>
 </ul></li>
-<li><strong>Key Tools Used:</strong>
-<ul>
-<li><strong><code>tidync</code>:</strong> Tidy multidimensional array extraction and slicing.</li>
-<li><strong><code>ncmeta</code>:</strong> Fast attribute and schema auditing.</li>
-</ul></li>
+<li><strong>Tools:</strong> <code>tidync</code>, <code>ncmeta</code>.</li>
 </ul>
 </div>
 </div></div>
+<aside class="notes">
+<p>Module five: NetCDF, the workhorse of climate and earth-science data. Here the question is usability. Without metadata conventions, a grid of numbers is just numbers, because nobody knows the coordinates or the units. The script checks for a spatial reference or grid mapping, looks at the Climate and Forecast conventions, and samples each variable to detect arrays that are completely empty. That last check matters: a file can be perfectly valid and still contain nothing but missing values.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2 center">
 
 <div class="columns">
 <div class="column" style="width: 60%; font-size: 0.55em;">
-<h3 id="core-script-logic-3">Core Script Logic</h3>
+<h3 id="core-script-logic-4">Core Script Logic</h3>
 <div class="sourceCode" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="co"># Inspect_nc_Script.R</span></span>
 <span id="cb5-2"><a href=""></a><span class="co"># 1. Scan coordinates &amp; dimensions</span></span>
 <span id="cb5-3"><a href=""></a>dims <span class="ot">&lt;-</span> tnc <span class="sc">%&gt;%</span> <span class="fu">hyper_dims</span>()</span>
@@ -8502,12 +8752,12 @@ LIVE HDF5 METRICS
 <span id="cb5-8"><a href=""></a>has_grid_mapping <span class="ot">&lt;-</span> <span class="fu">any</span>(all_atts<span class="sc">$</span>name <span class="sc">==</span> <span class="st">"grid_mapping"</span>)</span>
 <span id="cb5-9"><a href=""></a></span>
 <span id="cb5-10"><a href=""></a><span class="co"># 3. Sparsity Audit</span></span>
-<span id="cb5-11"><a href=""></a>sample_data <span class="ot">&lt;-</span> tnc <span class="sc">%&gt;%</span> <span class="fu">activate</span>(first_var) <span class="sc">%&gt;%</span> <span class="fu">hyper_slice</span>()</span>
-<span id="cb5-12"><a href=""></a><span class="cf">if</span> (<span class="fu">all</span>(<span class="fu">is.na</span>(sample_data))) {</span>
+<span id="cb5-11"><a href=""></a>sample_data <span class="ot">&lt;-</span> tnc <span class="sc">%&gt;%</span> <span class="fu">activate</span>(first_var) <span class="sc">%&gt;%</span> <span class="fu">hyper_tibble</span>(<span class="at">select_var =</span> first_var)</span>
+<span id="cb5-12"><a href=""></a><span class="cf">if</span> (<span class="fu">all</span>(<span class="fu">is.na</span>(sample_data[[first_var]]))) {</span>
 <span id="cb5-13"><a href=""></a>  <span class="co"># Flag empty dataset warning</span></span>
 <span id="cb5-14"><a href=""></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div style="font-size: 0.75em; margin-top: 10px; font-style: italic; color: #555;">
-<p><em>Note: This code block represents the core logic. You can consult the complete <a href="file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_nc_Script.R">Inspect_nc_Script.R</a> or the interactive <a href="file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_nc_Notebook.qmd">Inspect_nc_Notebook.qmd</a> for full attributes extraction and usability reports.</em></p>
+<p><em>Core logic only. Full version: <a href="file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_nc_Script.R">script</a> | <a href="file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_nc_Notebook.qmd">notebook</a>.</em></p>
 </div>
 </div><div class="column" style="width: 40%;">
 <div class="control-card">
@@ -8516,10 +8766,23 @@ Execution Parameters
 </div>
 <div style="font-size: 0.45em; margin-bottom: 4px; font-family: 'Montserrat';">
 <strong>Target Directory:</strong> <code>data/Inspect_nc/</code><br> <strong>Script:</strong> <code>Inspect_nc_Script.R</code><br> <strong>Command:</strong><br>
-<pre style="margin-top: 4px; margin-bottom: 0px; font-size: 0.85em; padding: 4px; background: #32322F; color: #FBFAFA; border-radius: 4px;">Rscript Inspect_nc_Script.R data/Inspect_nc/ Results/</pre>
+<pre style="margin-top: 4px; margin-bottom: 0px; font-size: 0.85em; padding: 4px; background: #32322F; color: #FBFAFA; border-radius: 4px;">Rscript Inspect_nc_Script.R data/Inspect_nc/ Results/Inspect_nc/</pre>
 </div>
 </div>
 </div></div>
+<aside class="notes">
+<p>In the core logic, we look at the dimensions to see whether there are latitude and longitude, check for a grid mapping attribute, and then read a small sample of the first variable to confirm that it holds real data.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2 center">
 
@@ -8554,7 +8817,7 @@ LIVE NETCDF METRICS
 <td style="text-align: left;">longitude x latitude x season</td>
 <td style="text-align: right;">2</td>
 <td style="text-align: left;">Georeferenced</td>
-<td style="text-align: left;">Unknown</td>
+<td style="text-align: left;">Contains Data</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Geopotential_orography.nc</td>
@@ -8562,7 +8825,7 @@ LIVE NETCDF METRICS
 <td style="text-align: left;">longitude x latitude x time</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">Georeferenced</td>
-<td style="text-align: left;">Unknown</td>
+<td style="text-align: left;">Contains Data</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">TPp99p0_2001_2020_ERA5.nc</td>
@@ -8570,7 +8833,7 @@ LIVE NETCDF METRICS
 <td style="text-align: left;">longitude x latitude</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">Georeferenced</td>
-<td style="text-align: left;">Unknown</td>
+<td style="text-align: left;">Contains Data</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">TPp99p0_2001_2020_IMERG.nc</td>
@@ -8578,7 +8841,7 @@ LIVE NETCDF METRICS
 <td style="text-align: left;">longitude x latitude</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">Georeferenced</td>
-<td style="text-align: left;">Unknown</td>
+<td style="text-align: left;">Contains Data</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">TPp99p0_2001_2020_IMERG025grid.nc</td>
@@ -8586,7 +8849,7 @@ LIVE NETCDF METRICS
 <td style="text-align: left;">lon x lat</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">Georeferenced</td>
-<td style="text-align: left;">Unknown</td>
+<td style="text-align: left;">Contains Data</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">WSp99p0_2001_2020_ERA5.nc</td>
@@ -8594,7 +8857,7 @@ LIVE NETCDF METRICS
 <td style="text-align: left;">longitude x latitude</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">Georeferenced</td>
-<td style="text-align: left;">Unknown</td>
+<td style="text-align: left;">Contains Data</td>
 </tr>
 </tbody>
 </table>
@@ -8603,44 +8866,67 @@ LIVE NETCDF METRICS
 </div>
 </div>
 </div>
+<aside class="notes">
+<p>Six NetCDF files were audited. All of them are georeferenced and readable, and the Data Health column says each one contains data. Keep an eye on that last column: if a file had been all missing values, it would show up there, and the panel would raise a warning.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="module-6-pdf-archival-suitability" class="slide level2 smaller center">
 <h2>Module 6: PDF Archival Suitability</h2>
-<p>Encryption scanning, OCR text accessibility evaluation, and embedded font audits for fixed-layout documents.</p>
+<p>Encryption, text accessibility and font checks for PDFs.</p>
 <div class="columns">
 <div class="column" style="width: 50%; font-size: 0.65em;">
 <ul>
-<li><strong>Why:</strong> PDFs are standard for documentation but can contain image-only scans that block screen readers, or use encryption that prevents archival migration.</li>
+<li><strong>Why:</strong> PDFs can be encrypted or image-only scans.</li>
 <li><strong>Obtained:</strong>
 <ul>
-<li>Security status (checking for encryption/password blocks).</li>
-<li>Accessibility status (verifying searchable text vs.&nbsp;image-only scans).</li>
-<li>Page counts and creation metadata (author, title, creator).</li>
-<li>Embedded fonts audit to prevent rendering breakdowns.</li>
+<li>Encryption status.</li>
+<li>Searchable text versus image-only.</li>
+<li>Pages, author, title, creator.</li>
+<li>Embedded fonts.</li>
 </ul></li>
 </ul>
 </div><div class="column" style="width: 50%; font-size: 0.65em;">
 <ul>
 <li><strong>Problems Solved:</strong>
 <ul>
-<li><em>Encryption locks:</em> Identifying encrypted PDFs that block indexing or preservation.</li>
-<li><em>Image-Only scans:</em> Detecting documents lacking a text layer (accessible OCR needed).</li>
-<li><em>Missing metadata:</em> Finding documents with generic or missing author/title info.</li>
+<li><em>Encryption locks:</em> block indexing and preservation.</li>
+<li><em>Image-only scans:</em> OCR needed.</li>
+<li><em>Missing metadata:</em> empty or generic author and title.</li>
 </ul></li>
 </ul>
 </div><ul>
-<li><strong>Key Tools Used:</strong>
-<ul>
-<li><strong><code>pdftools</code>:</strong> Direct rendering and metadata extraction of PDF streams.</li>
-</ul></li>
+<li><strong>Tools:</strong> <code>pdftools</code>.</li>
 </ul>
 </div>
+<aside class="notes">
+<p>Module six: PDFs. Everyone deposits them, and they are great for documentation, but two hidden traps are common. The first is encryption, which blocks indexing and preservation. The second is scanned documents with no text layer, which look fine on screen but are invisible to search engines and screen readers. The script reports the encryption status, whether there is searchable text, basic metadata such as pages, author and title, and which fonts are embedded.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2 center">
 
 <div class="columns">
 <div class="column" style="width: 60%; font-size: 0.55em;">
-<h3 id="core-script-logic-4">Core Script Logic</h3>
+<h3 id="core-script-logic-5">Core Script Logic</h3>
 <div class="sourceCode" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="co"># Inspect_PDF_Script.R</span></span>
 <span id="cb6-2"><a href=""></a><span class="co"># 1. Check metadata and security</span></span>
 <span id="cb6-3"><a href=""></a>info <span class="ot">&lt;-</span> pdftools<span class="sc">::</span><span class="fu">pdf_info</span>(file_path)</span>
@@ -8654,7 +8940,7 @@ LIVE NETCDF METRICS
 <span id="cb6-11"><a href=""></a><span class="co"># 3. Check embedded fonts</span></span>
 <span id="cb6-12"><a href=""></a>fonts <span class="ot">&lt;-</span> pdftools<span class="sc">::</span><span class="fu">pdf_fonts</span>(file_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div style="font-size: 0.75em; margin-top: 10px; font-style: italic; color: #555;">
-<p><em>Note: This code block represents the core logic. You can consult the complete <a href="file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_PDF_Script.R">Inspect_PDF_Script.R</a> or the interactive <a href="file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_PDF_Notebook.qmd">Inspect_PDF_Notebook.qmd</a> for full metadata and security audits.</em></p>
+<p><em>Core logic only. Full version: <a href="file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_PDF_Script.R">script</a> | <a href="file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_PDF_Notebook.qmd">notebook</a>.</em></p>
 </div>
 </div><div class="column" style="width: 40%;">
 <div class="control-card">
@@ -8663,10 +8949,23 @@ Execution Parameters
 </div>
 <div style="font-size: 0.45em; margin-bottom: 4px; font-family: 'Montserrat';">
 <strong>Target Directory:</strong> <code>data/Inspect_pdf/</code><br> <strong>Script:</strong> <code>Inspect_PDF_Script.R</code><br> <strong>Command:</strong><br>
-<pre style="margin-top: 4px; margin-bottom: 0px; font-size: 0.85em; padding: 4px; background: #32322F; color: #FBFAFA; border-radius: 4px;">Rscript Inspect_PDF_Script.R data/Inspect_pdf/ Results/</pre>
+<pre style="margin-top: 4px; margin-bottom: 0px; font-size: 0.85em; padding: 4px; background: #32322F; color: #FBFAFA; border-radius: 4px;">Rscript Inspect_PDF_Script.R data/Inspect_pdf/ Results/Inspect_pdf/</pre>
 </div>
 </div>
 </div></div>
+<aside class="notes">
+<p>The logic uses the pdftools package: read the metadata and the encryption flag, extract the text of the first page and count the characters to decide whether the file is searchable, and list the fonts. It is very light, yet very informative.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2 center">
 
@@ -8785,44 +9084,66 @@ LIVE PDF METRICS
 </div>
 </div>
 </div>
+<aside class="notes">
+<p>This time the panel does raise a flag: one of the six PDFs is image-only, meaning its text layer is missing. That is a typical finding, and the usual fix is to run OCR on that file. The table shows which file it is, so we can go straight to it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="module-7-sqlite-database-manifest" class="slide level2 smaller center">
 <h2>Module 7: SQLite Database Manifest</h2>
-<p>Relational database manifest extraction, table schemas, and row count tracking for self-contained SQLite files.</p>
+<p>Tables, schemas and row counts for SQLite databases.</p>
 <div class="columns">
 <div class="column" style="width: 50%; font-size: 0.65em;">
 <ul>
-<li><strong>Why:</strong> SQLite is a highly stable, LoC-preferred format for datasets. However, databases are opaque files; mapping tables and schemas is required to document relational dependencies.</li>
+<li><strong>Why:</strong> SQLite is a stable, preferred format, but a database is an opaque file until its tables are mapped.</li>
 <li><strong>Obtained:</strong>
 <ul>
-<li>Complete inventory of database tables.</li>
-<li>Table column definitions (schema names).</li>
-<li>Database sizes and table row counts.</li>
-<li>Status check (empty, failed connection, or successful validation).</li>
+<li>Inventory of tables.</li>
+<li>Column definitions.</li>
+<li>Row counts and status per database.</li>
 </ul></li>
 </ul>
 </div><div class="column" style="width: 50%; font-size: 0.65em;">
 <ul>
 <li><strong>Problems Solved:</strong>
 <ul>
-<li><em>Opaque database files:</em> Documenting the hidden table structures inside a single <code>.db</code>/<code>.sqlite</code> file.</li>
-<li><em>Relational disconnect:</em> Unboxing the database schema to ensure relationships remain clear.</li>
-<li><em>Empty/Corrupted files:</em> Flagging tables without rows or databases that fail connections.</li>
+<li><em>Opaque files:</em> hidden table structure.</li>
+<li><em>Relational disconnect:</em> unclear schema.</li>
+<li><em>Empty or failed databases:</em> flagged.</li>
 </ul></li>
 </ul>
 </div><ul>
-<li><strong>Key Tools Used:</strong>
-<ul>
-<li><strong><code>RSQLite</code> and <code>DBI</code>:</strong> Connects directly to SQLite containers without server dependencies.</li>
-</ul></li>
+<li><strong>Tools:</strong> <code>RSQLite</code>, <code>DBI</code>.</li>
 </ul>
 </div>
+<aside class="notes">
+<p>Module seven: SQLite. It is a very stable and widely recommended format for datasets, but a database is an opaque file until someone maps what is inside. The script connects to each database, without any server, and produces a manifest: every table, its columns and its row counts, plus a status for each database. That reveals empty tables and databases that fail to open.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2 center">
 
 <div class="columns">
 <div class="column" style="width: 60%; font-size: 0.55em;">
-<h3 id="core-script-logic-5">Core Script Logic</h3>
+<h3 id="core-script-logic-6">Core Script Logic</h3>
 <div class="sourceCode" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="co"># Inspect_sqlite_Script.R</span></span>
 <span id="cb7-2"><a href=""></a><span class="co"># 1. Connect and list tables</span></span>
 <span id="cb7-3"><a href=""></a>con <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(<span class="fu">SQLite</span>(), file_path)</span>
@@ -8835,7 +9156,7 @@ LIVE PDF METRICS
 <span id="cb7-10"><a href=""></a>  <span class="co"># Map schema names and rows</span></span>
 <span id="cb7-11"><a href=""></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div style="font-size: 0.75em; margin-top: 10px; font-style: italic; color: #555;">
-<p><em>Note: This code block represents the core logic. You can consult the complete <a href="file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_sqlite_Script.R">Inspect_sqlite_Script.R</a> or the interactive <a href="file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_sqlite_Notebook.qmd">Inspect_sqlite_Notebook.qmd</a> for full relational maps and manifests.</em></p>
+<p><em>Core logic only. Full version: <a href="file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_sqlite_Script.R">script</a> | <a href="file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_sqlite_Notebook.qmd">notebook</a>.</em></p>
 </div>
 </div><div class="column" style="width: 40%;">
 <div class="control-card">
@@ -8848,6 +9169,19 @@ Execution Parameters
 </div>
 </div>
 </div></div>
+<aside class="notes">
+<p>The logic is short: connect, list the tables, and then for each table ask the database for its column definitions and count its rows. No server is needed, which is what makes this so easy to run at scale.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2 center">
 
@@ -9134,11 +9468,419 @@ LIVE SQLITE METRICS
 </div>
 </div>
 </div>
+<aside class="notes">
+<p>On our sample we have two databases with 36 tables altogether. They connected without problems, and every table has rows. Below you can see each database, table, columns and row count, which is precisely the documentation a future user would want.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="module-8-tidy-data-screen" class="slide level2 smaller center">
+<h2>Module 8: Tidy Data Screen</h2>
+<p>Red-flag screen for CSV and Excel tables.</p>
+<div class="columns">
+<div class="column" style="width: 50%; font-size: 0.65em;">
+<div class="r-fit-text">
+<ul>
+<li><strong>Why:</strong> A table can open fine and still be untidy, and one workbook can hide hundreds of tables.</li>
+<li><strong>Obtained:</strong>
+<ul>
+<li>Duplicate headers, blank rows, stacked tables.</li>
+<li>Year-like column names.</li>
+<li>Header hygiene: spaces and symbols.</li>
+<li>CSV versus Excel recommendation.</li>
+</ul></li>
+</ul>
+</div>
+</div><div class="column" style="width: 50%; font-size: 0.65em;">
+<div class="r-fit-text">
+<ul>
+<li><strong>Problems Solved:</strong>
+<ul>
+<li><em>Excel to CSV:</em> one CSV per sheet.</li>
+<li><em>Unusable headers:</em> renamed before analysis.</li>
+</ul></li>
+<li><strong>Caveat:</strong> red flags, not a verdict. A human reads every flag.</li>
+</ul>
+</div>
+</div><ul>
+<li><strong>Tools:</strong> <code>readxl</code>, <code>tidyverse</code>.</li>
+</ul>
+</div>
+<aside class="notes">
+<p>Module eight moves from file formats to table structure, and to the idea of tidy data. A table can open without any error and still be hard to reuse: two tables stacked in one sheet, years used as column names, headers with spaces and symbols. This script screens CSV and Excel files for those red flags. It also recommends CSV over Excel, one file per sheet, because CSV is open and machine-readable. One important caveat: these are red flags, not a verdict. A table with no flags is not proven tidy, and a person still needs to read every flag.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2 center">
+
+<div class="columns">
+<div class="column" style="width: 60%; font-size: 0.55em;">
+<h3 id="core-script-logic-7">Core Script Logic</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="co"># Inspect_TidyData_Script.R</span></span>
+<span id="cb8-2"><a href=""></a><span class="co"># 1. Duplicate headers and embedded blank rows</span></span>
+<span id="cb8-3"><a href=""></a>dup_headers <span class="ot">&lt;-</span> headers[<span class="fu">duplicated</span>(headers) <span class="sc">&amp;</span> headers <span class="sc">!=</span> <span class="st">""</span>]</span>
+<span id="cb8-4"><a href=""></a>blank_rows  <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map_lgl</span>(raw_rows, <span class="sc">~</span> <span class="fu">all</span>(<span class="fu">is.na</span>(.x) <span class="sc">|</span> <span class="fu">trimws</span>(.x) <span class="sc">==</span> <span class="st">""</span>))</span>
+<span id="cb8-5"><a href=""></a></span>
+<span id="cb8-6"><a href=""></a><span class="co"># 2. Header hygiene: usable as a variable name without renaming?</span></span>
+<span id="cb8-7"><a href=""></a>clean_header <span class="ot">&lt;-</span> <span class="st">"^[A-Za-z][A-Za-z0-9_.]*$"</span></span>
+<span id="cb8-8"><a href=""></a>needs_fix <span class="ot">&lt;-</span> headers[<span class="sc">!</span>stringr<span class="sc">::</span><span class="fu">str_detect</span>(headers, clean_header)]</span>
+<span id="cb8-9"><a href=""></a></span>
+<span id="cb8-10"><a href=""></a><span class="co"># 3. Format recommendation (CSV preferred over Excel)</span></span>
+<span id="cb8-11"><a href=""></a>Format_Recommendation <span class="ot">&lt;-</span> <span class="st">"Convert to CSV (one file per sheet)"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div style="font-size: 0.75em; margin-top: 10px; font-style: italic; color: #555;">
+<p><em>Simplified core logic. The script also writes a codebook for every output column.</em></p>
+</div>
+</div><div class="column" style="width: 40%;">
+<div class="control-card">
+<div style="font-size: 0.55em; font-weight: bold; color: #006666; margin-bottom: 8px; font-family: 'Ubuntu';">
+Execution Parameters
+</div>
+<div style="font-size: 0.45em; margin-bottom: 4px; font-family: 'Montserrat';">
+<strong>Target Directory:</strong> <code>data/Inspect_xlsx/</code><br> <strong>Script:</strong> <code>Inspect_TidyData_Script.R</code><br> <strong>Command:</strong><br>
+<pre style="margin-top: 4px; margin-bottom: 0px; font-size: 0.85em; padding: 4px; background: #32322F; color: #FBFAFA; border-radius: 4px;">Rscript Inspect_TidyData_Script.R data/Inspect_xlsx/ Results/Inspect_TidyData/</pre>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>The logic: look for duplicate headers and blank rows, then test each header against a simple pattern. Does it start with a letter and use only letters, numbers, underscores and dots? Finally it produces the format recommendation. It works sheet by sheet, so one workbook with many sheets produces many rows.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2 center">
+
+<div class="columns">
+<div class="column" style="width: 45%; font-size: 0.55em;">
+<h3 id="tidy-data-analysis-and-diagnostic">Tidy Data Analysis and Diagnostic</h3>
+<div class="control-card" style="font-size: 0.85em; margin-top: 15px;">
+<div style="font-weight: bold; color: #006666; margin-bottom: 8px;">
+LIVE TIDY DATA METRICS
+</div>
+<strong>Screened:</strong> 211 table(s) in 3 file(s)<br><span style="color: #006666; font-weight: bold;">ℹ️ FORMAT:</span> 211 Excel sheet(s) where CSV is preferred (one file per sheet).<br><span style="color: #D6AB00; font-weight: bold;">⚠️ HEADER HYGIENE:</span> 198 table(s) with headers that need renaming before analysis.<br><span style="color: #D6AB00; font-weight: bold;">⚠️ BLANK ROWS:</span> 11 table(s) with blank rows inside the data.<br><span style="color: #D6AB00; font-weight: bold;">⚠️ STACKED TABLES:</span> 1 table(s) that may hold more than one table.<br><strong>Without flags:</strong> 13 table(s)<br>
+</div>
+</div></div>
+<div class="table-container">
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">File Name</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Tables</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">With Flags</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Header Issues</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Blank Rows</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Stacked Tables</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Recommendation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">41467_2025_65055_MOESM9_ESM.xlsx</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">Convert to CSV, one file per sheet</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">41467_2025_65141_MOESM4_ESM.xlsx</td>
+<td style="text-align: right;">181</td>
+<td style="text-align: right;">181</td>
+<td style="text-align: right;">181</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">Convert to CSV, one file per sheet</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">41467_2025_65179_MOESM4_ESM.xlsx</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Convert to CSV, one file per sheet</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Here is the screen on three Excel workbooks from published papers. Together they contain 211 tables, because one single workbook has 181 sheets. Nearly all of them, 198, have headers that need renaming before analysis, 11 have blank rows inside the data, and one may hold stacked tables. The table summarizes everything per workbook, and the recommendation is the same for all of them: convert to CSV, one file per sheet. Imagine checking all of that by hand for 181 sheets.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="module-9-readme-vs.-files-on-disk" class="slide level2 smaller center">
+<h2>Module 9: README vs.&nbsp;Files on Disk</h2>
+<p>README file list versus files on disk.</p>
+<div class="columns">
+<div class="column" style="width: 50%; font-size: 0.65em;">
+<div class="r-fit-text">
+<ul>
+<li><strong>Why:</strong> The README is the main documentation, but wrong or missing file names go unnoticed.</li>
+<li><strong>Obtained:</strong>
+<ul>
+<li>Each entry matched: exact, case, or name only.</li>
+<li>Entries with no file on disk.</li>
+<li>Files the README never lists.</li>
+</ul></li>
+</ul>
+</div>
+</div><div class="column" style="width: 50%; font-size: 0.65em;">
+<div class="r-fit-text">
+<ul>
+<li><strong>Problems Solved:</strong>
+<ul>
+<li><em>Typos and missing extensions.</em></li>
+<li><em>Undocumented files.</em></li>
+<li><em>Orphaned entries:</em> renamed or removed files.</li>
+</ul></li>
+<li><strong>Assumes:</strong> <code>Filename: &lt;name&gt;</code> entries (English or French).</li>
+</ul>
+</div>
+</div><ul>
+<li><strong>Tools:</strong> <code>tidyverse</code>, <code>stringr</code>.</li>
+</ul>
+</div>
+<aside class="notes">
+<p>Module nine: the README. It is the main piece of documentation in most datasets, yet it is rarely checked against the actual files. This script reads the file list in the README and compares it with what is really on disk. It tells us which entries match exactly, which match only if you ignore case or the extension, which entries point to nothing, and which files on disk the README never mentions. A manual read rarely catches a typo in a file name, but a script finds it in seconds.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2 center">
+
+<div class="columns">
+<div class="column" style="width: 60%; font-size: 0.55em;">
+<h3 id="core-script-logic-8">Core Script Logic</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="co"># Inspect_ReadmeFileList_Script.R</span></span>
+<span id="cb9-2"><a href=""></a><span class="co"># 1. Extract "Filename: ..." entries from the README (English or French)</span></span>
+<span id="cb9-3"><a href=""></a>entry_pattern <span class="ot">&lt;-</span> <span class="st">"(?i)(?:filename|nom de fichier)</span><span class="sc">\\</span><span class="st">s*:</span><span class="sc">\\</span><span class="st">s*(.+?)</span><span class="sc">\\</span><span class="st">s*$"</span></span>
+<span id="cb9-4"><a href=""></a>entries <span class="ot">&lt;-</span> stringr<span class="sc">::</span><span class="fu">str_match</span>(readme_lines, entry_pattern)[, <span class="dv">2</span>]</span>
+<span id="cb9-5"><a href=""></a></span>
+<span id="cb9-6"><a href=""></a><span class="co"># 2. Match each entry to disk: exact, then case-insensitive, then name only</span></span>
+<span id="cb9-7"><a href=""></a>disk_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(target_dir, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-8"><a href=""></a></span>
+<span id="cb9-9"><a href=""></a><span class="co"># 3. Files on disk that the README never mentions</span></span>
+<span id="cb9-10"><a href=""></a>orphaned <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(<span class="fu">basename</span>(disk_files), matched_files)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div style="font-size: 0.75em; margin-top: 10px; font-style: italic; color: #555;">
+<p><em>Simplified core logic. One result row per README entry and per undocumented file.</em></p>
+</div>
+</div><div class="column" style="width: 40%;">
+<div class="control-card">
+<div style="font-size: 0.55em; font-weight: bold; color: #006666; margin-bottom: 8px; font-family: 'Ubuntu';">
+Execution Parameters
+</div>
+<div style="font-size: 0.45em; margin-bottom: 4px; font-family: 'Montserrat';">
+<strong>Target Directory:</strong> <code>data/Inspect_Text/</code><br> <strong>Script:</strong> <code>Inspect_ReadmeFileList_Script.R</code><br> <strong>Command:</strong><br>
+<pre style="margin-top: 4px; margin-bottom: 0px; font-size: 0.85em; padding: 4px; background: #32322F; color: #FBFAFA; border-radius: 4px;">Rscript Inspect_ReadmeFileList_Script.R data/Inspect_Text/ Results/Inspect_ReadmeFileList/</pre>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>The logic: extract the lines that say “Filename”, in English or in French, try to match each one against the files on disk, first exactly, then ignoring case, then by name only, and finally list whatever is left over on disk. If the README does not follow that template, the script says so instead of guessing.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2 center">
+
+<div class="columns">
+<div class="column" style="width: 45%; font-size: 0.55em;">
+<h3 id="readme-analysis-and-diagnostic">README Analysis and Diagnostic</h3>
+<div class="control-card" style="font-size: 0.85em; margin-top: 15px;">
+<div style="font-weight: bold; color: #006666; margin-bottom: 8px;">
+LIVE README METRICS
+</div>
+<strong>README Entries:</strong> 1 (0 exact match)<br><span style="color: #D6AB00; font-weight: bold;">⚠️ MISSING ON DISK:</span> 1 README entry with no file on disk.<br><span style="color: #D6AB00; font-weight: bold;">⚠️ UNDOCUMENTED:</span> 6 file(s) on disk that the README does not list.<br>
+</div>
+</div></div>
+<div class="table-container">
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">README Entry</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">File on Disk</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">HCX-IR-Obs_daily_1980-2012.nc</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NO MATCH FOUND ON DISK</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">14_corr_ring_stats.txt</td>
+<td style="text-align: left;">ON DISK, NOT LISTED IN README</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">388_corr_ring_stats.txt</td>
+<td style="text-align: left;">ON DISK, NOT LISTED IN README</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">413_corr_ring_stats.txt</td>
+<td style="text-align: left;">ON DISK, NOT LISTED IN README</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">File_tree.txt</td>
+<td style="text-align: left;">ON DISK, NOT LISTED IN README</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">readme.md</td>
+<td style="text-align: left;">ON DISK, NOT LISTED IN README</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">README_v2.txt</td>
+<td style="text-align: left;">ON DISK, NOT LISTED IN README</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>In our sample folder, the README lists one file, and that file is not there, so the script flags it as missing. And six files on disk are never mentioned in the README. It is a deliberately rough example from sample data, but it shows both kinds of mismatch the script is built to catch.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="designing-for-scale" class="slide level2 smaller center">
+<h2>Designing for Scale</h2>
+<p>Inspect enough to be useful, and say what you skipped.</p>
+<div class="columns">
+<div class="column" style="width: 50%; font-size: 0.62em;">
+<div class="control-card" style="padding: 12px;">
+<div style="font-size: 1.05em; font-weight: bold; color: #006666; margin-bottom: 6px; font-family: 'Ubuntu';">
+Four Design Principles
+</div>
+<ol type="1">
+<li><strong>Read headers, not payloads.</strong> FITS, NIfTI, LAS/LAZ.</li>
+<li><strong>List, don’t unpack.</strong> zip, rar, OME-Zarr tar.</li>
+<li><strong>Sample honestly, and say so.</strong> Checksums.</li>
+<li><strong>Never execute what you inspect.</strong> PyTorch models.</li>
+</ol>
+</div>
+</div><div class="column" style="width: 50%; font-size: 0.62em;">
+<div class="control-card" style="padding: 12px;">
+<div style="font-size: 1.05em; font-weight: bold; color: #006666; margin-bottom: 6px; font-family: 'Ubuntu';">
+Case Study: PPMstar Simulation Release
+</div>
+<p><strong>Dataset:</strong> 3-D PPMstar stellar simulations (Pathak et al., 2026). <a href="https://doi.org/10.20383/103.01782" data-preview-link="false">doi.org/10.20383/103.01782</a></p>
+<ol type="1">
+<li><strong>Structure:</strong> <code>release.json</code> versus the disk.</li>
+<li><strong>Content:</strong> sampled raw cubes; min, max, NaN, Inf.</li>
+<li><strong>Fixity:</strong> small files all hashed, large files sampled.</li>
+</ol>
+<div style="font-size: 0.85em; margin-top: 8px; font-style: italic; color: #555;">
+<p>In development: not part of today’s live demos.</p>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>Before we move on, I want to leave you with four ideas that guide how we write these scripts for large datasets. One: read headers, not payloads. For formats like FITS, NIfTI or LiDAR files, the header already tells us a lot, and reading only that keeps things fast. Two: list, don’t unpack. For zip files or OME-Zarr archives, the listing is enough to audit the structure, and nothing is decompressed. Three: sample honestly, and say so. When files are too big to check completely, the script checks a random sample and labels every file as verified or not sampled, so it never claims more than it did. Four: never execute what you inspect. Our script for machine-learning models, for example, refuses to load files in unsafe ways, because a file that cannot be loaded safely is itself the finding.</p>
+<p>A concrete case is a recently published simulation release from the PPMstar project: three-dimensional stellar hydrodynamics, simulating oxygen- and carbon-shell convection in a 25 solar-mass star. A single file can reach several gigabytes, and one run can hold thousands of them. We use three scripts as a pipeline. The first checks the structure, comparing the file counts and sizes the release claims against the disk, without opening a single payload. The second reads a small, reproducible random sample of the raw data cubes and reports basic statistics. The third verifies checksums: every small file, plus a sample of the large ones. The DOI is on the slide if you would like to look at the dataset. These scripts are still in development, so there is no live demo today.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="implementation-in-hpc-clusters" class="slide level2 center">
 <h2>Implementation in HPC clusters</h2>
 <p>This toolbox provides R-scripts that can be executed in HPC cluters like <a href="https://docs.alliancecan.ca/wiki/Fir">Fir</a> from the Digital Research Alliance of Canada.</p>
 <p>An example can be found <a href="https://github.com/Alliance-RDM-GDR/CUR_Res_CurationTools/tree/main/workshop/HPC">here</a></p>
+<aside class="notes">
+<p>All of this also runs on an HPC cluster. The scripts are standalone, so you can hand one to a colleague and they can run it with a single command, without cloning the whole repository. In the workshop folder on GitHub there is a guide and a ready-made bundle for the Fir cluster, with the setup and submission scripts. That is how we process datasets that are too large for a laptop.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="next-steps-and-contributions" class="slide level2 center">
 <h2>Next Steps and Contributions</h2>
@@ -9149,6 +9891,19 @@ LIVE SQLITE METRICS
 <li><strong>Q and A Session</strong></li>
 </ul>
 <p><em>Thank you.</em></p>
+<aside class="notes">
+<p>So where can you go from here? The toolbox is open source and still evolving. If you write an inspection script for a format we do not cover yet, please send us a pull request. The full guides live in the book, where every module has its own notebook. And now I would love to hear your questions. Which formats give you the most trouble in your own datasets?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="resources-and-support" class="slide level2 smaller center">
 <h2>Resources and support</h2>
@@ -9185,6 +9940,19 @@ LIVE SQLITE METRICS
 <li><a href="https://www.frdr-dfdr.ca/repo/">FRDR</a></li>
 </ul>
 </div>
+<aside class="notes">
+<p>Here are a few resources and sources of support. The links on FAIR image data, bioimage metadata and our own training materials are a good place to keep learning. The QR code on the right opens the published version of this presentation, so you can revisit any slide whenever you like. And if you ever want help preparing a dataset to share, please reach out to us at the email on the slide. Thank you so much for your time and your attention today.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 
 </section></section>
     </div>

@@ -2,6 +2,13 @@
 
 This file documents the evolution of the **Research Data Curator's Toolbox** from its inception to the current state.
 
+## [2026-10-05] - Workshop Deck Update
+- **New Modules**: Added Tidy Data screening (`Inspect_TidyData`) and README-vs-files comparison (`Inspect_ReadmeFileList`) to the workshop demos.
+- **Designing for Scale**: New slide on header-only inspection, listing without unpacking, honest sampling and never executing inspected content, with the PPMstar simulation dataset as a worked example.
+- **Concise Slides**: Shortened text-heavy slides; the deck now has 40 slides.
+- **Speaker Notes**: Added English speaker notes to every slide (press **S** in the browser for presenter view).
+- **Fixes**: Corrected result-file patterns used by the live demos and removed an empty slide.
+
 ## [2026-05-15] - UI/UX Professionalization & Branding
 - **Branding Integration**: Applied official Alliance branding (Dark Teal, Tomorrow Yellow, Ubuntu/Montserrat typography).
 - **Standardized Documentation**: Implemented "Curation Goal" and "Preservation Risk" callout blocks across all 21 notebooks.

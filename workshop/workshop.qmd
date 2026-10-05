@@ -11,6 +11,8 @@ format:
     footer: "Digital Research Alliance of Canada - Curation Toolbox Workshop"
     preview-links: auto
     center: true
+    title-slide-attributes:
+      data-notes: "Hello everyone, and welcome! Thank you for joining us today. I'm part of the Curation Services Team at the Digital Research Alliance of Canada, and over the next while I'd like to share how we curate large datasets, and walk you through a toolbox of scripts that helps us do it faster and more consistently. Please feel free to interrupt me with questions at any point. This is meant to be a conversation."
 ---
 
 ```{r}
@@ -101,8 +103,15 @@ dir_choices <- setNames(all_paths, friendly_names)
 -   NetCDF (Arrays).
 -   PDF (Security and Text).
 -   SQLite (Schemas).
+-   Tidy Data Screen (Table Structure).
+-   README vs. Files (Documentation).
+-   Designing for Scale (Principles).
 :::
 :::::
+
+::: {.notes}
+Here is our roadmap. We begin with a short introduction: what curation is, why large datasets are hard, and what the toolbox looks like. Then comes the practical part, nine short demonstrations, from a first look at file extensions to checking whether a README matches the files on disk. We close with a few ideas on designing for scale, how to run all of this on an HPC cluster, and how you can contribute. Everything I show today is open source.
+:::
 
 ------------------------------------------------------------------------
 
@@ -111,7 +120,7 @@ dir_choices <- setNames(all_paths, friendly_names)
 ::::: columns
 ::: {.column style="width: 50%; font-size: 0.85em;"}
 ### Research Data Curation
-Data curation is the **ongoing process** of managing research data throughout its lifecycle to make it **FAIR**:
+The **ongoing process** of managing research data so that it is **FAIR**:
 
 - **F**indable
 
@@ -122,20 +131,24 @@ Data curation is the **ongoing process** of managing research data throughout it
 - **R**eusable
 
 ### Curation vs. Preservation
-Our curators are not preservationists. We organize, describe, and clean files, and we encourage preservation-friendly formats, but we do not perform additional long-term preservation activities. Digital Preservation services works on these elements.
+We organize, describe and clean files. Long-term preservation is handled by Digital Preservation services.
 :::
 
 ::: {.column style="width: 50%; font-size: 0.85em;"}
 ### Generalist Repositories (FRDR)
-The **Federated Research Data Repository ** ([FRDR](https://www.frdr-dfdr.ca/repo/)) is a bilingual platform for sharing and preserving Canadian research data:
+The **Federated Research Data Repository** ([FRDR](https://www.frdr-dfdr.ca/repo/)) is a bilingual platform for sharing Canadian research data:
 
-- Accepts **well-documented**, **stand-alone** research data.
+- **Well-documented**, **stand-alone** data.
 
-- Supports medium-to-large sized datasets via [**Globus file transfer**](https://www.globus.org/data-transfer).
+- Medium-to-large datasets via [**Globus**](https://www.globus.org/data-transfer).
 
-- Features geographically distributed storage mirrored across multiple national host sites.
+- Storage mirrored across national host sites.
 :::
 :::::
+
+::: {.notes}
+Let's start with a shared definition. Research data curation is the ongoing work of managing data so that it is FAIR: findable, accessible, interoperable and reusable. I want to flag one distinction up front: curation is not preservation. We organize, describe and clean files, while long-term preservation is handled by our Digital Preservation colleagues. On the right, FRDR, the Federated Research Data Repository, is where much of this work lands. It is bilingual, it handles medium-to-large datasets through Globus, and its storage is mirrored across national sites.
+:::
 
 ------------------------------------------------------------------------
 
@@ -145,13 +158,13 @@ The **Federated Research Data Repository ** ([FRDR](https://www.frdr-dfdr.ca/rep
 ::: {.column style="width: 35%; font-size: 0.8em;"}
 
 ### Growing Dataset Scale
-Modern curation repositories face exponential growth in both the **number of files** per dataset and the **total storage size**.
+Datasets keep growing in **file count** and **storage size**.
 
-- **File Counts:** A single dataset deposit can range from a few files up to **100K+** files.
+- **File Counts:** a few files up to **100K+**.
 
-- **Storage Size:** Dataset storage requirements regularly scale from less than 1 GB up to **1000+ GB**.
+- **Storage Size:** under 1 GB up to **1000+ GB**.
 
-- **Format Diversity:** Hundreds of unique extensions, including `csv`, `pdf`, `jpg`, and `xlsx`.
+- **Format Diversity:** hundreds of extensions (`csv`, `pdf`, `jpg`, `xlsx`).
 :::
 
 ::: {.column style="width: 65%; text-align: center; layout-valign = center"}
@@ -162,6 +175,10 @@ Modern curation repositories face exponential growth in both the **number of fil
 <div style="font-size: 0.6em; margin-top: 10px; color: #555; font-style: italic;">Growth of dataset size and file counts over time (Digital Research Alliance of Canada).</div>
 :::
 :::::
+
+::: {.notes}
+Why do we talk about large datasets in particular? Because datasets keep growing, in two ways. In file count, from a handful of files up to more than a hundred thousand in a single deposit. And in size, from under a gigabyte to over a terabyte. On top of that, we see hundreds of different file extensions. The two charts show how both trends have climbed over time. This is the reality we design our workflows around.
+:::
 
 ------------------------------------------------------------------------
 
@@ -193,19 +210,27 @@ We utilize the Data Curation Network's **CURATED** steps to ensure datasets meet
 :::
 :::::
 
+::: {.notes}
+To give our work some structure, we follow the CURATED steps from the Data Curation Network: Check files and metadata, Understand and run the files, Request missing information, Augment metadata, Transform formats, Evaluate FAIRness, and Document everything along the way. The toolbox you will see today lives mostly in the first two steps, Check and Understand, because that is where automation saves us the most time. And notice the caption under the diagram: working with the researcher is essential. Tools support that conversation, they never replace it.
+:::
+
 ------------------------------------------------------------------------
 
 ## Curation Challenges and Bottlenecks {.smaller}
 
 1. **Dataset Heterogeneity:** Number of files and format variety.
 
-2. **Many Files:** How do you process quickly, securely, and consistently tens of thousands of files?
+2. **Many Files:** processing tens of thousands of files quickly and consistently.
 
-3. **Large Files:** Raw computing power and specialized memory are required to open, parse, and profile gigabyte-scale files without system crashes.
+3. **Large Files:** gigabyte-scale files need serious computing power and memory.
    
 4. **Varying Documentation:** Missing READMEs, orphaned variables, and obscure custom scripts.
    
-5. **Reproducibility and Security:**Checking code reproducibility, scanning for hardcoded paths, and identifying potential Personally Identifying Information (PII) (emails/keys) at scale.
+5. **Reproducibility and Security:** hardcoded paths and PII (emails, keys), checked at scale.
+
+::: {.notes}
+So what makes this hard? Five things. First, heterogeneity: many formats and many layouts. Second, many files: how do you process tens of thousands of them quickly and consistently? Third, large files, which need serious computing power and memory. Fourth, documentation varies a lot, with missing READMEs and orphaned variables. And fifth, reproducibility and security: hardcoded paths, or personal information like emails and keys hiding inside files. Each demonstration that follows maps back to one or more of these challenges.
+:::
 
 ------------------------------------------------------------------------
 
@@ -228,42 +253,50 @@ A collection of R, python and Bash scripts (in development) designed to:
 :::::
 
 ::: {.callout-note}
-These workflows leverage [Quarto notebooks/books](https://quarto.org/docs/guide/) and automated R scripts to inspect datasets at scale, and generating structured reports.
+These workflows leverage [Quarto notebooks/books](https://quarto.org/docs/guide/) and automated R scripts to inspect datasets at scale and generate structured reports.
 :::
 
-------------------------------------------------------------------------
+::: {.notes}
+This brings us to the toolbox. It is a collection of R, Python and Bash scripts, still in development, designed to do three things: profile directories and extensions automatically, dive deep into tabular and scientific data, and verify code reproducibility and safety. Each tool comes in two flavors: a Quarto notebook that explains every step, and a standalone script you can hand to a colleague or run on a cluster. Same logic, two ways to use it.
+:::
 
 # Practical Demonstrations
 
+::: {.notes}
+Time for the hands-on part. For every module I will follow the same rhythm: first why it matters, then the core logic of the script, and finally the results it produced on sample data. The tables and panels you will see were generated by the scripts themselves, not mocked up.
+:::
+
 ## Module 1: High-Level Profiling {.smaller}
 
-First-stage triage to understand the scale and composition of incoming datasets.
+First-stage triage of an incoming dataset.
 
 ::::: columns
 ::: {.column style="width: 50%; font-size: 0.65em;"}
 ::: {.r-fit-text}
 -   **Why:** Manual directory inspection is limited at scale.
 -   **Obtained:**
-    -   Complete inventory of extensions and sizes.
-    -   Deep file metadata (author, dates, MIME types).
-    -   Risk flags (empty, system junk, executables).
+    -   Inventory of extensions and sizes.
+    -   Deep metadata (author, dates, MIME type).
+    -   Risk flags (empty, junk, executables).
 :::
 :::
 
 ::: {.column style="width: 50%; font-size: 0.65em;"}
 ::: {.r-fit-text}
 -   **Problems Solved:**
-    -   *Extension mismatch:* Finding hidden/falsified formats.
-    -   *Security risks:* Flagging unauthorized executables/junk.
-    -   *Triage:* Estimating volume and complexity.
+    -   *Extension mismatch:* hidden or falsified formats.
+    -   *Security risks:* executables and junk.
+    -   *Triage:* volume and complexity.
+    -   *Scale:* ExifTool runs up to 2,000 files; the inventory always completes.
 :::
 :::
--   **Key Tools Used:**
-    -   **R (`tidyverse`):** For data sorting and triage.
-    -   **`ExifTool` (Perl):** Extracting deep file metadata.
-    -   **`exiftoolr`:** R wrapper for ExifTool.
+-   **Tools:** `tidyverse`, `ExifTool`, `exiftoolr`.
 
 :::::
+
+::: {.notes}
+Module one: high-level profiling. Whenever a dataset arrives, this is the very first thing we run. Inspecting a directory by hand does not scale, so the script builds an inventory of every file: its extension, its size, and basic risk flags such as empty files, system junk or executables. It can also read deep metadata with ExifTool, like the author, the dates, and the real MIME type. That is how we catch a file whose extension says one thing but whose content says another. One design note: ExifTool is slow, so above two thousand files the script skips that step, but it always completes the inventory.
+:::
 
 
 ------------------------------------------------------------------------
@@ -301,7 +334,7 @@ inventory <- inventory %>%
 ```
 
 ::: {style="font-size: 0.75em; margin-top: 10px; font-style: italic; color: #555;"}
-*Note: This code block represents the core logic. You can consult the complete [Inspect_Extensions_Script.R](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_Extensions_Script.R) or the interactive [Inspect_Extensions_Notebook.qmd](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_Extensions_Notebook.qmd) for full deep metadata extraction (ExifTool) and output details.*
+*Core logic only. Full version: [script](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_Extensions_Script.R) | [notebook](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_Extensions_Notebook.qmd).*
 :::
 ::::
 
@@ -317,6 +350,10 @@ inventory <- inventory %>%
 :::
 ::::
 :::::::
+
+::: {.notes}
+Here is the heart of the script, simplified. It lists every file recursively, builds a table with the name, extension and size, and applies a few simple rules to assign a risk flag. On the right you can see the exact command we run. If you would like the complete version, the links under the code open the script and the notebook.
+:::
 
 ------------------------------------------------------------------------
 
@@ -423,43 +460,48 @@ if (!is.null(inv)) {
 ```
 :::
 
+::: {.notes}
+And here are the results on our sample folder. The panel on the left summarizes what the script found: how many files, the total volume, and any warnings. In this case the folder is clean. The table on the right is the full inventory, and you can scroll through it. On a real deposit, this is where we would spot zero-byte files or surprising formats.
+:::
+
 ------------------------------------------------------------------------
 
 ## Module 2: Tabular Quality Control {.smaller}
 
-Automated structure and content validation for tabular data files.
+Automated structure and content checks for tabular files.
 
 ::::: columns
 ::: {.column style="width: 50%; font-size: 0.65em;"}
 ::: {.r-fit-text}
--   **Why:** Tabular files often suffer from parsing errors, missing data, and Personally Identifying Information (PII) leaks.
+-   **Why:** Tabular files hide parsing errors, gaps and PII leaks.
 -   **Obtained:**
-    -   Validation of character encoding and schema (rows/cols).
-    -   Cell completeness percentage across variables.
-    -   Duplicate/redundant record counts and email PII risk checks.
+    -   Encoding and schema (rows, columns).
+    -   Completeness percentage.
+    -   Duplicate rows and email PII checks.
 :::
 :::
 
 ::: {.column style="width: 50%; font-size: 0.65em;"}
 ::: {.r-fit-text}
 -   **Problems Solved:**
-    -   *Parsing issues:* Spotting encoding or structure corruption.
-    -   *Data gaps:* Measuring missing values automatically.
-    -   *Privacy risks:* Checking for raw email/contact details.
+    -   *Parsing issues:* encoding or structure corruption.
+    -   *Data gaps:* missing values, measured.
+    -   *Privacy risks:* raw emails and contacts.
 :::
 :::
--   **Key Tools Used:**
-    -   **R (`tidyverse`):** Core data ingestion and cleaning framework.
-    -   **`readr`:** Fast parsing and auto-encoding detection.
-    -   **`skimr`:** Detailed statistical profiling of distributions.
+-   **Tools:** `tidyverse`, `readr`, `skimr`.
 
 :::::
+
+::: {.notes}
+Module two: tabular quality control. CSV files look simple, but they hide plenty of problems: odd encodings, missing values, duplicated rows, even email addresses in a column nobody remembered. The script reads every CSV and reports its encoding, its rows and columns, the percentage of complete cells, the duplicate rows, and whether it spotted anything that looks like an email address. It also profiles every variable in detail with the skimr package. And each report ships with a codebook that explains its columns, so nobody has to guess what "percent complete" means.
+:::
 
 ------------------------------------------------------------------------
 
 :::::: columns
 ::: {.column style="width: 60%; font-size: 0.55em;"}
-### Core Script Logic.
+### Core Script Logic
 
 ``` r
 # Inspect_csv_Script.R
@@ -486,7 +528,7 @@ analyze_csv_health <- function(file_path) {
 ```
 
 ::: {style="font-size: 0.75em; margin-top: 10px; font-style: italic; color: #555;"}
-*Note: This code block represents the core logic. You can consult the complete [Inspect_csv_Script.R](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_csv_Script.R) or the interactive [Inspect_csv_Notebook.qmd](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_csv_Notebook.qmd) for full encoding, completeness, and detailed column profiling.*
+*Core logic only. Full version: [script](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_csv_Script.R) | [notebook](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_csv_Notebook.qmd).*
 :::
 :::
 
@@ -503,6 +545,10 @@ analyze_csv_health <- function(file_path) {
 ::::
 ::::::
 
+::: {.notes}
+The core idea is straightforward: read each file, count rows and columns, count the missing cells to get a completeness percentage, and use a regular expression to search the text columns for email patterns. These are simple checks, but when you run them across hundreds of files, they save hours.
+:::
+
 ------------------------------------------------------------------------
 
 ::::: columns
@@ -514,7 +560,8 @@ analyze_csv_health <- function(file_path) {
 #| echo: false
 #| results: asis
 
-latest_csv_file <- get_latest_file("Results", "^CSV_Health_Check.*\\.csv$")
+# Must end in a date so the companion CSV_Health_Check_Codebook.csv is never picked up
+latest_csv_file <- get_latest_file("Results", "^CSV_Health_Check.*[0-9]{4}-[0-9]{2}-[0-9]{2}\\.csv$")
 df <- if (!is.null(latest_csv_file)) read.csv(latest_csv_file, stringsAsFactors = FALSE) else NULL
 
 if (is.null(df)) {
@@ -585,6 +632,10 @@ if (!is.null(df)) {
 :::
 :::::
 
+::: {.notes}
+On our sample folder, fifteen CSV files were audited and all of them parsed correctly. The panel gives us the total volume, how many files were read successfully, and it raises a flag for problems like duplicates or possible personal information. When one of those flags lights up, that is our cue to open the file and take a careful look. The table on the right gives the per-file detail: encoding, rows, columns and completeness.
+:::
+
 ------------------------------------------------------------------------
 
 ## Documenting data tables {.smaller}
@@ -597,17 +648,17 @@ Standardizing tabular data documentation with the Codebook Generator App.
 ::: {.control-card style="margin-bottom: 12px; font-size: 0.85em; padding: 12px;"}
 <div style="font-size: 1.05em; font-weight: bold; color: #006666; margin-bottom: 6px; font-family: 'Ubuntu';">Bilingual Documentation</div>
 
-- **Interactive Editing:** Edit labels, types, and units in real-time using `rhandsontable`.
-- **Auto-Profiling:** Automatically detects factor levels, missing values, ranges, and types.
-- **Bilingual Interface:** Instantly toggle UI between English and French.
+- **Interactive Editing:** labels, types and units.
+- **Auto-Profiling:** types, ranges, missing values.
+- **Bilingual Interface:** English and French.
 :::
 
 ::: {.control-card style="font-size: 0.85em; padding: 12px;"}
 <div style="font-size: 1.05em; font-weight: bold; color: #006666; margin-bottom: 6px; font-family: 'Ubuntu';">Privacy and Zero-Install</div>
 
-- **Zero-Server:** Powered by Shinylive, compiles and runs entirely in the client's browser.
-- **Local Privacy:** Data remains local to the browser. Zero persistence or leakage risk.
-- **Form Support:** Seamless CSV, TSV, and XLSX support up to 30 MB.
+- **Zero-Server:** runs entirely in your browser (Shinylive).
+- **Local Privacy:** your data never leaves the browser.
+- **Formats:** CSV, TSV and XLSX up to 30 MB.
 :::
 :::
 :::
@@ -621,19 +672,23 @@ Standardizing tabular data documentation with the Codebook Generator App.
 :::
 :::::
 
+::: {.notes}
+A quick detour that connects with what we just saw. Once you know what is inside a table, you need to document it. For that we built the Codebook Generator, a small app that profiles a table and lets you edit labels, types and units. It works in English and in French, and it runs entirely in your browser, so your data never leaves your computer. There is a live demo link on the slide if you would like to try it after the workshop.
+:::
+
 -------------------------------------------------------------------------
 
 ## Module 3: Image Quality Control {.smaller}
 
-Technical validation, fixity check, and metadata extraction for digital image collections.
+Technical validation, fixity and metadata for image collections.
 
 ::::: columns
 ::: {.column style="width: 50%; font-size: 0.65em;"}
 ::: {.r-fit-text}
--   **Why:** Images are complex digital objects that can contain hidden metadata (like GPS coordinates) or have corrupt file headers.
+-   **Why:** Images can carry hidden GPS coordinates or corrupt headers.
 -   **Obtained:**
-    -   Basic properties (width, height, format, colorspace).
-    -   MD5 checksum calculation for fixity and duplicate detection.
+    -   Width, height, format, colorspace.
+    -   MD5 checksum for fixity and duplicates.
     -   Embedded Exif metadata.
 :::
 :::
@@ -641,17 +696,18 @@ Technical validation, fixity check, and metadata extraction for digital image co
 ::: {.column style="width: 50%; font-size: 0.65em;"}
 ::: {.r-fit-text}
 -   **Problems Solved:**
-    -   *Privacy Risks:* Detecting GPS coordinate leaks (potential human subjects/protected species).
-    -   *Technical Outliers:* Identifying incorrect colorspaces or dimension outliers.
-    -   *Format Obsolescence:* Flagging proprietary raw formats for conversion to preservation-friendly TIFFs.
+    -   *Privacy risks:* GPS leaks (people, protected species).
+    -   *Outliers:* wrong colorspace or dimensions.
+    -   *Obsolescence:* raw formats to convert to TIFF.
 :::
 :::
--   **Key Tools Used:**
-    -   **`magick`:** Validates file headers and basic image geometry.
-    -   **`exiftoolr`:** Harvesting camera and GPS metadata.
-    -   **`digest`:** MD5 hashing for integrity checks.
+-   **Tools:** `magick`, `exiftoolr`, `digest`.
 
 :::::
+
+::: {.notes}
+Module three: images. Images are deceptively complex. They can carry hidden GPS coordinates in their metadata, which matters a great deal when the photos involve people or protected species. The script checks that each file opens, records width, height, format and colorspace, and computes an MD5 checksum, which serves two purposes: fixity, and detecting duplicates. It also reads the embedded Exif metadata, and flags outliers, such as an image whose dimensions differ from the rest of the collection.
+:::
 
 ------------------------------------------------------------------------
 
@@ -681,7 +737,7 @@ curated_data <- full_report %>%
 ```
 
 ::: {style="font-size: 0.75em; margin-top: 10px; font-style: italic; color: #555;"}
-*Note: This code block represents the core logic. You can consult the complete [Inspect_Images_Script.R](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_Images_Script.R) or the interactive [Inspect_Images_Notebook.qmd](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_Images_Notebook.qmd) for full properties extraction, flagging, and output details.*
+*Core logic only. Full version: [script](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_Images_Script.R) | [notebook](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_Images_Notebook.qmd).*
 :::
 :::
 
@@ -692,11 +748,15 @@ curated_data <- full_report %>%
   <strong>Target Directory:</strong> <code>data/</code><br>
   <strong>Script:</strong> <code>Inspect_Images_Script.R</code><br>
   <strong>Command:</strong><br>
-  <pre style="margin-top: 4px; margin-bottom: 0px; font-size: 0.85em; padding: 4px; background: #32322F; color: #FBFAFA; border-radius: 4px;">Rscript Inspect_Images_Script.R data/ Results/</pre>
+  <pre style="margin-top: 4px; margin-bottom: 0px; font-size: 0.85em; padding: 4px; background: #32322F; color: #FBFAFA; border-radius: 4px;">Rscript Inspect_Images_Script.R data/ Results/Inspect_Images/</pre>
 </div>
 :::
 ::::
 ::::::
+
+::: {.notes}
+In the core logic, we hash every file, open each one with magick to validate its header and read its geometry, and then apply the curation flags: duplicate, corrupt, GPS present, and dimension outlier. The flags are plain text, so you can filter the results table directly.
+:::
 
 ------------------------------------------------------------------------
 
@@ -782,36 +842,42 @@ if (!is.null(df)) {
 ```
 :::
 
+::: {.notes}
+Here are the results for four sample images. The panel summarizes corruption, duplicates, embedded GPS data and dimension outliers, and here everything came back healthy. In a real collection, the GPS flag is the one we take most seriously, and we would talk with the researcher about removing those coordinates or reducing their precision.
+:::
+
 ------------------------------------------------------------------------
 
 ## Module 4: HDF5 Structure and Metadata {.smaller}
 
-Hierarchical data structure, object mapping, and attribute harvesting for HDF5 files.
+Hierarchy, object mapping and attributes of HDF5 files.
 
 ::::: columns
 ::: {.column style="width: 50%; font-size: 0.65em;"}
 ::: {.r-fit-text}
--   **Why:** HDF5 is a complex binary "black box" containing nested groups and datasets.
+-   **Why:** HDF5 is a binary "black box" of nested groups and datasets.
 -   **Obtained:**
-    -   Internal structure map (Groups, Datasets, and Links).
-    -   Data type and dimension validation.
-    -   Compression filter details (GZIP, SZIP, LZF).
-    -   Embedded user-defined metadata attributes.
+    -   Map of groups, datasets and links.
+    -   Data types and dimensions.
+    -   Compression filters and user attributes.
 :::
 :::
 
 ::: {.column style="width: 50%; font-size: 0.65em;"}
 ::: {.r-fit-text}
 -   **Problems Solved:**
-    -   *Proprietary Compression:* Detecting custom/proprietary filters that prevent reading data.
-    -   *Broken Dependencies:* Identifying external links pointing to missing target files.
-    -   *Missing Documentation:* Auditing whether datasets are self-describing via attributes.
+    -   *Proprietary compression:* filters that block reading.
+    -   *Broken links:* external files that are missing.
+    -   *Missing documentation:* datasets without attributes.
 :::
 :::
--   **Key Tools Used:**
-    -   **`hdf5r`:** Recursive structural inventory and creation property list checks.
+-   **Tools:** `hdf5r`.
 
 :::::
+
+::: {.notes}
+Module four: HDF5. This format is wonderful for scientific data, but from the outside it is a black box: groups inside groups, datasets, attributes. The script opens each file and maps the whole hierarchy: groups, datasets and links, their data types and dimensions, the compression filters in use, and the user attributes. Why does that matter? Some compression filters are proprietary and can lock future users out, external links can point to files that were never deposited, and datasets without attributes leave their units a mystery.
+:::
 
 ------------------------------------------------------------------------
 
@@ -837,7 +903,7 @@ if (link_type == "H5L_TYPE_EXTERNAL") {
 ```
 
 ::: {style="font-size: 0.75em; margin-top: 10px; font-style: italic; color: #555;"}
-*Note: This code block represents the core logic. You can consult the complete [Inspect_hdf5_Script.R](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_hdf5_Script.R) or the interactive [Inspect_hdf5_Notebook.qmd](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_hdf5_Notebook.qmd) for full mapping and attribute audits.*
+*Core logic only. Full version: [script](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_hdf5_Script.R) | [notebook](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_hdf5_Notebook.qmd).*
 :::
 :::
 
@@ -853,6 +919,10 @@ if (link_type == "H5L_TYPE_EXTERNAL") {
 :::
 ::::
 ::::::
+
+::: {.notes}
+The logic is a recursive walk through the file. For every dataset we read the dimensions and the data type, ask for the compression filters, and mark any link that points to an external file as a dependency risk.
+:::
 
 ------------------------------------------------------------------------
 
@@ -926,37 +996,43 @@ if (!is.null(df)) {
 ```
 :::
 
+::: {.notes}
+On our sample, the script found 730 objects: 390 datasets and 340 groups. There are no external links and no risky compression filters, so the panel gives it a clean bill of health. The table lists every object with its path, type, dimensions and compression. In practice, it is an instant table of contents for the file.
+:::
+
 ------------------------------------------------------------------------
 
 ## Module 5: NetCDF Usability and Conventions {.smaller}
 
-Multidimensional array validation, Climate and Forecast (CF) metadata compliance, and coordinate checks for NetCDF files.
+Array, CF-convention and coordinate checks for NetCDF files.
 
 ::::: columns
 ::: {.column style="width: 50%; font-size: 0.65em;"}
 ::: {.r-fit-text}
--   **Why:** NetCDF stores spatial grid arrays. Without metadata conventions, data variable dimensions and physical units cannot be parsed.
+-   **Why:** Without metadata conventions, grids and units cannot be interpreted.
 -   **Obtained:**
-    -   Spatial reference check (Coordinate Reference System / grid mapping).
-    -   Compliance with Climate and Forecast (CF) metadata conventions.
-    -   Data sparsity evaluation (detecting empty array variables).
+    -   Spatial reference (CRS / grid mapping).
+    -   Climate and Forecast (CF) conventions.
+    -   Empty-array detection.
 :::
 :::
 
 ::: {.column style="width: 50%; font-size: 0.65em;"}
 ::: {.r-fit-text}
 -   **Problems Solved:**
-    -   *Non-compliance:* Identifying files lacking standard `Conventions` or global attributes.
-    -   *Sparsity:* Flagging empty datasets (e.g., arrays containing 100% NaNs).
-    -   *Georeferencing gaps:* Detecting missing CRS parameters which prevent GIS mapping.
+    -   *Non-compliance:* missing `Conventions` attribute.
+    -   *Sparsity:* variables that are 100% NaN.
+    -   *Georeferencing gaps:* no CRS for GIS.
 
--   **Key Tools Used:**
-    -   **`tidync`:** Tidy multidimensional array extraction and slicing.
-    -   **`ncmeta`:** Fast attribute and schema auditing.
+-   **Tools:** `tidync`, `ncmeta`.
 :::
 :::
 
 :::::
+
+::: {.notes}
+Module five: NetCDF, the workhorse of climate and earth-science data. Here the question is usability. Without metadata conventions, a grid of numbers is just numbers, because nobody knows the coordinates or the units. The script checks for a spatial reference or grid mapping, looks at the Climate and Forecast conventions, and samples each variable to detect arrays that are completely empty. That last check matters: a file can be perfectly valid and still contain nothing but missing values.
+:::
 
 ------------------------------------------------------------------------
 
@@ -975,14 +1051,14 @@ all_atts <- ncmeta::nc_atts(fp)
 has_grid_mapping <- any(all_atts$name == "grid_mapping")
 
 # 3. Sparsity Audit
-sample_data <- tnc %>% activate(first_var) %>% hyper_slice()
-if (all(is.na(sample_data))) {
+sample_data <- tnc %>% activate(first_var) %>% hyper_tibble(select_var = first_var)
+if (all(is.na(sample_data[[first_var]]))) {
   # Flag empty dataset warning
 }
 ```
 
 ::: {style="font-size: 0.75em; margin-top: 10px; font-style: italic; color: #555;"}
-*Note: This code block represents the core logic. You can consult the complete [Inspect_nc_Script.R](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_nc_Script.R) or the interactive [Inspect_nc_Notebook.qmd](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_nc_Notebook.qmd) for full attributes extraction and usability reports.*
+*Core logic only. Full version: [script](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_nc_Script.R) | [notebook](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_nc_Notebook.qmd).*
 :::
 :::
 
@@ -993,11 +1069,15 @@ if (all(is.na(sample_data))) {
   <strong>Target Directory:</strong> <code>data/Inspect_nc/</code><br>
   <strong>Script:</strong> <code>Inspect_nc_Script.R</code><br>
   <strong>Command:</strong><br>
-  <pre style="margin-top: 4px; margin-bottom: 0px; font-size: 0.85em; padding: 4px; background: #32322F; color: #FBFAFA; border-radius: 4px;">Rscript Inspect_nc_Script.R data/Inspect_nc/ Results/</pre>
+  <pre style="margin-top: 4px; margin-bottom: 0px; font-size: 0.85em; padding: 4px; background: #32322F; color: #FBFAFA; border-radius: 4px;">Rscript Inspect_nc_Script.R data/Inspect_nc/ Results/Inspect_nc/</pre>
 </div>
 :::
 ::::
 ::::::
+
+::: {.notes}
+In the core logic, we look at the dimensions to see whether there are latitude and longitude, check for a grid mapping attribute, and then read a small sample of the first variable to confirm that it holds real data.
+:::
 
 ------------------------------------------------------------------------
 
@@ -1066,31 +1146,38 @@ if (!is.null(df)) {
 ```
 :::
 
+::: {.notes}
+Six NetCDF files were audited. All of them are georeferenced and readable, and the Data Health column says each one contains data. Keep an eye on that last column: if a file had been all missing values, it would show up there, and the panel would raise a warning.
+:::
+
 ------------------------------------------------------------------------
 
 ## Module 6: PDF Archival Suitability {.smaller}
 
-Encryption scanning, OCR text accessibility evaluation, and embedded font audits for fixed-layout documents.
+Encryption, text accessibility and font checks for PDFs.
 
 ::::: columns
 ::: {.column style="width: 50%; font-size: 0.65em;"}
--   **Why:** PDFs are standard for documentation but can contain image-only scans that block screen readers, or use encryption that prevents archival migration.
+-   **Why:** PDFs can be encrypted or image-only scans.
 -   **Obtained:**
-    -   Security status (checking for encryption/password blocks).
-    -   Accessibility status (verifying searchable text vs. image-only scans).
-    -   Page counts and creation metadata (author, title, creator).
-    -   Embedded fonts audit to prevent rendering breakdowns.
+    -   Encryption status.
+    -   Searchable text versus image-only.
+    -   Pages, author, title, creator.
+    -   Embedded fonts.
 :::
 
 ::: {.column style="width: 50%; font-size: 0.65em;"}
 -   **Problems Solved:**
-    -   *Encryption locks:* Identifying encrypted PDFs that block indexing or preservation.
-    -   *Image-Only scans:* Detecting documents lacking a text layer (accessible OCR needed).
-    -   *Missing metadata:* Finding documents with generic or missing author/title info.
+    -   *Encryption locks:* block indexing and preservation.
+    -   *Image-only scans:* OCR needed.
+    -   *Missing metadata:* empty or generic author and title.
 :::
--   **Key Tools Used:**
-    -   **`pdftools`:** Direct rendering and metadata extraction of PDF streams.
+-   **Tools:** `pdftools`.
 :::::
+
+::: {.notes}
+Module six: PDFs. Everyone deposits them, and they are great for documentation, but two hidden traps are common. The first is encryption, which blocks indexing and preservation. The second is scanned documents with no text layer, which look fine on screen but are invisible to search engines and screen readers. The script reports the encryption status, whether there is searchable text, basic metadata such as pages, author and title, and which fonts are embedded.
+:::
 
 ------------------------------------------------------------------------
 
@@ -1114,7 +1201,7 @@ fonts <- pdftools::pdf_fonts(file_path)
 ```
 
 ::: {style="font-size: 0.75em; margin-top: 10px; font-style: italic; color: #555;"}
-*Note: This code block represents the core logic. You can consult the complete [Inspect_PDF_Script.R](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_PDF_Script.R) or the interactive [Inspect_PDF_Notebook.qmd](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_PDF_Notebook.qmd) for full metadata and security audits.*
+*Core logic only. Full version: [script](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_PDF_Script.R) | [notebook](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_PDF_Notebook.qmd).*
 :::
 :::
 
@@ -1125,11 +1212,15 @@ fonts <- pdftools::pdf_fonts(file_path)
   <strong>Target Directory:</strong> <code>data/Inspect_pdf/</code><br>
   <strong>Script:</strong> <code>Inspect_PDF_Script.R</code><br>
   <strong>Command:</strong><br>
-  <pre style="margin-top: 4px; margin-bottom: 0px; font-size: 0.85em; padding: 4px; background: #32322F; color: #FBFAFA; border-radius: 4px;">Rscript Inspect_PDF_Script.R data/Inspect_pdf/ Results/</pre>
+  <pre style="margin-top: 4px; margin-bottom: 0px; font-size: 0.85em; padding: 4px; background: #32322F; color: #FBFAFA; border-radius: 4px;">Rscript Inspect_PDF_Script.R data/Inspect_pdf/ Results/Inspect_pdf/</pre>
 </div>
 :::
 ::::
 ::::::
+
+::: {.notes}
+The logic uses the pdftools package: read the metadata and the encryption flag, extract the text of the first page and count the characters to decide whether the file is searchable, and list the fonts. It is very light, yet very informative.
+:::
 
 ------------------------------------------------------------------------
 
@@ -1203,32 +1294,38 @@ if (!is.null(df)) {
 ```
 :::
 
+::: {.notes}
+This time the panel does raise a flag: one of the six PDFs is image-only, meaning its text layer is missing. That is a typical finding, and the usual fix is to run OCR on that file. The table shows which file it is, so we can go straight to it.
+:::
+
 ------------------------------------------------------------------------
 
 ## Module 7: SQLite Database Manifest {.smaller}
 
-Relational database manifest extraction, table schemas, and row count tracking for self-contained SQLite files.
+Tables, schemas and row counts for SQLite databases.
 
 ::::: columns
 ::: {.column style="width: 50%; font-size: 0.65em;"}
--   **Why:** SQLite is a highly stable, LoC-preferred format for datasets. However, databases are opaque files; mapping tables and schemas is required to document relational dependencies.
+-   **Why:** SQLite is a stable, preferred format, but a database is an opaque file until its tables are mapped.
 -   **Obtained:**
-    -   Complete inventory of database tables.
-    -   Table column definitions (schema names).
-    -   Database sizes and table row counts.
-    -   Status check (empty, failed connection, or successful validation).
+    -   Inventory of tables.
+    -   Column definitions.
+    -   Row counts and status per database.
 :::
 
 ::: {.column style="width: 50%; font-size: 0.65em;"}
 -   **Problems Solved:**
-    -   *Opaque database files:* Documenting the hidden table structures inside a single `.db`/`.sqlite` file.
-    -   *Relational disconnect:* Unboxing the database schema to ensure relationships remain clear.
-    -   *Empty/Corrupted files:* Flagging tables without rows or databases that fail connections.
+    -   *Opaque files:* hidden table structure.
+    -   *Relational disconnect:* unclear schema.
+    -   *Empty or failed databases:* flagged.
 :::
--   **Key Tools Used:**
-    -   **`RSQLite` and `DBI`:** Connects directly to SQLite containers without server dependencies.
+-   **Tools:** `RSQLite`, `DBI`.
 
 :::::
+
+::: {.notes}
+Module seven: SQLite. It is a very stable and widely recommended format for datasets, but a database is an opaque file until someone maps what is inside. The script connects to each database, without any server, and produces a manifest: every table, its columns and its row counts, plus a status for each database. That reveals empty tables and databases that fail to open.
+:::
 
 ------------------------------------------------------------------------
 
@@ -1251,7 +1348,7 @@ map_dfr(tables, function(tbl) {
 ```
 
 ::: {style="font-size: 0.75em; margin-top: 10px; font-style: italic; color: #555;"}
-*Note: This code block represents the core logic. You can consult the complete [Inspect_sqlite_Script.R](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_sqlite_Script.R) or the interactive [Inspect_sqlite_Notebook.qmd](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_sqlite_Notebook.qmd) for full relational maps and manifests.*
+*Core logic only. Full version: [script](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_sqlite_Script.R) | [notebook](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_sqlite_Notebook.qmd).*
 :::
 :::
 
@@ -1267,6 +1364,10 @@ map_dfr(tables, function(tbl) {
 :::
 ::::
 ::::::
+
+::: {.notes}
+The logic is short: connect, list the tables, and then for each table ask the database for its column definitions and count its rows. No server is needed, which is what makes this so easy to run at scale.
+:::
 
 ------------------------------------------------------------------------
 
@@ -1334,6 +1435,360 @@ if (!is.null(df)) {
 ```
 :::
 
+::: {.notes}
+On our sample we have two databases with 36 tables altogether. They connected without problems, and every table has rows. Below you can see each database, table, columns and row count, which is precisely the documentation a future user would want.
+:::
+
+------------------------------------------------------------------------
+
+## Module 8: Tidy Data Screen {.smaller}
+
+Red-flag screen for CSV and Excel tables.
+
+::::: columns
+::: {.column style="width: 50%; font-size: 0.65em;"}
+::: {.r-fit-text}
+-   **Why:** A table can open fine and still be untidy, and one workbook can hide hundreds of tables.
+-   **Obtained:**
+    -   Duplicate headers, blank rows, stacked tables.
+    -   Year-like column names.
+    -   Header hygiene: spaces and symbols.
+    -   CSV versus Excel recommendation.
+:::
+:::
+
+::: {.column style="width: 50%; font-size: 0.65em;"}
+::: {.r-fit-text}
+-   **Problems Solved:**
+    -   *Excel to CSV:* one CSV per sheet.
+    -   *Unusable headers:* renamed before analysis.
+-   **Caveat:** red flags, not a verdict. A human reads every flag.
+:::
+:::
+-   **Tools:** `readxl`, `tidyverse`.
+
+:::::
+
+::: {.notes}
+Module eight moves from file formats to table structure, and to the idea of tidy data. A table can open without any error and still be hard to reuse: two tables stacked in one sheet, years used as column names, headers with spaces and symbols. This script screens CSV and Excel files for those red flags. It also recommends CSV over Excel, one file per sheet, because CSV is open and machine-readable. One important caveat: these are red flags, not a verdict. A table with no flags is not proven tidy, and a person still needs to read every flag.
+:::
+
+------------------------------------------------------------------------
+
+:::::: columns
+::: {.column style="width: 60%; font-size: 0.55em;"}
+### Core Script Logic
+
+``` r
+# Inspect_TidyData_Script.R
+# 1. Duplicate headers and embedded blank rows
+dup_headers <- headers[duplicated(headers) & headers != ""]
+blank_rows  <- purrr::map_lgl(raw_rows, ~ all(is.na(.x) | trimws(.x) == ""))
+
+# 2. Header hygiene: usable as a variable name without renaming?
+clean_header <- "^[A-Za-z][A-Za-z0-9_.]*$"
+needs_fix <- headers[!stringr::str_detect(headers, clean_header)]
+
+# 3. Format recommendation (CSV preferred over Excel)
+Format_Recommendation <- "Convert to CSV (one file per sheet)"
+```
+
+::: {style="font-size: 0.75em; margin-top: 10px; font-style: italic; color: #555;"}
+*Simplified core logic. The script also writes a codebook for every output column.*
+:::
+:::
+
+:::: {.column style="width: 40%;"}
+::: control-card
+<div style="font-size: 0.55em; font-weight: bold; color: #006666; margin-bottom: 8px; font-family: 'Ubuntu';">Execution Parameters</div>
+<div style="font-size: 0.45em; margin-bottom: 4px; font-family: 'Montserrat';">
+  <strong>Target Directory:</strong> <code>data/Inspect_xlsx/</code><br>
+  <strong>Script:</strong> <code>Inspect_TidyData_Script.R</code><br>
+  <strong>Command:</strong><br>
+  <pre style="margin-top: 4px; margin-bottom: 0px; font-size: 0.85em; padding: 4px; background: #32322F; color: #FBFAFA; border-radius: 4px;">Rscript Inspect_TidyData_Script.R data/Inspect_xlsx/ Results/Inspect_TidyData/</pre>
+</div>
+:::
+::::
+::::::
+
+::: {.notes}
+The logic: look for duplicate headers and blank rows, then test each header against a simple pattern. Does it start with a letter and use only letters, numbers, underscores and dots? Finally it produces the format recommendation. It works sheet by sheet, so one workbook with many sheets produces many rows.
+:::
+
+------------------------------------------------------------------------
+
+::::: columns
+::: {.column style="width: 45%; font-size: 0.55em;"}
+### Tidy Data Analysis and Diagnostic
+
+```{r}
+#| echo: false
+#| results: asis
+
+# Must end in an 8-digit date so the companion TidyData_Screen_Codebook.csv is never picked up
+latest_tidy_file <- get_latest_file("Results/Inspect_TidyData", "^TidyData_Screen_.*[0-9]{8}\\.csv$")
+df <- if (!is.null(latest_tidy_file)) read.csv(latest_tidy_file, stringsAsFactors = FALSE) else NULL
+
+if (is.null(df)) {
+  cat("<div class='control-card' style='font-size: 0.85em; padding: 12px; margin-top: 15px;'>No data available. Please run the scripts locally first.</div>")
+} else {
+  total_tables <- nrow(df)
+  total_files <- length(unique(df$FileName))
+  to_convert <- sum(grepl("^Convert to CSV", df$Format_Recommendation))
+  hygiene <- sum(df$Has_Header_Hygiene_Issues %in% TRUE)
+  blank_rows <- sum(df$Has_Embedded_Blank_Rows %in% TRUE)
+  stacked <- sum(df$Has_Stacked_Header_Block %in% TRUE)
+  dup_headers <- sum(df$Has_Duplicate_Headers %in% TRUE)
+  wide <- sum(df$Wide_Format_Suspect %in% TRUE)
+  no_flags <- sum(df$Flags == "None", na.rm = TRUE)
+
+  diag_html <- paste0(
+    "<div class='control-card' style='font-size: 0.85em; margin-top: 15px;'>",
+    "<div style='font-weight: bold; color: #006666; margin-bottom: 8px;'>LIVE TIDY DATA METRICS</div>",
+    "<strong>Screened:</strong> ", total_tables, " table(s) in ", total_files, " file(s)<br>"
+  )
+  if (to_convert > 0) {
+    diag_html <- paste0(diag_html, "<span style='color: #006666; font-weight: bold;'>ℹ️ FORMAT:</span> ", to_convert, " Excel sheet(s) where CSV is preferred (one file per sheet).<br>")
+  }
+  if (hygiene > 0) {
+    diag_html <- paste0(diag_html, "<span style='color: #D6AB00; font-weight: bold;'>⚠️ HEADER HYGIENE:</span> ", hygiene, " table(s) with headers that need renaming before analysis.<br>")
+  }
+  if (blank_rows > 0) {
+    diag_html <- paste0(diag_html, "<span style='color: #D6AB00; font-weight: bold;'>⚠️ BLANK ROWS:</span> ", blank_rows, " table(s) with blank rows inside the data.<br>")
+  }
+  if (stacked > 0) {
+    diag_html <- paste0(diag_html, "<span style='color: #D6AB00; font-weight: bold;'>⚠️ STACKED TABLES:</span> ", stacked, " table(s) that may hold more than one table.<br>")
+  }
+  if (dup_headers > 0) {
+    diag_html <- paste0(diag_html, "<span style='color: #D6AB00; font-weight: bold;'>⚠️ DUPLICATE HEADERS:</span> ", dup_headers, " table(s).<br>")
+  }
+  if (wide > 0) {
+    diag_html <- paste0(diag_html, "<span style='color: #D6AB00; font-weight: bold;'>⚠️ WIDE FORMAT:</span> ", wide, " table(s) with year-like column names.<br>")
+  }
+  diag_html <- paste0(diag_html, "<strong>Without flags:</strong> ", no_flags, " table(s)<br>")
+  diag_html <- paste0(diag_html, "</div>")
+  cat(diag_html)
+}
+```
+:::
+:::::
+
+::: {.table-container}
+```{r}
+#| echo: false
+if (!is.null(df)) {
+  by_file <- split(df, df$FileName)
+  display_df <- data.frame(
+    "File Name" = names(by_file),
+    "Tables" = vapply(by_file, nrow, integer(1)),
+    "With Flags" = vapply(by_file, function(x) sum(x$Flags != "None", na.rm = TRUE), integer(1)),
+    "Header Issues" = vapply(by_file, function(x) sum(x$Has_Header_Hygiene_Issues %in% TRUE), integer(1)),
+    "Blank Rows" = vapply(by_file, function(x) sum(x$Has_Embedded_Blank_Rows %in% TRUE), integer(1)),
+    "Stacked Tables" = vapply(by_file, function(x) sum(x$Has_Stacked_Header_Block %in% TRUE), integer(1)),
+    "Recommendation" = vapply(by_file, function(x) {
+      if (any(grepl("^Convert to CSV", x$Format_Recommendation))) "Convert to CSV, one file per sheet" else x$Format_Recommendation[1]
+    }, character(1)),
+    check.names = FALSE, row.names = NULL
+  )
+  knitr::kable(display_df, format = "html", table.attr = "class='table table-striped table-hover'")
+} else {
+  cat("<p style='font-size:0.5em;'>No tidy data screen available.</p>")
+}
+```
+:::
+
+::: {.notes}
+Here is the screen on three Excel workbooks from published papers. Together they contain 211 tables, because one single workbook has 181 sheets. Nearly all of them, 198, have headers that need renaming before analysis, 11 have blank rows inside the data, and one may hold stacked tables. The table summarizes everything per workbook, and the recommendation is the same for all of them: convert to CSV, one file per sheet. Imagine checking all of that by hand for 181 sheets.
+:::
+
+------------------------------------------------------------------------
+
+## Module 9: README vs. Files on Disk {.smaller}
+
+README file list versus files on disk.
+
+::::: columns
+::: {.column style="width: 50%; font-size: 0.65em;"}
+::: {.r-fit-text}
+-   **Why:** The README is the main documentation, but wrong or missing file names go unnoticed.
+-   **Obtained:**
+    -   Each entry matched: exact, case, or name only.
+    -   Entries with no file on disk.
+    -   Files the README never lists.
+:::
+:::
+
+::: {.column style="width: 50%; font-size: 0.65em;"}
+::: {.r-fit-text}
+-   **Problems Solved:**
+    -   *Typos and missing extensions.*
+    -   *Undocumented files.*
+    -   *Orphaned entries:* renamed or removed files.
+-   **Assumes:** `Filename: <name>` entries (English or French).
+:::
+:::
+-   **Tools:** `tidyverse`, `stringr`.
+
+:::::
+
+::: {.notes}
+Module nine: the README. It is the main piece of documentation in most datasets, yet it is rarely checked against the actual files. This script reads the file list in the README and compares it with what is really on disk. It tells us which entries match exactly, which match only if you ignore case or the extension, which entries point to nothing, and which files on disk the README never mentions. A manual read rarely catches a typo in a file name, but a script finds it in seconds.
+:::
+
+------------------------------------------------------------------------
+
+:::::: columns
+::: {.column style="width: 60%; font-size: 0.55em;"}
+### Core Script Logic
+
+``` r
+# Inspect_ReadmeFileList_Script.R
+# 1. Extract "Filename: ..." entries from the README (English or French)
+entry_pattern <- "(?i)(?:filename|nom de fichier)\\s*:\\s*(.+?)\\s*$"
+entries <- stringr::str_match(readme_lines, entry_pattern)[, 2]
+
+# 2. Match each entry to disk: exact, then case-insensitive, then name only
+disk_files <- list.files(target_dir, recursive = TRUE)
+
+# 3. Files on disk that the README never mentions
+orphaned <- setdiff(basename(disk_files), matched_files)
+```
+
+::: {style="font-size: 0.75em; margin-top: 10px; font-style: italic; color: #555;"}
+*Simplified core logic. One result row per README entry and per undocumented file.*
+:::
+:::
+
+:::: {.column style="width: 40%;"}
+::: control-card
+<div style="font-size: 0.55em; font-weight: bold; color: #006666; margin-bottom: 8px; font-family: 'Ubuntu';">Execution Parameters</div>
+<div style="font-size: 0.45em; margin-bottom: 4px; font-family: 'Montserrat';">
+  <strong>Target Directory:</strong> <code>data/Inspect_Text/</code><br>
+  <strong>Script:</strong> <code>Inspect_ReadmeFileList_Script.R</code><br>
+  <strong>Command:</strong><br>
+  <pre style="margin-top: 4px; margin-bottom: 0px; font-size: 0.85em; padding: 4px; background: #32322F; color: #FBFAFA; border-radius: 4px;">Rscript Inspect_ReadmeFileList_Script.R data/Inspect_Text/ Results/Inspect_ReadmeFileList/</pre>
+</div>
+:::
+::::
+::::::
+
+::: {.notes}
+The logic: extract the lines that say "Filename", in English or in French, try to match each one against the files on disk, first exactly, then ignoring case, then by name only, and finally list whatever is left over on disk. If the README does not follow that template, the script says so instead of guessing.
+:::
+
+------------------------------------------------------------------------
+
+::::: columns
+::: {.column style="width: 45%; font-size: 0.55em;"}
+### README Analysis and Diagnostic
+
+```{r}
+#| echo: false
+#| results: asis
+
+latest_readme_file <- get_latest_file("Results/Inspect_ReadmeFileList", "^README_FileList_Diff_.*\\.csv$")
+df <- if (!is.null(latest_readme_file)) read.csv(latest_readme_file, stringsAsFactors = FALSE) else NULL
+
+if (is.null(df)) {
+  cat("<div class='control-card' style='font-size: 0.85em; padding: 12px; margin-top: 15px;'>No data available. Please run the scripts locally first.</div>")
+} else {
+  entries <- df[!is.na(df$README_Entry), ]
+  n_entries <- nrow(entries)
+  exact <- sum(entries$Match_Type == "Exact")
+  partial <- sum(grepl("^Case-insensitive|^Matched by name only", entries$Match_Type))
+  missing_files <- sum(entries$Match_Type == "NO MATCH FOUND ON DISK")
+  undocumented <- sum(df$Match_Type == "ON DISK, NOT LISTED IN README")
+
+  diag_html <- paste0(
+    "<div class='control-card' style='font-size: 0.85em; margin-top: 15px;'>",
+    "<div style='font-weight: bold; color: #006666; margin-bottom: 8px;'>LIVE README METRICS</div>",
+    "<strong>README Entries:</strong> ", n_entries, " (", exact, " exact match)<br>"
+  )
+  if (partial > 0) {
+    diag_html <- paste0(diag_html, "<span style='color: #D6AB00; font-weight: bold;'>⚠️ NAME MISMATCH:</span> ", partial, " entr", ifelse(partial == 1, "y", "ies"), " matched only by case or name.<br>")
+  }
+  if (missing_files > 0) {
+    diag_html <- paste0(diag_html, "<span style='color: #D6AB00; font-weight: bold;'>⚠️ MISSING ON DISK:</span> ", missing_files, " README entr", ifelse(missing_files == 1, "y", "ies"), " with no file on disk.<br>")
+  }
+  if (undocumented > 0) {
+    diag_html <- paste0(diag_html, "<span style='color: #D6AB00; font-weight: bold;'>⚠️ UNDOCUMENTED:</span> ", undocumented, " file(s) on disk that the README does not list.<br>")
+  }
+  if (partial == 0 && missing_files == 0 && undocumented == 0) {
+    diag_html <- paste0(diag_html, "<span style='color: #006666; font-weight: bold;'>✔️ HEALTHY:</span> The README file list and the files on disk agree.<br>")
+  }
+  diag_html <- paste0(diag_html, "</div>")
+  cat(diag_html)
+}
+```
+:::
+:::::
+
+::: {.table-container}
+```{r}
+#| echo: false
+if (!is.null(df)) {
+  display_df <- df
+  display_df[is.na(display_df)] <- ""
+  rename_map <- c(
+    "README_Entry" = "README Entry",
+    "Matched_File" = "File on Disk",
+    "Match_Type" = "Result"
+  )
+  names(display_df) <- sapply(names(display_df), function(name) {
+    if (name %in% names(rename_map)) rename_map[name] else name
+  })
+  knitr::kable(display_df, format = "html", table.attr = "class='table table-striped table-hover'")
+} else {
+  cat("<p style='font-size:0.5em;'>No README comparison available.</p>")
+}
+```
+:::
+
+::: {.notes}
+In our sample folder, the README lists one file, and that file is not there, so the script flags it as missing. And six files on disk are never mentioned in the README. It is a deliberately rough example from sample data, but it shows both kinds of mismatch the script is built to catch.
+:::
+
+------------------------------------------------------------------------
+
+## Designing for Scale {.smaller}
+
+Inspect enough to be useful, and say what you skipped.
+
+::::: columns
+::: {.column style="width: 50%; font-size: 0.62em;"}
+::: {.control-card style="padding: 12px;"}
+<div style="font-size: 1.05em; font-weight: bold; color: #006666; margin-bottom: 6px; font-family: 'Ubuntu';">Four Design Principles</div>
+
+1. **Read headers, not payloads.** FITS, NIfTI, LAS/LAZ.
+2. **List, don't unpack.** zip, rar, OME-Zarr tar.
+3. **Sample honestly, and say so.** Checksums.
+4. **Never execute what you inspect.** PyTorch models.
+:::
+:::
+
+::: {.column style="width: 50%; font-size: 0.62em;"}
+::: {.control-card style="padding: 12px;"}
+<div style="font-size: 1.05em; font-weight: bold; color: #006666; margin-bottom: 6px; font-family: 'Ubuntu';">Case Study: PPMstar Simulation Release</div>
+
+**Dataset:** 3-D PPMstar stellar simulations (Pathak et al., 2026). [doi.org/10.20383/103.01782](https://doi.org/10.20383/103.01782){preview-link="false"}
+
+1. **Structure:** `release.json` versus the disk.
+2. **Content:** sampled raw cubes; min, max, NaN, Inf.
+3. **Fixity:** small files all hashed, large files sampled.
+
+::: {style="font-size: 0.85em; margin-top: 8px; font-style: italic; color: #555;"}
+In development: not part of today's live demos.
+:::
+:::
+:::
+:::::
+
+::: {.notes}
+Before we move on, I want to leave you with four ideas that guide how we write these scripts for large datasets. One: read headers, not payloads. For formats like FITS, NIfTI or LiDAR files, the header already tells us a lot, and reading only that keeps things fast. Two: list, don't unpack. For zip files or OME-Zarr archives, the listing is enough to audit the structure, and nothing is decompressed. Three: sample honestly, and say so. When files are too big to check completely, the script checks a random sample and labels every file as verified or not sampled, so it never claims more than it did. Four: never execute what you inspect. Our script for machine-learning models, for example, refuses to load files in unsafe ways, because a file that cannot be loaded safely is itself the finding.
+
+A concrete case is a recently published simulation release from the PPMstar project: three-dimensional stellar hydrodynamics, simulating oxygen- and carbon-shell convection in a 25 solar-mass star. A single file can reach several gigabytes, and one run can hold thousands of them. We use three scripts as a pipeline. The first checks the structure, comparing the file counts and sizes the release claims against the disk, without opening a single payload. The second reads a small, reproducible random sample of the raw data cubes and reports basic statistics. The third verifies checksums: every small file, plus a sample of the large ones. The DOI is on the slide if you would like to look at the dataset. These scripts are still in development, so there is no live demo today.
+:::
+
 ------------------------------------------------------------------------
 
 ## Implementation in HPC clusters
@@ -1341,6 +1796,10 @@ if (!is.null(df)) {
 This toolbox provides R-scripts that can be executed in HPC cluters like [Fir](https://docs.alliancecan.ca/wiki/Fir) from the Digital Research Alliance of Canada.
 
 An example can be found [here](https://github.com/Alliance-RDM-GDR/CUR_Res_CurationTools/tree/main/workshop/HPC)
+
+::: {.notes}
+All of this also runs on an HPC cluster. The scripts are standalone, so you can hand one to a colleague and they can run it with a single command, without cloning the whole repository. In the workshop folder on GitHub there is a guide and a ready-made bundle for the Fir cluster, with the setup and submission scripts. That is how we process datasets that are too large for a laptop.
+:::
 
 
 ------------------------------------------------------------------------
@@ -1354,6 +1813,10 @@ This toolbox is open-source and evolving.
 -   **Q and A Session**
 
 *Thank you.*
+
+::: {.notes}
+So where can you go from here? The toolbox is open source and still evolving. If you write an inspection script for a format we do not cover yet, please send us a pull request. The full guides live in the book, where every module has its own notebook. And now I would love to hear your questions. Which formats give you the most trouble in your own datasets?
+:::
 
 ------------------------------------------------------------------------
 
@@ -1388,4 +1851,8 @@ Contact us to ensure that your data is well prepared and can be effectively shar
 
 -   Email: rdm-gdr\@alliancecan.ca
 -   [FRDR](https://www.frdr-dfdr.ca/repo/)
+:::
+
+::: {.notes}
+Here are a few resources and sources of support. The links on FAIR image data, bioimage metadata and our own training materials are a good place to keep learning. The QR code on the right opens the published version of this presentation, so you can revisit any slide whenever you like. And if you ever want help preparing a dataset to share, please reach out to us at the email on the slide. Thank you so much for your time and your attention today.
 :::
