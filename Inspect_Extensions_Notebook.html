@@ -579,20 +579,20 @@ div.csl-indent {
   <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup"><span class="header-section-number">7.2</span> Setup</a>
   <ul class="collapse">
   <li><a href="#r-packages" id="toc-r-packages" class="nav-link" data-scroll-target="#r-packages"><span class="header-section-number">7.2.1</span> R Packages</a></li>
+  <li><a href="#load-libraries" id="toc-load-libraries" class="nav-link" data-scroll-target="#load-libraries"><span class="header-section-number">7.2.2</span> Load Libraries</a></li>
   </ul></li>
-  <li><a href="#load-libraries" id="toc-load-libraries" class="nav-link" data-scroll-target="#load-libraries"><span class="header-section-number">7.3</span> Load libraries</a></li>
-  <li><a href="#select-the-target-directory" id="toc-select-the-target-directory" class="nav-link" data-scroll-target="#select-the-target-directory"><span class="header-section-number">7.4</span> Select the target directory</a></li>
-  <li><a href="#generate-file-inventory" id="toc-generate-file-inventory" class="nav-link" data-scroll-target="#generate-file-inventory"><span class="header-section-number">7.5</span> Generate File Inventory</a></li>
-  <li><a href="#deep-metadata-extraction-exiftool" id="toc-deep-metadata-extraction-exiftool" class="nav-link" data-scroll-target="#deep-metadata-extraction-exiftool"><span class="header-section-number">7.6</span> Deep Metadata Extraction (ExifTool)</a></li>
-  <li><a href="#extension-summary-and-visualization" id="toc-extension-summary-and-visualization" class="nav-link" data-scroll-target="#extension-summary-and-visualization"><span class="header-section-number">7.7</span> Extension Summary and visualization</a></li>
-  <li><a href="#save-results" id="toc-save-results" class="nav-link" data-scroll-target="#save-results"><span class="header-section-number">7.8</span> Save Results</a></li>
-  <li><a href="#curation-insights" id="toc-curation-insights" class="nav-link" data-scroll-target="#curation-insights"><span class="header-section-number">7.9</span> Curation Insights</a></li>
-  <li><a href="#additional-tools-for-researchers" id="toc-additional-tools-for-researchers" class="nav-link" data-scroll-target="#additional-tools-for-researchers"><span class="header-section-number">7.10</span> Additional Tools for Researchers</a></li>
-  <li><a href="#using-the-non-interactive-r-script" id="toc-using-the-non-interactive-r-script" class="nav-link" data-scroll-target="#using-the-non-interactive-r-script"><span class="header-section-number">7.11</span> Using the Non-Interactive R Script</a>
+  <li><a href="#select-target-directory" id="toc-select-target-directory" class="nav-link" data-scroll-target="#select-target-directory"><span class="header-section-number">7.3</span> Select Target Directory</a></li>
+  <li><a href="#generate-file-inventory" id="toc-generate-file-inventory" class="nav-link" data-scroll-target="#generate-file-inventory"><span class="header-section-number">7.4</span> Generate File Inventory</a></li>
+  <li><a href="#deep-metadata-extraction-exiftool" id="toc-deep-metadata-extraction-exiftool" class="nav-link" data-scroll-target="#deep-metadata-extraction-exiftool"><span class="header-section-number">7.5</span> Deep Metadata Extraction (ExifTool)</a></li>
+  <li><a href="#extension-summary-and-visualization" id="toc-extension-summary-and-visualization" class="nav-link" data-scroll-target="#extension-summary-and-visualization"><span class="header-section-number">7.6</span> Extension Summary and Visualization</a></li>
+  <li><a href="#save-results" id="toc-save-results" class="nav-link" data-scroll-target="#save-results"><span class="header-section-number">7.7</span> Save Results</a></li>
+  <li><a href="#curation-insights" id="toc-curation-insights" class="nav-link" data-scroll-target="#curation-insights"><span class="header-section-number">7.8</span> Curation Insights</a></li>
+  <li><a href="#additional-tools-for-researchers" id="toc-additional-tools-for-researchers" class="nav-link" data-scroll-target="#additional-tools-for-researchers"><span class="header-section-number">7.9</span> Additional Tools for Researchers</a></li>
+  <li><a href="#using-the-non-interactive-r-script" id="toc-using-the-non-interactive-r-script" class="nav-link" data-scroll-target="#using-the-non-interactive-r-script"><span class="header-section-number">7.10</span> Using the Non-Interactive R Script</a>
   <ul class="collapse">
-  <li><a href="#example-hpc-submission-script" id="toc-example-hpc-submission-script" class="nav-link" data-scroll-target="#example-hpc-submission-script"><span class="header-section-number">7.11.1</span> Example HPC Submission Script</a></li>
+  <li><a href="#example-hpc-submission-script" id="toc-example-hpc-submission-script" class="nav-link" data-scroll-target="#example-hpc-submission-script"><span class="header-section-number">7.10.1</span> Example HPC Submission Script</a></li>
   </ul></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">7.12</span> References</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">7.11</span> References</a></li>
   </ul>
 </nav>
 </nav>
@@ -686,9 +686,8 @@ div.csl-indent {
 </div>
 <hr>
 </section>
-</section>
-<section id="load-libraries" class="level2" data-number="7.3">
-<h2 data-number="7.3" class="anchored" data-anchor-id="load-libraries"><span class="header-section-number">7.3</span> Load libraries</h2>
+<section id="load-libraries" class="level3" data-number="7.2.2">
+<h3 data-number="7.2.2" class="anchored" data-anchor-id="load-libraries"><span class="header-section-number">7.2.2</span> Load Libraries</h3>
 <p>This chunk loads the necessary library for the session.</p>
 <p><strong>Note:</strong> The <code>exiftoolr</code> package requires the <a href="https://exiftool.org/">ExifTool software</a>. The code below checks for it and attempts to install it locally if missing.</p>
 <div class="cell">
@@ -714,8 +713,9 @@ div.csl-indent {
 </div>
 <hr>
 </section>
-<section id="select-the-target-directory" class="level2" data-number="7.4">
-<h2 data-number="7.4" class="anchored" data-anchor-id="select-the-target-directory"><span class="header-section-number">7.4</span> Select the target directory</h2>
+</section>
+<section id="select-target-directory" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="select-target-directory"><span class="header-section-number">7.3</span> Select Target Directory</h2>
 <p>This section identifies the directory to be analyzed and creates a complete list of every file within it, including those in sub-folders and hidden files. The directory is set by the <code>target_dir</code> parameter at the top of this document.</p>
 <div class="cell">
 <details class="code-fold">
@@ -744,8 +744,8 @@ div.csl-indent {
 </div>
 <hr>
 </section>
-<section id="generate-file-inventory" class="level2" data-number="7.5">
-<h2 data-number="7.5" class="anchored" data-anchor-id="generate-file-inventory"><span class="header-section-number">7.5</span> Generate File Inventory</h2>
+<section id="generate-file-inventory" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="generate-file-inventory"><span class="header-section-number">7.4</span> Generate File Inventory</h2>
 <p>We construct a detailed table including the relative path to locate files and detect risks.</p>
 <p>Data Collected:</p>
 <ul>
@@ -759,66 +759,70 @@ div.csl-indent {
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">message</span>(<span class="st">"Scanning files... This may take a moment for large directories."</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Get all files recursively</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>all_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">path =</span> target_dir,</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">recursive =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">full.names =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">all.files =</span> <span class="cn">TRUE</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="fu">message</span>(<span class="st">"Found "</span>, <span class="fu">length</span>(all_files), <span class="st">" total files."</span>)</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(all_files) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 2. Build Inventory Dataframe</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  inventory <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">FullPath =</span> all_files) <span class="sc">%&gt;%</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">FileName =</span> <span class="fu">basename</span>(FullPath),</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Calculate relative path for readability</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">RelativePath =</span> <span class="fu">str_remove</span>(FullPath, <span class="fu">paste0</span>(target_dir, <span class="st">"/?"</span>)),</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Extract extension: Get text after last dot, lowercase it.</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">Extension =</span> <span class="fu">tolower</span>(<span class="fu">file_ext</span>(FileName)),</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>      <span class="at">Extension =</span> <span class="fu">if_else</span>(Extension <span class="sc">==</span> <span class="st">""</span>, <span class="st">"(no extension)"</span>, <span class="fu">paste0</span>(<span class="st">"."</span>, Extension)),</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Get File Size</span></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>      <span class="at">Size_Bytes =</span> <span class="fu">file.size</span>(FullPath),</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>      <span class="at">Size_MB =</span> <span class="fu">round</span>(Size_Bytes <span class="sc">/</span> <span class="dv">1024</span><span class="sc">^</span><span class="dv">2</span>, <span class="dv">4</span>)</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 3. Add Risk Flags</span></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>  junk_patterns <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.ds_store"</span>, <span class="st">"thumbs</span><span class="sc">\\</span><span class="st">.db"</span>, <span class="st">"__macosx"</span>)</span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>  exec_patterns <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.exe$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">.bat$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">.sh$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">.bin$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">.jar$"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalize to forward slashes so path arithmetic below is Windows-safe</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>target_dir <span class="ot">&lt;-</span> <span class="fu">normalizePath</span>(target_dir, <span class="at">winslash =</span> <span class="st">"/"</span>, <span class="at">mustWork =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Get all files recursively</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>all_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">path =</span> target_dir,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">recursive =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">full.names =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">all.files =</span> <span class="cn">TRUE</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="fu">message</span>(<span class="st">"Found "</span>, <span class="fu">length</span>(all_files), <span class="st">" total files."</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(all_files) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 2. Build Inventory Dataframe</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  inventory <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">FullPath =</span> all_files) <span class="sc">%&gt;%</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">FullPath =</span> <span class="fu">normalizePath</span>(FullPath, <span class="at">winslash =</span> <span class="st">"/"</span>, <span class="at">mustWork =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">FileName =</span> <span class="fu">basename</span>(FullPath),</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Calculate relative path for readability</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>      <span class="at">RelativePath =</span> <span class="fu">str_remove</span>(FullPath, <span class="fu">fixed</span>(<span class="fu">paste0</span>(target_dir, <span class="st">"/"</span>))),</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Extract extension: Get text after last dot, lowercase it.</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>      <span class="at">Extension =</span> <span class="fu">tolower</span>(<span class="fu">file_ext</span>(FileName)),</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>      <span class="at">Extension =</span> <span class="fu">if_else</span>(Extension <span class="sc">==</span> <span class="st">""</span>, <span class="st">"(no extension)"</span>, <span class="fu">paste0</span>(<span class="st">"."</span>, Extension)),</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Get File Size</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>      <span class="at">Size_Bytes =</span> <span class="fu">file.size</span>(FullPath),</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>      <span class="at">Size_MB =</span> <span class="fu">round</span>(Size_Bytes <span class="sc">/</span> <span class="dv">1024</span><span class="sc">^</span><span class="dv">2</span>, <span class="dv">4</span>)</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>  inventory <span class="ot">&lt;-</span> inventory <span class="sc">%&gt;%</span></span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>      <span class="at">Risk_Flag =</span> <span class="fu">case_when</span>(</span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>        Size_Bytes <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">"Zero-Byte File"</span>,</span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>        <span class="fu">str_detect</span>(<span class="fu">tolower</span>(FileName), <span class="fu">paste</span>(junk_patterns, <span class="at">collapse =</span> <span class="st">"|"</span>)) <span class="sc">~</span> <span class="st">"System Junk"</span>,</span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>        <span class="fu">str_detect</span>(<span class="fu">tolower</span>(FileName), <span class="fu">paste</span>(exec_patterns, <span class="at">collapse =</span> <span class="st">"|"</span>)) <span class="sc">~</span> <span class="st">"Executable"</span>,</span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>        <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"Clean"</span></span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Preview</span></span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">datatable</span>(inventory <span class="sc">%&gt;%</span> <span class="fu">select</span>(RelativePath, Extension, Size_MB, Risk_Flag),</span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>            <span class="at">options =</span> <span class="fu">list</span>(<span class="at">pageLength =</span> <span class="dv">10</span>, <span class="at">scrollX =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>            <span class="at">caption =</span> <span class="st">"Table 1: Full File Inventory with Risk Flags"</span>)</span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"Directory is empty."</span>)</span>
-<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>  inventory <span class="ot">&lt;-</span> <span class="fu">tibble</span>()</span>
-<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 3. Add Risk Flags</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>  junk_patterns <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.ds_store"</span>, <span class="st">"thumbs</span><span class="sc">\\</span><span class="st">.db"</span>, <span class="st">"__macosx"</span>)</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>  exec_patterns <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.exe$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">.bat$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">.sh$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">.bin$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">.jar$"</span>)</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>  inventory <span class="ot">&lt;-</span> inventory <span class="sc">%&gt;%</span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>      <span class="at">Risk_Flag =</span> <span class="fu">case_when</span>(</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>        Size_Bytes <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">"Zero-Byte File"</span>,</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>        <span class="fu">str_detect</span>(<span class="fu">tolower</span>(FileName), <span class="fu">paste</span>(junk_patterns, <span class="at">collapse =</span> <span class="st">"|"</span>)) <span class="sc">~</span> <span class="st">"System Junk"</span>,</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>        <span class="fu">str_detect</span>(<span class="fu">tolower</span>(FileName), <span class="fu">paste</span>(exec_patterns, <span class="at">collapse =</span> <span class="st">"|"</span>)) <span class="sc">~</span> <span class="st">"Executable"</span>,</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>        <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"Clean"</span></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Preview</span></span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">datatable</span>(inventory <span class="sc">%&gt;%</span> <span class="fu">select</span>(RelativePath, Extension, Size_MB, Risk_Flag),</span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>            <span class="at">options =</span> <span class="fu">list</span>(<span class="at">pageLength =</span> <span class="dv">10</span>, <span class="at">scrollX =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>            <span class="at">caption =</span> <span class="st">"Table 1: Full File Inventory with Risk Flags"</span>)</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"Directory is empty."</span>)</span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>  inventory <span class="ot">&lt;-</span> <span class="fu">tibble</span>()</span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-cfc97e5ac3cace34d8bd" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-cfc97e5ac3cace34d8bd">{"x":{"filter":"none","vertical":false,"caption":"<caption>Table 1: Full File Inventory with Risk Flags<\/caption>","data":[["1","2","3","4","5","6","7"],["CHIRPS_precipitation_1981-01-01.tif","CHIRPS_precipitation_1981-01-03.tif","CHIRTS_maximum_temperature_1983-01-07.tif","CHIRTS_maximum_temperature_1983-01-09.tif","Guyana_t2m_ERA5_1km_NearestNeighbour_Daily_19520201.nc","Guyana_t2m_ERA5_1km_NearestNeighbour_Daily_19520201.nc.aux.xml","README.txt"],[".tif",".tif",".tif",".tif",".nc",".xml",".txt"],[0.0018,0.0092,0.0292,0.0294,3.4629,0.0003,0.0068],["Clean","Clean","Clean","Clean","Clean","Clean","Clean"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>RelativePath<\/th>\n      <th>Extension<\/th>\n      <th>Size_MB<\/th>\n      <th>Risk_Flag<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"scrollX":true,"columnDefs":[{"className":"dt-right","targets":3},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"RelativePath","targets":1},{"name":"Extension","targets":2},{"name":"Size_MB","targets":3},{"name":"Risk_Flag","targets":4}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-1725d4454ba549e66304" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-1725d4454ba549e66304">{"x":{"filter":"none","vertical":false,"caption":"<caption>Table 1: Full File Inventory with Risk Flags<\/caption>","data":[["1","2","3","4","5","6","7"],["CHIRPS_precipitation_1981-01-01.tif","CHIRPS_precipitation_1981-01-03.tif","CHIRTS_maximum_temperature_1983-01-07.tif","CHIRTS_maximum_temperature_1983-01-09.tif","Guyana_t2m_ERA5_1km_NearestNeighbour_Daily_19520201.nc","Guyana_t2m_ERA5_1km_NearestNeighbour_Daily_19520201.nc.aux.xml","README.txt"],[".tif",".tif",".tif",".tif",".nc",".xml",".txt"],[0.0018,0.0092,0.0292,0.0294,3.4629,0.0003,0.0069],["Clean","Clean","Clean","Clean","Clean","Clean","Clean"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>RelativePath<\/th>\n      <th>Extension<\/th>\n      <th>Size_MB<\/th>\n      <th>Risk_Flag<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"scrollX":true,"columnDefs":[{"className":"dt-right","targets":3},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"RelativePath","targets":1},{"name":"Extension","targets":2},{"name":"Size_MB","targets":3},{"name":"Risk_Flag","targets":4}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
-<section id="deep-metadata-extraction-exiftool" class="level2" data-number="7.6">
-<h2 data-number="7.6" class="anchored" data-anchor-id="deep-metadata-extraction-exiftool"><span class="header-section-number">7.6</span> Deep Metadata Extraction (ExifTool)</h2>
+<section id="deep-metadata-extraction-exiftool" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="deep-metadata-extraction-exiftool"><span class="header-section-number">7.5</span> Deep Metadata Extraction (ExifTool)</h2>
 <p>This section goes beyond the filename. We use ExifTool to read the file headers. This allows us to:</p>
 <ul>
 <li><p><strong>Verify Formats:</strong> Does the MIMEType match the extension?</p></li>
@@ -829,49 +833,65 @@ div.csl-indent {
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">nrow</span>(inventory) <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;&amp;</span> <span class="sc">!</span><span class="fu">is.null</span>(<span class="fu">exif_version</span>())) {</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"Running ExifTool on "</span>, <span class="fu">nrow</span>(inventory), <span class="st">" files..."</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># We select specific tags to keep the report manageable</span></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  tags_to_extract <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"FileName"</span>, <span class="st">"MIMEType"</span>, <span class="st">"FileType"</span>, <span class="st">"Author"</span>, <span class="st">"CreateDate"</span>, <span class="st">"Warning"</span>, <span class="st">"ImageSize"</span>)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>({</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Run ExifTool on the list of files</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    exif_data <span class="ot">&lt;-</span> <span class="fu">exif_read</span>(inventory<span class="sc">$</span>FullPath, <span class="at">tags =</span> tags_to_extract)</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Clean up column names (ExifTool returns "SourceFile" as the path)</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    exif_data <span class="ot">&lt;-</span> exif_data <span class="sc">%&gt;%</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rename</span>(<span class="at">FullPath =</span> SourceFile) <span class="sc">%&gt;%</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">select</span>(<span class="sc">-</span>FileName) <span class="co"># Remove duplicate filename col if present</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Join with main inventory</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    inventory <span class="ot">&lt;-</span> <span class="fu">left_join</span>(inventory, exif_data, <span class="at">by =</span> <span class="st">"FullPath"</span>)</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">"Metadata extraction complete."</span>)</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">warning</span>(<span class="st">"ExifTool failed: "</span>, e<span class="sc">$</span>message)</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Preview Combined Data</span></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">nrow</span>(inventory) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>  cols_to_show <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"RelativePath"</span>, <span class="st">"Extension"</span>, <span class="st">"MIMEType"</span>, <span class="st">"Risk_Flag"</span>)</span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="st">"Warning"</span> <span class="sc">%in%</span> <span class="fu">names</span>(inventory)) cols_to_show <span class="ot">&lt;-</span> <span class="fu">c</span>(cols_to_show, <span class="st">"Warning"</span>)</span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">datatable</span>(inventory <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">any_of</span>(cols_to_show)),</span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>            <span class="at">options =</span> <span class="fu">list</span>(<span class="at">pageLength =</span> <span class="dv">10</span>, <span class="at">scrollX =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>            <span class="at">caption =</span> <span class="st">"Table 1: File Inventory with ExifTool Metadata"</span>)</span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Read files one at a time: a single unreadable/unrecognized file (e.g. no</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># extension, or a warning ExifTool emits outside the JSON stream) can</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># otherwise corrupt the JSON for the whole batch and abort every file's metadata.</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  safe_exif_read <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">safely</span>(<span class="cf">function</span>(fp) {</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">exif_read</span>(fp, <span class="at">tags =</span> tags_to_extract, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  exif_results <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map</span>(inventory<span class="sc">$</span>FullPath, safe_exif_read)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  n_failed <span class="ot">&lt;-</span> <span class="fu">sum</span>(purrr<span class="sc">::</span><span class="fu">map_lgl</span>(exif_results, <span class="sc">~</span> <span class="sc">!</span><span class="fu">is.null</span>(.x<span class="sc">$</span>error)))</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (n_failed <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">"Warning: ExifTool could not read metadata for "</span>, n_failed, <span class="st">" file(s); leaving those blank."</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  exif_data <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map</span>(exif_results, <span class="st">"result"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    purrr<span class="sc">::</span><span class="fu">compact</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bind_rows</span>()</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">nrow</span>(exif_data) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Clean up column names (ExifTool returns "SourceFile" as the path)</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    exif_data <span class="ot">&lt;-</span> exif_data <span class="sc">%&gt;%</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rename</span>(<span class="at">FullPath =</span> SourceFile)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="st">"FileName"</span> <span class="sc">%in%</span> <span class="fu">names</span>(exif_data)) exif_data <span class="ot">&lt;-</span> <span class="fu">select</span>(exif_data, <span class="sc">-</span>FileName)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Join with main inventory</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>    inventory <span class="ot">&lt;-</span> <span class="fu">left_join</span>(inventory, exif_data, <span class="at">by =</span> <span class="st">"FullPath"</span>)</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Ensure expected columns always exist, even if every read failed</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (col <span class="cf">in</span> <span class="fu">c</span>(<span class="st">"MIMEType"</span>, <span class="st">"FileType"</span>, <span class="st">"Author"</span>, <span class="st">"CreateDate"</span>, <span class="st">"Warning"</span>)) {</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="sc">!</span>col <span class="sc">%in%</span> <span class="fu">names</span>(inventory)) inventory[[col]] <span class="ot">&lt;-</span> <span class="cn">NA_character_</span></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"Metadata extraction complete."</span>)</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a><span class="co"># Preview Combined Data</span></span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">nrow</span>(inventory) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>  cols_to_show <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"RelativePath"</span>, <span class="st">"Extension"</span>, <span class="st">"MIMEType"</span>, <span class="st">"Risk_Flag"</span>)</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="st">"Warning"</span> <span class="sc">%in%</span> <span class="fu">names</span>(inventory)) cols_to_show <span class="ot">&lt;-</span> <span class="fu">c</span>(cols_to_show, <span class="st">"Warning"</span>)</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">datatable</span>(inventory <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">any_of</span>(cols_to_show)),</span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>            <span class="at">options =</span> <span class="fu">list</span>(<span class="at">pageLength =</span> <span class="dv">10</span>, <span class="at">scrollX =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>            <span class="at">caption =</span> <span class="st">"Table 1: File Inventory with ExifTool Metadata"</span>)</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-5e2c217c82b2c2bd35a3" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-5e2c217c82b2c2bd35a3">{"x":{"filter":"none","vertical":false,"caption":"<caption>Table 1: File Inventory with ExifTool Metadata<\/caption>","data":[["1","2","3","4","5","6","7"],["CHIRPS_precipitation_1981-01-01.tif","CHIRPS_precipitation_1981-01-03.tif","CHIRTS_maximum_temperature_1983-01-07.tif","CHIRTS_maximum_temperature_1983-01-09.tif","Guyana_t2m_ERA5_1km_NearestNeighbour_Daily_19520201.nc","Guyana_t2m_ERA5_1km_NearestNeighbour_Daily_19520201.nc.aux.xml","README.txt"],[".tif",".tif",".tif",".tif",".nc",".xml",".txt"],["image/tiff","image/tiff","image/tiff","image/tiff",null,"text/plain","text/plain"],["Clean","Clean","Clean","Clean","Clean","Clean","Clean"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>RelativePath<\/th>\n      <th>Extension<\/th>\n      <th>MIMEType<\/th>\n      <th>Risk_Flag<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"scrollX":true,"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"RelativePath","targets":1},{"name":"Extension","targets":2},{"name":"MIMEType","targets":3},{"name":"Risk_Flag","targets":4}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-fff664abdbb20e07baee" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-fff664abdbb20e07baee">{"x":{"filter":"none","vertical":false,"caption":"<caption>Table 1: File Inventory with ExifTool Metadata<\/caption>","data":[["1","2","3","4","5","6","7"],["CHIRPS_precipitation_1981-01-01.tif","CHIRPS_precipitation_1981-01-03.tif","CHIRTS_maximum_temperature_1983-01-07.tif","CHIRTS_maximum_temperature_1983-01-09.tif","Guyana_t2m_ERA5_1km_NearestNeighbour_Daily_19520201.nc","Guyana_t2m_ERA5_1km_NearestNeighbour_Daily_19520201.nc.aux.xml","README.txt"],[".tif",".tif",".tif",".tif",".nc",".xml",".txt"],["image/tiff","image/tiff","image/tiff","image/tiff",null,"text/plain","text/plain"],["Clean","Clean","Clean","Clean","Clean","Clean","Clean"],[null,null,null,null,null,null,null]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>RelativePath<\/th>\n      <th>Extension<\/th>\n      <th>MIMEType<\/th>\n      <th>Risk_Flag<\/th>\n      <th>Warning<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"scrollX":true,"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"RelativePath","targets":1},{"name":"Extension","targets":2},{"name":"MIMEType","targets":3},{"name":"Risk_Flag","targets":4},{"name":"Warning","targets":5}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
-<section id="extension-summary-and-visualization" class="level2" data-number="7.7">
-<h2 data-number="7.7" class="anchored" data-anchor-id="extension-summary-and-visualization"><span class="header-section-number">7.7</span> Extension Summary and visualization</h2>
+<section id="extension-summary-and-visualization" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="extension-summary-and-visualization"><span class="header-section-number">7.6</span> Extension Summary and Visualization</h2>
 <p>We aggregate the inventory to visualize the dataset’s content profile. This helps curators identify if the submission matches the depositor’s description (e.g., “They said it was images, but I see mostly .docx files”).</p>
 <div class="cell">
 <details class="code-fold">
@@ -906,8 +926,8 @@ div.csl-indent {
 </div>
 </div>
 </section>
-<section id="save-results" class="level2" data-number="7.8">
-<h2 data-number="7.8" class="anchored" data-anchor-id="save-results"><span class="header-section-number">7.8</span> Save Results</h2>
+<section id="save-results" class="level2" data-number="7.7">
+<h2 data-number="7.7" class="anchored" data-anchor-id="save-results"><span class="header-section-number">7.7</span> Save Results</h2>
 <p>We export the full inventory to help curators locate and delete the specific files flagged as “Junk” or “Zero-Byte.”</p>
 <div class="cell">
 <details class="code-fold">
@@ -915,28 +935,82 @@ div.csl-indent {
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>output_dir <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">"Results"</span>, <span class="st">"Inspect_Extensions"</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(output_dir)) <span class="fu">dir.create</span>(output_dir, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>summary_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(output_dir, <span class="fu">paste0</span>(<span class="st">"Format_Summary_"</span>, <span class="fu">Sys.Date</span>(), <span class="st">".csv"</span>))</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>inventory_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(output_dir, <span class="fu">paste0</span>(<span class="st">"Full_Inventory_ExifTool_"</span>, <span class="fu">Sys.Date</span>(), <span class="st">".csv"</span>))</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Label for output filenames: name of the folder that was explored</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>dir_label <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">"[^A-Za-z0-9_.-]"</span>, <span class="st">"_"</span>, <span class="fu">basename</span>(<span class="fu">sub</span>(<span class="st">"[/</span><span class="sc">\\\\</span><span class="st">]+$"</span>, <span class="st">""</span>, target_dir)))</span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">nrow</span>(inventory) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Generate summary</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  summary_table <span class="ot">&lt;-</span> inventory <span class="sc">%&gt;%</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">count</span>(Extension, MIMEType, Risk_Flag, <span class="at">name =</span> <span class="st">"Count"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(<span class="fu">desc</span>(Count))</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_csv</span>(summary_table, summary_file)</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_csv</span>(inventory, inventory_file)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>summary_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(output_dir, <span class="fu">paste0</span>(<span class="st">"Format_Summary_"</span>, dir_label, <span class="st">"_"</span>, <span class="fu">Sys.Date</span>(), <span class="st">".csv"</span>))</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>inventory_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(output_dir, <span class="fu">paste0</span>(<span class="st">"Full_Inventory_ExifTool_"</span>, dir_label, <span class="st">"_"</span>, <span class="fu">Sys.Date</span>(), <span class="st">".csv"</span>))</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">nrow</span>(inventory) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Generate summary</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  summary_table <span class="ot">&lt;-</span> inventory <span class="sc">%&gt;%</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">count</span>(Extension, MIMEType, Risk_Flag, <span class="at">name =</span> <span class="st">"Count"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(<span class="fu">desc</span>(Count))</span>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"Reports saved:"</span>)</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"1. "</span>, summary_file)</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"2. "</span>, inventory_file)</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_excel_csv</span>(summary_table, summary_file)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_excel_csv</span>(inventory, inventory_file)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Codebooks: describe the columns in each report. Warn (rather than fail) if</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># a report has columns the codebook doesn't describe yet, so schema drift is</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># visible instead of silently undocumented.</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  warn_undocumented_columns <span class="ot">&lt;-</span> <span class="cf">function</span>(data, codebook, report_name) {</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    undocumented <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(<span class="fu">names</span>(data), codebook<span class="sc">$</span>Variable)</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">length</span>(undocumented) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>      <span class="fu">warning</span>(<span class="fu">sprintf</span>(</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>        <span class="st">"%s has column(s) not described in its codebook: %s. Update the codebook in this notebook."</span>,</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>        report_name, <span class="fu">paste</span>(undocumented, <span class="at">collapse =</span> <span class="st">", "</span>)</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>      ), <span class="at">call. =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>  inventory_codebook <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">Variable =</span> <span class="fu">c</span>(<span class="st">"FullPath"</span>, <span class="st">"FileName"</span>, <span class="st">"RelativePath"</span>, <span class="st">"Extension"</span>, <span class="st">"Size_Bytes"</span>,</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"Size_MB"</span>, <span class="st">"Risk_Flag"</span>, <span class="st">"MIMEType"</span>, <span class="st">"FileType"</span>, <span class="st">"Author"</span>, <span class="st">"CreateDate"</span>,</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"Warning"</span>, <span class="st">"ImageSize"</span>),</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">Type =</span> <span class="fu">c</span>(<span class="st">"Text"</span>, <span class="st">"Text"</span>, <span class="st">"Text"</span>, <span class="st">"Text"</span>, <span class="st">"Integer"</span>, <span class="st">"Numeric"</span>, <span class="st">"Text"</span>,</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Text"</span>, <span class="st">"Text"</span>, <span class="st">"Text"</span>, <span class="st">"Text"</span>, <span class="st">"Text"</span>, <span class="st">"Text"</span>),</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">Description =</span> <span class="fu">c</span>(</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Absolute path to the file on disk at scan time."</span>,</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>      <span class="st">"File name only (no path)."</span>,</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Path relative to the scanned target directory."</span>,</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>      <span class="st">'Lowercased file extension including the leading dot; "(no extension)" if none.'</span>,</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>      <span class="st">"File size in bytes."</span>,</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>      <span class="st">"File size in megabytes."</span>,</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>      <span class="st">'"Zero-Byte File", "System Junk" (.DS_Store, Thumbs.db, __MACOSX), "Executable" (.exe/.bat/.sh/.bin/.jar), or "Clean".'</span>,</span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>      <span class="st">"File type reported by ExifTool from the file's actual binary signature (may differ from Extension if the file is mislabeled); blank if ExifTool could not identify it or is unavailable."</span>,</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>      <span class="st">"File format/type name reported by ExifTool; blank under the same conditions as MIMEType."</span>,</span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Author metadata embedded in the file, when present and ExifTool could read it."</span>,</span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>      <span class="st">"File creation date embedded in the file's metadata, when present."</span>,</span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Any warning ExifTool raised while reading the file (e.g. a corrupt or unrecognized structure)."</span>,</span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Pixel dimensions reported by ExifTool for image files; only present when ExifTool returns it."</span></span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">warn_undocumented_columns</span>(inventory, inventory_codebook, <span class="st">"Full_Inventory_ExifTool"</span>)</span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_excel_csv</span>(inventory_codebook, <span class="fu">file.path</span>(output_dir, <span class="st">"Full_Inventory_ExifTool_Codebook.csv"</span>))</span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>  summary_codebook <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">Variable =</span> <span class="fu">c</span>(<span class="st">"Extension"</span>, <span class="st">"MIMEType"</span>, <span class="st">"Risk_Flag"</span>, <span class="st">"Count"</span>),</span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a>    <span class="at">Type =</span> <span class="fu">c</span>(<span class="st">"Text"</span>, <span class="st">"Text"</span>, <span class="st">"Text"</span>, <span class="st">"Integer"</span>),</span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a>    <span class="at">Description =</span> <span class="fu">c</span>(</span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Lowercased file extension, as in Full_Inventory_ExifTool."</span>,</span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a>      <span class="st">"File type reported by ExifTool, as in Full_Inventory_ExifTool."</span>,</span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Risk category, as in Full_Inventory_ExifTool."</span>,</span>
+<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Number of files sharing this Extension/MIMEType/Risk_Flag combination."</span></span>
+<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">warn_undocumented_columns</span>(summary_table, summary_codebook, <span class="st">"Format_Summary"</span>)</span>
+<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_excel_csv</span>(summary_codebook, <span class="fu">file.path</span>(output_dir, <span class="st">"Format_Summary_Codebook.csv"</span>))</span>
+<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"Reports saved:"</span>)</span>
+<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"1. "</span>, summary_file)</span>
+<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"2. "</span>, inventory_file)</span>
+<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <hr>
 </section>
-<section id="curation-insights" class="level2" data-number="7.9">
-<h2 data-number="7.9" class="anchored" data-anchor-id="curation-insights"><span class="header-section-number">7.9</span> Curation Insights</h2>
+<section id="curation-insights" class="level2" data-number="7.8">
+<h2 data-number="7.8" class="anchored" data-anchor-id="curation-insights"><span class="header-section-number">7.8</span> Curation Insights</h2>
 <ul>
 <li><p><strong>Zero-Byte Risks:</strong> A file with 0 bytes is technically valid in the filesystem but semantically empty. It may indicate a failed file transfer (e.g., an FTP interruption). Check this is the case in the original deposit for this file, then check with the depositor to confirm the file is safe to remove.</p></li>
 <li><p><strong>Extension Mismatches:</strong> If you see a generic extension like .dat or .file, the depositor may have removed the extension. Use tools like DROID (see below) to identify the true format.</p></li>
@@ -945,8 +1019,8 @@ div.csl-indent {
 <li><p><strong>Metadata Privacy:</strong> Check the Author or GPS columns, if extracted. Check if these contain real names or locations for a de-identified dataset, and discuss with the depositor to confirm the files can and should be scrubbed before publishing.</p></li>
 </ul>
 </section>
-<section id="additional-tools-for-researchers" class="level2" data-number="7.10">
-<h2 data-number="7.10" class="anchored" data-anchor-id="additional-tools-for-researchers"><span class="header-section-number">7.10</span> Additional Tools for Researchers</h2>
+<section id="additional-tools-for-researchers" class="level2" data-number="7.9">
+<h2 data-number="7.9" class="anchored" data-anchor-id="additional-tools-for-researchers"><span class="header-section-number">7.9</span> Additional Tools for Researchers</h2>
 <p>This notebook performs some file identification. Here are some other tools for file identification.</p>
 <ul>
 <li><p><strong>Siegfried / DROID:</strong> A tool for <a href="nationalarchives.gov.uk/information-management/manage-information/preserving-digital-records/droid/">format identification</a>. It scans the file’s binary signature (Magic Number) and matches it against PRONOM, the technical registry maintained by The National Archives UK (see https://www.itforarchivists.com/siegfried).</p></li>
@@ -954,20 +1028,20 @@ div.csl-indent {
 <li><p><strong>FIDO (Format Identification for Digital Objects):</strong> A command-line tool designed for simplified integration into preservation pipelines (see https://openpreservation.org/tools/fido/).</p></li>
 </ul>
 </section>
-<section id="using-the-non-interactive-r-script" class="level2" data-number="7.11">
-<h2 data-number="7.11" class="anchored" data-anchor-id="using-the-non-interactive-r-script"><span class="header-section-number">7.11</span> Using the Non-Interactive R Script</h2>
+<section id="using-the-non-interactive-r-script" class="level2" data-number="7.10">
+<h2 data-number="7.10" class="anchored" data-anchor-id="using-the-non-interactive-r-script"><span class="header-section-number">7.10</span> Using the Non-Interactive R Script</h2>
 <p>For users who want to run this analysis on a server or from the command line, a pure R script is available to perform the same process.</p>
 <p><strong>Prerequisites:</strong> * R with <code>tidyverse</code>, <code>magick</code>, and <code>exiftoolr</code> installed. * <strong>ExifTool</strong> command-line software must be installed on the system.</p>
 <p>Download the <strong>R Script:</strong> <a href="Scripts/Inspect_Extensions_Script.R"><strong><code>Inspect_Extensions_Script.R</code></strong></a></p>
-<section id="example-hpc-submission-script" class="level3" data-number="7.11.1">
-<h3 data-number="7.11.1" class="anchored" data-anchor-id="example-hpc-submission-script"><span class="header-section-number">7.11.1</span> Example HPC Submission Script</h3>
+<section id="example-hpc-submission-script" class="level3" data-number="7.10.1">
+<h3 data-number="7.10.1" class="anchored" data-anchor-id="example-hpc-submission-script"><span class="header-section-number">7.10.1</span> Example HPC Submission Script</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --nodes=1</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --ntasks=1</span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=00:30:00</span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=ext_check_exif</span></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Load R module</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Load R Module</span></span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load R</span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Load Perl module (Often required for ExifTool to run)</span></span>
@@ -981,8 +1055,8 @@ div.csl-indent {
 <span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> Inspect_Extensions_Script.R <span class="va">$DATA_DIR</span> <span class="va">$OUTPUT_DIR</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
-<section id="references" class="level2" data-number="7.12">
-<h2 data-number="7.12" class="anchored" data-anchor-id="references"><span class="header-section-number">7.12</span> References</h2>
+<section id="references" class="level2" data-number="7.11">
+<h2 data-number="7.11" class="anchored" data-anchor-id="references"><span class="header-section-number">7.11</span> References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-brown2013" class="csl-entry" role="listitem">
 Brown, Adrian. 2013. <em>Practical Digital Preservation: A How-to Guide for Organizations of Any Size</em>. Facet Publishing.
@@ -1525,7 +1599,7 @@ Wickham, Hadley, Mara Averick, Jennifer Bryan, et al. 2019. <em>Welcome to the <
 <span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
 <span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a><span class="fu">## Load libraries</span></span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a><span class="fu">### Load Libraries</span></span>
 <span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a>This chunk loads the necessary library for the session.</span>
 <span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a></span>
@@ -1555,7 +1629,7 @@ Wickham, Hadley, Mara Averick, Jennifer Bryan, et al. 2019. <em>Welcome to the <
 <span id="cb9-80"><a href="#cb9-80" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-81"><a href="#cb9-81" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
 <span id="cb9-82"><a href="#cb9-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-83"><a href="#cb9-83" aria-hidden="true" tabindex="-1"></a><span class="fu">## Select the target directory</span></span>
+<span id="cb9-83"><a href="#cb9-83" aria-hidden="true" tabindex="-1"></a><span class="fu">## Select Target Directory</span></span>
 <span id="cb9-84"><a href="#cb9-84" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-85"><a href="#cb9-85" aria-hidden="true" tabindex="-1"></a>This section identifies the directory to be analyzed and creates a complete list of every file within it, including those in sub-folders and hidden files. The directory is set by the <span class="in">`target_dir`</span> parameter at the top of this document.</span>
 <span id="cb9-86"><a href="#cb9-86" aria-hidden="true" tabindex="-1"></a></span>
@@ -1607,227 +1681,301 @@ Wickham, Hadley, Mara Averick, Jennifer Bryan, et al. 2019. <em>Welcome to the <
 <span id="cb9-136"><a href="#cb9-136" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-137"><a href="#cb9-137" aria-hidden="true" tabindex="-1"></a><span class="fu">message</span>(<span class="st">"Scanning files... This may take a moment for large directories."</span>)</span>
 <span id="cb9-138"><a href="#cb9-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-139"><a href="#cb9-139" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Get all files recursively</span></span>
-<span id="cb9-140"><a href="#cb9-140" aria-hidden="true" tabindex="-1"></a>all_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(</span>
-<span id="cb9-141"><a href="#cb9-141" aria-hidden="true" tabindex="-1"></a>  <span class="at">path =</span> target_dir,</span>
-<span id="cb9-142"><a href="#cb9-142" aria-hidden="true" tabindex="-1"></a>  <span class="at">recursive =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb9-143"><a href="#cb9-143" aria-hidden="true" tabindex="-1"></a>  <span class="at">full.names =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb9-144"><a href="#cb9-144" aria-hidden="true" tabindex="-1"></a>  <span class="at">all.files =</span> <span class="cn">TRUE</span></span>
-<span id="cb9-145"><a href="#cb9-145" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb9-146"><a href="#cb9-146" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-147"><a href="#cb9-147" aria-hidden="true" tabindex="-1"></a><span class="fu">message</span>(<span class="st">"Found "</span>, <span class="fu">length</span>(all_files), <span class="st">" total files."</span>)</span>
-<span id="cb9-148"><a href="#cb9-148" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-149"><a href="#cb9-149" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(all_files) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb9-150"><a href="#cb9-150" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb9-151"><a href="#cb9-151" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 2. Build Inventory Dataframe</span></span>
-<span id="cb9-152"><a href="#cb9-152" aria-hidden="true" tabindex="-1"></a>  inventory <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">FullPath =</span> all_files) <span class="sc">%&gt;%</span></span>
-<span id="cb9-153"><a href="#cb9-153" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb9-154"><a href="#cb9-154" aria-hidden="true" tabindex="-1"></a>      <span class="at">FileName =</span> <span class="fu">basename</span>(FullPath),</span>
-<span id="cb9-155"><a href="#cb9-155" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Calculate relative path for readability</span></span>
-<span id="cb9-156"><a href="#cb9-156" aria-hidden="true" tabindex="-1"></a>      <span class="at">RelativePath =</span> <span class="fu">str_remove</span>(FullPath, <span class="fu">paste0</span>(target_dir, <span class="st">"/?"</span>)),</span>
-<span id="cb9-157"><a href="#cb9-157" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb9-158"><a href="#cb9-158" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Extract extension: Get text after last dot, lowercase it.</span></span>
-<span id="cb9-159"><a href="#cb9-159" aria-hidden="true" tabindex="-1"></a>      <span class="at">Extension =</span> <span class="fu">tolower</span>(<span class="fu">file_ext</span>(FileName)),</span>
-<span id="cb9-160"><a href="#cb9-160" aria-hidden="true" tabindex="-1"></a>      <span class="at">Extension =</span> <span class="fu">if_else</span>(Extension <span class="sc">==</span> <span class="st">""</span>, <span class="st">"(no extension)"</span>, <span class="fu">paste0</span>(<span class="st">"."</span>, Extension)),</span>
-<span id="cb9-161"><a href="#cb9-161" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb9-162"><a href="#cb9-162" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Get File Size</span></span>
-<span id="cb9-163"><a href="#cb9-163" aria-hidden="true" tabindex="-1"></a>      <span class="at">Size_Bytes =</span> <span class="fu">file.size</span>(FullPath),</span>
-<span id="cb9-164"><a href="#cb9-164" aria-hidden="true" tabindex="-1"></a>      <span class="at">Size_MB =</span> <span class="fu">round</span>(Size_Bytes <span class="sc">/</span> <span class="dv">1024</span><span class="sc">^</span><span class="dv">2</span>, <span class="dv">4</span>)</span>
-<span id="cb9-165"><a href="#cb9-165" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb9-166"><a href="#cb9-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-167"><a href="#cb9-167" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 3. Add Risk Flags</span></span>
-<span id="cb9-168"><a href="#cb9-168" aria-hidden="true" tabindex="-1"></a>  junk_patterns <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.ds_store"</span>, <span class="st">"thumbs</span><span class="sc">\\</span><span class="st">.db"</span>, <span class="st">"__macosx"</span>)</span>
-<span id="cb9-169"><a href="#cb9-169" aria-hidden="true" tabindex="-1"></a>  exec_patterns <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.exe$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">.bat$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">.sh$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">.bin$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">.jar$"</span>)</span>
+<span id="cb9-139"><a href="#cb9-139" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalize to forward slashes so path arithmetic below is Windows-safe</span></span>
+<span id="cb9-140"><a href="#cb9-140" aria-hidden="true" tabindex="-1"></a>target_dir <span class="ot">&lt;-</span> <span class="fu">normalizePath</span>(target_dir, <span class="at">winslash =</span> <span class="st">"/"</span>, <span class="at">mustWork =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-141"><a href="#cb9-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-142"><a href="#cb9-142" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Get all files recursively</span></span>
+<span id="cb9-143"><a href="#cb9-143" aria-hidden="true" tabindex="-1"></a>all_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(</span>
+<span id="cb9-144"><a href="#cb9-144" aria-hidden="true" tabindex="-1"></a>  <span class="at">path =</span> target_dir,</span>
+<span id="cb9-145"><a href="#cb9-145" aria-hidden="true" tabindex="-1"></a>  <span class="at">recursive =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb9-146"><a href="#cb9-146" aria-hidden="true" tabindex="-1"></a>  <span class="at">full.names =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb9-147"><a href="#cb9-147" aria-hidden="true" tabindex="-1"></a>  <span class="at">all.files =</span> <span class="cn">TRUE</span></span>
+<span id="cb9-148"><a href="#cb9-148" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-149"><a href="#cb9-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-150"><a href="#cb9-150" aria-hidden="true" tabindex="-1"></a><span class="fu">message</span>(<span class="st">"Found "</span>, <span class="fu">length</span>(all_files), <span class="st">" total files."</span>)</span>
+<span id="cb9-151"><a href="#cb9-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-152"><a href="#cb9-152" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(all_files) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb9-153"><a href="#cb9-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-154"><a href="#cb9-154" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 2. Build Inventory Dataframe</span></span>
+<span id="cb9-155"><a href="#cb9-155" aria-hidden="true" tabindex="-1"></a>  inventory <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">FullPath =</span> all_files) <span class="sc">%&gt;%</span></span>
+<span id="cb9-156"><a href="#cb9-156" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb9-157"><a href="#cb9-157" aria-hidden="true" tabindex="-1"></a>      <span class="at">FullPath =</span> <span class="fu">normalizePath</span>(FullPath, <span class="at">winslash =</span> <span class="st">"/"</span>, <span class="at">mustWork =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb9-158"><a href="#cb9-158" aria-hidden="true" tabindex="-1"></a>      <span class="at">FileName =</span> <span class="fu">basename</span>(FullPath),</span>
+<span id="cb9-159"><a href="#cb9-159" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Calculate relative path for readability</span></span>
+<span id="cb9-160"><a href="#cb9-160" aria-hidden="true" tabindex="-1"></a>      <span class="at">RelativePath =</span> <span class="fu">str_remove</span>(FullPath, <span class="fu">fixed</span>(<span class="fu">paste0</span>(target_dir, <span class="st">"/"</span>))),</span>
+<span id="cb9-161"><a href="#cb9-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-162"><a href="#cb9-162" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Extract extension: Get text after last dot, lowercase it.</span></span>
+<span id="cb9-163"><a href="#cb9-163" aria-hidden="true" tabindex="-1"></a>      <span class="at">Extension =</span> <span class="fu">tolower</span>(<span class="fu">file_ext</span>(FileName)),</span>
+<span id="cb9-164"><a href="#cb9-164" aria-hidden="true" tabindex="-1"></a>      <span class="at">Extension =</span> <span class="fu">if_else</span>(Extension <span class="sc">==</span> <span class="st">""</span>, <span class="st">"(no extension)"</span>, <span class="fu">paste0</span>(<span class="st">"."</span>, Extension)),</span>
+<span id="cb9-165"><a href="#cb9-165" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb9-166"><a href="#cb9-166" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Get File Size</span></span>
+<span id="cb9-167"><a href="#cb9-167" aria-hidden="true" tabindex="-1"></a>      <span class="at">Size_Bytes =</span> <span class="fu">file.size</span>(FullPath),</span>
+<span id="cb9-168"><a href="#cb9-168" aria-hidden="true" tabindex="-1"></a>      <span class="at">Size_MB =</span> <span class="fu">round</span>(Size_Bytes <span class="sc">/</span> <span class="dv">1024</span><span class="sc">^</span><span class="dv">2</span>, <span class="dv">4</span>)</span>
+<span id="cb9-169"><a href="#cb9-169" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb9-170"><a href="#cb9-170" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-171"><a href="#cb9-171" aria-hidden="true" tabindex="-1"></a>  inventory <span class="ot">&lt;-</span> inventory <span class="sc">%&gt;%</span></span>
-<span id="cb9-172"><a href="#cb9-172" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb9-173"><a href="#cb9-173" aria-hidden="true" tabindex="-1"></a>      <span class="at">Risk_Flag =</span> <span class="fu">case_when</span>(</span>
-<span id="cb9-174"><a href="#cb9-174" aria-hidden="true" tabindex="-1"></a>        Size_Bytes <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">"Zero-Byte File"</span>,</span>
-<span id="cb9-175"><a href="#cb9-175" aria-hidden="true" tabindex="-1"></a>        <span class="fu">str_detect</span>(<span class="fu">tolower</span>(FileName), <span class="fu">paste</span>(junk_patterns, <span class="at">collapse =</span> <span class="st">"|"</span>)) <span class="sc">~</span> <span class="st">"System Junk"</span>,</span>
-<span id="cb9-176"><a href="#cb9-176" aria-hidden="true" tabindex="-1"></a>        <span class="fu">str_detect</span>(<span class="fu">tolower</span>(FileName), <span class="fu">paste</span>(exec_patterns, <span class="at">collapse =</span> <span class="st">"|"</span>)) <span class="sc">~</span> <span class="st">"Executable"</span>,</span>
-<span id="cb9-177"><a href="#cb9-177" aria-hidden="true" tabindex="-1"></a>        <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"Clean"</span></span>
-<span id="cb9-178"><a href="#cb9-178" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb9-179"><a href="#cb9-179" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb9-180"><a href="#cb9-180" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-181"><a href="#cb9-181" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Preview</span></span>
-<span id="cb9-182"><a href="#cb9-182" aria-hidden="true" tabindex="-1"></a>  <span class="fu">datatable</span>(inventory <span class="sc">%&gt;%</span> <span class="fu">select</span>(RelativePath, Extension, Size_MB, Risk_Flag),</span>
-<span id="cb9-183"><a href="#cb9-183" aria-hidden="true" tabindex="-1"></a>            <span class="at">options =</span> <span class="fu">list</span>(<span class="at">pageLength =</span> <span class="dv">10</span>, <span class="at">scrollX =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb9-184"><a href="#cb9-184" aria-hidden="true" tabindex="-1"></a>            <span class="at">caption =</span> <span class="st">"Table 1: Full File Inventory with Risk Flags"</span>)</span>
-<span id="cb9-185"><a href="#cb9-185" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb9-186"><a href="#cb9-186" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb9-187"><a href="#cb9-187" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"Directory is empty."</span>)</span>
-<span id="cb9-188"><a href="#cb9-188" aria-hidden="true" tabindex="-1"></a>  inventory <span class="ot">&lt;-</span> <span class="fu">tibble</span>()</span>
-<span id="cb9-189"><a href="#cb9-189" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb9-190"><a href="#cb9-190" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb9-191"><a href="#cb9-191" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-192"><a href="#cb9-192" aria-hidden="true" tabindex="-1"></a><span class="fu">## Deep Metadata Extraction (ExifTool)</span></span>
-<span id="cb9-193"><a href="#cb9-193" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-194"><a href="#cb9-194" aria-hidden="true" tabindex="-1"></a>This section goes beyond the filename. We use ExifTool to read the file headers. This allows us to:</span>
+<span id="cb9-171"><a href="#cb9-171" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 3. Add Risk Flags</span></span>
+<span id="cb9-172"><a href="#cb9-172" aria-hidden="true" tabindex="-1"></a>  junk_patterns <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.ds_store"</span>, <span class="st">"thumbs</span><span class="sc">\\</span><span class="st">.db"</span>, <span class="st">"__macosx"</span>)</span>
+<span id="cb9-173"><a href="#cb9-173" aria-hidden="true" tabindex="-1"></a>  exec_patterns <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.exe$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">.bat$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">.sh$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">.bin$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">.jar$"</span>)</span>
+<span id="cb9-174"><a href="#cb9-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-175"><a href="#cb9-175" aria-hidden="true" tabindex="-1"></a>  inventory <span class="ot">&lt;-</span> inventory <span class="sc">%&gt;%</span></span>
+<span id="cb9-176"><a href="#cb9-176" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb9-177"><a href="#cb9-177" aria-hidden="true" tabindex="-1"></a>      <span class="at">Risk_Flag =</span> <span class="fu">case_when</span>(</span>
+<span id="cb9-178"><a href="#cb9-178" aria-hidden="true" tabindex="-1"></a>        Size_Bytes <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">"Zero-Byte File"</span>,</span>
+<span id="cb9-179"><a href="#cb9-179" aria-hidden="true" tabindex="-1"></a>        <span class="fu">str_detect</span>(<span class="fu">tolower</span>(FileName), <span class="fu">paste</span>(junk_patterns, <span class="at">collapse =</span> <span class="st">"|"</span>)) <span class="sc">~</span> <span class="st">"System Junk"</span>,</span>
+<span id="cb9-180"><a href="#cb9-180" aria-hidden="true" tabindex="-1"></a>        <span class="fu">str_detect</span>(<span class="fu">tolower</span>(FileName), <span class="fu">paste</span>(exec_patterns, <span class="at">collapse =</span> <span class="st">"|"</span>)) <span class="sc">~</span> <span class="st">"Executable"</span>,</span>
+<span id="cb9-181"><a href="#cb9-181" aria-hidden="true" tabindex="-1"></a>        <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"Clean"</span></span>
+<span id="cb9-182"><a href="#cb9-182" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb9-183"><a href="#cb9-183" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb9-184"><a href="#cb9-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-185"><a href="#cb9-185" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Preview</span></span>
+<span id="cb9-186"><a href="#cb9-186" aria-hidden="true" tabindex="-1"></a>  <span class="fu">datatable</span>(inventory <span class="sc">%&gt;%</span> <span class="fu">select</span>(RelativePath, Extension, Size_MB, Risk_Flag),</span>
+<span id="cb9-187"><a href="#cb9-187" aria-hidden="true" tabindex="-1"></a>            <span class="at">options =</span> <span class="fu">list</span>(<span class="at">pageLength =</span> <span class="dv">10</span>, <span class="at">scrollX =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb9-188"><a href="#cb9-188" aria-hidden="true" tabindex="-1"></a>            <span class="at">caption =</span> <span class="st">"Table 1: Full File Inventory with Risk Flags"</span>)</span>
+<span id="cb9-189"><a href="#cb9-189" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb9-190"><a href="#cb9-190" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb9-191"><a href="#cb9-191" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"Directory is empty."</span>)</span>
+<span id="cb9-192"><a href="#cb9-192" aria-hidden="true" tabindex="-1"></a>  inventory <span class="ot">&lt;-</span> <span class="fu">tibble</span>()</span>
+<span id="cb9-193"><a href="#cb9-193" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-194"><a href="#cb9-194" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb9-195"><a href="#cb9-195" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-196"><a href="#cb9-196" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Verify Formats:** Does the MIMEType match the extension?</span>
+<span id="cb9-196"><a href="#cb9-196" aria-hidden="true" tabindex="-1"></a><span class="fu">## Deep Metadata Extraction (ExifTool)</span></span>
 <span id="cb9-197"><a href="#cb9-197" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-198"><a href="#cb9-198" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Check Integrity:** Does ExifTool report any Warning (e.g., "Corrupted header")?</span>
+<span id="cb9-198"><a href="#cb9-198" aria-hidden="true" tabindex="-1"></a>This section goes beyond the filename. We use ExifTool to read the file headers. This allows us to:</span>
 <span id="cb9-199"><a href="#cb9-199" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-200"><a href="#cb9-200" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Extract Context:** Get Author, CreateDate, or ImageSize metadata.</span>
+<span id="cb9-200"><a href="#cb9-200" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Verify Formats:** Does the MIMEType match the extension?</span>
 <span id="cb9-201"><a href="#cb9-201" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-204"><a href="#cb9-204" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb9-205"><a href="#cb9-205" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: run-exiftool</span></span>
-<span id="cb9-206"><a href="#cb9-206" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
-<span id="cb9-207"><a href="#cb9-207" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
-<span id="cb9-208"><a href="#cb9-208" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-209"><a href="#cb9-209" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">nrow</span>(inventory) <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;&amp;</span> <span class="sc">!</span><span class="fu">is.null</span>(<span class="fu">exif_version</span>())) {</span>
-<span id="cb9-210"><a href="#cb9-210" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb9-211"><a href="#cb9-211" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"Running ExifTool on "</span>, <span class="fu">nrow</span>(inventory), <span class="st">" files..."</span>)</span>
-<span id="cb9-212"><a href="#cb9-212" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb9-213"><a href="#cb9-213" aria-hidden="true" tabindex="-1"></a>  <span class="co"># We select specific tags to keep the report manageable</span></span>
-<span id="cb9-214"><a href="#cb9-214" aria-hidden="true" tabindex="-1"></a>  tags_to_extract <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"FileName"</span>, <span class="st">"MIMEType"</span>, <span class="st">"FileType"</span>, <span class="st">"Author"</span>, <span class="st">"CreateDate"</span>, <span class="st">"Warning"</span>, <span class="st">"ImageSize"</span>)</span>
-<span id="cb9-215"><a href="#cb9-215" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb9-216"><a href="#cb9-216" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>({</span>
-<span id="cb9-217"><a href="#cb9-217" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Run ExifTool on the list of files</span></span>
-<span id="cb9-218"><a href="#cb9-218" aria-hidden="true" tabindex="-1"></a>    exif_data <span class="ot">&lt;-</span> <span class="fu">exif_read</span>(inventory<span class="sc">$</span>FullPath, <span class="at">tags =</span> tags_to_extract)</span>
-<span id="cb9-219"><a href="#cb9-219" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb9-220"><a href="#cb9-220" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Clean up column names (ExifTool returns "SourceFile" as the path)</span></span>
-<span id="cb9-221"><a href="#cb9-221" aria-hidden="true" tabindex="-1"></a>    exif_data <span class="ot">&lt;-</span> exif_data <span class="sc">%&gt;%</span></span>
-<span id="cb9-222"><a href="#cb9-222" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rename</span>(<span class="at">FullPath =</span> SourceFile) <span class="sc">%&gt;%</span></span>
-<span id="cb9-223"><a href="#cb9-223" aria-hidden="true" tabindex="-1"></a>      <span class="fu">select</span>(<span class="sc">-</span>FileName) <span class="co"># Remove duplicate filename col if present</span></span>
-<span id="cb9-224"><a href="#cb9-224" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb9-225"><a href="#cb9-225" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Join with main inventory</span></span>
-<span id="cb9-226"><a href="#cb9-226" aria-hidden="true" tabindex="-1"></a>    inventory <span class="ot">&lt;-</span> <span class="fu">left_join</span>(inventory, exif_data, <span class="at">by =</span> <span class="st">"FullPath"</span>)</span>
-<span id="cb9-227"><a href="#cb9-227" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb9-228"><a href="#cb9-228" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">"Metadata extraction complete."</span>)</span>
-<span id="cb9-229"><a href="#cb9-229" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb9-230"><a href="#cb9-230" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
-<span id="cb9-231"><a href="#cb9-231" aria-hidden="true" tabindex="-1"></a>    <span class="fu">warning</span>(<span class="st">"ExifTool failed: "</span>, e<span class="sc">$</span>message)</span>
-<span id="cb9-232"><a href="#cb9-232" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb9-233"><a href="#cb9-233" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb9-234"><a href="#cb9-234" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-235"><a href="#cb9-235" aria-hidden="true" tabindex="-1"></a><span class="co"># Preview Combined Data</span></span>
-<span id="cb9-236"><a href="#cb9-236" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">nrow</span>(inventory) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb9-237"><a href="#cb9-237" aria-hidden="true" tabindex="-1"></a>  cols_to_show <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"RelativePath"</span>, <span class="st">"Extension"</span>, <span class="st">"MIMEType"</span>, <span class="st">"Risk_Flag"</span>)</span>
-<span id="cb9-238"><a href="#cb9-238" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="st">"Warning"</span> <span class="sc">%in%</span> <span class="fu">names</span>(inventory)) cols_to_show <span class="ot">&lt;-</span> <span class="fu">c</span>(cols_to_show, <span class="st">"Warning"</span>)</span>
-<span id="cb9-239"><a href="#cb9-239" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb9-240"><a href="#cb9-240" aria-hidden="true" tabindex="-1"></a>  <span class="fu">datatable</span>(inventory <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">any_of</span>(cols_to_show)),</span>
-<span id="cb9-241"><a href="#cb9-241" aria-hidden="true" tabindex="-1"></a>            <span class="at">options =</span> <span class="fu">list</span>(<span class="at">pageLength =</span> <span class="dv">10</span>, <span class="at">scrollX =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb9-242"><a href="#cb9-242" aria-hidden="true" tabindex="-1"></a>            <span class="at">caption =</span> <span class="st">"Table 1: File Inventory with ExifTool Metadata"</span>)</span>
-<span id="cb9-243"><a href="#cb9-243" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb9-244"><a href="#cb9-244" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb9-245"><a href="#cb9-245" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-246"><a href="#cb9-246" aria-hidden="true" tabindex="-1"></a><span class="fu">## Extension Summary and visualization</span></span>
-<span id="cb9-247"><a href="#cb9-247" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-248"><a href="#cb9-248" aria-hidden="true" tabindex="-1"></a>We aggregate the inventory to visualize the dataset's content profile. This helps curators identify if the submission matches the depositor's description (e.g., "They said it was images, but I see mostly .docx files").</span>
-<span id="cb9-249"><a href="#cb9-249" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-252"><a href="#cb9-252" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb9-253"><a href="#cb9-253" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: viz-extensions</span></span>
-<span id="cb9-254"><a href="#cb9-254" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Figure 1: Top 15 File Formats by Frequency"</span></span>
-<span id="cb9-255"><a href="#cb9-255" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-202"><a href="#cb9-202" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Check Integrity:** Does ExifTool report any Warning (e.g., "Corrupted header")?</span>
+<span id="cb9-203"><a href="#cb9-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-204"><a href="#cb9-204" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Extract Context:** Get Author, CreateDate, or ImageSize metadata.</span>
+<span id="cb9-205"><a href="#cb9-205" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-208"><a href="#cb9-208" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb9-209"><a href="#cb9-209" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: run-exiftool</span></span>
+<span id="cb9-210"><a href="#cb9-210" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
+<span id="cb9-211"><a href="#cb9-211" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb9-212"><a href="#cb9-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-213"><a href="#cb9-213" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">nrow</span>(inventory) <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;&amp;</span> <span class="sc">!</span><span class="fu">is.null</span>(<span class="fu">exif_version</span>())) {</span>
+<span id="cb9-214"><a href="#cb9-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-215"><a href="#cb9-215" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"Running ExifTool on "</span>, <span class="fu">nrow</span>(inventory), <span class="st">" files..."</span>)</span>
+<span id="cb9-216"><a href="#cb9-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-217"><a href="#cb9-217" aria-hidden="true" tabindex="-1"></a>  <span class="co"># We select specific tags to keep the report manageable</span></span>
+<span id="cb9-218"><a href="#cb9-218" aria-hidden="true" tabindex="-1"></a>  tags_to_extract <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"FileName"</span>, <span class="st">"MIMEType"</span>, <span class="st">"FileType"</span>, <span class="st">"Author"</span>, <span class="st">"CreateDate"</span>, <span class="st">"Warning"</span>, <span class="st">"ImageSize"</span>)</span>
+<span id="cb9-219"><a href="#cb9-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-220"><a href="#cb9-220" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Read files one at a time: a single unreadable/unrecognized file (e.g. no</span></span>
+<span id="cb9-221"><a href="#cb9-221" aria-hidden="true" tabindex="-1"></a>  <span class="co"># extension, or a warning ExifTool emits outside the JSON stream) can</span></span>
+<span id="cb9-222"><a href="#cb9-222" aria-hidden="true" tabindex="-1"></a>  <span class="co"># otherwise corrupt the JSON for the whole batch and abort every file's metadata.</span></span>
+<span id="cb9-223"><a href="#cb9-223" aria-hidden="true" tabindex="-1"></a>  safe_exif_read <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">safely</span>(<span class="cf">function</span>(fp) {</span>
+<span id="cb9-224"><a href="#cb9-224" aria-hidden="true" tabindex="-1"></a>    <span class="fu">exif_read</span>(fp, <span class="at">tags =</span> tags_to_extract, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-225"><a href="#cb9-225" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb9-226"><a href="#cb9-226" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-227"><a href="#cb9-227" aria-hidden="true" tabindex="-1"></a>  exif_results <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map</span>(inventory<span class="sc">$</span>FullPath, safe_exif_read)</span>
+<span id="cb9-228"><a href="#cb9-228" aria-hidden="true" tabindex="-1"></a>  n_failed <span class="ot">&lt;-</span> <span class="fu">sum</span>(purrr<span class="sc">::</span><span class="fu">map_lgl</span>(exif_results, <span class="sc">~</span> <span class="sc">!</span><span class="fu">is.null</span>(.x<span class="sc">$</span>error)))</span>
+<span id="cb9-229"><a href="#cb9-229" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (n_failed <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb9-230"><a href="#cb9-230" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">"Warning: ExifTool could not read metadata for "</span>, n_failed, <span class="st">" file(s); leaving those blank."</span>)</span>
+<span id="cb9-231"><a href="#cb9-231" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-232"><a href="#cb9-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-233"><a href="#cb9-233" aria-hidden="true" tabindex="-1"></a>  exif_data <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map</span>(exif_results, <span class="st">"result"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-234"><a href="#cb9-234" aria-hidden="true" tabindex="-1"></a>    purrr<span class="sc">::</span><span class="fu">compact</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb9-235"><a href="#cb9-235" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bind_rows</span>()</span>
+<span id="cb9-236"><a href="#cb9-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-237"><a href="#cb9-237" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">nrow</span>(exif_data) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb9-238"><a href="#cb9-238" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Clean up column names (ExifTool returns "SourceFile" as the path)</span></span>
+<span id="cb9-239"><a href="#cb9-239" aria-hidden="true" tabindex="-1"></a>    exif_data <span class="ot">&lt;-</span> exif_data <span class="sc">%&gt;%</span></span>
+<span id="cb9-240"><a href="#cb9-240" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rename</span>(<span class="at">FullPath =</span> SourceFile)</span>
+<span id="cb9-241"><a href="#cb9-241" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="st">"FileName"</span> <span class="sc">%in%</span> <span class="fu">names</span>(exif_data)) exif_data <span class="ot">&lt;-</span> <span class="fu">select</span>(exif_data, <span class="sc">-</span>FileName)</span>
+<span id="cb9-242"><a href="#cb9-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-243"><a href="#cb9-243" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Join with main inventory</span></span>
+<span id="cb9-244"><a href="#cb9-244" aria-hidden="true" tabindex="-1"></a>    inventory <span class="ot">&lt;-</span> <span class="fu">left_join</span>(inventory, exif_data, <span class="at">by =</span> <span class="st">"FullPath"</span>)</span>
+<span id="cb9-245"><a href="#cb9-245" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-246"><a href="#cb9-246" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-247"><a href="#cb9-247" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Ensure expected columns always exist, even if every read failed</span></span>
+<span id="cb9-248"><a href="#cb9-248" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (col <span class="cf">in</span> <span class="fu">c</span>(<span class="st">"MIMEType"</span>, <span class="st">"FileType"</span>, <span class="st">"Author"</span>, <span class="st">"CreateDate"</span>, <span class="st">"Warning"</span>)) {</span>
+<span id="cb9-249"><a href="#cb9-249" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="sc">!</span>col <span class="sc">%in%</span> <span class="fu">names</span>(inventory)) inventory[[col]] <span class="ot">&lt;-</span> <span class="cn">NA_character_</span></span>
+<span id="cb9-250"><a href="#cb9-250" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-251"><a href="#cb9-251" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-252"><a href="#cb9-252" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"Metadata extraction complete."</span>)</span>
+<span id="cb9-253"><a href="#cb9-253" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-254"><a href="#cb9-254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-255"><a href="#cb9-255" aria-hidden="true" tabindex="-1"></a><span class="co"># Preview Combined Data</span></span>
 <span id="cb9-256"><a href="#cb9-256" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">nrow</span>(inventory) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb9-257"><a href="#cb9-257" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb9-258"><a href="#cb9-258" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Use MIMEType if available, otherwise Extension</span></span>
-<span id="cb9-259"><a href="#cb9-259" aria-hidden="true" tabindex="-1"></a>  plot_data <span class="ot">&lt;-</span> inventory <span class="sc">%&gt;%</span></span>
-<span id="cb9-260"><a href="#cb9-260" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Format_Label =</span> <span class="fu">if_else</span>(<span class="sc">!</span><span class="fu">is.na</span>(MIMEType) <span class="sc">&amp;</span> MIMEType <span class="sc">!=</span> <span class="st">""</span>, MIMEType, Extension)) <span class="sc">%&gt;%</span></span>
-<span id="cb9-261"><a href="#cb9-261" aria-hidden="true" tabindex="-1"></a>    <span class="fu">count</span>(Format_Label, <span class="at">name =</span> <span class="st">"Count"</span>, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-262"><a href="#cb9-262" aria-hidden="true" tabindex="-1"></a>    <span class="fu">head</span>(<span class="dv">15</span>)</span>
-<span id="cb9-263"><a href="#cb9-263" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-264"><a href="#cb9-264" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(plot_data, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Format_Label, Count), <span class="at">y =</span> Count)) <span class="sc">+</span></span>
-<span id="cb9-265"><a href="#cb9-265" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"#4C78A8"</span>) <span class="sc">+</span></span>
-<span id="cb9-266"><a href="#cb9-266" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb9-267"><a href="#cb9-267" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
-<span id="cb9-268"><a href="#cb9-268" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="st">"File Format Distribution"</span>,</span>
-<span id="cb9-269"><a href="#cb9-269" aria-hidden="true" tabindex="-1"></a>      <span class="at">subtitle =</span> <span class="st">"Based on MIME Type (ExifTool) where available"</span>,</span>
-<span id="cb9-270"><a href="#cb9-270" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="st">"Format / MIME Type"</span>,</span>
-<span id="cb9-271"><a href="#cb9-271" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">"File Count"</span></span>
-<span id="cb9-272"><a href="#cb9-272" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
-<span id="cb9-273"><a href="#cb9-273" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>()</span>
-<span id="cb9-274"><a href="#cb9-274" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb9-275"><a href="#cb9-275" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb9-276"><a href="#cb9-276" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-277"><a href="#cb9-277" aria-hidden="true" tabindex="-1"></a><span class="fu">## Save Results</span></span>
-<span id="cb9-278"><a href="#cb9-278" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-279"><a href="#cb9-279" aria-hidden="true" tabindex="-1"></a>We export the full inventory to help curators locate and delete the specific files flagged as "Junk" or "Zero-Byte."</span>
-<span id="cb9-280"><a href="#cb9-280" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-283"><a href="#cb9-283" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb9-284"><a href="#cb9-284" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: save-results</span></span>
-<span id="cb9-285"><a href="#cb9-285" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-286"><a href="#cb9-286" aria-hidden="true" tabindex="-1"></a>output_dir <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">"Results"</span>, <span class="st">"Inspect_Extensions"</span>)</span>
-<span id="cb9-287"><a href="#cb9-287" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(output_dir)) <span class="fu">dir.create</span>(output_dir, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb9-288"><a href="#cb9-288" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-289"><a href="#cb9-289" aria-hidden="true" tabindex="-1"></a>summary_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(output_dir, <span class="fu">paste0</span>(<span class="st">"Format_Summary_"</span>, <span class="fu">Sys.Date</span>(), <span class="st">".csv"</span>))</span>
-<span id="cb9-290"><a href="#cb9-290" aria-hidden="true" tabindex="-1"></a>inventory_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(output_dir, <span class="fu">paste0</span>(<span class="st">"Full_Inventory_ExifTool_"</span>, <span class="fu">Sys.Date</span>(), <span class="st">".csv"</span>))</span>
-<span id="cb9-291"><a href="#cb9-291" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-292"><a href="#cb9-292" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">nrow</span>(inventory) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb9-293"><a href="#cb9-293" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Generate summary</span></span>
-<span id="cb9-294"><a href="#cb9-294" aria-hidden="true" tabindex="-1"></a>  summary_table <span class="ot">&lt;-</span> inventory <span class="sc">%&gt;%</span></span>
-<span id="cb9-295"><a href="#cb9-295" aria-hidden="true" tabindex="-1"></a>    <span class="fu">count</span>(Extension, MIMEType, Risk_Flag, <span class="at">name =</span> <span class="st">"Count"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-296"><a href="#cb9-296" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(<span class="fu">desc</span>(Count))</span>
-<span id="cb9-297"><a href="#cb9-297" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb9-298"><a href="#cb9-298" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_csv</span>(summary_table, summary_file)</span>
-<span id="cb9-299"><a href="#cb9-299" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_csv</span>(inventory, inventory_file)</span>
+<span id="cb9-257"><a href="#cb9-257" aria-hidden="true" tabindex="-1"></a>  cols_to_show <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"RelativePath"</span>, <span class="st">"Extension"</span>, <span class="st">"MIMEType"</span>, <span class="st">"Risk_Flag"</span>)</span>
+<span id="cb9-258"><a href="#cb9-258" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="st">"Warning"</span> <span class="sc">%in%</span> <span class="fu">names</span>(inventory)) cols_to_show <span class="ot">&lt;-</span> <span class="fu">c</span>(cols_to_show, <span class="st">"Warning"</span>)</span>
+<span id="cb9-259"><a href="#cb9-259" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-260"><a href="#cb9-260" aria-hidden="true" tabindex="-1"></a>  <span class="fu">datatable</span>(inventory <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">any_of</span>(cols_to_show)),</span>
+<span id="cb9-261"><a href="#cb9-261" aria-hidden="true" tabindex="-1"></a>            <span class="at">options =</span> <span class="fu">list</span>(<span class="at">pageLength =</span> <span class="dv">10</span>, <span class="at">scrollX =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb9-262"><a href="#cb9-262" aria-hidden="true" tabindex="-1"></a>            <span class="at">caption =</span> <span class="st">"Table 1: File Inventory with ExifTool Metadata"</span>)</span>
+<span id="cb9-263"><a href="#cb9-263" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-264"><a href="#cb9-264" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-265"><a href="#cb9-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-266"><a href="#cb9-266" aria-hidden="true" tabindex="-1"></a><span class="fu">## Extension Summary and Visualization</span></span>
+<span id="cb9-267"><a href="#cb9-267" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-268"><a href="#cb9-268" aria-hidden="true" tabindex="-1"></a>We aggregate the inventory to visualize the dataset's content profile. This helps curators identify if the submission matches the depositor's description (e.g., "They said it was images, but I see mostly .docx files").</span>
+<span id="cb9-269"><a href="#cb9-269" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-272"><a href="#cb9-272" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb9-273"><a href="#cb9-273" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: viz-extensions</span></span>
+<span id="cb9-274"><a href="#cb9-274" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Figure 1: Top 15 File Formats by Frequency"</span></span>
+<span id="cb9-275"><a href="#cb9-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-276"><a href="#cb9-276" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">nrow</span>(inventory) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb9-277"><a href="#cb9-277" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-278"><a href="#cb9-278" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Use MIMEType if available, otherwise Extension</span></span>
+<span id="cb9-279"><a href="#cb9-279" aria-hidden="true" tabindex="-1"></a>  plot_data <span class="ot">&lt;-</span> inventory <span class="sc">%&gt;%</span></span>
+<span id="cb9-280"><a href="#cb9-280" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Format_Label =</span> <span class="fu">if_else</span>(<span class="sc">!</span><span class="fu">is.na</span>(MIMEType) <span class="sc">&amp;</span> MIMEType <span class="sc">!=</span> <span class="st">""</span>, MIMEType, Extension)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-281"><a href="#cb9-281" aria-hidden="true" tabindex="-1"></a>    <span class="fu">count</span>(Format_Label, <span class="at">name =</span> <span class="st">"Count"</span>, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-282"><a href="#cb9-282" aria-hidden="true" tabindex="-1"></a>    <span class="fu">head</span>(<span class="dv">15</span>)</span>
+<span id="cb9-283"><a href="#cb9-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-284"><a href="#cb9-284" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(plot_data, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Format_Label, Count), <span class="at">y =</span> Count)) <span class="sc">+</span></span>
+<span id="cb9-285"><a href="#cb9-285" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"#4C78A8"</span>) <span class="sc">+</span></span>
+<span id="cb9-286"><a href="#cb9-286" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb9-287"><a href="#cb9-287" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb9-288"><a href="#cb9-288" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="st">"File Format Distribution"</span>,</span>
+<span id="cb9-289"><a href="#cb9-289" aria-hidden="true" tabindex="-1"></a>      <span class="at">subtitle =</span> <span class="st">"Based on MIME Type (ExifTool) where available"</span>,</span>
+<span id="cb9-290"><a href="#cb9-290" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="st">"Format / MIME Type"</span>,</span>
+<span id="cb9-291"><a href="#cb9-291" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">"File Count"</span></span>
+<span id="cb9-292"><a href="#cb9-292" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb9-293"><a href="#cb9-293" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>()</span>
+<span id="cb9-294"><a href="#cb9-294" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-295"><a href="#cb9-295" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-296"><a href="#cb9-296" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-297"><a href="#cb9-297" aria-hidden="true" tabindex="-1"></a><span class="fu">## Save Results</span></span>
+<span id="cb9-298"><a href="#cb9-298" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-299"><a href="#cb9-299" aria-hidden="true" tabindex="-1"></a>We export the full inventory to help curators locate and delete the specific files flagged as "Junk" or "Zero-Byte."</span>
 <span id="cb9-300"><a href="#cb9-300" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-301"><a href="#cb9-301" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"Reports saved:"</span>)</span>
-<span id="cb9-302"><a href="#cb9-302" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"1. "</span>, summary_file)</span>
-<span id="cb9-303"><a href="#cb9-303" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"2. "</span>, inventory_file)</span>
-<span id="cb9-304"><a href="#cb9-304" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb9-305"><a href="#cb9-305" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb9-306"><a href="#cb9-306" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-307"><a href="#cb9-307" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb9-303"><a href="#cb9-303" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb9-304"><a href="#cb9-304" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: save-results</span></span>
+<span id="cb9-305"><a href="#cb9-305" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-306"><a href="#cb9-306" aria-hidden="true" tabindex="-1"></a>output_dir <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">"Results"</span>, <span class="st">"Inspect_Extensions"</span>)</span>
+<span id="cb9-307"><a href="#cb9-307" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(output_dir)) <span class="fu">dir.create</span>(output_dir, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb9-308"><a href="#cb9-308" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-309"><a href="#cb9-309" aria-hidden="true" tabindex="-1"></a><span class="fu">## Curation Insights</span></span>
-<span id="cb9-310"><a href="#cb9-310" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-311"><a href="#cb9-311" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Zero-Byte Risks:** A file with 0 bytes is technically valid in the filesystem but semantically empty. It may indicate a failed file transfer (e.g., an FTP interruption). Check this is the case in the original deposit for this file, then check with the depositor to confirm the file is safe to remove.</span>
-<span id="cb9-312"><a href="#cb9-312" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-313"><a href="#cb9-313" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Extension Mismatches:** If you see a generic extension like .dat or .file, the depositor may have removed the extension. Use tools like DROID (see below) to identify the true format.</span>
+<span id="cb9-309"><a href="#cb9-309" aria-hidden="true" tabindex="-1"></a><span class="co"># Label for output filenames: name of the folder that was explored</span></span>
+<span id="cb9-310"><a href="#cb9-310" aria-hidden="true" tabindex="-1"></a>dir_label <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">"[^A-Za-z0-9_.-]"</span>, <span class="st">"_"</span>, <span class="fu">basename</span>(<span class="fu">sub</span>(<span class="st">"[/</span><span class="sc">\\\\</span><span class="st">]+$"</span>, <span class="st">""</span>, target_dir)))</span>
+<span id="cb9-311"><a href="#cb9-311" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-312"><a href="#cb9-312" aria-hidden="true" tabindex="-1"></a>summary_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(output_dir, <span class="fu">paste0</span>(<span class="st">"Format_Summary_"</span>, dir_label, <span class="st">"_"</span>, <span class="fu">Sys.Date</span>(), <span class="st">".csv"</span>))</span>
+<span id="cb9-313"><a href="#cb9-313" aria-hidden="true" tabindex="-1"></a>inventory_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(output_dir, <span class="fu">paste0</span>(<span class="st">"Full_Inventory_ExifTool_"</span>, dir_label, <span class="st">"_"</span>, <span class="fu">Sys.Date</span>(), <span class="st">".csv"</span>))</span>
 <span id="cb9-314"><a href="#cb9-314" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-315"><a href="#cb9-315" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Corrupted Files:** Filter for rows where the Warning column is not empty. ExifTool often detects truncated files that standard file system checks miss.</span>
-<span id="cb9-316"><a href="#cb9-316" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-317"><a href="#cb9-317" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Preservation vs. Access:** Distinguish between "Originals" (e.g., .wav, .tiff) and "Derivatives" (e.g., .mp3, .jpg). Ideally, the archive should preserve the uncompressed originals (see https://www.loc.gov/preservation/digital/formats/).</span>
-<span id="cb9-318"><a href="#cb9-318" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-319"><a href="#cb9-319" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Metadata Privacy:** Check the Author or GPS columns, if extracted. Check if these contain real names or locations for a de-identified dataset, and discuss with the depositor to confirm the files can and should be scrubbed before publishing.</span>
+<span id="cb9-315"><a href="#cb9-315" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">nrow</span>(inventory) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb9-316"><a href="#cb9-316" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Generate summary</span></span>
+<span id="cb9-317"><a href="#cb9-317" aria-hidden="true" tabindex="-1"></a>  summary_table <span class="ot">&lt;-</span> inventory <span class="sc">%&gt;%</span></span>
+<span id="cb9-318"><a href="#cb9-318" aria-hidden="true" tabindex="-1"></a>    <span class="fu">count</span>(Extension, MIMEType, Risk_Flag, <span class="at">name =</span> <span class="st">"Count"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-319"><a href="#cb9-319" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(<span class="fu">desc</span>(Count))</span>
 <span id="cb9-320"><a href="#cb9-320" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-321"><a href="#cb9-321" aria-hidden="true" tabindex="-1"></a><span class="fu">## Additional Tools for Researchers</span></span>
-<span id="cb9-322"><a href="#cb9-322" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-323"><a href="#cb9-323" aria-hidden="true" tabindex="-1"></a>This notebook performs some file identification. Here are some other tools for file identification.</span>
-<span id="cb9-324"><a href="#cb9-324" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-325"><a href="#cb9-325" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Siegfried / DROID:** A tool for <span class="co">[</span><span class="ot">format identification</span><span class="co">](nationalarchives.gov.uk/information-management/manage-information/preserving-digital-records/droid/)</span>. It scans the file's binary signature (Magic Number) and matches it against PRONOM, the technical registry maintained by The National Archives UK (see https://www.itforarchivists.com/siegfried).</span>
-<span id="cb9-326"><a href="#cb9-326" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-327"><a href="#cb9-327" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Apache Tika:** A <span class="co">[</span><span class="ot">toolkit</span><span class="co">](tika.apache.org)</span> that detects thousands of file types and extracts metadata (e.g., Author, Date) from within the files.</span>
-<span id="cb9-328"><a href="#cb9-328" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-329"><a href="#cb9-329" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**FIDO (Format Identification for Digital Objects):** A command-line tool designed for simplified integration into preservation pipelines (see https://openpreservation.org/tools/fido/).</span>
-<span id="cb9-330"><a href="#cb9-330" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-331"><a href="#cb9-331" aria-hidden="true" tabindex="-1"></a><span class="fu">## Using the Non-Interactive R Script</span></span>
-<span id="cb9-332"><a href="#cb9-332" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-333"><a href="#cb9-333" aria-hidden="true" tabindex="-1"></a>For users who want to run this analysis on a server or from the command line, a pure R script is available to perform the same process.</span>
-<span id="cb9-334"><a href="#cb9-334" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-335"><a href="#cb9-335" aria-hidden="true" tabindex="-1"></a>**Prerequisites:** \* R with `tidyverse`, `magick`, and `exiftoolr` installed. \* **ExifTool** command-line software must be installed on the system.</span>
+<span id="cb9-321"><a href="#cb9-321" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_excel_csv</span>(summary_table, summary_file)</span>
+<span id="cb9-322"><a href="#cb9-322" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_excel_csv</span>(inventory, inventory_file)</span>
+<span id="cb9-323"><a href="#cb9-323" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-324"><a href="#cb9-324" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Codebooks: describe the columns in each report. Warn (rather than fail) if</span></span>
+<span id="cb9-325"><a href="#cb9-325" aria-hidden="true" tabindex="-1"></a>  <span class="co"># a report has columns the codebook doesn't describe yet, so schema drift is</span></span>
+<span id="cb9-326"><a href="#cb9-326" aria-hidden="true" tabindex="-1"></a>  <span class="co"># visible instead of silently undocumented.</span></span>
+<span id="cb9-327"><a href="#cb9-327" aria-hidden="true" tabindex="-1"></a>  warn_undocumented_columns <span class="ot">&lt;-</span> <span class="cf">function</span>(data, codebook, report_name) {</span>
+<span id="cb9-328"><a href="#cb9-328" aria-hidden="true" tabindex="-1"></a>    undocumented <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(<span class="fu">names</span>(data), codebook<span class="sc">$</span>Variable)</span>
+<span id="cb9-329"><a href="#cb9-329" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">length</span>(undocumented) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb9-330"><a href="#cb9-330" aria-hidden="true" tabindex="-1"></a>      <span class="fu">warning</span>(<span class="fu">sprintf</span>(</span>
+<span id="cb9-331"><a href="#cb9-331" aria-hidden="true" tabindex="-1"></a>        <span class="st">"%s has column(s) not described in its codebook: %s. Update the codebook in this notebook."</span>,</span>
+<span id="cb9-332"><a href="#cb9-332" aria-hidden="true" tabindex="-1"></a>        report_name, <span class="fu">paste</span>(undocumented, <span class="at">collapse =</span> <span class="st">", "</span>)</span>
+<span id="cb9-333"><a href="#cb9-333" aria-hidden="true" tabindex="-1"></a>      ), <span class="at">call. =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb9-334"><a href="#cb9-334" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb9-335"><a href="#cb9-335" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb9-336"><a href="#cb9-336" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-337"><a href="#cb9-337" aria-hidden="true" tabindex="-1"></a>Download the **R Script:** [**`Inspect_Extensions_Script.R`**](Scripts/Inspect_Extensions_Script.R)</span>
-<span id="cb9-338"><a href="#cb9-338" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-339"><a href="#cb9-339" aria-hidden="true" tabindex="-1"></a><span class="fu">### Example HPC Submission Script</span></span>
-<span id="cb9-340"><a href="#cb9-340" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-341"><a href="#cb9-341" aria-hidden="true" tabindex="-1"></a><span class="in">``` bash</span></span>
-<span id="cb9-342"><a href="#cb9-342" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb9-343"><a href="#cb9-343" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --nodes=1</span></span>
-<span id="cb9-344"><a href="#cb9-344" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --ntasks=1</span></span>
-<span id="cb9-345"><a href="#cb9-345" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=00:30:00</span></span>
-<span id="cb9-346"><a href="#cb9-346" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=ext_check_exif</span></span>
-<span id="cb9-347"><a href="#cb9-347" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-348"><a href="#cb9-348" aria-hidden="true" tabindex="-1"></a><span class="co"># Load R module</span></span>
-<span id="cb9-349"><a href="#cb9-349" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load R</span>
-<span id="cb9-350"><a href="#cb9-350" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-351"><a href="#cb9-351" aria-hidden="true" tabindex="-1"></a><span class="co"># Load Perl module (Often required for ExifTool to run)</span></span>
-<span id="cb9-352"><a href="#cb9-352" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load perl </span>
-<span id="cb9-353"><a href="#cb9-353" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-354"><a href="#cb9-354" aria-hidden="true" tabindex="-1"></a><span class="co"># Define directories</span></span>
-<span id="cb9-355"><a href="#cb9-355" aria-hidden="true" tabindex="-1"></a><span class="va">DATA_DIR</span><span class="op">=</span><span class="st">"/scratch/your_user/data_folder"</span></span>
-<span id="cb9-356"><a href="#cb9-356" aria-hidden="true" tabindex="-1"></a><span class="va">OUTPUT_DIR</span><span class="op">=</span><span class="st">"/scratch/your_user/inventory_results"</span></span>
-<span id="cb9-357"><a href="#cb9-357" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-358"><a href="#cb9-358" aria-hidden="true" tabindex="-1"></a><span class="co"># Run Script</span></span>
-<span id="cb9-359"><a href="#cb9-359" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> Inspect_Extensions_Script.R <span class="va">$DATA_DIR</span> <span class="va">$OUTPUT_DIR</span></span>
-<span id="cb9-360"><a href="#cb9-360" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-337"><a href="#cb9-337" aria-hidden="true" tabindex="-1"></a>  inventory_codebook <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb9-338"><a href="#cb9-338" aria-hidden="true" tabindex="-1"></a>    <span class="at">Variable =</span> <span class="fu">c</span>(<span class="st">"FullPath"</span>, <span class="st">"FileName"</span>, <span class="st">"RelativePath"</span>, <span class="st">"Extension"</span>, <span class="st">"Size_Bytes"</span>,</span>
+<span id="cb9-339"><a href="#cb9-339" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"Size_MB"</span>, <span class="st">"Risk_Flag"</span>, <span class="st">"MIMEType"</span>, <span class="st">"FileType"</span>, <span class="st">"Author"</span>, <span class="st">"CreateDate"</span>,</span>
+<span id="cb9-340"><a href="#cb9-340" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"Warning"</span>, <span class="st">"ImageSize"</span>),</span>
+<span id="cb9-341"><a href="#cb9-341" aria-hidden="true" tabindex="-1"></a>    <span class="at">Type =</span> <span class="fu">c</span>(<span class="st">"Text"</span>, <span class="st">"Text"</span>, <span class="st">"Text"</span>, <span class="st">"Text"</span>, <span class="st">"Integer"</span>, <span class="st">"Numeric"</span>, <span class="st">"Text"</span>,</span>
+<span id="cb9-342"><a href="#cb9-342" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Text"</span>, <span class="st">"Text"</span>, <span class="st">"Text"</span>, <span class="st">"Text"</span>, <span class="st">"Text"</span>, <span class="st">"Text"</span>),</span>
+<span id="cb9-343"><a href="#cb9-343" aria-hidden="true" tabindex="-1"></a>    <span class="at">Description =</span> <span class="fu">c</span>(</span>
+<span id="cb9-344"><a href="#cb9-344" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Absolute path to the file on disk at scan time."</span>,</span>
+<span id="cb9-345"><a href="#cb9-345" aria-hidden="true" tabindex="-1"></a>      <span class="st">"File name only (no path)."</span>,</span>
+<span id="cb9-346"><a href="#cb9-346" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Path relative to the scanned target directory."</span>,</span>
+<span id="cb9-347"><a href="#cb9-347" aria-hidden="true" tabindex="-1"></a>      <span class="st">'Lowercased file extension including the leading dot; "(no extension)" if none.'</span>,</span>
+<span id="cb9-348"><a href="#cb9-348" aria-hidden="true" tabindex="-1"></a>      <span class="st">"File size in bytes."</span>,</span>
+<span id="cb9-349"><a href="#cb9-349" aria-hidden="true" tabindex="-1"></a>      <span class="st">"File size in megabytes."</span>,</span>
+<span id="cb9-350"><a href="#cb9-350" aria-hidden="true" tabindex="-1"></a>      <span class="st">'"Zero-Byte File", "System Junk" (.DS_Store, Thumbs.db, __MACOSX), "Executable" (.exe/.bat/.sh/.bin/.jar), or "Clean".'</span>,</span>
+<span id="cb9-351"><a href="#cb9-351" aria-hidden="true" tabindex="-1"></a>      <span class="st">"File type reported by ExifTool from the file's actual binary signature (may differ from Extension if the file is mislabeled); blank if ExifTool could not identify it or is unavailable."</span>,</span>
+<span id="cb9-352"><a href="#cb9-352" aria-hidden="true" tabindex="-1"></a>      <span class="st">"File format/type name reported by ExifTool; blank under the same conditions as MIMEType."</span>,</span>
+<span id="cb9-353"><a href="#cb9-353" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Author metadata embedded in the file, when present and ExifTool could read it."</span>,</span>
+<span id="cb9-354"><a href="#cb9-354" aria-hidden="true" tabindex="-1"></a>      <span class="st">"File creation date embedded in the file's metadata, when present."</span>,</span>
+<span id="cb9-355"><a href="#cb9-355" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Any warning ExifTool raised while reading the file (e.g. a corrupt or unrecognized structure)."</span>,</span>
+<span id="cb9-356"><a href="#cb9-356" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Pixel dimensions reported by ExifTool for image files; only present when ExifTool returns it."</span></span>
+<span id="cb9-357"><a href="#cb9-357" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb9-358"><a href="#cb9-358" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-359"><a href="#cb9-359" aria-hidden="true" tabindex="-1"></a>  <span class="fu">warn_undocumented_columns</span>(inventory, inventory_codebook, <span class="st">"Full_Inventory_ExifTool"</span>)</span>
+<span id="cb9-360"><a href="#cb9-360" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_excel_csv</span>(inventory_codebook, <span class="fu">file.path</span>(output_dir, <span class="st">"Full_Inventory_ExifTool_Codebook.csv"</span>))</span>
 <span id="cb9-361"><a href="#cb9-361" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-362"><a href="#cb9-362" aria-hidden="true" tabindex="-1"></a><span class="fu">## References</span></span>
-<span id="cb9-363"><a href="#cb9-363" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-364"><a href="#cb9-364" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
-<span id="cb9-365"><a href="#cb9-365" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb9-362"><a href="#cb9-362" aria-hidden="true" tabindex="-1"></a>  summary_codebook <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb9-363"><a href="#cb9-363" aria-hidden="true" tabindex="-1"></a>    <span class="at">Variable =</span> <span class="fu">c</span>(<span class="st">"Extension"</span>, <span class="st">"MIMEType"</span>, <span class="st">"Risk_Flag"</span>, <span class="st">"Count"</span>),</span>
+<span id="cb9-364"><a href="#cb9-364" aria-hidden="true" tabindex="-1"></a>    <span class="at">Type =</span> <span class="fu">c</span>(<span class="st">"Text"</span>, <span class="st">"Text"</span>, <span class="st">"Text"</span>, <span class="st">"Integer"</span>),</span>
+<span id="cb9-365"><a href="#cb9-365" aria-hidden="true" tabindex="-1"></a>    <span class="at">Description =</span> <span class="fu">c</span>(</span>
+<span id="cb9-366"><a href="#cb9-366" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Lowercased file extension, as in Full_Inventory_ExifTool."</span>,</span>
+<span id="cb9-367"><a href="#cb9-367" aria-hidden="true" tabindex="-1"></a>      <span class="st">"File type reported by ExifTool, as in Full_Inventory_ExifTool."</span>,</span>
+<span id="cb9-368"><a href="#cb9-368" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Risk category, as in Full_Inventory_ExifTool."</span>,</span>
+<span id="cb9-369"><a href="#cb9-369" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Number of files sharing this Extension/MIMEType/Risk_Flag combination."</span></span>
+<span id="cb9-370"><a href="#cb9-370" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb9-371"><a href="#cb9-371" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-372"><a href="#cb9-372" aria-hidden="true" tabindex="-1"></a>  <span class="fu">warn_undocumented_columns</span>(summary_table, summary_codebook, <span class="st">"Format_Summary"</span>)</span>
+<span id="cb9-373"><a href="#cb9-373" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_excel_csv</span>(summary_codebook, <span class="fu">file.path</span>(output_dir, <span class="st">"Format_Summary_Codebook.csv"</span>))</span>
+<span id="cb9-374"><a href="#cb9-374" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-375"><a href="#cb9-375" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"Reports saved:"</span>)</span>
+<span id="cb9-376"><a href="#cb9-376" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"1. "</span>, summary_file)</span>
+<span id="cb9-377"><a href="#cb9-377" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"2. "</span>, inventory_file)</span>
+<span id="cb9-378"><a href="#cb9-378" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-379"><a href="#cb9-379" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-380"><a href="#cb9-380" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-381"><a href="#cb9-381" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb9-382"><a href="#cb9-382" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-383"><a href="#cb9-383" aria-hidden="true" tabindex="-1"></a><span class="fu">## Curation Insights</span></span>
+<span id="cb9-384"><a href="#cb9-384" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-385"><a href="#cb9-385" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Zero-Byte Risks:** A file with 0 bytes is technically valid in the filesystem but semantically empty. It may indicate a failed file transfer (e.g., an FTP interruption). Check this is the case in the original deposit for this file, then check with the depositor to confirm the file is safe to remove.</span>
+<span id="cb9-386"><a href="#cb9-386" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-387"><a href="#cb9-387" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Extension Mismatches:** If you see a generic extension like .dat or .file, the depositor may have removed the extension. Use tools like DROID (see below) to identify the true format.</span>
+<span id="cb9-388"><a href="#cb9-388" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-389"><a href="#cb9-389" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Corrupted Files:** Filter for rows where the Warning column is not empty. ExifTool often detects truncated files that standard file system checks miss.</span>
+<span id="cb9-390"><a href="#cb9-390" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-391"><a href="#cb9-391" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Preservation vs. Access:** Distinguish between "Originals" (e.g., .wav, .tiff) and "Derivatives" (e.g., .mp3, .jpg). Ideally, the archive should preserve the uncompressed originals (see https://www.loc.gov/preservation/digital/formats/).</span>
+<span id="cb9-392"><a href="#cb9-392" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-393"><a href="#cb9-393" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Metadata Privacy:** Check the Author or GPS columns, if extracted. Check if these contain real names or locations for a de-identified dataset, and discuss with the depositor to confirm the files can and should be scrubbed before publishing.</span>
+<span id="cb9-394"><a href="#cb9-394" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-395"><a href="#cb9-395" aria-hidden="true" tabindex="-1"></a><span class="fu">## Additional Tools for Researchers</span></span>
+<span id="cb9-396"><a href="#cb9-396" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-397"><a href="#cb9-397" aria-hidden="true" tabindex="-1"></a>This notebook performs some file identification. Here are some other tools for file identification.</span>
+<span id="cb9-398"><a href="#cb9-398" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-399"><a href="#cb9-399" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Siegfried / DROID:** A tool for <span class="co">[</span><span class="ot">format identification</span><span class="co">](nationalarchives.gov.uk/information-management/manage-information/preserving-digital-records/droid/)</span>. It scans the file's binary signature (Magic Number) and matches it against PRONOM, the technical registry maintained by The National Archives UK (see https://www.itforarchivists.com/siegfried).</span>
+<span id="cb9-400"><a href="#cb9-400" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-401"><a href="#cb9-401" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Apache Tika:** A <span class="co">[</span><span class="ot">toolkit</span><span class="co">](tika.apache.org)</span> that detects thousands of file types and extracts metadata (e.g., Author, Date) from within the files.</span>
+<span id="cb9-402"><a href="#cb9-402" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-403"><a href="#cb9-403" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**FIDO (Format Identification for Digital Objects):** A command-line tool designed for simplified integration into preservation pipelines (see https://openpreservation.org/tools/fido/).</span>
+<span id="cb9-404"><a href="#cb9-404" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-405"><a href="#cb9-405" aria-hidden="true" tabindex="-1"></a><span class="fu">## Using the Non-Interactive R Script</span></span>
+<span id="cb9-406"><a href="#cb9-406" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-407"><a href="#cb9-407" aria-hidden="true" tabindex="-1"></a>For users who want to run this analysis on a server or from the command line, a pure R script is available to perform the same process.</span>
+<span id="cb9-408"><a href="#cb9-408" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-409"><a href="#cb9-409" aria-hidden="true" tabindex="-1"></a>**Prerequisites:** \* R with `tidyverse`, `magick`, and `exiftoolr` installed. \* **ExifTool** command-line software must be installed on the system.</span>
+<span id="cb9-410"><a href="#cb9-410" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-411"><a href="#cb9-411" aria-hidden="true" tabindex="-1"></a>Download the **R Script:** [**`Inspect_Extensions_Script.R`**](Scripts/Inspect_Extensions_Script.R)</span>
+<span id="cb9-412"><a href="#cb9-412" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-413"><a href="#cb9-413" aria-hidden="true" tabindex="-1"></a><span class="fu">### Example HPC Submission Script</span></span>
+<span id="cb9-414"><a href="#cb9-414" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-415"><a href="#cb9-415" aria-hidden="true" tabindex="-1"></a><span class="in">``` bash</span></span>
+<span id="cb9-416"><a href="#cb9-416" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb9-417"><a href="#cb9-417" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --nodes=1</span></span>
+<span id="cb9-418"><a href="#cb9-418" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --ntasks=1</span></span>
+<span id="cb9-419"><a href="#cb9-419" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=00:30:00</span></span>
+<span id="cb9-420"><a href="#cb9-420" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=ext_check_exif</span></span>
+<span id="cb9-421"><a href="#cb9-421" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-422"><a href="#cb9-422" aria-hidden="true" tabindex="-1"></a><span class="co"># Load R Module</span></span>
+<span id="cb9-423"><a href="#cb9-423" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load R</span>
+<span id="cb9-424"><a href="#cb9-424" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-425"><a href="#cb9-425" aria-hidden="true" tabindex="-1"></a><span class="co"># Load Perl module (Often required for ExifTool to run)</span></span>
+<span id="cb9-426"><a href="#cb9-426" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load perl </span>
+<span id="cb9-427"><a href="#cb9-427" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-428"><a href="#cb9-428" aria-hidden="true" tabindex="-1"></a><span class="co"># Define directories</span></span>
+<span id="cb9-429"><a href="#cb9-429" aria-hidden="true" tabindex="-1"></a><span class="va">DATA_DIR</span><span class="op">=</span><span class="st">"/scratch/your_user/data_folder"</span></span>
+<span id="cb9-430"><a href="#cb9-430" aria-hidden="true" tabindex="-1"></a><span class="va">OUTPUT_DIR</span><span class="op">=</span><span class="st">"/scratch/your_user/inventory_results"</span></span>
+<span id="cb9-431"><a href="#cb9-431" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-432"><a href="#cb9-432" aria-hidden="true" tabindex="-1"></a><span class="co"># Run Script</span></span>
+<span id="cb9-433"><a href="#cb9-433" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> Inspect_Extensions_Script.R <span class="va">$DATA_DIR</span> <span class="va">$OUTPUT_DIR</span></span>
+<span id="cb9-434"><a href="#cb9-434" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-435"><a href="#cb9-435" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-436"><a href="#cb9-436" aria-hidden="true" tabindex="-1"></a><span class="fu">## References</span></span>
+<span id="cb9-437"><a href="#cb9-437" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-438"><a href="#cb9-438" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
+<span id="cb9-439"><a href="#cb9-439" aria-hidden="true" tabindex="-1"></a>:::</span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
