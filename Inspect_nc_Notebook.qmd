@@ -70,7 +70,7 @@ Les packages R suivants sont requis. Si vous ne disposez pas de ces packages, d�
 
 ------------------------------------------------------------------------
 
-### Load libraries // Charger les bibliothèques
+### Load Libraries // Charger les bibliothèques
 
 ```{r}
 #| label: load-libraries
@@ -84,7 +84,7 @@ library(rstudioapi) # For directory selection
 
 ------------------------------------------------------------------------
 
-## Select a target directory // Sélectionnez un répertoire de destination
+## Select Target Directory // Sélectionner le répertoire cible
 
 This block allows for interactive selection of the image directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.
 
@@ -112,7 +112,7 @@ if (!is.null(selected_dir)) {
 print(paste("Analyzing directory:", target_dir))
 ```
 
-### Inventory of NetCDF files // Liste des fichiers NetCDF
+### Inventory of NetCDF Files // Liste des fichiers NetCDF
 
 Now we scan the selected directory for all `.nc` files.
 
@@ -126,7 +126,7 @@ Nous allons maintenant rechercher tous les fichiers `.nc` dans le répertoire s�
 # Find all NetCDF files
 nc_files <- list.files(
   path = target_dir,
-  pattern = "\\.nc$",
+  pattern = "\\.nc[4]?$",
   recursive = TRUE,
   full.names = TRUE,
   ignore.case = TRUE
@@ -139,7 +139,7 @@ head(nc_files)
 
 ------------------------------------------------------------------------
 
-## Usability scan // Analyse de l'utilisabilité
+## Usability Scan // Analyse de l'utilisabilité
 
 This phase evaluates the "fitness for use." We check if the files contain valid spatial coordinates (CRS) and if the data variables actually contain numbers (Data Health).
 
@@ -152,7 +152,7 @@ Cette phase évalue la « pertinence d'utilisation ». Nous vérifions si les fi
 #| warning: false
 #| message: false
 
-nc_files <- list.files(target_dir, pattern = "\\.nc$", full.names = TRUE, recursive = TRUE)
+nc_files <- list.files(target_dir, pattern = "\\.nc[4]?$", full.names = TRUE, recursive = TRUE, ignore.case = TRUE)
 
 # Helper: Usability Scan
 inspect_nc_inventory <- function(fp) {
@@ -197,13 +197,12 @@ inspect_nc_inventory <- function(fp) {
   is_empty_label <- "Unknown"
   try({
     first_var <- vars$name[1]
-    # Pull first 100 values only
-    sample_data <- tnc %>% 
-      activate(first_var) %>% 
-      hyper_slice(select_var = first_var) %>% 
-      as_tibble()
-    
-    val_col <- names(sample_data)[ncol(sample_data)]
+    # Pull a small sample only
+    sample_data <- tnc %>%
+      activate(first_var) %>%
+      hyper_tibble(select_var = first_var)
+
+    val_col <- first_var
     if (all(is.na(sample_data[[val_col]]))) {
       is_empty_label <- "⚠️ All NaNs (Empty)"
     } else {
@@ -276,7 +275,7 @@ print("Deep extraction complete.")
 
 ------------------------------------------------------------------------
 
-## Reshape metadata for comparison // Réorganisation des métadonnées à des fins de comparaison
+## Reshape Metadata for Comparison // Réorganisation des métadonnées à des fins de comparaison
 
 We reshape the metadata into two summary tables: one for Global Attributes (file-level) and one for Variable Attributes (variable-level).
 
@@ -326,22 +325,24 @@ head(nc_variables_with_attributes)
 output_dir <- "Results/Inspect_nc"
 dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
+# Label for output filenames: name of the folder that was explored
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
 timestamp <- format(Sys.Date(), "%Y%m%d")
 
 # 1. Save Inventory (High-Level Scan)
-write.csv(inventory_results, file.path(output_dir, paste0("NetCDF_Inventory_", timestamp, ".csv")), row.names = FALSE)
+write_excel_csv(inventory_results, file.path(output_dir, paste0("NetCDF_Inventory_", dir_label, "_", timestamp, ".csv")))
 
 # 2. Save Deep Metadata (Detailed Tables)
-write.csv(nc_dimensions, file.path(output_dir, paste0("NetCDF_Dimensions_", timestamp, ".csv")), row.names = FALSE)
-write.csv(nc_attributes_global, file.path(output_dir, paste0("NetCDF_Global_Attributes_", timestamp, ".csv")), row.names = FALSE)
-write.csv(nc_variables_with_attributes, file.path(output_dir, paste0("NetCDF_Variables_Attributes_", timestamp, ".csv")), row.names = FALSE)
+write_excel_csv(nc_dimensions, file.path(output_dir, paste0("NetCDF_Dimensions_", dir_label, "_", timestamp, ".csv")))
+write_excel_csv(nc_attributes_global, file.path(output_dir, paste0("NetCDF_Global_Attributes_", dir_label, "_", timestamp, ".csv")))
+write_excel_csv(nc_variables_with_attributes, file.path(output_dir, paste0("NetCDF_Variables_Attributes_", dir_label, "_", timestamp, ".csv")))
 
 print(paste("All reports saved to:", output_dir))
 ```
 
 ------------------------------------------------------------------------
 
-## Curation Insights // Aperçu de curation
+## Curation Insights // Aperçu de la curation
 
 Use the generated reports to guide your curation actions:
 
@@ -361,7 +362,7 @@ Use the generated reports to guide your curation actions:
 
 ## Additional Tools & Resources // Outils et ressources supplémentaires
 
-### Verify consistent global attributes // Vérifier la cohérence des attributs globaux
+### Verify Consistent Global Attributes // Vérifier la cohérence des attributs globaux
 
 Verify if all files in a dataset have the same `title`, `institution`, `source`, and CF `Conventions`.
 
@@ -386,7 +387,7 @@ if (nrow(nc_attributes_global) > 0) {
 }
 ```
 
-### Check for essential variable attributes // Vérification des attributs essentiels des variables
+### Check for Essential Variable Attributes // Vérification des attributs essentiels des variables
 
 For data to be reusable, variables should always have attributes like `long_name` and `units`. This section allows checking for missing attributes across all variables.
 

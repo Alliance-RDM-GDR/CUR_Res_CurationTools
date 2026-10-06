@@ -4,6 +4,7 @@ This file documents the evolution of the **Research Data Curator's Toolbox** fro
 
 ## [2026-10-06] - Workshop Scripts Ready to Run
 - **Scripts**: Added the Tidy Data and README-vs-files scripts and brought the csv, nc, Extensions, Images, PDF, hdf5 and sqlite scripts up to the versions shown in the workshop.
+- **Notebooks**: Updated the csv, nc, Extensions, Images, PDF, hdf5 and sqlite notebooks to match (standard headings, directory-labelled outputs, data-dictionary codebooks).
 - **Setup**: New `Scripts/install_requirements.R` and `Scripts/REQUIREMENTS.md` list the packages and external tools the workshop scripts need.
 
 ## [2026-10-05] - Workshop Deck Update
