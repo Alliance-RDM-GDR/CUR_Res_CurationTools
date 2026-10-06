@@ -1,0 +1,427 @@
+---
+title: "Tidy Data Screen (CSV and Excel)"
+author: "Data Curation Team"
+date: "2026-10-06"
+format:
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+    theme: cosmo
+params:
+  target_dir: "data/Inspect_TidyData/"
+bibliography: references.bib
+---
+
+## Overview // Aperçu
+
+Tidy data follow three rules: each variable is a column, each observation is a row, and each kind of observational unit is its own table [@wickham2014]. Data that break these rules are harder to analyze, to combine, and to reuse. Tables delivered as spreadsheets often do, with repeated headers, stacked blocks, blank separator rows, or years spread across columns.
+
+//
+
+Les données ordonnées (*tidy*) suivent trois règles : chaque variable est une colonne, chaque observation est une ligne et chaque type d'unité d'observation forme son propre tableau [@wickham2014]. Les données qui enfreignent ces règles sont plus difficiles à analyser, à combiner et à réutiliser. Les tableaux livrés sous forme de feuilles de calcul le font souvent : en-têtes répétés, blocs empilés, lignes vides de séparation ou années réparties en colonnes.
+
+::: {.callout-note title="Curation Goal // Objectif de la curation"}
+Screen CSV and Excel tables for structural signs of untidy data, and recommend CSV over Excel for FAIR and accessible sharing. The screen raises red flags for a human to confirm. It does not give a tidy-data verdict.
+//
+Repérer dans les tableaux CSV et Excel les signes structurels de données non ordonnées, et recommander le format CSV plutôt qu'Excel pour un partage conforme aux principes FAIR et accessible. Le contrôle signale des points d'alerte qu'un humain doit confirmer. Il ne rend pas de verdict sur le caractère ordonné des données.
+:::
+
+::: {.callout-warning title="Identifying Risks // Identification des risques"}
+This is a **heuristic** screen. A file with no flags is not guaranteed to be tidy, and a flagged file is not guaranteed to be wrong. Every flag needs a human read of the file. The screen only catches structural evidence, and cannot judge meaning.
+//
+Il s'agit d'un contrôle **heuristique**. Un fichier sans signal n'est pas garanti ordonné, et un fichier signalé n'est pas garanti erroné. Chaque signal exige une lecture humaine du fichier. Le contrôle ne détecte que des indices structurels et ne peut pas juger du sens.
+:::
+
+**This notebook raises five flags:**
+
+1.  **`DUPLICATE_HEADERS`:** The same column name appears more than once.
+2.  **`EMBEDDED_BLANK_ROWS`:** A fully blank row sits inside the table.
+3.  **`POSSIBLE_STACKED_TABLES`:** A later row repeats the header row, suggesting a second block under the same headers.
+4.  **`POSSIBLE_WIDE_FORMAT`:** Most column names look like years or dates, so one variable may be spread across columns.
+5.  **`HEADER_HYGIENE_ISSUES`:** Column names contain spaces or special characters, or are empty, so they cannot be used directly as variable names.
+
+//
+
+**Ce cahier soulève cinq signaux :**
+
+1.  **`DUPLICATE_HEADERS` :** Le même nom de colonne apparaît plus d'une fois.
+2.  **`EMBEDDED_BLANK_ROWS` :** Une ligne entièrement vide se trouve à l'intérieur du tableau.
+3.  **`POSSIBLE_STACKED_TABLES` :** Une ligne ultérieure répète la ligne d'en-tête, ce qui laisse penser à un second bloc sous les mêmes en-têtes.
+4.  **`POSSIBLE_WIDE_FORMAT` :** La plupart des noms de colonnes ressemblent à des années ou à des dates ; une variable est peut-être répartie sur plusieurs colonnes.
+5.  **`HEADER_HYGIENE_ISSUES` :** Les noms de colonnes contiennent des espaces ou des caractères spéciaux, ou sont vides ; ils ne peuvent donc pas servir directement de noms de variables.
+
+------------------------------------------------------------------------
+
+## Setup // Configuration
+
+Excel sheets are read with `readxl`, and CSV files with `readr`. Both are read **without type conversion**, so the header row stays untouched and duplicates remain visible.
+
+//
+
+Les feuilles Excel sont lues avec `readxl` et les fichiers CSV avec `readr`. Les deux sont lus **sans conversion de type**, de sorte que la ligne d'en-tête reste intacte et que les doublons demeurent visibles.
+
+### R Packages // Packages R
+
+```{r}
+#| label: install-packages
+#| eval: false
+
+# install.packages(c("tidyverse", "readxl", "rstudioapi"))
+```
+
+### Load Libraries // Charger les bibliothèques
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+
+library(tidyverse)  # Data manipulation [@tidyverse]
+library(readxl)     # Reading Excel sheets
+library(rstudioapi) # Interactive folder selection
+```
+
+## Select Target Directory // Sélectionner le répertoire cible
+
+This block allows for interactive selection of the directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.
+
+//
+
+Ce bloc permet de sélectionner le répertoire de manière interactive. En cas d'exécution dans un environnement non interactif, le chemin par défaut est celui défini dans l'en-tête YAML.
+
+```{r}
+#| label: select-target-dir
+
+if (interactive() && .Platform$OS.type == "windows") {
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select Tabular Data Directory")
+} else {
+  selected_dir <- NULL
+}
+
+if (!is.null(selected_dir)) {
+  target_dir <- selected_dir
+} else {
+  target_dir <- params$target_dir
+}
+
+print(paste("Analyzing directory:", target_dir))
+```
+
+## Inventory of Tabular Files // Liste des fichiers tabulaires
+
+We scan for CSV and Excel files. Folders named `Curation_Results` are skipped, and so are Excel's hidden lock files (`~$...`), which appear while a workbook is open elsewhere and are not depositor content.
+
+//
+
+Nous recherchons les fichiers CSV et Excel. Les dossiers nommés `Curation_Results` sont ignorés, ainsi que les fichiers de verrouillage cachés d'Excel (`~$...`), qui apparaissent lorsqu'un classeur est ouvert ailleurs et ne font pas partie du contenu du déposant.
+
+```{r}
+#| label: inventory
+
+csv_files  <- list.files(target_dir, pattern = "\\.csv$", recursive = TRUE, full.names = TRUE, ignore.case = TRUE)
+xlsx_files <- list.files(target_dir, pattern = "\\.xls[xmb]?$", recursive = TRUE, full.names = TRUE, ignore.case = TRUE)
+csv_files  <- csv_files[!grepl("Curation_Results", csv_files, ignore.case = TRUE)]
+xlsx_files <- xlsx_files[!grepl("Curation_Results", xlsx_files, ignore.case = TRUE)]
+xlsx_files <- xlsx_files[!grepl("^~\\$", basename(xlsx_files))]
+
+print(sprintf("Found %d CSV and %d Excel file(s).", length(csv_files), length(xlsx_files)))
+```
+
+## Heuristic Checks // Contrôles heuristiques
+
+The function below takes the header row and the data rows of one table, exactly as read, and applies the five checks. A single blank row at the very end is treated as normal end-of-file noise, so only blank rows before the last row count.
+
+//
+
+La fonction ci-dessous prend la ligne d'en-tête et les lignes de données d'un tableau, telles qu'elles ont été lues, et applique les cinq contrôles. Une seule ligne vide tout à la fin est considérée comme du bruit normal de fin de fichier ; seules les lignes vides situées avant la dernière ligne comptent.
+
+```{r}
+#| label: heuristic-checks
+
+screen_table <- function(headers, raw_rows) {
+
+  duplicate_headers <- headers[duplicated(headers) & !is.na(headers) & headers != ""]
+  has_duplicate_headers <- length(duplicate_headers) > 0
+
+  is_blank_row <- function(row) all(is.na(row) | trimws(row) == "")
+  blank_row_flags <- map_lgl(raw_rows, is_blank_row)
+  n_data_rows <- length(raw_rows)
+  embedded_blank_count <- if (n_data_rows > 1) sum(blank_row_flags[seq_len(n_data_rows - 1)]) else 0
+  has_embedded_blank_rows <- embedded_blank_count > 0
+
+  # Repeated header block: a later row whose values match the header row closely
+  header_norm <- tolower(trimws(headers))
+  row_matches_header <- function(row) {
+    row_norm <- tolower(trimws(as.character(row)))
+    length(row_norm) == length(header_norm) &&
+      mean(row_norm == header_norm, na.rm = TRUE) > 0.7
+  }
+  stacked_header_rows <- which(map_lgl(raw_rows, row_matches_header))
+  has_stacked_tables <- length(stacked_header_rows) > 0
+
+  # Wide-format suspicion: most column names look like years or dates
+  year_like <- str_detect(trimws(headers), "^(19|20)\\d{2}$")
+  date_like <- str_detect(trimws(headers), "^\\d{4}-\\d{2}(-\\d{2})?$")
+  wide_suspect <- length(headers) > 3 && (mean(year_like) > 0.5 || mean(date_like) > 0.5)
+
+  # Header hygiene: a column name should be usable as a variable name as it is
+  clean_header_pattern <- "^[A-Za-z][A-Za-z0-9_.]*$"
+  describe_header_issue <- function(h) {
+    if (is.na(h) || trimws(h) == "") return("empty/unnamed column")
+    if (grepl("^\\.\\.\\.\\d+$", h)) return("empty/unnamed column")
+    if (str_detect(h, clean_header_pattern)) return(NA_character_)
+    reasons <- c(
+      if (str_detect(h, "\\s")) "contains space(s)",
+      if (str_detect(h, "[^A-Za-z0-9_. ]")) "contains special character(s)"
+    )
+    if (length(reasons) == 0) reasons <- "not a clean variable-name format"
+    paste0(h, " (", paste(reasons, collapse = ", "), ")")
+  }
+  header_issues <- purrr::map_chr(headers, describe_header_issue) %>% discard(is.na)
+  has_header_issues <- length(header_issues) > 0
+
+  tibble(
+    Has_Duplicate_Headers = has_duplicate_headers,
+    Duplicate_Header_Names = paste(unique(duplicate_headers), collapse = "; "),
+    Has_Embedded_Blank_Rows = has_embedded_blank_rows,
+    Embedded_Blank_Row_Count = embedded_blank_count,
+    Has_Stacked_Header_Block = has_stacked_tables,
+    Stacked_Header_Row_Numbers = paste(stacked_header_rows, collapse = "; "),
+    Wide_Format_Suspect = wide_suspect,
+    Has_Header_Hygiene_Issues = has_header_issues,
+    Header_Hygiene_Issues = paste(header_issues, collapse = "; ")
+  )
+}
+
+flag_summary <- function(row) {
+  flags <- c(
+    if (isTRUE(row$Has_Duplicate_Headers)) "DUPLICATE_HEADERS",
+    if (isTRUE(row$Has_Embedded_Blank_Rows)) "EMBEDDED_BLANK_ROWS",
+    if (isTRUE(row$Has_Stacked_Header_Block)) "POSSIBLE_STACKED_TABLES",
+    if (isTRUE(row$Wide_Format_Suspect)) "POSSIBLE_WIDE_FORMAT",
+    if (isTRUE(row$Has_Header_Hygiene_Issues)) "HEADER_HYGIENE_ISSUES"
+  )
+  if (length(flags) == 0) "None" else paste(flags, collapse = "; ")
+}
+```
+
+## Processing CSV Files // Traitement des fichiers CSV
+
+A `.csv` file is not guaranteed to be comma-delimited, since exports from European and French-locale software commonly use semicolons. We detect the delimiter instead of assuming it. Otherwise a semicolon file would read as a single column and every check would be meaningless. If a file is not valid UTF-8, it is read as Latin-1 for the screen, which only affects how stray accented bytes display and not the structural checks.
+
+//
+
+Un fichier `.csv` n'est pas garanti d'être séparé par des virgules, car les exportations de logiciels européens et de paramètres régionaux français utilisent souvent des points-virgules. Nous détectons le séparateur au lieu de le supposer. Sinon, un fichier à points-virgules serait lu comme une seule colonne et tous les contrôles n'auraient aucun sens. Si un fichier n'est pas en UTF-8 valide, il est lu en Latin-1 pour le contrôle, ce qui n'affecte que l'affichage des octets accentués isolés et non les contrôles structurels.
+
+```{r}
+#| label: process-csv
+
+detect_delimiter <- function(file_path) {
+  first_line <- tryCatch(readLines(file_path, n = 1, warn = FALSE), error = function(e) "")
+  if (length(first_line) == 0) return(",")
+  candidates <- c("," = ",", ";" = ";", "\t" = "\t", "|" = "|")
+  counts <- purrr::map_int(candidates, ~ lengths(regmatches(first_line, gregexpr(.x, first_line, fixed = TRUE))))
+  candidates[[which.max(counts)]]
+}
+
+empty_result <- function(fname, sheet, recommendation, flags, status) {
+  tibble(FileName = fname, Sheet = sheet, Format_Recommendation = recommendation,
+         Has_Duplicate_Headers = NA, Duplicate_Header_Names = NA,
+         Has_Embedded_Blank_Rows = NA, Embedded_Blank_Row_Count = NA,
+         Has_Stacked_Header_Block = NA, Stacked_Header_Row_Numbers = NA,
+         Wide_Format_Suspect = NA, Flags = flags, Status = status)
+}
+
+process_csv <- function(fp) {
+  fname <- basename(fp)
+  tryCatch({
+    txt <- readLines(fp, warn = FALSE, encoding = "unknown")
+    enc <- if (all(validUTF8(txt))) "UTF-8" else "latin1"
+    raw <- readr::read_delim(fp, delim = detect_delimiter(fp), col_names = FALSE, col_types = cols(.default = "c"),
+                             locale = readr::locale(encoding = enc),
+                             show_col_types = FALSE, progress = FALSE)
+    if (nrow(raw) == 0) {
+      return(empty_result(fname, NA_character_, "N/A (empty file)", "N/A (empty file)", "Empty"))
+    }
+    headers <- as.character(raw[1, ])
+    raw_rows <- if (nrow(raw) > 1) purrr::map(2:nrow(raw), ~ as.character(raw[.x, ])) else list()
+    result <- screen_table(headers, raw_rows)
+    result$Flags <- flag_summary(result)
+    result %>%
+      mutate(FileName = fname, Sheet = NA_character_,
+             Format_Recommendation = "Already CSV",
+             Status = "Success") %>%
+      select(FileName, Sheet, Format_Recommendation, everything())
+  }, error = function(e) {
+    empty_result(fname, NA_character_, NA, NA, paste("Read Failed:", e$message))
+  })
+}
+
+csv_report <- map_dfr(csv_files, process_csv)
+```
+
+## Processing Excel Files // Traitement des fichiers Excel
+
+Each sheet of a workbook is screened separately. A workbook with several sheets is recommended for conversion as one CSV per sheet.
+
+//
+
+Chaque feuille d'un classeur est contrôlée séparément. Pour un classeur comportant plusieurs feuilles, on recommande une conversion en un CSV par feuille.
+
+```{r}
+#| label: process-xlsx
+
+process_xlsx <- function(fp) {
+  fname <- basename(fp)
+  tryCatch({
+    sheets <- readxl::excel_sheets(fp)
+    map_dfr(sheets, function(sheet) {
+      tryCatch({
+        raw <- readxl::read_excel(fp, sheet = sheet, col_names = FALSE,
+                                  col_types = "text", .name_repair = "minimal")
+        if (nrow(raw) == 0) {
+          return(empty_result(fname, sheet, "N/A (empty sheet)", "N/A (empty sheet)", "Empty"))
+        }
+        headers <- as.character(raw[1, ])
+        raw_rows <- if (nrow(raw) > 1) purrr::map(2:nrow(raw), ~ as.character(raw[.x, ])) else list()
+        result <- screen_table(headers, raw_rows)
+        result$Flags <- flag_summary(result)
+        n_sheets <- length(sheets)
+        rec <- if (n_sheets > 1) {
+          sprintf("Convert to CSV (this workbook has %d sheets - export each as its own CSV)", n_sheets)
+        } else {
+          "Convert to CSV"
+        }
+        result %>%
+          mutate(FileName = fname, Sheet = sheet, Format_Recommendation = rec,
+                 Status = "Success") %>%
+          select(FileName, Sheet, Format_Recommendation, everything())
+      }, error = function(e) {
+        empty_result(fname, sheet, NA, NA, paste("Read Failed:", e$message))
+      })
+    })
+  }, error = function(e) {
+    empty_result(fname, NA_character_, NA, NA, paste("File Failed:", e$message))
+  })
+}
+
+xlsx_report <- map_dfr(xlsx_files, process_xlsx)
+
+report <- bind_rows(csv_report, xlsx_report)
+
+print("--- Tidy Data Screen Preview ---")
+print(report %>% select(FileName, Sheet, Flags, Status))
+```
+
+## Save Results // Enregistrer les résultats
+
+```{r}
+#| label: save-results
+
+output_dir <- "Results/Inspect_TidyData"
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+output_file <- file.path(output_dir, paste0("TidyData_Screen_", dir_label, "_", format(Sys.Date(), "%Y%m%d"), ".csv"))
+
+write_excel_csv(report, output_file)
+print(paste("Report saved to:", output_file))
+```
+
+## Curation Insights // Aperçu de la curation
+
+Read each flag as a question for the depositor, after confirming it by opening the file:
+
+-   **`DUPLICATE_HEADERS`:** Repeated column names make columns ambiguous. Ask for unique, descriptive names, and check whether the columns hold different measurements (for example, two replicates).
+
+-   **`EMBEDDED_BLANK_ROWS`:** Blank rows are often used as visual separators between groups. Software reads them as missing observations or as the end of the table. Remove them, or split the groups into separate tables.
+
+-   **`POSSIBLE_STACKED_TABLES`:** A repeated header row usually means that two tables were pasted one under the other. Separate them into distinct files, or add a column that identifies the group.
+
+-   **`POSSIBLE_WIDE_FORMAT`:** Years or dates as column names spread one variable across columns. Wide tables are convenient to read but harder to analyze. Consider a long format with one column for the year and one for the value, and document the choice either way.
+
+-   **`HEADER_HYGIENE_ISSUES`:** Spaces and special characters need quoting or renaming in R, Python, and SQL. Prefer short names with letters, digits, underscores, or dots, starting with a letter, and explain them in a data dictionary.
+
+-   **Format recommendation:** CSV is preferred over Excel for FAIR sharing and long-term access, because it is open, plain text, and readable by any software. Excel files also hide risks that a screen cannot see, such as formulas, merged cells, hidden sheets, and colour-coded meaning.
+
+-   **No flags:** This is **not** evidence that a file is tidy. Always read the content as well.
+
+//
+
+Lisez chaque signal comme une question à poser au déposant, après l'avoir confirmé en ouvrant le fichier :
+
+-   **`DUPLICATE_HEADERS` :** Des noms de colonnes répétés rendent les colonnes ambiguës. Demandez des noms uniques et descriptifs, et vérifiez si les colonnes contiennent des mesures différentes (par exemple, deux réplicats).
+
+-   **`EMBEDDED_BLANK_ROWS` :** Les lignes vides servent souvent de séparateurs visuels entre des groupes. Les logiciels les lisent comme des observations manquantes ou comme la fin du tableau. Supprimez-les ou séparez les groupes en tableaux distincts.
+
+-   **`POSSIBLE_STACKED_TABLES` :** Une ligne d'en-tête répétée signifie généralement que deux tableaux ont été collés l'un sous l'autre. Séparez-les en fichiers distincts, ou ajoutez une colonne qui identifie le groupe.
+
+-   **`POSSIBLE_WIDE_FORMAT` :** Des années ou des dates comme noms de colonnes répartissent une variable sur plusieurs colonnes. Les tableaux larges sont pratiques à lire mais plus difficiles à analyser. Envisagez un format long avec une colonne pour l'année et une pour la valeur, et documentez le choix dans les deux cas.
+
+-   **`HEADER_HYGIENE_ISSUES` :** Les espaces et les caractères spéciaux exigent des guillemets ou un renommage en R, Python et SQL. Privilégiez des noms courts composés de lettres, de chiffres, de traits de soulignement ou de points, commençant par une lettre, et expliquez-les dans un dictionnaire de données.
+
+-   **Recommandation de format :** Le CSV est préférable à Excel pour un partage conforme aux principes FAIR et un accès à long terme, car il est ouvert, en texte brut et lisible par n'importe quel logiciel. Les fichiers Excel cachent aussi des risques qu'un contrôle ne voit pas, comme les formules, les cellules fusionnées, les feuilles masquées et le sens porté par les couleurs.
+
+-   **Aucun signal :** Ce n'est **pas** la preuve qu'un fichier est ordonné. Lisez toujours aussi le contenu.
+
+## Additional Tools // Outils supplémentaires
+
+-   **`tidyr`:** The [package](https://tidyr.tidyverse.org/) to reshape data between wide and long formats (`pivot_longer()` and `pivot_wider()`) and to separate or unite columns.
+
+-   **`janitor`:** A [package](https://sfirke.github.io/janitor/) with `clean_names()` to convert awkward column names into consistent, usable ones, and `get_dupes()` to find duplicate records.
+
+-   **OpenRefine:** A free [tool](https://openrefine.org/) for exploring and cleaning messy tabular data without programming.
+
+//
+
+-   **`tidyr` :** Le [package](https://tidyr.tidyverse.org/) pour passer les données du format large au format long et inversement (`pivot_longer()` et `pivot_wider()`) et pour séparer ou réunir des colonnes.
+
+-   **`janitor` :** Un [package](https://sfirke.github.io/janitor/) avec `clean_names()` pour convertir des noms de colonnes malcommodes en noms cohérents et utilisables, et `get_dupes()` pour repérer les enregistrements en double.
+
+-   **OpenRefine :** Un [outil](https://openrefine.org/) gratuit pour explorer et nettoyer des données tabulaires désordonnées sans programmer.
+
+## Using the Non-Interactive R Script // Utilisation du script R non interactif
+
+For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
+
+Download the **R Script:** [**`Inspect_TidyData_Script.R`**](Scripts/Inspect_TidyData_Script.R)
+
+//
+
+Pour les utilisateurs qui souhaitent exécuter cette analyse sur un serveur, dans le cadre d'un traitement par lots ou depuis la ligne de commande, voici un script R pur qui effectue le même processus.
+
+Télécharger le **script R :** [**`Inspect_TidyData_Script.R`**](Scripts/Inspect_TidyData_Script.R)
+
+### Example HPC Submission Script // Exemple de script de soumission HPC
+
+`Inspect_TidyData_submit.sh`
+
+``` bash
+#!/bin/bash
+#SBATCH --job-name=tidy_screen
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=00:30:00
+#SBATCH --mem=8G
+#SBATCH --output=logs/tidy_screen_%j.log
+
+# Load R Module
+module load R
+
+# Define directories
+DATA_DIR="/scratch/user/project_data/tables"
+OUTPUT_DIR="/scratch/user/tidy_results"
+
+# Prepare Environment
+mkdir -p logs
+
+# Run Analysis
+echo "Starting tidy data screen on $DATA_DIR"
+Rscript Inspect_TidyData_Script.R "$DATA_DIR" "$OUTPUT_DIR"
+```
+
+## References // Références
+
+::: {#refs}
+:::

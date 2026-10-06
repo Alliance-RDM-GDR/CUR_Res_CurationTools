@@ -1,0 +1,3 @@
+This is a free-text note about the experiment.
+It has no table structure at all and simply describes what happened.
+We collected samples on three days.

@@ -1,0 +1,4 @@
+site;count;habitat
+North;12;forest
+South;8;wetland
+East;;meadow

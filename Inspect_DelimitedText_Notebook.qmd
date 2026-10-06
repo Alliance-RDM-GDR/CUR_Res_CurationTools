@@ -1,0 +1,316 @@
+---
+title: "Delimited Text (.txt) Tables"
+author: "Data Curation Team"
+date: "2026-10-06"
+format:
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+    theme: cosmo
+params:
+  target_dir: "data/Inspect_DelimitedText/"
+bibliography: references.bib
+---
+
+## Overview // Aperçu
+
+Many instruments and legacy export tools write tabular data to plain `.txt` files, separated by tabs, semicolons, or pipes instead of commas. They are real tables, but a generic text inspection treats them as unstructured prose, and a `.csv` reader that assumes commas will read them as a single column.
+
+//
+
+De nombreux instruments et outils d'exportation anciens écrivent des données tabulaires dans des fichiers `.txt` simples, séparés par des tabulations, des points-virgules ou des barres verticales plutôt que par des virgules. Ce sont de véritables tableaux, mais une inspection de texte générique les traite comme de la prose non structurée, et un lecteur `.csv` qui suppose des virgules les lira comme une seule colonne.
+
+::: {.callout-note title="Curation Goal // Objectif de la curation"}
+Detect the delimiter and encoding of each `.txt` file, then profile it as a table: rows, columns, completeness, duplicate rows, and possible personal information. Files that turn out not to be tabular are flagged so they can be handled as ordinary text.
+//
+Détecter le séparateur et l'encodage de chaque fichier `.txt`, puis le profiler comme un tableau : lignes, colonnes, complétude, lignes en double et renseignements personnels possibles. Les fichiers qui ne sont finalement pas tabulaires sont signalés afin d'être traités comme du texte ordinaire.
+:::
+
+::: {.callout-warning title="Identifying Risks // Identification des risques"}
+A wrong delimiter silently collapses a table into one column, a wrong encoding corrupts accented characters, and email-like values in text columns may reveal identifiable people.
+//
+Un mauvais séparateur réduit silencieusement un tableau à une seule colonne, un mauvais encodage altère les caractères accentués et des valeurs ressemblant à des courriels dans les colonnes de texte peuvent révéler des personnes identifiables.
+:::
+
+**This notebook follows the same health-check logic as the [CSV inspection](Inspect_csv_Notebook.qmd),** applied to files with other delimiters. Use it for tabular content that the [text inspection](Inspect_Text_Notebook.qmd) would otherwise treat as prose.
+
+//
+
+**Ce cahier suit la même logique de contrôle d'intégrité que l'[inspection des fichiers CSV](Inspect_csv_Notebook.qmd),** appliquée à des fichiers utilisant d'autres séparateurs. Utilisez-le pour le contenu tabulaire que l'[inspection de texte](Inspect_Text_Notebook.qmd) traiterait autrement comme de la prose.
+
+------------------------------------------------------------------------
+
+## Setup // Configuration
+
+We use `readr` for delimited reading and encoding detection, loaded together with `tidyverse` [@tidyverse].
+
+//
+
+Nous utilisons `readr` pour la lecture de fichiers délimités et la détection de l'encodage, chargé avec `tidyverse` [@tidyverse].
+
+### R Packages // Packages R
+
+```{r}
+#| label: install-packages
+#| eval: false
+
+# install.packages(c("tidyverse", "rstudioapi"))
+```
+
+### Load Libraries // Charger les bibliothèques
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+
+library(tidyverse)  # Includes readr and stringr
+library(rstudioapi) # Interactive folder selection
+```
+
+## Select Target Directory // Sélectionner le répertoire cible
+
+This block allows for interactive selection of the directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.
+
+//
+
+Ce bloc permet de sélectionner le répertoire de manière interactive. En cas d'exécution dans un environnement non interactif, le chemin par défaut est celui défini dans l'en-tête YAML.
+
+```{r}
+#| label: select-target-dir
+
+if (interactive() && .Platform$OS.type == "windows") {
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select Delimited Text Directory")
+} else {
+  selected_dir <- NULL
+}
+
+if (!is.null(selected_dir)) {
+  target_dir <- selected_dir
+} else {
+  target_dir <- params$target_dir
+}
+
+print(paste("Analyzing directory:", target_dir))
+```
+
+## Inventory of Text Files // Liste des fichiers texte
+
+We scan for `.txt` files. Folders named `Curation_Results` are skipped.
+
+//
+
+Nous recherchons les fichiers `.txt`. Les dossiers nommés `Curation_Results` sont ignorés.
+
+```{r}
+#| label: inventory
+
+txt_files <- list.files(
+  path = target_dir,
+  pattern = "\\.txt$",
+  recursive = TRUE,
+  full.names = TRUE,
+  ignore.case = TRUE
+)
+txt_files <- txt_files[!grepl("Curation_Results", txt_files, ignore.case = TRUE)]
+
+print(paste("Found", length(txt_files), ".txt file(s)."))
+```
+
+## Delimiter Detection // Détection du séparateur
+
+The candidate delimiter (tab, comma, semicolon, or pipe) that occurs most often in the first line wins. A file that is not really delimited data, such as prose, shows low and roughly equal counts for every candidate, and is flagged later through its low column count.
+
+//
+
+Le séparateur candidat (tabulation, virgule, point-virgule ou barre verticale) le plus fréquent dans la première ligne l'emporte. Un fichier qui n'est pas réellement de données délimitées, comme de la prose, affiche des nombres faibles et à peu près égaux pour tous les candidats ; il est signalé plus loin par son faible nombre de colonnes.
+
+```{r}
+#| label: delimiter-detection
+
+detect_delimiter <- function(file_path) {
+  first_line <- tryCatch(readLines(file_path, n = 1, warn = FALSE), error = function(e) "")
+  if (length(first_line) == 0) return("\t")
+  candidates <- c("\t" = "\t", "," = ",", ";" = ";", "|" = "|")
+  counts <- purrr::map_int(candidates, ~ lengths(regmatches(first_line, gregexpr(.x, first_line, fixed = TRUE))))
+  candidates[[which.max(counts)]]
+}
+```
+
+## Health Check // Contrôle d'intégrité
+
+For each file we detect the encoding, read the table with the detected delimiter, and compute the profile. Email-like values are searched for in the first 1000 rows of every text column.
+
+//
+
+Pour chaque fichier, nous détectons l'encodage, lisons le tableau avec le séparateur détecté et calculons le profil. Les valeurs ressemblant à des courriels sont recherchées dans les 1000 premières lignes de chaque colonne de texte.
+
+```{r}
+#| label: health-check
+
+analyze_delimited_health <- function(file_path) {
+  fname <- basename(file_path)
+  file_info <- file.info(file_path)
+
+  delim <- detect_delimiter(file_path)
+  guess <- readr::guess_encoding(file_path, n_max = 1000)
+  likely_encoding <- if (nrow(guess) > 0) guess$encoding[1] else "Unknown"
+
+  tryCatch({
+    df <- read_delim(file_path, delim = delim, locale = locale(encoding = likely_encoding),
+                     show_col_types = FALSE, progress = FALSE)
+
+    n_rows <- nrow(df)
+    n_cols <- ncol(df)
+    total_cells <- n_rows * n_cols
+    n_missing <- sum(is.na(df))
+    pct_complete <- if (total_cells > 0) round(100 * (1 - n_missing / total_cells), 2) else 0
+    n_duplicates <- sum(duplicated(df))
+
+    char_cols <- select(df, where(is.character))
+    email_pattern <- "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
+    pii_found <- FALSE
+
+    if (ncol(char_cols) > 0) {
+      sample_size <- min(n_rows, 1000)
+      pii_check <- char_cols %>%
+        slice_head(n = sample_size) %>%
+        summarise(across(everything(), ~ any(str_detect(., email_pattern), na.rm = TRUE)))
+      pii_found <- any(unlist(pii_check))
+    }
+
+    delim_label <- c("\t" = "Tab", "," = "Comma", ";" = "Semicolon", "|" = "Pipe")[[delim]]
+
+    tibble(
+      FileName = fname,
+      Delimiter = delim_label,
+      Size_MB = round(file_info$size / 1024^2, 2),
+      Encoding = likely_encoding,
+      Rows = n_rows,
+      Cols = n_cols,
+      Pct_Complete = pct_complete,
+      Duplicate_Rows = n_duplicates,
+      PII_Risk = pii_found,
+      LikelyNonTabular = n_cols <= 1,
+      Status = "Success"
+    )
+  }, error = function(e) {
+    tibble(
+      FileName = fname, Delimiter = NA, Size_MB = round(file_info$size / 1024^2, 2),
+      Encoding = likely_encoding, Rows = NA, Cols = NA, Pct_Complete = NA,
+      Duplicate_Rows = NA, PII_Risk = NA, LikelyNonTabular = NA,
+      Status = paste("Read Failed:", e$message)
+    )
+  })
+}
+
+health_report <- purrr::map_dfr(txt_files, analyze_delimited_health)
+
+print("--- Health Check Preview ---")
+print(health_report %>% select(FileName, Delimiter, Encoding, Rows, Cols, Pct_Complete, Duplicate_Rows, PII_Risk, LikelyNonTabular))
+```
+
+## Save Results // Enregistrer les résultats
+
+```{r}
+#| label: save-results
+
+output_dir <- "Results/Inspect_DelimitedText"
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+health_file <- file.path(output_dir, paste0("DelimitedText_Health_Check_", dir_label, "_", Sys.Date(), ".csv"))
+
+write_excel_csv(health_report, health_file)
+print(paste("Health Check saved to:", health_file))
+```
+
+## Curation Insights // Aperçu de la curation
+
+Use this report to decide how each file should be handled:
+
+-   **LikelyNonTabular = TRUE:** Only one column was found, so the file is probably prose or a README rather than a table. Inspect it with the [text notebook](Inspect_Text_Notebook.qmd) instead.
+
+-   **Delimiter:** Tab, semicolon, and pipe-delimited files are less interoperable than comma-separated ones, and the `.txt` extension hides the structure. Document the delimiter in the README, or convert to `.csv` (or `.tsv`) with a proper extension.
+
+-   **Encoding:** Anything other than UTF-8 (for example ISO-8859-1 or Windows-1252) may display accented characters incorrectly. Convert to UTF-8 and document it.
+
+-   **Pct_Complete and Duplicate_Rows:** Low completeness or exact duplicate rows may reveal export problems or repeated records. Check them against how the data were collected.
+
+-   **PII_Risk = TRUE:** An email-like value was found. Review the column for personal information before publication. This is a pattern check on the first 1000 rows, so a `FALSE` result does not prove the file is free of identifying data.
+
+//
+
+Utilisez ce rapport pour décider du traitement de chaque fichier :
+
+-   **LikelyNonTabular = TRUE :** Une seule colonne a été trouvée ; le fichier est probablement de la prose ou un README plutôt qu'un tableau. Inspectez-le plutôt avec le [cahier sur les fichiers texte](Inspect_Text_Notebook.qmd).
+
+-   **Delimiter :** Les fichiers séparés par des tabulations, des points-virgules ou des barres verticales sont moins interopérables que ceux séparés par des virgules, et l'extension `.txt` masque la structure. Documentez le séparateur dans le README, ou convertissez en `.csv` (ou `.tsv`) avec une extension appropriée.
+
+-   **Encoding :** Tout encodage autre qu'UTF-8 (par exemple ISO-8859-1 ou Windows-1252) peut afficher incorrectement les caractères accentués. Convertissez en UTF-8 et documentez-le.
+
+-   **Pct_Complete et Duplicate_Rows :** Une faible complétude ou des lignes strictement en double peuvent révéler des problèmes d'exportation ou des enregistrements répétés. Vérifiez-les par rapport à la façon dont les données ont été recueillies.
+
+-   **PII_Risk = TRUE :** Une valeur ressemblant à un courriel a été trouvée. Examinez la colonne afin de repérer des renseignements personnels avant la publication. Il s'agit d'une vérification de motif sur les 1000 premières lignes ; un résultat `FALSE` ne prouve donc pas que le fichier est exempt de données identifiantes.
+
+## Additional Tools // Outils supplémentaires
+
+-   **`readr`:** The [package](https://readr.tidyverse.org/) behind this notebook, with `read_delim()` for any delimiter and `guess_encoding()` for encoding detection.
+
+-   **`iconv`:** A standard command-line utility to convert a file from one encoding to another (for example `iconv -f ISO-8859-1 -t UTF-8`).
+
+-   **OpenRefine:** A free [tool](https://openrefine.org/) for exploring and cleaning messy tabular data, including files with unusual delimiters.
+
+//
+
+-   **`readr` :** Le [package](https://readr.tidyverse.org/) à la base de ce cahier, avec `read_delim()` pour tout séparateur et `guess_encoding()` pour détecter l'encodage.
+
+-   **`iconv` :** Un utilitaire standard en ligne de commande pour convertir un fichier d'un encodage à un autre (par exemple `iconv -f ISO-8859-1 -t UTF-8`).
+
+-   **OpenRefine :** Un [outil](https://openrefine.org/) gratuit pour explorer et nettoyer des données tabulaires désordonnées, y compris des fichiers à séparateurs inhabituels.
+
+## Using the Non-Interactive R Script // Utilisation du script R non interactif
+
+For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
+
+Download the **R Script:** [**`Inspect_DelimitedText_Script.R`**](Scripts/Inspect_DelimitedText_Script.R)
+
+//
+
+Pour les utilisateurs qui souhaitent exécuter cette analyse sur un serveur, dans le cadre d'un traitement par lots ou depuis la ligne de commande, voici un script R pur qui effectue le même processus.
+
+Télécharger le **script R :** [**`Inspect_DelimitedText_Script.R`**](Scripts/Inspect_DelimitedText_Script.R)
+
+### Example HPC Submission Script // Exemple de script de soumission HPC
+
+`Inspect_DelimitedText_submit.sh`
+
+``` bash
+#!/bin/bash
+#SBATCH --job-name=delimited_check
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=00:30:00
+#SBATCH --mem=8G
+#SBATCH --output=logs/delimited_check_%j.log
+
+# Load R Module
+module load R
+
+# Define directories
+DATA_DIR="/scratch/user/project_data/instrument_exports"
+OUTPUT_DIR="/scratch/user/delimited_results"
+
+# Prepare Environment
+mkdir -p logs
+
+# Run Analysis
+echo "Starting delimited text inspection on $DATA_DIR"
+Rscript Inspect_DelimitedText_Script.R "$DATA_DIR" "$OUTPUT_DIR"
+```
+
+## References // Références
+
+::: {#refs}
+:::

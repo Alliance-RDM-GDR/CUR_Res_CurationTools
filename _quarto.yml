@@ -44,7 +44,9 @@ book:
     - part: Data_Tabular.qmd
       chapters:
         - Inspect_csv_Notebook.qmd
+        - Inspect_DelimitedText_Notebook.qmd
         - Inspect_xlsx_Notebook.qmd
+        - Inspect_TidyData_Notebook.qmd
         - Inspect_sav_Notebook.qmd
         - Inspect_dta_Notebook.qmd
         - Inspect_sas7bdat_Notebook.qmd
