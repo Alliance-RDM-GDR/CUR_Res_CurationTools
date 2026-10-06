@@ -4,6 +4,7 @@
 .Ruserdata
 /.quarto/
 service-account.json
+CURATION_GUIDELINES.md
 
 archive/
 
