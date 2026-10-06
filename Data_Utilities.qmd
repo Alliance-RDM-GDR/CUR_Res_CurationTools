@@ -1,0 +1,34 @@
+---
+title: "Curation Utilities"
+---
+
+## Overview
+
+Most tools in this book **inspect** data: they read files and report on them, and never change anything. This section is different. It contains utilities that **act on the data**, for situations that are specific enough that they do not belong with a file format.
+
+**Key Objectives:**
+
+1.  **Fix specific problems:** Repair text encoding errors, or remove identifying values from a known file header.
+2.  **Reorganize safely:** Propose a new file layout to a depositor without touching the original submission.
+3.  **Leave an audit trail:** Keep a backup or a verified copy of every file that changes, and a log of what was done.
+
+## Why These Are Separate
+
+Inspection is safe to run anywhere, at any time. A tool that rewrites files is not, so the notebooks in this section follow stricter rules:
+
+-   **They do not run when the book is rendered.** Their code is displayed but not evaluated, and it stops with a message until you explicitly allow changes.
+-   **Always work on a copy.** Run them on a copy of the data, never on the only copy of a deposit.
+-   **Backups come first.** A file is never changed before an exact, verified copy has been saved.
+-   **A human reviews the log.** Every change must be checked against its backup before anything is published.
+
+## Tools in This Section
+
+-   **Repairing Text Encoding:** Converts text files to UTF-8, repairs double-encoded characters (mojibake), and normalizes old line endings.
+-   **Redacting EyeLink Headers:** Removes the recording date and the local file path from EyeLink eye-tracking `.asc` headers before publication.
+-   **Restructuring a Dataset:** Copies a dataset into a new layout from a mapping table, and verifies every copy by checksum.
+
+## Common Curation Challenges
+
+-   **Over-trusting automatic repairs:** A repair that is right in nearly every case can still damage the one file where it is wrong. Review every change.
+-   **Backups that identify people:** A backup made before redaction holds the identifying values. Store it securely, and never publish it.
+-   **Choosing the new layout:** The tools here do the copying correctly, but they cannot decide what a good file structure is. That depends on the dataset and on the depositor.

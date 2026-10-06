@@ -1,0 +1,412 @@
+---
+title: "Redacting EyeLink Eye-Tracking Headers (.asc)"
+author: "Data Curation Team"
+date: "2026-10-06"
+format:
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+    theme: cosmo
+execute:
+  eval: false
+params:
+  target_dir: "data/Redact_EyeLinkHeader/"
+  backup_dir: "Results/Redact_EyeLinkHeader/backup"
+  log_dir: "Results/Redact_EyeLinkHeader"
+  file_pattern: '\.asc$'
+  allow_changes: false
+bibliography: references.bib
+---
+
+## Overview // Aperçu
+
+**EyeLink** eye trackers produce ASCII (`.asc`) files whose first lines form a comment header written by the conversion tool. That header can contain the exact **date and time of the recording** and the **local path of the original `.edf` file**. The path may include a user's name, the original recording name (often an internal participant or series code), and the session date.
+
+//
+
+Les oculomètres **EyeLink** produisent des fichiers ASCII (`.asc`) dont les premières lignes forment un en-tête de commentaires écrit par l'outil de conversion. Cet en-tête peut contenir la **date et l'heure exactes de l'enregistrement** et le **chemin local du fichier `.edf` d'origine**. Ce chemin peut inclure le nom d'un utilisateur, le nom de l'enregistrement d'origine (souvent un code interne de participant ou de série) et la date de la séance.
+
+::: {.callout-note title="Curation Goal // Objectif de la curation"}
+Remove the quasi-identifying values from these header lines **before a dataset is published**, while leaving every sample, event, message, and calibration line after the header **byte for byte identical**.
+//
+Retirer les valeurs quasi identifiantes de ces lignes d'en-tête **avant la publication d'un jeu de données**, tout en laissant chaque ligne d'échantillon, d'événement, de message et d'étalonnage après l'en-tête **strictement identique, octet par octet**.
+:::
+
+::: {.callout-warning title="Identifying Risks // Identification des risques"}
+A session date can be matched against schedules or records to re-identify a participant, and a local path can reveal a user's name. Redacting by hand across hundreds of files is error-prone, and a careless edit could change the data itself.
+//
+Une date de séance peut être rapprochée d'horaires ou de dossiers pour réidentifier un participant, et un chemin local peut révéler le nom d'un utilisateur. Caviarder à la main des centaines de fichiers est source d'erreurs, et une modification négligente pourrait altérer les données elles-mêmes.
+:::
+
+::: {.callout-caution title="This Notebook Changes Files // Ce cahier modifie des fichiers"}
+**Unlike the inspection notebooks, this one writes to the files in `target_dir`.** It refuses to modify a file until an exact copy has been saved to `backup_dir` (same relative path) and verified by MD5, and `backup_dir` must be **outside** `target_dir`. Each modified file is then re-read and checked. Work on a copy of the data, and keep the backups safe and **unpublished**, since they hold the original identifying values.
+//
+**Contrairement aux cahiers d'inspection, celui-ci écrit dans les fichiers de `target_dir`.** Il refuse de modifier un fichier tant qu'une copie exacte n'a pas été enregistrée dans `backup_dir` (même chemin relatif) et vérifiée par MD5, et `backup_dir` doit se trouver **en dehors** de `target_dir`. Chaque fichier modifié est ensuite relu et vérifié. Travaillez sur une copie des données et conservez les sauvegardes en lieu sûr et **non publiées**, puisqu'elles contiennent les valeurs identifiantes d'origine.
+:::
+
+**What is changed.** Only the header comment lines (those that start with `**`) are touched:
+
+-   `** DATE: <session date and time>` becomes `** DATE: [removed]`.
+-   `** CONVERTED FROM <local path>\<name>.edf using <tool> [on <date>]` becomes `** CONVERTED FROM [removed] using <tool>`.
+
+**What is verified.** After writing, each file is re-read from disk. The body after the header must be identical to the original, and the header must hold no remaining date or path. The log records only file names and pass or fail flags, **never the removed values**.
+
+**What is not covered.** Only these two header lines are redacted. Other fields, such as message lines or file names, can still carry identifying information, so review the files for other identifiers.
+
+//
+
+**Ce qui est modifié.** Seules les lignes de commentaires de l'en-tête (celles qui commencent par `**`) sont touchées :
+
+-   `** DATE: <date et heure de la séance>` devient `** DATE: [removed]`.
+-   `** CONVERTED FROM <chemin local>\<nom>.edf using <outil> [on <date>]` devient `** CONVERTED FROM [removed] using <outil>`.
+
+**Ce qui est vérifié.** Après l'écriture, chaque fichier est relu depuis le disque. Le corps situé après l'en-tête doit être identique à l'original, et l'en-tête ne doit contenir ni date ni chemin résiduel. Le journal ne consigne que les noms de fichiers et des indicateurs de réussite ou d'échec, **jamais les valeurs retirées**.
+
+**Ce qui n'est pas couvert.** Seules ces deux lignes d'en-tête sont caviardées. D'autres champs, comme les lignes de message ou les noms de fichiers, peuvent encore contenir des renseignements identifiants ; examinez donc les fichiers pour y repérer d'autres identifiants.
+
+------------------------------------------------------------------------
+
+## Setup // Configuration
+
+Only `tidyverse` is needed. The header is handled as raw bytes, so the body of every file is never re-encoded.
+
+//
+
+Seul `tidyverse` est nécessaire. L'en-tête est traité sous forme d'octets bruts ; le corps de chaque fichier n'est donc jamais réencodé.
+
+### R Packages // Packages R
+
+```{r}
+#| label: install-packages
+
+# install.packages(c("tidyverse", "rstudioapi"))
+```
+
+### Load Libraries // Charger les bibliothèques
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+
+library(tidyverse)  # Data manipulation [@tidyverse]
+library(rstudioapi) # Interactive folder selection
+```
+
+## Safety Gate // Verrou de sécurité
+
+Because this notebook modifies files, its code is **not evaluated** when the document is rendered (`eval: false` in the YAML header). To run it, work on a **copy** of your data, then set `eval: true` and `allow_changes: true` in the YAML header. The next block stops with a message if `allow_changes` is not `true`.
+
+//
+
+Comme ce cahier modifie des fichiers, son code **n'est pas évalué** lors de la génération du document (`eval: false` dans l'en-tête YAML). Pour l'exécuter, travaillez sur une **copie** de vos données, puis définissez `eval: true` et `allow_changes: true` dans l'en-tête YAML. Le bloc suivant s'arrête avec un message si `allow_changes` n'est pas `true`.
+
+```{r}
+#| label: safety-gate
+
+if (!isTRUE(params$allow_changes)) {
+  stop("This notebook modifies files. Work on a COPY of your data, then set `allow_changes: true` in the YAML header.")
+}
+```
+
+## Select Directories // Sélectionner les répertoires
+
+`target_dir` holds the `.asc` files to redact. `backup_dir` receives the verified originals, and must be outside `target_dir`. `log_dir` receives the log. `file_pattern` is a case-insensitive regular expression, `\.asc$` by default.
+
+//
+
+`target_dir` contient les fichiers `.asc` à caviarder. `backup_dir` reçoit les originaux vérifiés et doit se trouver en dehors de `target_dir`. `log_dir` reçoit le journal. `file_pattern` est une expression régulière insensible à la casse, `\.asc$` par défaut.
+
+```{r}
+#| label: select-dirs
+
+if (interactive() && .Platform$OS.type == "windows") {
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select EyeLink Directory")
+} else {
+  selected_dir <- NULL
+}
+
+if (!is.null(selected_dir)) {
+  target_dir <- selected_dir
+} else {
+  target_dir <- params$target_dir
+}
+dir.create(params$backup_dir, recursive = TRUE, showWarnings = FALSE)
+dir.create(params$log_dir, recursive = TRUE, showWarnings = FALSE)
+
+target_dir   <- normalizePath(target_dir, winslash = "/", mustWork = TRUE)
+backup_dir   <- normalizePath(params$backup_dir, winslash = "/", mustWork = TRUE)
+log_dir      <- normalizePath(params$log_dir, winslash = "/", mustWork = TRUE)
+file_pattern <- params$file_pattern
+
+if (startsWith(backup_dir, target_dir)) {
+  stop("backup_dir must be outside target_dir, or the backup would be rescanned as data.")
+}
+
+print(paste("Redacting headers in:", target_dir))
+```
+
+## Inventory of Files // Liste des fichiers
+
+We list the files that match the pattern. Folders named `Curation_Results` are skipped.
+
+//
+
+Nous listons les fichiers qui correspondent au motif. Les dossiers nommés `Curation_Results` sont ignorés.
+
+```{r}
+#| label: inventory
+
+files <- list.files(target_dir, pattern = file_pattern, recursive = TRUE, full.names = TRUE, ignore.case = TRUE)
+files <- files[!grepl("Curation_Results", files, ignore.case = TRUE)]
+message(sprintf("Found %d file(s) matching %s in %s", length(files), file_pattern, target_dir))
+if (length(files) == 0) stop("No matching files found.")
+```
+
+## Header Handling // Traitement de l'en-tête
+
+The header is the leading run of comment (`**`) or blank lines. `split_header()` finds where it ends, `redact_line()` rewrites the two sensitive lines, and `header_is_clean()` checks that no date or Windows-style path remains.
+
+//
+
+L'en-tête est la suite initiale de lignes de commentaires (`**`) ou vides. `split_header()` trouve où il se termine, `redact_line()` réécrit les deux lignes sensibles et `header_is_clean()` vérifie qu'il ne reste ni date ni chemin de style Windows.
+
+```{r}
+#| label: header-handling
+
+# The header is the leading run of comment ("**") or blank lines.
+split_header <- function(raw_bytes) {
+  chunk <- raw_bytes[seq_len(min(length(raw_bytes), 16384))]
+  txt <- rawToChar(chunk)
+  Encoding(txt) <- "latin1"
+  lines <- strsplit(txt, "(?<=\n)", perl = TRUE)[[1]]
+  n_hdr <- 0L
+  for (ln in lines) {
+    core <- sub("\r?\n$", "", ln)
+    if (grepl("^\\*\\*", core) || !nzchar(trimws(core))) n_hdr <- n_hdr + 1L else break
+  }
+  if (n_hdr == length(lines)) stop("could not find the end of the header within the first 16 KB")
+  hdr_lines <- lines[seq_len(n_hdr)]
+  list(lines = hdr_lines, bytes = sum(nchar(hdr_lines, type = "bytes")))
+}
+
+redact_line <- function(line) {
+  eol  <- regmatches(line, regexpr("\r?\n$", line, perl = TRUE))
+  if (length(eol) == 0) eol <- ""
+  core <- sub("\r?\n$", "", line, perl = TRUE)
+  if (grepl("^\\*\\* CONVERTED FROM ", core)) {
+    tool <- if (grepl("^\\*\\* CONVERTED FROM .*? using ", core, perl = TRUE)) {
+      sub("^\\*\\* CONVERTED FROM .*? (using .*)$", "\\1", core, perl = TRUE)
+    } else ""
+    tool <- sub(" on [A-Z][a-z]{2} [A-Z][a-z]{2} +[0-9]{1,2} [0-9:]{8} [0-9]{4}$", "", tool)
+    core <- paste0("** CONVERTED FROM [removed]", if (nzchar(tool)) paste0(" ", tool) else "")
+  } else if (grepl("^\\*\\* DATE:", core)) {
+    core <- "** DATE: [removed]"
+  }
+  paste0(core, eol)
+}
+
+header_is_clean <- function(hdr_lines) {
+  core <- sub("\r?\n$", "", hdr_lines)
+  !any(grepl("^\\*\\* DATE:", core) & !grepl("^\\*\\* DATE: \\[removed\\]$", core)) &&
+    !any(grepl("^\\*\\* CONVERTED FROM", core) & !grepl("^\\*\\* CONVERTED FROM \\[removed\\]", core)) &&
+    !any(grepl("[A-Za-z]:\\\\", core))
+}
+```
+
+## Per-File Processing // Traitement de chaque fichier
+
+For each file, the function redacts the header in memory. If something changes, it **first** saves a backup and verifies it by MD5, and only then overwrites the file with the new header followed by the **unchanged** body. It then re-reads the file from disk and checks the body and the header.
+
+//
+
+Pour chaque fichier, la fonction caviarde l'en-tête en mémoire. Si quelque chose change, elle enregistre **d'abord** une sauvegarde et la vérifie par MD5, puis seulement ensuite écrase le fichier avec le nouvel en-tête suivi du corps **inchangé**. Elle relit ensuite le fichier depuis le disque et vérifie le corps et l'en-tête.
+
+```{r}
+#| label: per-file
+
+process_file <- function(fp) {
+  rel <- sub(paste0(target_dir, "/"), "", normalizePath(fp, winslash = "/"), fixed = TRUE)
+  tryCatch({
+    orig <- readBin(fp, what = "raw", n = file.size(fp))
+    h <- split_header(orig)
+    new_lines <- vapply(h$lines, redact_line, character(1), USE.NAMES = FALSE)
+    n_changed <- sum(new_lines != h$lines)
+
+    if (n_changed == 0) {
+      return(tibble(File = rel, Header_Lines_Changed = 0L, Backup_Verified = NA, Body_Identical = NA,
+                    Header_Clean = header_is_clean(h$lines), Status = "No change needed"))
+    }
+
+    # Backup first, and verify it, before touching the original.
+    bk <- file.path(backup_dir, rel)
+    dir.create(dirname(bk), recursive = TRUE, showWarnings = FALSE)
+    if (!file.copy(fp, bk, overwrite = FALSE, copy.date = TRUE) && !file.exists(bk)) stop("backup copy failed")
+    backup_ok <- identical(unname(tools::md5sum(fp)), unname(tools::md5sum(bk)))
+    if (!backup_ok) {
+      return(tibble(File = rel, Header_Lines_Changed = n_changed, Backup_Verified = FALSE, Body_Identical = NA,
+                    Header_Clean = NA, Status = "SKIPPED: backup did not verify, original untouched"))
+    }
+
+    new_hdr_txt <- paste(new_lines, collapse = "")
+    Encoding(new_hdr_txt) <- "latin1"
+    body_orig <- orig[(h$bytes + 1):length(orig)]
+    writeBin(c(charToRaw(new_hdr_txt), body_orig), fp)
+
+    # Independent verification from disk.
+    new_raw <- readBin(fp, what = "raw", n = file.size(fp))
+    h2 <- split_header(new_raw)
+    body_new <- new_raw[(h2$bytes + 1):length(new_raw)]
+    body_ok <- identical(body_new, body_orig)
+    clean <- header_is_clean(h2$lines)
+
+    tibble(File = rel, Header_Lines_Changed = n_changed, Backup_Verified = TRUE, Body_Identical = body_ok,
+           Header_Clean = clean, Status = if (body_ok && clean) "Success" else "CHECK: verification failed")
+  }, error = function(e) {
+    tibble(File = rel, Header_Lines_Changed = NA_integer_, Backup_Verified = NA, Body_Identical = NA,
+           Header_Clean = NA, Status = paste("Failed:", conditionMessage(e)))
+  })
+}
+```
+
+## Run the Redaction // Exécuter le caviardage
+
+This step processes every file. This is the point where files on disk are modified.
+
+//
+
+Cette étape traite chaque fichier. C'est ici que les fichiers sur le disque sont modifiés.
+
+```{r}
+#| label: execution
+
+n <- length(files)
+out <- vector("list", n)
+for (i in seq_len(n)) {
+  out[[i]] <- process_file(files[i])
+  if (i %% 25 == 0 || i == n) message(sprintf("  %d / %d files processed", i, n))
+}
+log <- bind_rows(out)
+```
+
+## Save Results // Enregistrer les résultats
+
+The log records, for each file, the number of header lines changed, whether the backup verified, whether the body is identical, and whether the header is clean. It never records the removed values.
+
+//
+
+Le journal consigne, pour chaque fichier, le nombre de lignes d'en-tête modifiées, si la sauvegarde a été vérifiée, si le corps est identique et si l'en-tête est propre. Il ne consigne jamais les valeurs retirées.
+
+```{r}
+#| label: save-results
+
+log_file <- file.path(log_dir, paste0("EyeLink_Header_Redaction_Log_", format(Sys.time(), "%Y%m%d_%H%M%S"), ".csv"))
+write_excel_csv(log, log_file)
+
+message("Status summary:")
+print(count(log, Status))
+message(sprintf("Log saved to: %s", log_file))
+if (any(!log$Status %in% c("Success", "No change needed"))) {
+  message("WARNING: some files did not complete cleanly. Review the log before publishing.")
+}
+```
+
+## Curation Insights // Aperçu de la curation
+
+Review the status summary and the log before publishing anything:
+
+-   **Success:** The header was redacted, the backup verified, the body is identical to the original, and the header is clean.
+
+-   **No change needed:** The header had nothing to remove. Confirm that this is expected for the file.
+
+-   **SKIPPED: backup did not verify, original untouched:** The backup copy did not match the original, so the file was not modified. Fix the cause (for example, disk space or permissions) and run again.
+
+-   **CHECK: verification failed:** The file was modified, but the body is not identical or the header still contains a date or a path. Restore it from the backup and investigate **before** publication.
+
+-   **Failed:** The file could not be processed, for example because the end of the header was not found in the first 16 KB. Inspect it by hand.
+
+-   **Backups:** They contain the original identifying values. Keep them in a secure location, never publish them, and delete them according to your data management plan when they are no longer needed.
+
+-   **Not exhaustive:** This notebook only redacts the two header lines that it knows about. Read a sample of each file type for other identifiers.
+
+//
+
+Examinez le résumé des statuts et le journal avant de publier quoi que ce soit :
+
+-   **Success :** L'en-tête a été caviardé, la sauvegarde vérifiée, le corps est identique à l'original et l'en-tête est propre.
+
+-   **No change needed :** L'en-tête ne contenait rien à retirer. Confirmez que c'est attendu pour ce fichier.
+
+-   **SKIPPED: backup did not verify, original untouched :** La copie de sauvegarde ne correspondait pas à l'original ; le fichier n'a donc pas été modifié. Corrigez la cause (par exemple, l'espace disque ou les permissions) et relancez.
+
+-   **CHECK: verification failed :** Le fichier a été modifié, mais le corps n'est pas identique ou l'en-tête contient encore une date ou un chemin. Restaurez-le à partir de la sauvegarde et enquêtez **avant** la publication.
+
+-   **Failed :** Le fichier n'a pas pu être traité, par exemple parce que la fin de l'en-tête n'a pas été trouvée dans les 16 premiers Ko. Inspectez-le à la main.
+
+-   **Sauvegardes :** Elles contiennent les valeurs identifiantes d'origine. Conservez-les dans un endroit sûr, ne les publiez jamais et supprimez-les conformément à votre plan de gestion des données lorsqu'elles ne sont plus nécessaires.
+
+-   **Non exhaustif :** Ce cahier ne caviarde que les deux lignes d'en-tête qu'il connaît. Lisez un échantillon de chaque type de fichier pour y repérer d'autres identifiants.
+
+## Additional Tools // Outils supplémentaires
+
+-   **SR Research:** The maker of EyeLink provides the [conversion tools and documentation](https://www.sr-research.com/) that produce `.edf` and `.asc` files.
+
+-   **Checksum verification:** After redacting, use the [checksum manifest verification](Verify_ChecksumManifest_Notebook.qmd) to document that only the intended files changed.
+
+-   **Text inspection:** Use the [text inspection](Inspect_Text_Notebook.qmd) to look for other identifying strings in the files.
+
+//
+
+-   **SR Research :** Le fabricant d'EyeLink fournit les [outils de conversion et la documentation](https://www.sr-research.com/) qui produisent les fichiers `.edf` et `.asc`.
+
+-   **Vérification des sommes de contrôle :** Après le caviardage, utilisez la [vérification du manifeste de sommes de contrôle](Verify_ChecksumManifest_Notebook.qmd) pour documenter que seuls les fichiers prévus ont changé.
+
+-   **Inspection des fichiers texte :** Utilisez l'[inspection des fichiers texte](Inspect_Text_Notebook.qmd) pour rechercher d'autres chaînes identifiantes dans les fichiers.
+
+## Using the Non-Interactive R Script // Utilisation du script R non interactif
+
+For users who want to run this process on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
+
+Download the **R Script:** [**`Redact_EyeLinkHeader_Script.R`**](Scripts/Redact_EyeLinkHeader_Script.R)
+
+//
+
+Pour les utilisateurs qui souhaitent exécuter ce processus sur un serveur, dans le cadre d'un traitement par lots ou depuis la ligne de commande, voici un script R pur qui effectue le même processus.
+
+Télécharger le **script R :** [**`Redact_EyeLinkHeader_Script.R`**](Scripts/Redact_EyeLinkHeader_Script.R)
+
+### Example HPC Submission Script // Exemple de script de soumission HPC
+
+`Redact_EyeLinkHeader_submit.sh`
+
+``` bash
+#!/bin/bash
+#SBATCH --job-name=eyelink_redact
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=01:00:00
+#SBATCH --mem=4G
+#SBATCH --output=logs/eyelink_redact_%j.log
+
+# Load R Module
+module load R
+
+# IMPORTANT: this job MODIFIES files. Run it on a COPY of the data.
+# Define directories (TARGET is a COPY of the data; BACKUP must be outside it)
+TARGET_DIR="/scratch/user/eyelink_copy"
+BACKUP_DIR="/scratch/user/eyelink_backup"
+LOG_DIR="/scratch/user/eyelink_logs"
+
+# Prepare Environment
+mkdir -p logs
+
+# Run Redaction (file pattern defaults to .asc)
+echo "Starting EyeLink header redaction on $TARGET_DIR"
+Rscript Redact_EyeLinkHeader_Script.R "$TARGET_DIR" "$BACKUP_DIR" "$LOG_DIR"
+```
+
+## References // Références
+
+::: {#refs}
+:::

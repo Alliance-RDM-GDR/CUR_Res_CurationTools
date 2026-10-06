@@ -1,0 +1,358 @@
+---
+title: "Restructuring a Dataset (v1 to v2)"
+author: "Data Curation Team"
+date: "2026-10-06"
+format:
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+    theme: cosmo
+execute:
+  eval: false
+params:
+  mapping_csv: "data/Restructure_Dataset/mapping.csv"
+  source_dir: "data/Restructure_Dataset/v1/"
+  output_dir: "Results/Restructure_Dataset/v2/"
+  log_dir: "Results/Restructure_Dataset"
+  allow_changes: false
+bibliography: references.bib
+---
+
+## Overview // Aperçu
+
+A deposit often arrives with a layout that is hard to understand or reuse: unclear folder names, files that are all in one folder, or names that do not follow a convention. Curators can propose a reorganized layout ("v2") to the depositor. The original submission ("v1") must **never be touched**, and every file must arrive in v2 exactly as it was.
+
+//
+
+Un dépôt arrive souvent avec une organisation difficile à comprendre ou à réutiliser : noms de dossiers peu clairs, fichiers tous réunis dans un même dossier ou noms qui ne suivent aucune convention. Les curateurs peuvent proposer une organisation remaniée (« v2 ») au déposant. La soumission d'origine (« v1 ») ne doit **jamais être touchée**, et chaque fichier doit arriver dans la v2 exactement tel qu'il était.
+
+::: {.callout-note title="Curation Goal // Objectif de la curation"}
+Given a mapping table of old path to new path, **copy** every file to its new location and **verify by checksum** that each copy is byte-identical, producing a complete audit log.
+//
+À partir d'une table de correspondance entre les anciens et les nouveaux chemins, **copier** chaque fichier à son nouvel emplacement et **vérifier par somme de contrôle** que chaque copie est identique octet par octet, en produisant un journal d'audit complet.
+:::
+
+::: {.callout-warning title="Identifying Risks // Identification des risques"}
+Reorganizing by hand risks lost files, silent overwrites, and accidental edits. Two different files mapped to the same new path would overwrite each other without any warning.
+//
+Réorganiser à la main risque d'entraîner des fichiers perdus, des écrasements silencieux et des modifications accidentelles. Deux fichiers différents associés au même nouveau chemin s'écraseraient l'un l'autre sans aucun avertissement.
+:::
+
+::: {.callout-caution title="This Notebook Changes Files // Ce cahier modifie des fichiers"}
+**This notebook writes new files to `output_dir`.** It never modifies or deletes anything in `source_dir`, but it overwrites files that already exist at the destination paths. Use an empty `output_dir`, and run it on data that you are allowed to copy.
+//
+**Ce cahier écrit de nouveaux fichiers dans `output_dir`.** Il ne modifie ni ne supprime jamais rien dans `source_dir`, mais il écrase les fichiers déjà présents aux chemins de destination. Utilisez un `output_dir` vide et exécutez-le sur des données que vous avez le droit de copier.
+:::
+
+**What this notebook does not decide.** It does **not** choose new file names or folder structure. That logic depends on each dataset's own metadata (for example, an accompanying Excel file), and must be produced separately as the **mapping CSV** that this notebook reads. This notebook is the safe, auditable, reusable engine that does the copy correctly.
+
+**Mapping CSV requirements:**
+
+1.  Two columns, named `Old_RelPath` and `New_RelPath`.
+2.  Paths are relative to `source_dir` and to `output_dir` respectively, with forward slashes.
+3.  One row per file to copy.
+
+Before copying, the notebook stops if two rows share the same `New_RelPath`.
+
+//
+
+**Ce que ce cahier ne décide pas.** Il ne choisit **pas** les nouveaux noms de fichiers ni la nouvelle structure de dossiers. Cette logique dépend des métadonnées propres à chaque jeu de données (par exemple, un fichier Excel d'accompagnement) et doit être produite séparément sous la forme du **CSV de correspondance** que ce cahier lit. Ce cahier est le moteur sûr, vérifiable et réutilisable qui effectue correctement la copie.
+
+**Exigences du CSV de correspondance :**
+
+1.  Deux colonnes, nommées `Old_RelPath` et `New_RelPath`.
+2.  Les chemins sont relatifs à `source_dir` et à `output_dir` respectivement, avec des barres obliques.
+3.  Une ligne par fichier à copier.
+
+Avant la copie, le cahier s'arrête si deux lignes partagent le même `New_RelPath`.
+
+------------------------------------------------------------------------
+
+## Setup // Configuration
+
+We use `readr` (through `tidyverse`) to read the mapping, and `digest` to compute MD5 checksums.
+
+//
+
+Nous utilisons `readr` (par l'intermédiaire de `tidyverse`) pour lire la table de correspondance et `digest` pour calculer les sommes de contrôle MD5.
+
+### R Packages // Packages R
+
+```{r}
+#| label: install-packages
+
+# install.packages(c("tidyverse", "digest", "rstudioapi"))
+```
+
+### Load Libraries // Charger les bibliothèques
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+
+library(tidyverse)  # Data manipulation [@tidyverse]
+library(digest)     # MD5 checksums [@digest]
+library(rstudioapi) # Interactive folder selection
+```
+
+## Safety Gate // Verrou de sécurité
+
+Because this notebook modifies files, its code is **not evaluated** when the document is rendered (`eval: false` in the YAML header). To run it, work on a **copy** of your data, then set `eval: true` and `allow_changes: true` in the YAML header. The next block stops with a message if `allow_changes` is not `true`.
+
+//
+
+Comme ce cahier modifie des fichiers, son code **n'est pas évalué** lors de la génération du document (`eval: false` dans l'en-tête YAML). Pour l'exécuter, travaillez sur une **copie** de vos données, puis définissez `eval: true` et `allow_changes: true` dans l'en-tête YAML. Le bloc suivant s'arrête avec un message si `allow_changes` n'est pas `true`.
+
+```{r}
+#| label: safety-gate
+
+if (!isTRUE(params$allow_changes)) {
+  stop("This notebook modifies files. Work on a COPY of your data, then set `allow_changes: true` in the YAML header.")
+}
+```
+
+## Select Directories // Sélectionner les répertoires
+
+`mapping_csv` is the mapping table. `source_dir` is the original submission (read only). `output_dir` is where the new layout is written. `log_dir` receives the audit log.
+
+//
+
+`mapping_csv` est la table de correspondance. `source_dir` est la soumission d'origine (en lecture seule). `output_dir` est l'endroit où la nouvelle organisation est écrite. `log_dir` reçoit le journal d'audit.
+
+```{r}
+#| label: select-dirs
+
+if (interactive() && .Platform$OS.type == "windows") {
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select Source Directory (v1)")
+} else {
+  selected_dir <- NULL
+}
+
+mapping_csv <- params$mapping_csv
+source_dir  <- if (!is.null(selected_dir)) selected_dir else params$source_dir
+output_dir  <- params$output_dir
+log_dir     <- params$log_dir
+
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+dir.create(log_dir, recursive = TRUE, showWarnings = FALSE)
+
+print(paste("Source:", source_dir))
+print(paste("Output:", output_dir))
+```
+
+## Load and Check the Mapping // Charger et vérifier la correspondance
+
+The mapping is read, its two required columns are checked, and the notebook stops if two rows point to the same new path.
+
+//
+
+La table de correspondance est lue, ses deux colonnes obligatoires sont vérifiées et le cahier s'arrête si deux lignes pointent vers le même nouveau chemin.
+
+```{r}
+#| label: load-mapping
+
+if (!file.exists(mapping_csv)) stop(paste("Mapping CSV not found:", mapping_csv))
+if (!dir.exists(source_dir)) stop(paste("Source directory not found:", source_dir))
+
+mapping <- read_csv(mapping_csv, show_col_types = FALSE)
+required_cols <- c("Old_RelPath", "New_RelPath")
+if (!all(required_cols %in% names(mapping))) {
+  stop(paste("Mapping CSV must have columns:", paste(required_cols, collapse = ", ")))
+}
+
+message(sprintf("Restructuring %d file(s) from %s to %s", nrow(mapping), source_dir, output_dir))
+
+# Duplicate destination check: two different source files mapped to the same
+# new path would silently overwrite one another during the copy.
+dupe_targets <- mapping$New_RelPath[duplicated(mapping$New_RelPath)]
+if (length(dupe_targets) > 0) {
+  stop(sprintf("Mapping CSV has %d duplicate New_RelPath value(s) (e.g. %s). Fix the mapping before running the copy.",
+               length(dupe_targets), dupe_targets[1]))
+}
+```
+
+## Copy and Verify Function // Fonction de copie et de vérification
+
+For each row, the function checks that the source file exists, creates the destination folder, copies the file, and compares the MD5 checksum of the source and of the copy. A copy whose checksum differs is reported as `COPIED BUT CHECKSUM MISMATCH`.
+
+//
+
+Pour chaque ligne, la fonction vérifie que le fichier source existe, crée le dossier de destination, copie le fichier et compare la somme de contrôle MD5 de la source et de la copie. Une copie dont la somme de contrôle diffère est signalée comme `COPIED BUT CHECKSUM MISMATCH`.
+
+```{r}
+#| label: copy-function
+
+copy_and_verify <- function(old_rel, new_rel) {
+  src <- file.path(source_dir, old_rel)
+  dst <- file.path(output_dir, new_rel)
+
+  if (!file.exists(src)) {
+    return(tibble(Old_RelPath = old_rel, New_RelPath = new_rel, Size_Bytes = NA_real_,
+                   Checksum_Match = NA, Status = "Source file not found"))
+  }
+
+  dir.create(dirname(dst), recursive = TRUE, showWarnings = FALSE)
+
+  tryCatch({
+    ok <- file.copy(src, dst, overwrite = TRUE, copy.date = TRUE)
+    if (!ok) {
+      return(tibble(Old_RelPath = old_rel, New_RelPath = new_rel, Size_Bytes = NA_real_,
+                     Checksum_Match = NA, Status = "Copy failed"))
+    }
+    src_hash <- digest::digest(src, algo = "md5", file = TRUE)
+    dst_hash <- digest::digest(dst, algo = "md5", file = TRUE)
+    match <- identical(src_hash, dst_hash)
+
+    tibble(
+      Old_RelPath = old_rel,
+      New_RelPath = new_rel,
+      Size_Bytes = file.size(dst),
+      Checksum_Match = match,
+      Status = if (match) "Success" else "COPIED BUT CHECKSUM MISMATCH"
+    )
+  }, error = function(e) {
+    tibble(Old_RelPath = old_rel, New_RelPath = new_rel, Size_Bytes = NA_real_,
+           Checksum_Match = NA, Status = paste("Failed:", e$message))
+  })
+}
+```
+
+## Run the Copy // Exécuter la copie
+
+This step copies and hashes every file, so it can take a long time on a large dataset.
+
+//
+
+Cette étape copie et calcule la somme de contrôle de chaque fichier ; elle peut donc être longue pour un grand jeu de données.
+
+```{r}
+#| label: execution
+
+n <- nrow(mapping)
+results <- vector("list", n)
+for (i in seq_len(n)) {
+  results[[i]] <- copy_and_verify(mapping$Old_RelPath[i], mapping$New_RelPath[i])
+  if (i %% 50 == 0 || i == n) message(sprintf("  %d / %d files processed", i, n))
+}
+log <- bind_rows(results)
+```
+
+## Save Results // Enregistrer les résultats
+
+The log has one row per file with the old and new paths, the size, whether the checksums match, and the status.
+
+//
+
+Le journal compte une ligne par fichier, avec les anciens et les nouveaux chemins, la taille, si les sommes de contrôle concordent et le statut.
+
+```{r}
+#| label: save-results
+
+log_file <- file.path(log_dir, paste0("Restructure_Log_", format(Sys.time(), "%Y%m%d_%H%M%S"), ".csv"))
+write_excel_csv(log, log_file)
+
+n_ok <- sum(log$Status == "Success", na.rm = TRUE)
+n_bad <- sum(log$Status != "Success", na.rm = TRUE)
+message(sprintf("Done. %d succeeded, %d need attention. Log saved to: %s", n_ok, n_bad, log_file))
+if (n_bad > 0) {
+  message("WARNING: some files did not copy cleanly. Review the log before treating v2 as complete.")
+}
+```
+
+## Curation Insights // Aperçu de la curation
+
+Use the log to decide whether v2 is complete and trustworthy:
+
+-   **Success:** The file was copied, and the checksums of the source and the copy match.
+
+-   **Source file not found:** A row of the mapping points to a file that is not in `source_dir`. Check the path in the mapping for typos or for a different case.
+
+-   **Copy failed or Failed:** The file could not be written, for example because of a long path, permissions, or disk space.
+
+-   **COPIED BUT CHECKSUM MISMATCH:** The copy is not identical to the source. Do not use it. Copy it again, and investigate the storage.
+
+-   **Count the files:** After the run, compare the number of files in v2 with the number in v1. Files that are in v1 but missing from the mapping are **not copied**, and will not appear in the log.
+
+-   **Share with the depositor:** Give them the mapping and the log so that they can confirm that the proposed layout is acceptable. Then use the [checksum manifest verification](Verify_ChecksumManifest_Notebook.qmd) on the final v2.
+
+//
+
+Utilisez le journal pour décider si la v2 est complète et fiable :
+
+-   **Success :** Le fichier a été copié et les sommes de contrôle de la source et de la copie concordent.
+
+-   **Source file not found :** Une ligne de la correspondance pointe vers un fichier absent de `source_dir`. Vérifiez dans la correspondance les fautes de frappe ou une casse différente.
+
+-   **Copy failed ou Failed :** Le fichier n'a pas pu être écrit, par exemple à cause d'un chemin trop long, des permissions ou de l'espace disque.
+
+-   **COPIED BUT CHECKSUM MISMATCH :** La copie n'est pas identique à la source. Ne l'utilisez pas. Recopiez-la et enquêtez sur le stockage.
+
+-   **Comptez les fichiers :** Après l'exécution, comparez le nombre de fichiers de la v2 avec celui de la v1. Les fichiers présents dans la v1 mais absents de la correspondance ne sont **pas copiés** et n'apparaîtront pas dans le journal.
+
+-   **Partagez avec le déposant :** Remettez-lui la correspondance et le journal afin qu'il confirme que l'organisation proposée est acceptable. Utilisez ensuite la [vérification du manifeste de sommes de contrôle](Verify_ChecksumManifest_Notebook.qmd) sur la v2 finale.
+
+## Additional Tools // Outils supplémentaires
+
+-   **Checksum verification:** The [checksum manifest verification](Verify_ChecksumManifest_Notebook.qmd) confirms a finished layout against a manifest.
+
+-   **README file list check:** After reorganizing, the [README file list check](Inspect_ReadmeFileList_Notebook.qmd) shows whether the README still matches the new file names.
+
+-   **`rsync` and `robocopy`:** Command-line tools that copy directory trees and can verify checksums, useful for very large datasets.
+
+//
+
+-   **Vérification des sommes de contrôle :** La [vérification du manifeste de sommes de contrôle](Verify_ChecksumManifest_Notebook.qmd) confirme une organisation terminée à l'aide d'un manifeste.
+
+-   **Vérification de la liste de fichiers du README :** Après la réorganisation, la [vérification de la liste de fichiers du README](Inspect_ReadmeFileList_Notebook.qmd) indique si le README correspond toujours aux nouveaux noms de fichiers.
+
+-   **`rsync` et `robocopy` :** Des outils en ligne de commande qui copient des arborescences et peuvent vérifier les sommes de contrôle, utiles pour de très grands jeux de données.
+
+## Using the Non-Interactive R Script // Utilisation du script R non interactif
+
+For users who want to run this process on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
+
+Download the **R Script:** [**`Restructure_Dataset_Script.R`**](Scripts/Restructure_Dataset_Script.R)
+
+//
+
+Pour les utilisateurs qui souhaitent exécuter ce processus sur un serveur, dans le cadre d'un traitement par lots ou depuis la ligne de commande, voici un script R pur qui effectue le même processus.
+
+Télécharger le **script R :** [**`Restructure_Dataset_Script.R`**](Scripts/Restructure_Dataset_Script.R)
+
+### Example HPC Submission Script // Exemple de script de soumission HPC
+
+`Restructure_Dataset_submit.sh`
+
+``` bash
+#!/bin/bash
+#SBATCH --job-name=restructure
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=04:00:00
+#SBATCH --mem=8G
+#SBATCH --output=logs/restructure_%j.log
+
+# Load R Module
+module load R
+
+# IMPORTANT: this job MODIFIES files. Run it on a COPY of the data.
+# Define paths
+MAPPING_CSV="/scratch/user/mapping.csv"
+SOURCE_DIR="/scratch/user/project_data_v1"
+OUTPUT_DIR="/scratch/user/project_data_v2"
+LOG_DIR="/scratch/user/restructure_logs"
+
+# Prepare Environment
+mkdir -p logs
+
+# Run Restructure (every file is copied and hashed: allow generous time)
+echo "Starting restructure of $SOURCE_DIR"
+Rscript Restructure_Dataset_Script.R "$MAPPING_CSV" "$SOURCE_DIR" "$OUTPUT_DIR" "$LOG_DIR"
+```
+
+## References // Références
+
+::: {#refs}
+:::

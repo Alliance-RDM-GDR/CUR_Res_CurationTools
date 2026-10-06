@@ -81,6 +81,12 @@ book:
         - Inspect_Images_Notebook.qmd
         - Inspect_Tiff_Notebook.qmd
 
+    - part: Data_Utilities.qmd
+      chapters:
+        - Repair_TextEncoding_Notebook.qmd
+        - Redact_EyeLinkHeader_Notebook.qmd
+        - Restructure_Dataset_Notebook.qmd
+
 bibliography: references.bib
 format:
   html:

@@ -1,0 +1,464 @@
+---
+title: "Repairing Text Encoding (README and .txt Files)"
+author: "Data Curation Team"
+date: "2026-10-06"
+format:
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+    theme: cosmo
+execute:
+  eval: false
+params:
+  target_dir: "data/Repair_TextEncoding/"
+  backup_dir: "Results/Repair_TextEncoding"
+  file_pattern: '\.txt$'
+  allow_changes: false
+bibliography: references.bib
+---
+
+## Overview // Aperçu
+
+Plain-text files, especially READMEs, often arrive with encoding problems that are invisible until someone opens them in another program: accented letters replaced by strange symbols, quotation marks turned into three-character sequences, or line endings that make the whole file one long line. This notebook detects and repairs three common problems.
+
+//
+
+Les fichiers texte brut, en particulier les README, arrivent souvent avec des problèmes d'encodage invisibles jusqu'à ce que quelqu'un les ouvre dans un autre programme : lettres accentuées remplacées par des symboles étranges, guillemets transformés en suites de trois caractères ou fins de ligne qui font du fichier une seule longue ligne. Ce cahier détecte et répare trois problèmes courants.
+
+::: {.callout-note title="Curation Goal // Objectif de la curation"}
+Convert text files to UTF-8, repair double-encoded text ("mojibake"), and normalize old Mac-style line endings, **keeping an untouched backup of every file it changes**, so that the text reads correctly everywhere.
+//
+Convertir les fichiers texte en UTF-8, réparer le texte doublement encodé (« mojibake ») et normaliser les anciennes fins de ligne de style Mac, **en conservant une copie de sauvegarde intacte de chaque fichier modifié**, afin que le texte s'affiche correctement partout.
+:::
+
+::: {.callout-warning title="Identifying Risks // Identification des risques"}
+Text in the wrong encoding is unreadable or ambiguous for reusers, and a name or word with accents can be altered. An automatic repair is itself a risk: a wrong guess can damage text that was correct.
+//
+Un texte dans le mauvais encodage est illisible ou ambigu pour les réutilisateurs, et un nom ou un mot accentué peut être altéré. Une réparation automatique comporte elle-même un risque : une mauvaise hypothèse peut abîmer un texte qui était correct.
+:::
+
+::: {.callout-caution title="This Notebook Changes Files // Ce cahier modifie des fichiers"}
+**Unlike the inspection notebooks, this one writes to the files in `target_dir`.** Every file that it changes is first saved, unmodified, to `backup_dir` with the suffix `_original_backup`. Review every row of the log where `Any_Change_Made` is `TRUE` against its backup before trusting it, especially the `Mojibake_Fixed` cases. Work on a copy of the data.
+//
+**Contrairement aux cahiers d'inspection, celui-ci écrit dans les fichiers de `target_dir`.** Chaque fichier modifié est d'abord enregistré, sans modification, dans `backup_dir` avec le suffixe `_original_backup`. Examinez chaque ligne du journal où `Any_Change_Made` vaut `TRUE` en la comparant à sa sauvegarde avant de lui faire confiance, surtout pour les cas `Mojibake_Fixed`. Travaillez sur une copie des données.
+:::
+
+**The three repairs:**
+
+1.  **Encoding:** The encoding is detected with `readr::guess_encoding()`. A file that is not already UTF-8 or ASCII is converted to UTF-8.
+2.  **Double-encoding (mojibake):** When UTF-8 bytes are wrongly read as Windows-1252 and saved again, one character becomes two or three (for example, an en dash turns into `â€“`). The repair re-encodes the text as Windows-1252 to recover the original bytes. It is applied **line by line**, and only when it demonstrably reduces the number of artifacts, so a failure on one line never blocks a fix on another and a correct line is never put at risk.
+3.  **Line endings:** Old Mac-style files that use only CR are converted to CRLF. Files that use LF (Unix) or CRLF (Windows) are left alone, since both are widely supported.
+
+//
+
+**Les trois réparations :**
+
+1.  **Encodage :** L'encodage est détecté avec `readr::guess_encoding()`. Un fichier qui n'est pas déjà en UTF-8 ou en ASCII est converti en UTF-8.
+2.  **Double encodage (mojibake) :** Lorsque des octets UTF-8 sont lus à tort comme du Windows-1252 puis réenregistrés, un caractère devient deux ou trois (par exemple, un tiret demi-cadratin devient `â€“`). La réparation réencode le texte en Windows-1252 pour retrouver les octets d'origine. Elle est appliquée **ligne par ligne**, et seulement lorsqu'elle réduit manifestement le nombre d'artefacts ; un échec sur une ligne ne bloque donc jamais une correction sur une autre et une ligne correcte n'est jamais mise en danger.
+3.  **Fins de ligne :** Les anciens fichiers de style Mac qui n'utilisent que CR sont convertis en CRLF. Les fichiers qui utilisent LF (Unix) ou CRLF (Windows) sont laissés tels quels, car les deux sont largement pris en charge.
+
+------------------------------------------------------------------------
+
+## Setup // Configuration
+
+Only `tidyverse` is needed (`readr` supplies the encoding detection).
+
+//
+
+Seul `tidyverse` est nécessaire (`readr` fournit la détection de l'encodage).
+
+### R Packages // Packages R
+
+```{r}
+#| label: install-packages
+
+# install.packages(c("tidyverse", "rstudioapi"))
+```
+
+### Load Libraries // Charger les bibliothèques
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+
+library(tidyverse)  # Includes readr and purrr [@tidyverse]
+library(rstudioapi) # Interactive folder selection
+```
+
+## Safety Gate // Verrou de sécurité
+
+Because this notebook modifies files, its code is **not evaluated** when the document is rendered (`eval: false` in the YAML header). To run it, work on a **copy** of your data, then set `eval: true` and `allow_changes: true` in the YAML header. The next block stops with a message if `allow_changes` is not `true`.
+
+//
+
+Comme ce cahier modifie des fichiers, son code **n'est pas évalué** lors de la génération du document (`eval: false` dans l'en-tête YAML). Pour l'exécuter, travaillez sur une **copie** de vos données, puis définissez `eval: true` et `allow_changes: true` dans l'en-tête YAML. Le bloc suivant s'arrête avec un message si `allow_changes` n'est pas `true`.
+
+```{r}
+#| label: safety-gate
+
+if (!isTRUE(params$allow_changes)) {
+  stop("This notebook modifies files. Work on a COPY of your data, then set `allow_changes: true` in the YAML header.")
+}
+```
+
+## Select Directories // Sélectionner les répertoires
+
+`target_dir` is the folder with the files to repair, `backup_dir` is where the untouched originals and the log are written, and `file_pattern` is a case-insensitive regular expression for the files to check. By default, `.txt` files are checked.
+
+//
+
+`target_dir` est le dossier contenant les fichiers à réparer, `backup_dir` est l'endroit où les originaux intacts et le journal sont écrits, et `file_pattern` est une expression régulière, insensible à la casse, des fichiers à vérifier. Par défaut, les fichiers `.txt` sont vérifiés.
+
+```{r}
+#| label: select-dirs
+
+if (interactive() && .Platform$OS.type == "windows") {
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select Directory")
+} else {
+  selected_dir <- NULL
+}
+
+if (!is.null(selected_dir)) {
+  target_dir <- selected_dir
+} else {
+  target_dir <- params$target_dir
+}
+output_dir <- params$backup_dir
+file_pattern <- params$file_pattern
+
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+
+print(paste("Scanning for text files to check/repair in:", target_dir))
+```
+
+## Inventory of Text Files // Liste des fichiers texte
+
+We list the files that match the pattern. Folders named `Curation_Results` and files that are already backups (`_original_backup`) are skipped.
+
+//
+
+Nous listons les fichiers qui correspondent au motif. Les dossiers nommés `Curation_Results` et les fichiers qui sont déjà des sauvegardes (`_original_backup`) sont ignorés.
+
+```{r}
+#| label: inventory
+
+text_files <- list.files(
+  path = target_dir,
+  pattern = file_pattern,
+  recursive = TRUE,
+  full.names = TRUE,
+  ignore.case = TRUE
+)
+text_files <- text_files[!grepl("Curation_Results", text_files, ignore.case = TRUE)]
+text_files <- text_files[!grepl("_original_backup", text_files, ignore.case = TRUE)]
+
+message(paste("Found", length(text_files), "file(s) to check."))
+
+if (length(text_files) == 0) {
+  stop("No matching files found.", call. = FALSE)
+}
+```
+
+## Mojibake Repair // Réparation du mojibake
+
+UTF-8 bytes that were individually misread as Windows-1252 leave telltale sequences, such as `Ã©` for `é`. The helper counts those markers, and re-encodes the text as Windows-1252 to recover the original characters.
+
+//
+
+Des octets UTF-8 lus individuellement à tort comme du Windows-1252 laissent des séquences caractéristiques, comme `Ã©` pour `é`. La fonction compte ces marqueurs et réencode le texte en Windows-1252 pour retrouver les caractères d'origine.
+
+```{r}
+#| label: mojibake
+
+# Common tell: UTF-8 bytes for an accented character get individually
+# mis-decoded as Windows-1252, producing 2-3 garbage characters in place of one
+# (e.g. the UTF-8 bytes for "e2 80 93" (en dash) show up as the 3-character
+# string "â€“"). Re-encoding that string AS IF it were
+# Windows-1252 recovers the original UTF-8 byte sequence, which then decodes
+# correctly back to the intended character.
+mojibake_markers <- c(
+  "Ã©", "Ã¨", "Ã ", "Ã´", "Ã§",
+  "Ã¹", "Ãª", "Ã®", "Ã«", "Ã¯",
+  "â€™", "â€œ", "â€",
+  "â€“", "â€”", "â€¦",
+  "Â°", "Â«", "Â»", "�"
+)
+
+count_markers <- function(x) {
+  sum(vapply(mojibake_markers, function(m) {
+    hits <- gregexpr(m, x, fixed = TRUE)[[1]]
+    sum(hits > 0)
+  }, numeric(1)))
+}
+
+try_fix_mojibake <- function(x) {
+  tryCatch({
+    bytes_as_cp1252 <- iconv(x, from = "UTF-8", to = "WINDOWS-1252", sub = "byte")
+    fixed <- iconv(bytes_as_cp1252, from = "UTF-8", to = "UTF-8", sub = NA)
+    if (is.na(fixed)) return(x)
+    fixed
+  }, error = function(e) x)
+}
+```
+
+## Repair Function // Fonction de réparation
+
+For each file, the function reads the raw bytes, detects the encoding, converts it, applies the mojibake repair line by line, and normalizes CR-only line endings. **Only if something changed**, the untouched original is written to `backup_dir` and then the file is overwritten.
+
+//
+
+Pour chaque fichier, la fonction lit les octets bruts, détecte l'encodage, le convertit, applique la réparation du mojibake ligne par ligne et normalise les fins de ligne CR seul. **Seulement si quelque chose a changé**, l'original intact est écrit dans `backup_dir`, puis le fichier est écrasé.
+
+```{r}
+#| label: repair-function
+
+repair_file <- function(fp) {
+  fname <- basename(fp)
+
+  tryCatch({
+    raw_bytes <- readBin(fp, what = "raw", n = file.info(fp)$size)
+
+    # A. Determine source text encoding
+    guess <- readr::guess_encoding(fp, n_max = 2000)
+    detected_encoding <- if (nrow(guess) > 0) guess$encoding[1] else "UTF-8"
+
+    raw_text <- rawToChar(raw_bytes)
+    Encoding(raw_text) <- "bytes"
+
+    was_already_utf8 <- toupper(detected_encoding) %in% c("UTF-8", "ASCII")
+    decode_from <- if (was_already_utf8) "UTF-8" else detected_encoding
+    text <- iconv(raw_text, from = decode_from, to = "UTF-8", sub = NA)
+    if (is.na(text)) {
+      # Fall back to Windows-1252, which is a superset of ASCII and rarely fails to decode
+      text <- iconv(raw_text, from = "WINDOWS-1252", to = "UTF-8", sub = "byte")
+    }
+
+    encoding_changed <- !was_already_utf8
+
+    # B. Mojibake (double-encoding) repair, applied LINE BY LINE.
+    # A README can mix correctly-encoded text (e.g. pasted once, correctly) with
+    # double-encoded text (pasted from a different, already-corrupted source) in
+    # the same file. Running the round-trip fix on the whole document at once
+    # risks corrupting an already-correct line elsewhere (re-encoding a genuine
+    # accented character to Windows-1252 can produce a byte that is not valid
+    # UTF-8 on its own, turning that line to NA and silently aborting the whole
+    # repair). Fixing one line at a time means a failure on one line never
+    # blocks a fix on another, and a correct line is never put at risk.
+    markers_before <- count_markers(text)
+    mojibake_fixed <- FALSE
+    if (markers_before > 0) {
+      text_lines <- strsplit(text, "\r\n|\n", perl = TRUE)[[1]]
+      any_line_fixed <- FALSE
+      text_lines <- purrr::map_chr(text_lines, function(line) {
+        line_markers <- count_markers(line)
+        if (line_markers == 0) return(line)
+        candidate <- try_fix_mojibake(line)
+        if (is.na(candidate)) return(line)
+        if (count_markers(candidate) < line_markers) {
+          any_line_fixed <<- TRUE
+          return(candidate)
+        }
+        line
+      })
+      if (any_line_fixed) {
+        line_ending <- if (grepl("\r\n", text, fixed = TRUE)) "\r\n" else "\n"
+        text <- paste(text_lines, collapse = line_ending)
+        mojibake_fixed <- TRUE
+      }
+    }
+
+    # C. Line-ending normalization: old Mac-style CR-only -> CRLF.
+    # Leave LF-only (Unix) and CRLF (Windows) files alone; both are widely supported.
+    has_cr_only <- grepl("\r(?!\n)", text, perl = TRUE) && !grepl("\r\n", text, fixed = TRUE)
+    if (has_cr_only) {
+      text <- gsub("\r", "\r\n", text)
+    }
+
+    any_change <- encoding_changed || mojibake_fixed || has_cr_only
+
+    if (any_change) {
+      backup_path <- file.path(output_dir, paste0(tools::file_path_sans_ext(fname), "_original_backup.", tools::file_ext(fname)))
+      writeBin(raw_bytes, backup_path)
+      writeBin(charToRaw(text), fp)
+    }
+
+    tibble(
+      FileName = fname,
+      Detected_Encoding = detected_encoding,
+      Encoding_Fixed = encoding_changed,
+      Mojibake_Markers_Found = markers_before,
+      Mojibake_Fixed = mojibake_fixed,
+      CR_Only_Line_Endings_Fixed = has_cr_only,
+      Any_Change_Made = any_change,
+      Backup_Location = if (any_change) file.path(output_dir, paste0(tools::file_path_sans_ext(fname), "_original_backup.", tools::file_ext(fname))) else NA_character_,
+      Status = "Success"
+    )
+
+  }, error = function(e) {
+    tibble(
+      FileName = fname, Detected_Encoding = NA, Encoding_Fixed = NA,
+      Mojibake_Markers_Found = NA, Mojibake_Fixed = NA,
+      CR_Only_Line_Endings_Fixed = NA, Any_Change_Made = NA, Backup_Location = NA,
+      Status = paste("Failed:", e$message)
+    )
+  })
+}
+```
+
+## Run the Repair // Exécuter la réparation
+
+This step runs the repair on every file. This is the point where files on disk are modified.
+
+//
+
+Cette étape exécute la réparation sur chaque fichier. C'est ici que les fichiers sur le disque sont modifiés.
+
+```{r}
+#| label: execution
+
+message("Checking and repairing text encoding issues...")
+report <- map_dfr(text_files, repair_file)
+```
+
+## Save Results // Enregistrer les résultats
+
+The log has one row per file. It records the detected encoding, which repairs were applied, and the location of the backup.
+
+//
+
+Le journal compte une ligne par fichier. Il consigne l'encodage détecté, les réparations appliquées et l'emplacement de la sauvegarde.
+
+```{r}
+#| label: save-results
+
+output_file <- file.path(output_dir, paste0("TextEncoding_Repair_Log_", dir_label, "_", format(Sys.Date(), "%Y%m%d"), ".csv"))
+write_excel_csv(report, output_file)
+
+codebook <- tibble(
+  Variable = c("FileName", "Detected_Encoding", "Encoding_Fixed", "Mojibake_Markers_Found",
+               "Mojibake_Fixed", "CR_Only_Line_Endings_Fixed", "Any_Change_Made",
+               "Backup_Location", "Status"),
+  Type = c("Text", "Text", "Logical", "Integer", "Logical", "Logical", "Logical", "Text", "Text"),
+  Description = c(
+    "Name of the file checked.",
+    "Encoding detected via readr::guess_encoding() before any repair.",
+    "TRUE if the file was not already UTF-8/ASCII and was converted.",
+    "Count of known double-encoding (mojibake) artifact sequences found before repair.",
+    "TRUE if a mojibake repair pass was applied (only applied when it demonstrably reduced artifact count).",
+    "TRUE if old Mac-style CR-only line endings were normalized to CRLF.",
+    "TRUE if the file on disk was modified in any way.",
+    "Path to the untouched original, saved before any modification; NA if no change was made.",
+    'Either "Success" or "Failed: <error message>".'
+  )
+)
+codebook_file <- file.path(output_dir, "TextEncoding_Repair_Log_Codebook.csv")
+write_excel_csv(codebook, codebook_file)
+
+message(paste("Process complete. Log saved to:", output_file))
+message("REVIEW every row with Any_Change_Made = TRUE against its backup before trusting it, especially Mojibake_Fixed cases.")
+```
+
+## Curation Insights // Aperçu de la curation
+
+Use the log to review each change before accepting it:
+
+-   **Any_Change_Made = FALSE:** The file was already fine, and was left untouched. No backup was made.
+
+-   **Encoding_Fixed = TRUE:** The file was not UTF-8 or ASCII and was converted. Open the original and the new file side by side and check accented names and special symbols.
+
+-   **Mojibake_Fixed = TRUE:** A double-encoding repair was applied. This is the riskiest repair, so read each repaired line against the backup. The repair is applied only when it lowers the artifact count, but it cannot know the author's intent.
+
+-   **Mojibake_Markers_Found \> 0 with Mojibake_Fixed = FALSE:** Artifacts were found, but the repair would not have improved the line. Fix those by hand.
+
+-   **CR_Only_Line_Endings_Fixed = TRUE:** An old Mac-style file was converted to CRLF. This normally only affects how the lines break.
+
+-   **Status "Failed":** The file could not be processed and was not modified.
+
+-   **Keep the backups:** Retain the `_original_backup` files until the changes have been reviewed. Do not publish them with the dataset.
+
+//
+
+Utilisez le journal pour examiner chaque modification avant de l'accepter :
+
+-   **Any_Change_Made = FALSE :** Le fichier était déjà correct et n'a pas été touché. Aucune sauvegarde n'a été faite.
+
+-   **Encoding_Fixed = TRUE :** Le fichier n'était ni en UTF-8 ni en ASCII et a été converti. Ouvrez l'original et le nouveau fichier côte à côte et vérifiez les noms accentués et les symboles spéciaux.
+
+-   **Mojibake_Fixed = TRUE :** Une réparation de double encodage a été appliquée. C'est la réparation la plus risquée ; lisez donc chaque ligne réparée en la comparant à la sauvegarde. La réparation n'est appliquée que si elle réduit le nombre d'artefacts, mais elle ne peut pas connaître l'intention de l'auteur.
+
+-   **Mojibake_Markers_Found \> 0 avec Mojibake_Fixed = FALSE :** Des artefacts ont été trouvés, mais la réparation n'aurait pas amélioré la ligne. Corrigez-les à la main.
+
+-   **CR_Only_Line_Endings_Fixed = TRUE :** Un ancien fichier de style Mac a été converti en CRLF. Cela n'affecte normalement que les sauts de ligne.
+
+-   **Statut « Failed » :** Le fichier n'a pas pu être traité et n'a pas été modifié.
+
+-   **Conservez les sauvegardes :** Gardez les fichiers `_original_backup` jusqu'à ce que les modifications aient été examinées. Ne les publiez pas avec le jeu de données.
+
+## Additional Tools // Outils supplémentaires
+
+-   **`ftfy`:** A Python [library](https://github.com/rspeer/python-ftfy) that fixes mojibake and other broken Unicode text.
+
+-   **`iconv`:** A standard command-line utility to convert a file from one encoding to another (for example `iconv -f WINDOWS-1252 -t UTF-8`).
+
+-   **Text editors:** Editors such as VS Code and Notepad++ show the detected encoding and let you reopen or save a file with another one.
+
+-   **Inspection first:** Use the [text inspection](Inspect_Text_Notebook.qmd) to find encoding problems before repairing anything.
+
+//
+
+-   **`ftfy` :** Une [bibliothèque](https://github.com/rspeer/python-ftfy) Python qui corrige le mojibake et d'autres textes Unicode abîmés.
+
+-   **`iconv` :** Un utilitaire standard en ligne de commande pour convertir un fichier d'un encodage à un autre (par exemple `iconv -f WINDOWS-1252 -t UTF-8`).
+
+-   **Éditeurs de texte :** Des éditeurs comme VS Code et Notepad++ affichent l'encodage détecté et permettent de rouvrir ou d'enregistrer un fichier avec un autre.
+
+-   **D'abord l'inspection :** Utilisez l'[inspection des fichiers texte](Inspect_Text_Notebook.qmd) pour repérer les problèmes d'encodage avant de réparer quoi que ce soit.
+
+## Using the Non-Interactive R Script // Utilisation du script R non interactif
+
+For users who want to run this process on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
+
+Download the **R Script:** [**`Repair_TextEncoding_Script.R`**](Scripts/Repair_TextEncoding_Script.R)
+
+//
+
+Pour les utilisateurs qui souhaitent exécuter ce processus sur un serveur, dans le cadre d'un traitement par lots ou depuis la ligne de commande, voici un script R pur qui effectue le même processus.
+
+Télécharger le **script R :** [**`Repair_TextEncoding_Script.R`**](Scripts/Repair_TextEncoding_Script.R)
+
+### Example HPC Submission Script // Exemple de script de soumission HPC
+
+`Repair_TextEncoding_submit.sh`
+
+``` bash
+#!/bin/bash
+#SBATCH --job-name=text_repair
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=00:30:00
+#SBATCH --mem=4G
+#SBATCH --output=logs/text_repair_%j.log
+
+# Load R Module
+module load R
+
+# IMPORTANT: this job MODIFIES files. Run it on a COPY of the data.
+# Define directories (a COPY of the data, not the original)
+DATA_DIR="/scratch/user/project_data_copy"
+BACKUP_DIR="/scratch/user/encoding_backups"
+
+# Prepare Environment
+mkdir -p logs
+
+# Run Repair (file pattern defaults to .txt)
+echo "Starting text encoding repair on $DATA_DIR"
+Rscript Repair_TextEncoding_Script.R "$DATA_DIR" "$BACKUP_DIR"
+```
+
+## References // Références
+
+::: {#refs}
+:::
