@@ -11,9 +11,8 @@
 #          IMPORTANT: this is a heuristic RED-FLAG screen, not a tidy-data
 #          verdict. A file with no flags below is not guaranteed to be tidy,
 #          and a flagged file is not guaranteed to be wrong — every flag
-#          still needs a human read to confirm (see CURATION_GUIDELINES.md,
-#          Section 7: Content & Semantic Integrity Review). What this script
-#          catches is limited to structural evidence: duplicate headers,
+#          still needs a human read to confirm the content and semantics. What
+#          this script catches is limited to structural evidence: duplicate headers,
 #          stacked data blocks under one header row, embedded blank
 #          separator rows, and suspiciously wide column-name patterns.
 # Usage:   Rscript Inspect_TidyData_Script.R <target_directory>
@@ -281,4 +280,4 @@ codebook_file <- file.path(output_dir, "TidyData_Screen_Codebook.csv")
 write_excel_csv(codebook, codebook_file)
 
 message(paste("Process complete. Report saved to:", output_file))
-message("REMINDER: this is a heuristic screen, not a tidy-data verdict — confirm every flag by reading the file (CURATION_GUIDELINES.md, Section 7).")
+message("REMINDER: this is a heuristic screen, not a tidy-data verdict — confirm every flag by reading the file.")

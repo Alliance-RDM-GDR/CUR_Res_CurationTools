@@ -29,9 +29,8 @@
 #     does not check the 3D point or analog data blocks for corruption.
 #   - The PII heuristic (Likely_PII_Value) is pattern-based, not a verdict:
 #     confirm every hit by reading the actual value, and do not assume a
-#     file with no hits has no identifying text (see CURATION_GUIDELINES.md,
-#     Section 7 — this script narrows what a human needs to check, it does
-#     not replace checking).
+#     file with no hits has no identifying text (this script narrows what a
+#     human needs to check, it does not replace checking).
 #
 # Usage:   Rscript Inspect_C3D_Script.R <target_directory> [output_dir]
 # ==============================================================================

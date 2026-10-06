@@ -5,10 +5,9 @@
 # Description: Generates a full file inventory with ExifTool metadata.
 #              Designed for Hybrid use (Interactive / HPC).
 #
-# This is a "run on every dataset" general script (CURATION_GUIDELINES.md,
-# Section 3: "File inventory first"), including large ones. ExifTool reads
-# one file at a time (see the comment at "Deep Metadata Extraction" below for
-# why), which does not scale to tens of thousands of files. Rather than
+# This is a "run on every dataset" general script (file inventory first),
+# including large ones. ExifTool reads one file at a time (see the comment at
+# "Deep Metadata Extraction" below for why), which does not scale to tens of thousands of files. Rather than
 # skipping this script entirely on a large dataset (which loses the basic
 # inventory and Format_Summary too, not just the ExifTool columns), it
 # auto-skips ONLY the ExifTool pass above exif_file_limit files, still

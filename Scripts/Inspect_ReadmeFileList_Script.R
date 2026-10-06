@@ -83,9 +83,9 @@ message(sprintf("Found %d file-list entries in the README.", length(readme_entri
 
 # 4. Inventory actual files (excluding the README and our own curation outputs) --
 # "Curation_Results" is this project's standing convention for where a dataset's
-# own inspection reports get moved (see CURATION_GUIDELINES.md) — it must be
-# excluded here, or a report generated on a prior pass gets diffed against the
-# README as if it were depositor content.
+# own inspection reports get moved — it must be excluded here, or a report
+# generated on a prior pass gets diffed against the README as if it were
+# depositor content.
 disk_files <- list.files(target_dir, recursive = TRUE, full.names = FALSE, all.files = FALSE)
 disk_files <- disk_files[!str_detect(basename(disk_files), paste0("^", readme_name, "$"))]
 disk_files <- disk_files[!str_detect(disk_files, "(?i)Curation_Results")]
