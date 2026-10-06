@@ -37,6 +37,9 @@ if (interactive()) {
 if (!dir.exists(target_dir)) stop(paste("Directory not found:", target_dir))
 if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
+# Label for output filenames: name of the folder that was explored
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+
 message(sprintf("Inspecting HDF5 files in: %s", target_dir))
 
 # ------------------------------------------------------------------------------
@@ -141,8 +144,8 @@ if (length(hdf5_files) > 0) {
   message("Analyzing structure (Deep Scan)...")
   report <- purrr::map_dfr(hdf5_files, analyze_hdf5_structure)
   
-  output_file <- file.path(output_dir, paste0("HDF5_Structure_HPC_", Sys.Date(), ".csv"))
-  write_csv(report, output_file)
+  output_file <- file.path(output_dir, paste0("HDF5_Structure_HPC_", dir_label, "_", Sys.Date(), ".csv"))
+  write_excel_csv(report, output_file)
   
   message(sprintf("Analysis complete. Report saved to: %s", output_file))
   

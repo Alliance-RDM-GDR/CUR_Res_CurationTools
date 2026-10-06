@@ -36,6 +36,9 @@ if (interactive()) {
 if (!dir.exists(target_dir)) stop(paste("Directory not found:", target_dir))
 if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
+# Label for output filenames: name of the folder that was explored
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+
 message(sprintf("Inspecting SQLite databases in: %s", target_dir))
 
 # ------------------------------------------------------------------------------
@@ -108,9 +111,9 @@ inspect_sqlite <- function(file_path) {
 db_inventory <- map_dfr(db_files, inspect_sqlite)
 
 timestamp <- format(Sys.Date(), "%Y%m%d")
-output_file <- file.path(output_dir, paste0("Database_Manifest_", timestamp, ".csv"))
+output_file <- file.path(output_dir, paste0("Database_Manifest_", dir_label, "_", timestamp, ".csv"))
 
-write.csv(db_inventory, output_file, row.names = FALSE)
+write_excel_csv(db_inventory, output_file)
 
 message(sprintf("✅ Process Complete."))
 message(sprintf("   Analyzed tables saved to: %s", output_file))

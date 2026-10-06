@@ -29,6 +29,7 @@ A reusable HPC execution guide, including the minimal `Fir` bundle and troublesh
 ### Prerequisites
 - [Quarto](https://quarto.org/docs/get-started/)
 - [R](https://www.r-project.org/) and the libraries listed in the `Preface` or `load-libraries` chunks.
+- To run the workshop scripts only, see [Scripts/REQUIREMENTS.md](Scripts/REQUIREMENTS.md) and run `Rscript Scripts/install_requirements.R`.
 
 ### Local Rendering
 To preview the book locally:

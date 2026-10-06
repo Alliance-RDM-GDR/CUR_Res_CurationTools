@@ -8,27 +8,39 @@
 # Usage:   Rscript Inspect_nc_Script.R <target_directory>
 # ==============================================================================
 
-# 1. Setup & Arguments ---------------------------------------------------------
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) == 0) {
-  stop("Error: No target directory provided.\nUsage: Rscript Inspect_nc_Script.R /path/to/netcdf_files", call. = FALSE)
-}
-
-target_dir <- args[1]
-
-if (!dir.exists(target_dir)) {
-  stop(paste("Error: Directory not found:", target_dir), call. = FALSE)
-}
-
-# Load libraries silently
+# 1. Setup & Directory Selection (Hybrid: Interactive / HPC) ------------------
 suppressPackageStartupMessages({
   library(tidyverse)
   library(tidync)
   library(ncmeta)
 })
 
+if (interactive()) {
+  message("Running in interactive mode. Please select a directory.")
+  if (requireNamespace("rstudioapi", quietly = TRUE)) {
+    target_dir <- rstudioapi::selectDirectory(caption = "Select Data Directory")
+  } else {
+    stop("Package 'rstudioapi' is required for interactive selection.")
+  }
+  if (is.null(target_dir)) stop("No directory selected.")
+  output_dir <- file.path(getwd(), "Results/Inspect_nc")
+} else {
+  args <- commandArgs(trailingOnly = TRUE)
+  if (length(args) == 0) {
+    stop("Usage: Rscript Inspect_nc_Script.R <input_dir> [output_dir]", call. = FALSE)
+  }
+  target_dir <- args[1]
+  if (!dir.exists(target_dir)) stop(paste("Directory not found:", target_dir))
+  output_dir <- if (length(args) >= 2) args[2] else file.path(getwd(), "Results/Inspect_nc")
+}
+
+if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+# Label for output filenames: name of the folder that was explored
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+
 message(paste("Starting NetCDF analysis on:", target_dir))
+message(sprintf("Results will be saved to: %s", output_dir))
 
 # 2. Phase A: Inventory Function (Usability Scan) ------------------------------
 inspect_nc_inventory <- function(fp) {
@@ -69,13 +81,12 @@ inspect_nc_inventory <- function(fp) {
   is_empty_label <- "Unknown"
   try({
     first_var <- vars$name[1]
-    # Read a tiny sample (first 100 values) to check for 100% NaNs
-    sample_data <- tnc %>% 
-      activate(first_var) %>% 
-      hyper_slice(select_var = first_var) %>% 
-      as_tibble()
-    
-    val_col <- names(sample_data)[ncol(sample_data)]
+    # Read a tiny sample to check for 100% NaNs
+    sample_data <- tnc %>%
+      activate(first_var) %>%
+      hyper_tibble(select_var = first_var)
+
+    val_col <- first_var
     if (all(is.na(sample_data[[val_col]]))) {
       is_empty_label <- "⚠️ All NaNs (Empty)"
     } else {
@@ -94,7 +105,7 @@ inspect_nc_inventory <- function(fp) {
 }
 
 # 3. Execution Phase -----------------------------------------------------------
-nc_files <- list.files(target_dir, pattern = "\\.nc$", full.names = TRUE, recursive = TRUE)
+nc_files <- list.files(target_dir, pattern = "\\.nc[4]?$", full.names = TRUE, recursive = TRUE, ignore.case = TRUE)
 message(paste("Found", length(nc_files), "NetCDF files."))
 
 if (length(nc_files) == 0) {
@@ -148,18 +159,15 @@ nc_variables_with_attributes <- nc_variables %>%
   )
 
 # 4. Export Phase --------------------------------------------------------------
-output_dir <- "Results/Inspect_nc"
-if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
-
 timestamp <- format(Sys.Date(), "%Y%m%d")
 
-# Save Inventory
-write.csv(inventory_results, file.path(output_dir, paste0("NetCDF_Inventory_", timestamp, ".csv")), row.names = FALSE)
+# Save (write_excel_csv adds a UTF-8 BOM so Excel renders non-ASCII correctly)
+write_excel_csv(inventory_results, file.path(output_dir, paste0("NetCDF_Inventory_", dir_label, "_", timestamp, ".csv")))
 
 # Save Deep Metadata
-write.csv(nc_dimensions, file.path(output_dir, paste0("NetCDF_Dimensions_", timestamp, ".csv")), row.names = FALSE)
-write.csv(nc_attributes_global, file.path(output_dir, paste0("NetCDF_Global_Attributes_", timestamp, ".csv")), row.names = FALSE)
-write.csv(nc_variables_with_attributes, file.path(output_dir, paste0("NetCDF_Variables_Attributes_", timestamp, ".csv")), row.names = FALSE)
+write_excel_csv(nc_dimensions, file.path(output_dir, paste0("NetCDF_Dimensions_", dir_label, "_", timestamp, ".csv")))
+write_excel_csv(nc_attributes_global, file.path(output_dir, paste0("NetCDF_Global_Attributes_", dir_label, "_", timestamp, ".csv")))
+write_excel_csv(nc_variables_with_attributes, file.path(output_dir, paste0("NetCDF_Variables_Attributes_", dir_label, "_", timestamp, ".csv")))
 
 message(paste("✅ Process Complete."))
 message(paste("   4 Reports saved to:", output_dir))

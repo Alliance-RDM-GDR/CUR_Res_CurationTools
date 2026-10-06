@@ -2,6 +2,10 @@
 
 This file documents the evolution of the **Research Data Curator's Toolbox** from its inception to the current state.
 
+## [2026-10-06] - Workshop Scripts Ready to Run
+- **Scripts**: Added the Tidy Data and README-vs-files scripts and brought the csv, nc, Extensions, Images, PDF, hdf5 and sqlite scripts up to the versions shown in the workshop.
+- **Setup**: New `Scripts/install_requirements.R` and `Scripts/REQUIREMENTS.md` list the packages and external tools the workshop scripts need.
+
 ## [2026-10-05] - Workshop Deck Update
 - **New Modules**: Added Tidy Data screening (`Inspect_TidyData`) and README-vs-files comparison (`Inspect_ReadmeFileList`) to the workshop demos.
 - **Designing for Scale**: New slide on header-only inspection, listing without unpacking, honest sampling and never executing inspected content, with the PPMstar simulation dataset as a worked example.

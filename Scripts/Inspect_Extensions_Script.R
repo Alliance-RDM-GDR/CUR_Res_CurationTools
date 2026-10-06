@@ -4,6 +4,15 @@
 # Script: Inspect_Extensions_Script.R
 # Description: Generates a full file inventory with ExifTool metadata.
 #              Designed for Hybrid use (Interactive / HPC).
+#
+# This is a "run on every dataset" general script (file inventory first),
+# including large ones. ExifTool reads one file at a time (see the comment at
+# "Deep Metadata Extraction" below for why), which does not scale to tens of thousands of files. Rather than
+# skipping this script entirely on a large dataset (which loses the basic
+# inventory and Format_Summary too, not just the ExifTool columns), it
+# auto-skips ONLY the ExifTool pass above exif_file_limit files, still
+# producing the full fast inventory. Pass "all" as the 3rd argument to force
+# ExifTool on regardless of file count.
 # ------------------------------------------------------------------------------
 
 suppressPackageStartupMessages({
@@ -16,25 +25,38 @@ suppressPackageStartupMessages({
 })
 
 # ------------------------------------------------------------------------------
-# 1. Directory Selection Logic
+# 1. Directory Selection Logic (Hybrid: Interactive / HPC)
 # ------------------------------------------------------------------------------
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) == 0) {
-  stop("Usage: Rscript Inspect_Extensions_Script.R <input_dir> [output_dir]", call. = FALSE)
-}
-
-target_dir <- args[1]
-# If output directory is provided, use it; otherwise default to "Results" in current WD
-output_dir <- if (length(args) >= 2) args[2] else file.path(getwd(), "Results")
-
-if (!dir.exists(target_dir)) {
-  stop(paste("Input directory does not exist:", target_dir))
+if (interactive()) {
+  message("Running in interactive mode. Please select a directory.")
+  if (requireNamespace("rstudioapi", quietly = TRUE)) {
+    target_dir <- rstudioapi::selectDirectory(caption = "Select Data Directory")
+  } else {
+    stop("Package 'rstudioapi' is required for interactive selection.")
+  }
+  if (is.null(target_dir)) stop("No directory selected.")
+  output_dir <- file.path(getwd(), "Results/Inspect_Extensions")
+  exif_file_limit <- "2000"
+} else {
+  args <- commandArgs(trailingOnly = TRUE)
+  if (length(args) == 0) {
+    stop("Usage: Rscript Inspect_Extensions_Script.R <input_dir> [output_dir] [exif_file_limit|all]", call. = FALSE)
+  }
+  target_dir <- args[1]
+  if (!dir.exists(target_dir)) stop(paste("Input directory does not exist:", target_dir))
+  output_dir <- if (length(args) >= 2) args[2] else file.path(getwd(), "Results/Inspect_Extensions")
+  exif_file_limit <- if (length(args) >= 3) args[3] else "2000"
 }
 
 if (!dir.exists(output_dir)) {
   dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 }
+
+# Normalize to forward slashes so path arithmetic below is Windows-safe
+target_dir <- normalizePath(target_dir, winslash = "/", mustWork = TRUE)
+
+# Label for output filenames: name of the folder that was explored
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(target_dir))
 
 message(sprintf("Inventorying directory: %s", target_dir))
 message(sprintf("Results will be saved to: %s", output_dir))
@@ -52,6 +74,10 @@ all_files <- list.files(
   all.files = TRUE
 )
 
+# Exclude this project's own curation-output convention so a report generated
+# on a prior pass isn't re-inventoried as if it were depositor content.
+all_files <- all_files[!str_detect(all_files, "(?i)Curation_Results")]
+
 message(sprintf("Found %d total files.", length(all_files)))
 
 if (length(all_files) > 0) {
@@ -60,7 +86,8 @@ if (length(all_files) > 0) {
   inventory <- tibble(FullPath = all_files) %>%
     mutate(
       FileName = basename(FullPath),
-      RelativePath = str_remove(FullPath, paste0(target_dir, "/?")),
+      FullPath = normalizePath(FullPath, winslash = "/", mustWork = FALSE),
+      RelativePath = str_remove(FullPath, fixed(paste0(target_dir, "/"))),
       
       # Extension normalization
       Extension = tolower(file_ext(FileName)),
@@ -71,8 +98,8 @@ if (length(all_files) > 0) {
     )
   
   # Apply Risk Flags
-  junk_patterns <- c("\\.ds_store", "thumbs\\.db", "__macosx")
-  exec_patterns <- c("\\.exe$", "\\.bat$", "\\.sh$", "\\.bin$", "\\.jar$")
+  junk_patterns <- c("\\.ds_store", "thumbs\\.db", "__macosx", "^~\\$")
+  exec_patterns <- c("\\.exe$", "\\.bat$", "\\.sh$", "\\.bin$", "\\.jar$", "\\.dll$", "\\.so$", "\\.dylib$", "\\.msi$")
   
   inventory <- inventory %>%
     mutate(
@@ -90,35 +117,68 @@ if (length(all_files) > 0) {
   
   # Check if package is loaded AND if the external tool is actually installed
   has_exiftool <- requireNamespace("exiftoolr", quietly = TRUE) && !is.null(exiftoolr::exif_version())
-  
-  if (has_exiftool) {
+
+  # ExifTool reads one file at a time (see below), so on a submission with
+  # tens of thousands of files this pass alone can take hours. Skip ONLY this
+  # pass above exif_file_limit, not the whole script, so the fast inventory
+  # and Format_Summary are still produced. Pass "all" as the 3rd script
+  # argument to force ExifTool on regardless of file count.
+  exif_limit_is_all <- identical(tolower(exif_file_limit), "all")
+  exif_limit_n <- if (exif_limit_is_all) Inf else suppressWarnings(as.numeric(exif_file_limit))
+  if (is.na(exif_limit_n)) exif_limit_n <- 2000
+  skip_exif_for_size <- has_exiftool && nrow(inventory) > exif_limit_n
+
+  if (skip_exif_for_size) {
+    message(sprintf(
+      "NOTICE: %d files found, above the ExifTool limit of %d. Skipping the per-file ExifTool pass (it does not scale to this many files) but still producing the full basic inventory and Format_Summary below. Re-run with \"all\" as the 3rd argument to force ExifTool on every file regardless of count.",
+      nrow(inventory), exif_limit_n
+    ))
+    inventory <- inventory %>%
+      mutate(MIMEType = NA_character_, FileType = NA_character_, Author = NA_character_,
+             CreateDate = NA_character_, Warning = NA_character_)
+  } else if (has_exiftool) {
     message("ExifTool detected. Extracting deep metadata (MIME types, Authors, Warnings)...")
-    
-    tryCatch({
-      # We ask for specific tags to keep the process efficient
-      tags_to_extract <- c("MIMEType", "FileType", "Author", "CreateDate", "Warning")
-      
-      # Run ExifTool (this handles batching internally)
-      exif_data <- exiftoolr::exif_read(inventory$FullPath, tags = tags_to_extract)
-      
-      # Clean up results
+
+    # We ask for specific tags to keep the process efficient
+    tags_to_extract <- c("MIMEType", "FileType", "Author", "CreateDate", "Warning")
+
+    # Read files one at a time: a single unreadable/unrecognized file (e.g. no
+    # extension, or a warning ExifTool emits outside the JSON stream) can
+    # otherwise corrupt the JSON for the whole batch and abort every file's metadata.
+    safe_exif_read <- purrr::safely(function(fp) {
+      exiftoolr::exif_read(fp, tags = tags_to_extract, quiet = TRUE)
+    })
+
+    exif_results <- purrr::map(inventory$FullPath, safe_exif_read)
+    n_failed <- sum(purrr::map_lgl(exif_results, ~ !is.null(.x$error)))
+    if (n_failed > 0) {
+      message(sprintf("Warning: ExifTool could not read metadata for %d file(s); leaving those blank.", n_failed))
+    }
+
+    exif_data <- purrr::map(exif_results, "result") %>%
+      purrr::compact() %>%
+      bind_rows()
+
+    if (nrow(exif_data) > 0) {
       # ExifTool returns 'SourceFile' which matches our 'FullPath'
-      exif_data <- exif_data %>% 
-        rename(FullPath = SourceFile)
-      
+      exif_data <- exif_data %>%
+        rename(FullPath = SourceFile) %>%
+        mutate(FullPath = normalizePath(FullPath, winslash = "/", mustWork = FALSE))
+
       # Remove 'FileName' if ExifTool returned it, to avoid duplicate cols in join
       if ("FileName" %in% names(exif_data)) {
         exif_data <- select(exif_data, -FileName)
       }
-      
+
       # Join with main inventory
       inventory <- left_join(inventory, exif_data, by = "FullPath")
-      
-    }, error = function(e) {
-      message("Warning: ExifTool execution failed despite being detected.")
-      message("Error details: ", e$message)
-    })
-    
+    }
+
+    # Ensure expected columns always exist, even if every read failed
+    for (col in c("MIMEType", "FileType", "Author", "CreateDate", "Warning")) {
+      if (!col %in% names(inventory)) inventory[[col]] <- NA_character_
+    }
+
   } else {
     message("----------------------------------------------------------------")
     message("NOTICE: ExifTool not found on this system.")
@@ -147,13 +207,67 @@ if (length(all_files) > 0) {
     mutate(Percent = round(100 * Count / sum(Count), 2))
   
   # Define Output Paths
-  summary_file <- file.path(output_dir, paste0("Format_Summary_HPC_", Sys.Date(), ".csv"))
-  inventory_file <- file.path(output_dir, paste0("Full_Inventory_ExifTool_HPC_", Sys.Date(), ".csv"))
+  summary_file <- file.path(output_dir, paste0("Format_Summary_HPC_", dir_label, "_", Sys.Date(), ".csv"))
+  inventory_file <- file.path(output_dir, paste0("Full_Inventory_ExifTool_HPC_", dir_label, "_", Sys.Date(), ".csv"))
   
-  # Save
-  write_csv(summary_table, summary_file)
-  write_csv(inventory, inventory_file)
-  
+  # Save (write_excel_csv adds a UTF-8 BOM so Excel renders non-ASCII correctly)
+  write_excel_csv(summary_table, summary_file)
+  write_excel_csv(inventory, inventory_file)
+
+  # ----------------------------------------------------------------------------
+  # 5. Codebooks: describe the columns in Full_Inventory and Format_Summary
+  # ----------------------------------------------------------------------------
+  # Warn (rather than fail) if a report has columns the codebook doesn't
+  # describe yet, so schema drift is visible instead of silently undocumented.
+  warn_undocumented_columns <- function(data, codebook, report_name) {
+    undocumented <- setdiff(names(data), codebook$Variable)
+    if (length(undocumented) > 0) {
+      warning(sprintf(
+        "%s has column(s) not described in its codebook: %s. Update the codebook in this script.",
+        report_name, paste(undocumented, collapse = ", ")
+      ), call. = FALSE)
+    }
+  }
+
+  inventory_codebook <- tibble(
+    Variable = c("FullPath", "FileName", "RelativePath", "Extension", "Size_Bytes",
+                 "Size_MB", "Risk_Flag", "MIMEType", "FileType", "Author", "CreateDate", "Warning"),
+    Type = c("Text", "Text", "Text", "Text", "Integer", "Numeric", "Text",
+             "Text", "Text", "Text", "Text", "Text"),
+    Description = c(
+      "Absolute path to the file on disk at scan time.",
+      "File name only (no path).",
+      "Path relative to the scanned target directory.",
+      'Lowercased file extension including the leading dot; "(no extension)" if none.',
+      "File size in bytes.",
+      "File size in megabytes.",
+      '"Zero-Byte File", "System Junk" (.DS_Store, Thumbs.db, __MACOSX), "Executable" (.exe/.bat/.sh/.bin/.jar), or "Clean".',
+      "File type reported by ExifTool from the file's actual binary signature (may differ from Extension if the file is mislabeled); blank if ExifTool could not identify it or is unavailable.",
+      "File format/type name reported by ExifTool; blank under the same conditions as MIMEType.",
+      "Author metadata embedded in the file, when present and ExifTool could read it.",
+      "File creation date embedded in the file's metadata, when present.",
+      "Any warning ExifTool raised while reading the file (e.g. a corrupt or unrecognized structure)."
+    )
+  )
+  warn_undocumented_columns(inventory, inventory_codebook, "Full_Inventory_ExifTool")
+  inventory_codebook_file <- file.path(output_dir, "Full_Inventory_ExifTool_Codebook.csv")
+  write_excel_csv(inventory_codebook, inventory_codebook_file)
+
+  summary_codebook <- tibble(
+    Variable = c("Extension", "MIMEType", "Risk_Flag", "Count", "Percent"),
+    Type = c("Text", "Text", "Text", "Integer", "Numeric (0-100)"),
+    Description = c(
+      "Lowercased file extension, as in Full_Inventory_ExifTool.",
+      "File type reported by ExifTool, as in Full_Inventory_ExifTool.",
+      "Risk category, as in Full_Inventory_ExifTool.",
+      "Number of files sharing this Extension/MIMEType/Risk_Flag combination.",
+      "That count as a percentage of all files scanned."
+    )
+  )
+  warn_undocumented_columns(summary_table, summary_codebook, "Format_Summary")
+  summary_codebook_file <- file.path(output_dir, "Format_Summary_Codebook.csv")
+  write_excel_csv(summary_codebook, summary_codebook_file)
+
   message("Analysis complete.")
   message(sprintf("Summary saved to: %s", summary_file))
   message(sprintf("Full Inventory saved to: %s", inventory_file))
