@@ -99,7 +99,7 @@ for (i in seq_len(n)) {
 }
 log <- bind_rows(results)
 
-log_file <- file.path(log_dir, paste0("Restructure_Log_", format(Sys.Date(), "%Y%m%d_%H%M%S"), ".csv"))
+log_file <- file.path(log_dir, paste0("Restructure_Log_", format(Sys.time(), "%Y%m%d_%H%M%S"), ".csv"))
 write_excel_csv(log, log_file)
 
 n_ok <- sum(log$Status == "Success", na.rm = TRUE)
