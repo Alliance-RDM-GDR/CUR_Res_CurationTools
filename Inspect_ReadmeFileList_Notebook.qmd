@@ -1,0 +1,321 @@
+---
+title: "README File List Check"
+author: "Data Curation Team"
+date: "2026-10-06"
+format:
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+    theme: cosmo
+params:
+  target_dir: "data/Inspect_ReadmeFileList/"
+  readme_name: "README.txt"
+bibliography: references.bib
+---
+
+## Overview // Aperçu
+
+A README is often the only documentation a future user reads. When it lists the dataset's files, that list must match what is actually deposited. Missing extensions, name typos, undocumented files, and entries for files that were never included are easy to miss on a manual read, but trivial to find computationally.
+
+//
+
+Un fichier README est souvent la seule documentation que lira un futur utilisateur. Lorsqu'il énumère les fichiers du jeu de données, cette liste doit correspondre à ce qui est réellement déposé. Les extensions manquantes, les fautes de frappe dans les noms, les fichiers non documentés et les entrées de fichiers jamais inclus sont faciles à manquer à la lecture, mais très simples à repérer par calcul.
+
+::: {.callout-note title="Curation Goal // Objectif de la curation"}
+Compare the file list documented in a `README.txt` against the files present in the dataset directory, and classify every entry as an exact match, a near match (case or extension differs), a missing file, or an undocumented file.
+//
+Comparer la liste de fichiers documentée dans un fichier `README.txt` avec les fichiers présents dans le répertoire du jeu de données, et classer chaque entrée comme une correspondance exacte, une correspondance approximative (casse ou extension différente), un fichier manquant ou un fichier non documenté.
+:::
+
+::: {.callout-warning title="Identifying Risks // Identification des risques"}
+A README that does not match the data misleads users and signals an incomplete or mis-packaged deposit. This check catches structural mismatches only. It does not judge whether the descriptions themselves are accurate, which still needs a human read.
+//
+Un README qui ne correspond pas aux données induit les utilisateurs en erreur et signale un dépôt incomplet ou mal conditionné. Cette vérification ne détecte que les écarts structurels. Elle ne juge pas l'exactitude des descriptions, ce qui nécessite toujours une lecture humaine.
+:::
+
+**This notebook assumes a README built on the common data-curation template,** with file entries on lines such as `A. Filename: participants.csv`. Both the English label (`Filename:`) and the French label (`Nom de fichier :`) are recognized. If no such lines are found, the notebook says so instead of guessing at another format.
+
+//
+
+**Ce cahier suppose un README fondé sur le gabarit courant de curation de données,** avec des entrées de fichiers sur des lignes comme `A. Filename: participants.csv`. L'étiquette anglaise (`Filename:`) et l'étiquette française (`Nom de fichier :`) sont toutes deux reconnues. Si aucune ligne de ce type n'est trouvée, le cahier l'indique au lieu de deviner un autre format.
+
+------------------------------------------------------------------------
+
+## Setup // Configuration
+
+This notebook only needs `tidyverse` for string handling and tables.
+
+//
+
+Ce cahier n'a besoin que de `tidyverse` pour le traitement des chaînes de caractères et des tableaux.
+
+### R Packages // Packages R
+
+```{r}
+#| label: install-packages
+#| eval: false
+
+# install.packages(c("tidyverse", "rstudioapi"))
+```
+
+### Load Libraries // Charger les bibliothèques
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+
+library(tidyverse)  # Data manipulation and string handling [@tidyverse]
+library(rstudioapi) # Interactive folder selection
+```
+
+## Select Target Directory // Sélectionner le répertoire cible
+
+This block allows for interactive selection of the dataset directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header. The README file name also comes from the YAML header.
+
+//
+
+Ce bloc permet de sélectionner de manière interactive le répertoire du jeu de données. En cas d'exécution dans un environnement non interactif, le chemin par défaut est celui défini dans l'en-tête YAML. Le nom du fichier README provient également de l'en-tête YAML.
+
+```{r}
+#| label: select-target-dir
+
+if (interactive() && .Platform$OS.type == "windows") {
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select Dataset Directory")
+} else {
+  selected_dir <- NULL
+}
+
+if (!is.null(selected_dir)) {
+  target_dir <- selected_dir
+} else {
+  target_dir <- params$target_dir
+}
+
+readme_name <- params$readme_name
+
+print(paste("Analyzing directory:", target_dir))
+```
+
+## Locate the README // Localiser le fichier README
+
+A submission can contain several files with README-like names (for example, a note inside a participant subfolder). The dataset's own README is taken to be the shallowest one.
+
+//
+
+Un dépôt peut contenir plusieurs fichiers dont le nom ressemble à un README (par exemple, une note dans un sous-dossier de participant). Le README du jeu de données est considéré comme étant le moins profond dans l'arborescence.
+
+```{r}
+#| label: locate-readme
+
+readme_matches <- list.files(target_dir, pattern = paste0("^", readme_name, "$"),
+                             recursive = TRUE, full.names = TRUE, ignore.case = TRUE)
+
+if (length(readme_matches) == 0) {
+  stop(sprintf("No file named '%s' found under %s.", readme_name, target_dir))
+}
+
+readme_depth <- lengths(regmatches(readme_matches, gregexpr("[/\\\\]", readme_matches)))
+readme_path <- readme_matches[which.min(readme_depth)]
+
+print(paste("Using README:", readme_path))
+```
+
+## Extract the Documented File List // Extraire la liste de fichiers documentée
+
+Lines such as `A. Filename: foo.csv` or `Nom de fichier : foo.csv` are matched case-insensitively, and the colon spacing may vary.
+
+//
+
+Les lignes comme `A. Filename: foo.csv` ou `Nom de fichier : foo.csv` sont reconnues sans tenir compte de la casse, et l'espacement autour des deux-points peut varier.
+
+```{r}
+#| label: extract-entries
+
+readme_lines <- readLines(readme_path, warn = FALSE)
+
+entry_pattern <- "(?i)(?:filename|nom de fichier)\\s*:\\s*(.+?)\\s*$"
+entry_lines <- readme_lines[str_detect(readme_lines, entry_pattern)]
+
+readme_entries <- str_match(entry_lines, entry_pattern)[, 2] %>%
+  str_trim() %>%
+  discard(~ .x == "")
+
+if (length(readme_entries) == 0) {
+  stop("No 'Filename:' style entries found in the README. This check only recognizes that template pattern.")
+}
+
+print(sprintf("Found %d file-list entries in the README.", length(readme_entries)))
+print(readme_entries)
+```
+
+## Inventory of Files on Disk // Liste des fichiers sur le disque
+
+The README itself is excluded, and so are folders named `Curation_Results`. That folder is where this project moves its own inspection reports, and without excluding it a report from an earlier pass would be compared with the README as if it were depositor content.
+
+//
+
+Le README lui-même est exclu, de même que les dossiers nommés `Curation_Results`. C'est dans ce dossier que ce projet déplace ses propres rapports d'inspection ; sans cette exclusion, un rapport d'un passage antérieur serait comparé au README comme s'il s'agissait de contenu du déposant.
+
+```{r}
+#| label: disk-inventory
+
+disk_files <- list.files(target_dir, recursive = TRUE, full.names = FALSE, all.files = FALSE)
+disk_files <- disk_files[!str_detect(basename(disk_files), paste0("^", readme_name, "$"))]
+disk_files <- disk_files[!str_detect(disk_files, "(?i)Curation_Results")]
+disk_basenames <- basename(disk_files)
+
+print(paste("Found", length(disk_basenames), "file(s) on disk (excluding the README)."))
+```
+
+## Matching Logic // Logique de correspondance
+
+For each README entry we look, in order, for an exact match, a case-insensitive match, and a match on the file name without its extension. This covers the common case of a README that lists a name without its extension.
+
+//
+
+Pour chaque entrée du README, nous cherchons, dans l'ordre, une correspondance exacte, une correspondance sans égard à la casse, puis une correspondance sur le nom du fichier sans son extension. Cela couvre le cas fréquent d'un README qui indique un nom sans extension.
+
+```{r}
+#| label: matching-logic
+
+match_entry <- function(entry) {
+  if (entry %in% disk_basenames) {
+    return(tibble(README_Entry = entry, Matched_File = entry, Match_Type = "Exact"))
+  }
+  ci_match <- disk_basenames[tolower(disk_basenames) == tolower(entry)]
+  if (length(ci_match) > 0) {
+    return(tibble(README_Entry = entry, Matched_File = ci_match[1], Match_Type = "Case-insensitive"))
+  }
+  entry_noext <- tools::file_path_sans_ext(entry)
+  stem_match <- disk_basenames[tolower(tools::file_path_sans_ext(disk_basenames)) == tolower(entry_noext)]
+  if (length(stem_match) > 0) {
+    ext_note <- if (entry == entry_noext) "README entry has no extension" else "Extension differs"
+    return(tibble(README_Entry = entry, Matched_File = stem_match[1],
+                  Match_Type = paste0("Matched by name only (", ext_note, ")")))
+  }
+  tibble(README_Entry = entry, Matched_File = NA_character_, Match_Type = "NO MATCH FOUND ON DISK")
+}
+
+readme_report <- map_dfr(readme_entries, match_entry)
+
+# Files on disk with no corresponding README entry (by any of the rules above)
+matched_disk_files <- unique(na.omit(readme_report$Matched_File))
+orphaned_files <- setdiff(disk_basenames, matched_disk_files)
+
+orphan_report <- tibble(
+  README_Entry = NA_character_,
+  Matched_File = orphaned_files,
+  Match_Type = "ON DISK, NOT LISTED IN README"
+)
+
+full_report <- bind_rows(readme_report, orphan_report)
+
+n_issues <- sum(full_report$Match_Type != "Exact")
+print(sprintf("%d of %d rows need attention (mismatched extension, name typo, or missing/orphaned file).",
+              n_issues, nrow(full_report)))
+print(full_report)
+```
+
+## Save Results // Enregistrer les résultats
+
+```{r}
+#| label: save-results
+
+output_dir <- "Results/Inspect_ReadmeFileList"
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+output_file <- file.path(output_dir, paste0("README_FileList_Diff_", dir_label, "_", format(Sys.Date(), "%Y%m%d"), ".csv"))
+
+write_excel_csv(full_report, output_file)
+print(paste("Report saved to:", output_file))
+```
+
+## Curation Insights // Aperçu de la curation
+
+The `Match_Type` column tells you what to ask the depositor:
+
+-   **Exact:** The README entry matches a file on disk. No action needed.
+
+-   **Case-insensitive:** The name matches except for upper and lower case. This breaks on case-sensitive systems such as Linux, so ask the depositor to correct the README or the file name.
+
+-   **Matched by name only:** The extension is missing or different in the README. Ask the depositor to list the full file name, including the extension.
+
+-   **NO MATCH FOUND ON DISK:** The README documents a file that is not in the dataset. It may be a typo, a renamed file, or a file left out of the deposit.
+
+-   **ON DISK, NOT LISTED IN README:** The file is present but undocumented. Ask whether it belongs in the dataset and, if so, to add it to the README.
+
+//
+
+La colonne `Match_Type` indique ce qu'il faut demander au déposant :
+
+-   **Exact :** L'entrée du README correspond à un fichier sur le disque. Aucune action n'est nécessaire.
+
+-   **Case-insensitive :** Le nom correspond, à la casse près. Cela pose problème sur les systèmes sensibles à la casse comme Linux ; demandez au déposant de corriger le README ou le nom du fichier.
+
+-   **Matched by name only :** L'extension est absente ou différente dans le README. Demandez au déposant d'indiquer le nom complet du fichier, extension comprise.
+
+-   **NO MATCH FOUND ON DISK :** Le README documente un fichier qui ne figure pas dans le jeu de données. Il peut s'agir d'une faute de frappe, d'un fichier renommé ou d'un fichier omis du dépôt.
+
+-   **ON DISK, NOT LISTED IN README :** Le fichier est présent mais non documenté. Demandez s'il fait partie du jeu de données et, le cas échéant, de l'ajouter au README.
+
+## Additional Tools // Outils supplémentaires
+
+-   **README templates:** Many research data services publish a README template for datasets. Using one consistently makes this kind of automated check possible.
+
+-   **Reviewing descriptions:** This check confirms that listed files exist. It does not confirm that each description is correct, so read the README against the data as well.
+
+//
+
+-   **Gabarits de README :** De nombreux services de données de recherche publient un gabarit de README pour les jeux de données. Les utiliser de façon constante rend possible ce type de vérification automatisée.
+
+-   **Vérification des descriptions :** Cette vérification confirme que les fichiers listés existent. Elle ne confirme pas que chaque description est exacte ; lisez donc aussi le README en regard des données.
+
+## Using the Non-Interactive R Script // Utilisation du script R non interactif
+
+For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
+
+Download the **R Script:** [**`Inspect_ReadmeFileList_Script.R`**](Scripts/Inspect_ReadmeFileList_Script.R)
+
+//
+
+Pour les utilisateurs qui souhaitent exécuter cette analyse sur un serveur, dans le cadre d'un traitement par lots ou depuis la ligne de commande, voici un script R pur qui effectue le même processus.
+
+Télécharger le **script R :** [**`Inspect_ReadmeFileList_Script.R`**](Scripts/Inspect_ReadmeFileList_Script.R)
+
+### Example HPC Submission Script // Exemple de script de soumission HPC
+
+`Inspect_ReadmeFileList_submit.sh`
+
+``` bash
+#!/bin/bash
+#SBATCH --job-name=readme_check
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=00:15:00
+#SBATCH --mem=4G
+#SBATCH --output=logs/readme_check_%j.log
+
+# Load R Module
+module load R
+
+# Define arguments
+# Usage: Rscript Inspect_ReadmeFileList_Script.R <dir> [output_dir] [readme_filename]
+DATA_DIR="/scratch/user/project_data/deposit"
+OUTPUT_DIR="/scratch/user/readme_results"
+README="README.txt"
+
+# Prepare Environment
+mkdir -p logs
+
+# Run Analysis
+echo "Starting README file list check on $DATA_DIR"
+Rscript Inspect_ReadmeFileList_Script.R "$DATA_DIR" "$OUTPUT_DIR" "$README"
+```
+
+## References // Références
+
+::: {#refs}
+:::

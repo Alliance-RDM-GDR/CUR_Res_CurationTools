@@ -1,0 +1,347 @@
+---
+title: "Video (.mp4, .mov, .mkv, .avi, .wmv) Files"
+author: "Data Curation Team"
+date: "2026-10-06"
+format:
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+    theme: cosmo
+params:
+  target_dir: "data/Inspect_Video/"
+bibliography: references.bib
+---
+
+## Overview // Aperçu
+
+Video files are common in behavioural, clinical, and field research. They are large, wrapped in a container format, and compressed with a codec that determines both quality and long-term readability. A video that plays in one player can still be truncated or corrupted.
+
+//
+
+Les fichiers vidéo sont courants en recherche comportementale, clinique et de terrain. Ils sont volumineux, encapsulés dans un format conteneur et compressés avec un codec qui détermine à la fois la qualité et la lisibilité à long terme. Une vidéo qui se lit dans un lecteur peut pourtant être tronquée ou corrompue.
+
+::: {.callout-note title="Curation Goal // Objectif de la curation"}
+Record the technical metadata of each video (container, codec, duration, resolution, frame rate, audio track) and verify stream integrity by decoding the whole file and collecting any errors.
+//
+Consigner les métadonnées techniques de chaque vidéo (conteneur, codec, durée, résolution, fréquence d'images, piste audio) et vérifier l'intégrité du flux en décodant l'intégralité du fichier et en recueillant les erreurs éventuelles.
+:::
+
+::: {.callout-warning title="Identifying Risks // Identification des risques"}
+Truncated or corrupted streams, proprietary or obsolete codecs, and a missing audio track (narration or dialogue that should have been captured) are the main risks. Videos may also contain identifiable people, which calls for a human review of the content.
+//
+Les flux tronqués ou corrompus, les codecs propriétaires ou obsolètes et l'absence de piste audio (narration ou dialogue qui aurait dû être enregistré) sont les principaux risques. Les vidéos peuvent aussi montrer des personnes identifiables, ce qui exige un examen humain du contenu.
+:::
+
+**This notebook uses two command-line tools from the FFmpeg project:**
+
+1.  **`ffprobe`:** Reads container and stream metadata as JSON.
+2.  **`ffmpeg`:** Decodes the entire file to a null output and reports any decode errors.
+
+//
+
+**Ce cahier utilise deux outils en ligne de commande du projet FFmpeg :**
+
+1.  **`ffprobe` :** Lit les métadonnées du conteneur et des flux au format JSON.
+2.  **`ffmpeg` :** Décode l'intégralité du fichier vers une sortie nulle et signale les erreurs de décodage.
+
+------------------------------------------------------------------------
+
+## Setup // Configuration
+
+`ffmpeg` and `ffprobe` must be installed and available on your `PATH`. If they live elsewhere, set the `FFMPEG_PATH` and `FFPROBE_PATH` environment variables to their full paths.
+
+//
+
+`ffmpeg` et `ffprobe` doivent être installés et accessibles dans votre `PATH`. S'ils se trouvent ailleurs, définissez les variables d'environnement `FFMPEG_PATH` et `FFPROBE_PATH` avec leurs chemins complets.
+
+### R Packages // Packages R
+
+```{r}
+#| label: install-packages
+#| eval: false
+
+# install.packages(c("tidyverse", "jsonlite", "rstudioapi"))
+```
+
+### Load Libraries // Charger les bibliothèques
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+
+library(tidyverse)  # Data manipulation [@tidyverse]
+library(jsonlite)   # Parsing ffprobe JSON output [@jsonlite]
+library(rstudioapi) # Interactive folder selection
+```
+
+### Locate FFmpeg Tools // Localiser les outils FFmpeg
+
+```{r}
+#| label: locate-ffmpeg
+
+ffprobe_bin <- Sys.getenv("FFPROBE_PATH", unset = "ffprobe")
+ffmpeg_bin  <- Sys.getenv("FFMPEG_PATH", unset = "ffmpeg")
+
+has_ffprobe <- nzchar(Sys.which(ffprobe_bin))
+has_ffmpeg  <- nzchar(Sys.which(ffmpeg_bin))
+
+if (!has_ffprobe || !has_ffmpeg) {
+  stop("ffmpeg and ffprobe are required but were not found on PATH. Set FFPROBE_PATH/FFMPEG_PATH or install ffmpeg.")
+}
+
+print("ffmpeg and ffprobe found.")
+```
+
+## Select Target Directory // Sélectionner le répertoire cible
+
+This block allows for interactive selection of the video directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.
+
+//
+
+Ce bloc permet de sélectionner de manière interactive le répertoire contenant les vidéos. En cas d'exécution dans un environnement non interactif, le chemin par défaut est celui défini dans l'en-tête YAML.
+
+```{r}
+#| label: select-target-dir
+
+if (interactive() && .Platform$OS.type == "windows") {
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select Video Directory")
+} else {
+  selected_dir <- NULL
+}
+
+if (!is.null(selected_dir)) {
+  target_dir <- selected_dir
+} else {
+  target_dir <- params$target_dir
+}
+
+print(paste("Analyzing directory:", target_dir))
+```
+
+## Inventory of Video Files // Liste des fichiers vidéo
+
+We scan for `.mp4`, `.mov`, `.mkv`, `.avi`, `.wmv`, and `.m4v` files. Folders named `Curation_Results` are skipped.
+
+//
+
+Nous recherchons les fichiers `.mp4`, `.mov`, `.mkv`, `.avi`, `.wmv` et `.m4v`. Les dossiers nommés `Curation_Results` sont ignorés.
+
+```{r}
+#| label: inventory
+
+video_files <- list.files(
+  path = target_dir,
+  pattern = "\\.(mp4|mov|mkv|avi|wmv|m4v)$",
+  recursive = TRUE,
+  full.names = TRUE,
+  ignore.case = TRUE
+)
+video_files <- video_files[!grepl("Curation_Results", video_files, ignore.case = TRUE)]
+
+print(paste("Found", length(video_files), "video file(s)."))
+```
+
+## Metadata and Integrity Check // Métadonnées et vérification de l'intégrité
+
+For each file, `ffprobe` reports the container and streams, then `ffmpeg` decodes the whole file. Because every file is decoded in full, this step can take a long time on large videos.
+
+//
+
+Pour chaque fichier, `ffprobe` décrit le conteneur et les flux, puis `ffmpeg` décode l'intégralité du fichier. Comme chaque fichier est entièrement décodé, cette étape peut être longue pour les vidéos volumineuses.
+
+```{r}
+#| label: inspection-logic
+
+inspect_video <- function(fp) {
+  fname <- basename(fp)
+  file_size_mb <- round(file.size(fp) / 1024^2, 2)
+
+  tryCatch({
+    # A. Metadata via ffprobe (JSON output).
+    # shQuote() is required: system2() does not reliably quote a path with
+    # spaces on Windows, which would split it into two arguments.
+    probe_args <- c("-v", "quiet", "-print_format", "json", "-show_format", "-show_streams", shQuote(fp))
+    probe_json <- suppressWarnings(system2(ffprobe_bin, probe_args, stdout = TRUE, stderr = FALSE))
+    probe <- fromJSON(paste(probe_json, collapse = "\n"))
+    # ffprobe prints nothing usable when it cannot parse the container (e.g. a
+    # truncated file); without this check the row silently vanishes from the report.
+    if (is.null(probe$format)) stop("ffprobe could not read the container (file may be truncated or corrupt)")
+
+    duration_sec <- as.numeric(probe$format$duration)
+    container <- probe$format$format_name
+
+    streams <- probe$streams
+    video_stream <- if (!is.null(streams) && "codec_type" %in% names(streams)) {
+      streams[streams$codec_type == "video", , drop = FALSE]
+    } else NULL
+    audio_stream <- if (!is.null(streams) && "codec_type" %in% names(streams)) {
+      streams[streams$codec_type == "audio", , drop = FALSE]
+    } else NULL
+
+    has_video <- !is.null(video_stream) && nrow(video_stream) > 0
+    has_audio <- !is.null(audio_stream) && nrow(audio_stream) > 0
+
+    video_codec <- if (has_video) video_stream$codec_name[1] else NA_character_
+    width  <- if (has_video) as.integer(video_stream$width[1]) else NA_integer_
+    height <- if (has_video) as.integer(video_stream$height[1]) else NA_integer_
+    frame_rate_raw <- if (has_video) video_stream$r_frame_rate[1] else NA_character_
+    frame_rate <- if (!is.na(frame_rate_raw)) {
+      parts <- as.numeric(str_split_1(frame_rate_raw, "/"))
+      round(parts[1] / parts[2], 2)
+    } else NA_real_
+
+    audio_codec <- if (has_audio) audio_stream$codec_name[1] else NA_character_
+
+    # B. Stream-integrity check via ffmpeg (decode the whole file, report errors)
+    map_arg <- if (has_audio) "0" else "0:v"
+    integrity_args <- c("-v", "error", "-i", shQuote(fp), "-map", map_arg, "-f", "null", "-")
+    integrity_log <- suppressWarnings(system2(ffmpeg_bin, integrity_args, stdout = FALSE, stderr = TRUE))
+    has_errors <- length(integrity_log) > 0
+    error_preview <- if (has_errors) paste(head(integrity_log, 3), collapse = " | ") else ""
+
+    tibble(
+      FileName = fname,
+      Size_MB = file_size_mb,
+      Container = container,
+      Duration_sec = round(duration_sec, 1),
+      Has_Video_Stream = has_video,
+      Video_Codec = video_codec,
+      Width = width,
+      Height = height,
+      Frame_Rate = frame_rate,
+      Has_Audio_Stream = has_audio,
+      Audio_Codec = audio_codec,
+      Decode_Errors_Found = has_errors,
+      Decode_Error_Preview = error_preview,
+      Status = "Success"
+    )
+
+  }, error = function(e) {
+    tibble(
+      FileName = fname, Size_MB = file_size_mb, Container = NA, Duration_sec = NA,
+      Has_Video_Stream = NA, Video_Codec = NA, Width = NA, Height = NA, Frame_Rate = NA,
+      Has_Audio_Stream = NA, Audio_Codec = NA, Decode_Errors_Found = NA, Decode_Error_Preview = NA,
+      Status = paste("Inspection Failed:", e$message)
+    )
+  })
+}
+
+report <- map_dfr(video_files, inspect_video)
+
+print("--- Video Inspection Preview ---")
+print(report %>% select(FileName, Container, Duration_sec, Video_Codec, Has_Audio_Stream, Decode_Errors_Found, Status))
+```
+
+## Save Results // Enregistrer les résultats
+
+```{r}
+#| label: save-results
+
+output_dir <- "Results/Inspect_Video"
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+output_file <- file.path(output_dir, paste0("Video_Report_", dir_label, "_", format(Sys.Date(), "%Y%m%d"), ".csv"))
+
+write_excel_csv(report, output_file)
+print(paste("Report saved to:", output_file))
+```
+
+## Curation Insights // Aperçu de la curation
+
+Use this report to assess whether each video is safe to preserve:
+
+-   **Decode_Errors_Found = TRUE:** `ffmpeg` found problems while reading the whole stream, which points to truncation or corruption. Ask the depositor for a new copy, and check the file against the original recording.
+
+-   **Status "Inspection Failed":** `ffprobe` could not read the container at all, for example because the file is truncated before its index was written. Treat the file as unreadable until proven otherwise.
+
+-   **Container and codec:** Widely supported choices (MP4 or Matroska with H.264 or H.265 video, AAC audio) are safest. Proprietary or legacy codecs (for example, those in older `.wmv` or `.avi` files) are a preservation risk, so consider documenting or transcoding them.
+
+-   **Has_Audio_Stream = FALSE:** A video without an audio track may be intentionally silent, or may be missing narration or dialogue that should have been captured. Confirm with the depositor.
+
+-   **Duration, resolution, and frame rate:** Compare them with what the documentation says, since mismatches suggest the wrong file or a re-encoded copy.
+
+-   **Content review:** This inspection is technical only. Videos of people may contain identifiable faces or voices, so a human review is required before publication.
+
+//
+
+Utilisez ce rapport pour évaluer si chaque vidéo peut être préservée en toute sécurité :
+
+-   **Decode_Errors_Found = TRUE :** `ffmpeg` a détecté des problèmes en lisant tout le flux, ce qui indique une troncature ou une corruption. Demandez une nouvelle copie au déposant et comparez le fichier à l'enregistrement original.
+
+-   **Statut « Inspection Failed » :** `ffprobe` n'a pas pu lire le conteneur, par exemple parce que le fichier est tronqué avant l'écriture de son index. Considérez le fichier comme illisible tant que le contraire n'est pas démontré.
+
+-   **Conteneur et codec :** Les choix largement pris en charge (MP4 ou Matroska avec vidéo H.264 ou H.265 et audio AAC) sont les plus sûrs. Les codecs propriétaires ou anciens (par exemple ceux des anciens fichiers `.wmv` ou `.avi`) présentent un risque pour la préservation ; envisagez de les documenter ou de les transcoder.
+
+-   **Has_Audio_Stream = FALSE :** Une vidéo sans piste audio peut être volontairement muette, ou il peut manquer une narration ou un dialogue qui aurait dû être enregistré. Confirmez-le avec le déposant.
+
+-   **Durée, résolution et fréquence d'images :** Comparez-les avec la documentation, car un écart peut indiquer le mauvais fichier ou une copie ré-encodée.
+
+-   **Examen du contenu :** Cette inspection est purement technique. Les vidéos de personnes peuvent montrer des visages ou des voix identifiables ; un examen humain est donc nécessaire avant la publication.
+
+## Additional Tools // Outils supplémentaires
+
+-   **FFmpeg:** The [open-source suite](https://ffmpeg.org/) behind `ffmpeg` and `ffprobe`, able to read nearly every video format and to transcode to preservation-friendly ones.
+
+-   **MediaInfo:** A [tool](https://mediaarea.net/en/MediaInfo) that displays technical and tag metadata for video and audio files, available as a graphical or command-line application.
+
+-   **MKVToolNix:** A [toolkit](https://mkvtoolnix.download/) for inspecting and editing Matroska files, a common open container for archival video.
+
+//
+
+-   **FFmpeg :** La [suite libre](https://ffmpeg.org/) à l'origine de `ffmpeg` et `ffprobe`, capable de lire presque tous les formats vidéo et de les transcoder vers des formats adaptés à la préservation.
+
+-   **MediaInfo :** Un [outil](https://mediaarea.net/en/MediaInfo) qui affiche les métadonnées techniques et les balises des fichiers vidéo et audio, disponible en application graphique ou en ligne de commande.
+
+-   **MKVToolNix :** Une [boîte à outils](https://mkvtoolnix.download/) pour inspecter et modifier les fichiers Matroska, un conteneur ouvert couramment utilisé pour la vidéo d'archivage.
+
+## Using the Non-Interactive R Script // Utilisation du script R non interactif
+
+For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
+
+Download the **R Script:** [**`Inspect_Video_Script.R`**](Scripts/Inspect_Video_Script.R)
+
+//
+
+Pour les utilisateurs qui souhaitent exécuter cette analyse sur un serveur, dans le cadre d'un traitement par lots ou depuis la ligne de commande, voici un script R pur qui effectue le même processus.
+
+Télécharger le **script R :** [**`Inspect_Video_Script.R`**](Scripts/Inspect_Video_Script.R)
+
+### Example HPC Submission Script // Exemple de script de soumission HPC
+
+`Inspect_Video_submit.sh`
+
+``` bash
+#!/bin/bash
+#SBATCH --job-name=video_check
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=2
+#SBATCH --time=04:00:00
+#SBATCH --mem=8G
+#SBATCH --output=logs/video_check_%j.log
+
+# Load R and FFmpeg
+# Note: the integrity check decodes every file in full, so allow generous
+# time for large videos. Check 'module avail ffmpeg' for the exact version.
+module load R
+module load ffmpeg
+
+# Define Target Directory
+DATA_DIR="/scratch/user/project_data/videos"
+OUTPUT_DIR="/scratch/user/video_results"
+
+# Prepare Environment
+mkdir -p logs
+
+# Run Analysis
+echo "Starting video inspection on $DATA_DIR"
+Rscript Inspect_Video_Script.R "$DATA_DIR" "$OUTPUT_DIR"
+```
+
+## References // Références
+
+::: {#refs}
+:::

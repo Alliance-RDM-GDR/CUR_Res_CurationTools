@@ -1,0 +1,411 @@
+---
+title: "Archive Contents Audit (.zip, .rar)"
+author: "Data Curation Team"
+date: "2026-10-06"
+format:
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+    theme: cosmo
+params:
+  target_dir: "data/Inspect_Archive/"
+bibliography: references.bib
+---
+
+## Overview // Aperçu
+
+Depositors often bundle many files into a single `.zip` or `.rar` archive. The archive itself may look fine, but what is *inside* it is what ends up in the repository: operating-system junk, cache files, bundled executables, or archives nested inside archives.
+
+//
+
+Les déposants regroupent souvent de nombreux fichiers dans une seule archive `.zip` ou `.rar`. L'archive peut sembler correcte, mais c'est son *contenu* qui se retrouve dans le dépôt : fichiers parasites du système d'exploitation, fichiers de cache, exécutables intégrés ou archives imbriquées dans d'autres archives.
+
+::: {.callout-note title="Curation Goal // Objectif de la curation"}
+List the contents of each archive **without extracting it**, count entries and total uncompressed size, and flag entries that should not be distributed (system junk, executables, nested archives). Also report the size of each top-level folder to help decide how to repackage large archives.
+//
+Dresser la liste du contenu de chaque archive **sans l'extraire**, compter les entrées et la taille totale décompressée, et signaler les entrées qui ne devraient pas être diffusées (fichiers parasites du système, exécutables, archives imbriquées). Indiquer aussi la taille de chaque dossier de premier niveau afin de faciliter la décision de reconditionner les grandes archives.
+:::
+
+::: {.callout-warning title="Identifying Risks // Identification des risques"}
+Junk files (`.DS_Store`, `Thumbs.db`, `__MACOSX`) clutter the dataset, executables (`.exe`, `.sh`, `.dll`) raise security and preservation concerns, and nested archives hide their content from inventories and indexing. Archives are also opaque to a README that lists files individually.
+//
+Les fichiers parasites (`.DS_Store`, `Thumbs.db`, `__MACOSX`) encombrent le jeu de données, les exécutables (`.exe`, `.sh`, `.dll`) posent des problèmes de sécurité et de préservation, et les archives imbriquées dissimulent leur contenu aux inventaires et à l'indexation. Les archives sont aussi opaques pour un fichier README qui énumère les fichiers un à un.
+:::
+
+**This notebook complements the [container inspection](Inspect_Containers_Notebook.qmd):** that notebook checks archive *integrity* (corrupt headers, zip bombs), whereas this one audits archive *contents*.
+
+//
+
+**Ce cahier complète l'[inspection des conteneurs](Inspect_Containers_Notebook.qmd) :** celui-ci vérifie l'*intégrité* des archives (en-têtes corrompus, bombes zip), alors que le présent cahier examine leur *contenu*.
+
+------------------------------------------------------------------------
+
+## Setup // Configuration
+
+`.zip` archives are listed with base R (`unzip()`), so no extra package is needed. For `.rar` archives, the `UnRAR` command-line tool (WinRAR or `unrar`) must be available. Set the `RAR_TOOL_PATH` environment variable to its full path if it is not on your `PATH`.
+
+//
+
+Les archives `.zip` sont listées avec R de base (`unzip()`), aucun package supplémentaire n'est donc nécessaire. Pour les archives `.rar`, l'outil en ligne de commande `UnRAR` (WinRAR ou `unrar`) doit être disponible. Définissez la variable d'environnement `RAR_TOOL_PATH` avec son chemin complet s'il ne se trouve pas dans votre `PATH`.
+
+### R Packages // Packages R
+
+```{r}
+#| label: install-packages
+#| eval: false
+
+# install.packages(c("tidyverse", "rstudioapi"))
+```
+
+### Load Libraries // Charger les bibliothèques
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+
+library(tidyverse)  # Data manipulation [@tidyverse]
+library(rstudioapi) # Interactive folder selection
+```
+
+## Select Target Directory // Sélectionner le répertoire cible
+
+This block allows for interactive selection of the directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.
+
+//
+
+Ce bloc permet de sélectionner le répertoire de manière interactive. En cas d'exécution dans un environnement non interactif, le chemin par défaut est celui défini dans l'en-tête YAML.
+
+```{r}
+#| label: select-target-dir
+
+if (interactive() && .Platform$OS.type == "windows") {
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select Archive Directory")
+} else {
+  selected_dir <- NULL
+}
+
+if (!is.null(selected_dir)) {
+  target_dir <- selected_dir
+} else {
+  target_dir <- params$target_dir
+}
+
+print(paste("Analyzing directory:", target_dir))
+```
+
+## Inventory of Archive Files // Liste des fichiers d'archive
+
+We scan for `.zip` and `.rar` files. Folders named `Curation_Results` are skipped so that reports from a previous pass are not treated as depositor content.
+
+//
+
+Nous recherchons les fichiers `.zip` et `.rar`. Les dossiers nommés `Curation_Results` sont ignorés afin que les rapports d'un passage précédent ne soient pas traités comme du contenu fourni par le déposant.
+
+```{r}
+#| label: inventory
+
+archive_files <- list.files(
+  path = target_dir,
+  pattern = "\\.(zip|rar)$",
+  recursive = TRUE,
+  full.names = TRUE,
+  ignore.case = TRUE
+)
+archive_files <- archive_files[!grepl("Curation_Results", archive_files, ignore.case = TRUE)]
+
+print(paste("Found", length(archive_files), "archive file(s)."))
+```
+
+## Classification Rules // Règles de classification
+
+Each entry is classified by its file name. The patterns mirror those used in the [file extension inventory](Inspect_Extensions_Notebook.qmd).
+
+//
+
+Chaque entrée est classée selon son nom de fichier. Les motifs correspondent à ceux de l'[inventaire des extensions de fichiers](Inspect_Extensions_Notebook.qmd).
+
+```{r}
+#| label: classification-rules
+
+junk_patterns <- c("\\.ds_store$", "thumbs\\.db$", "__macosx", "^~\\$", "\\.cache$")
+exec_patterns <- c("\\.exe$", "\\.bat$", "\\.sh$", "\\.bin$", "\\.jar$", "\\.dll$", "\\.so$", "\\.dylib$", "\\.msi$")
+
+classify_entry <- function(name) {
+  lname <- tolower(name)
+  if (str_detect(lname, "\\.(zip|rar|7z|tar|gz)$")) return("Nested Archive")
+  if (str_detect(lname, paste(junk_patterns, collapse = "|"))) return("System Junk / Cache")
+  if (str_detect(lname, paste(exec_patterns, collapse = "|"))) return("Executable")
+  "Clean"
+}
+```
+
+## Listing Archive Contents // Liste du contenu des archives
+
+Only archive headers are read, so this is fast even for multi-gigabyte archives. A `.rar` tool is located automatically (environment variable, `PATH`, or the usual Windows install folders).
+
+//
+
+Seuls les en-têtes des archives sont lus, ce qui reste rapide même pour des archives de plusieurs gigaoctets. L'outil `.rar` est localisé automatiquement (variable d'environnement, `PATH` ou dossiers d'installation habituels de Windows).
+
+```{r}
+#| label: listing-functions
+
+# Locate a RAR listing tool: env var override, PATH, or common Windows install paths.
+find_rar_tool <- function() {
+  env_path <- Sys.getenv("RAR_TOOL_PATH", unset = "")
+  if (nzchar(env_path) && file.exists(env_path)) return(env_path)
+  on_path <- Sys.which(c("unrar", "UnRAR", "unrar.exe"))
+  on_path <- on_path[nzchar(on_path)]
+  if (length(on_path) > 0) return(on_path[1])
+  common_paths <- c(
+    "C:/Program Files/WinRAR/UnRAR.exe",
+    "C:/Program Files (x86)/WinRAR/UnRAR.exe"
+  )
+  found <- common_paths[file.exists(common_paths)]
+  if (length(found) > 0) return(found[1])
+  NA_character_
+}
+rar_tool <- find_rar_tool()
+
+list_zip <- function(fp) {
+  info <- utils::unzip(fp, list = TRUE)
+  tibble(EntryName = info$Name, Uncompressed_Bytes = info$Length)
+}
+
+list_rar <- function(fp) {
+  if (is.na(rar_tool)) {
+    stop("No RAR listing tool found. Set RAR_TOOL_PATH to UnRAR's full path.")
+  }
+  out <- system2(rar_tool, c("v", shQuote(fp)), stdout = TRUE, stderr = FALSE)
+  # Parse the fixed-width technical listing: lines with a leading attribute code
+  data_lines <- out[str_detect(out, "^\\s*\\.\\.[A-Z.]{4,6}\\s+\\d+")]
+  parsed <- str_match(data_lines, "^\\s*\\S+\\s+(\\d+)\\s+\\d+\\s+\\d+%.*\\s([0-9A-F]{8})\\s+(.*)$")
+  if (all(is.na(parsed[, 1]))) {
+    # Fallback: names only, no size information
+    names_only <- system2(rar_tool, c("lb", shQuote(fp)), stdout = TRUE, stderr = FALSE)
+    return(tibble(EntryName = names_only, Uncompressed_Bytes = NA_real_))
+  }
+  tibble(EntryName = parsed[, 4], Uncompressed_Bytes = as.numeric(parsed[, 2])) %>%
+    filter(!is.na(EntryName))
+}
+```
+
+## Archive Audit // Audit des archives
+
+For each archive we record the entry count, the total uncompressed size, the top-level names, and any flagged entries. A per-top-level-folder breakdown is accumulated at the same time.
+
+//
+
+Pour chaque archive, nous consignons le nombre d'entrées, la taille totale décompressée, les noms de premier niveau et les entrées signalées. Une ventilation par dossier de premier niveau est établie en parallèle.
+
+```{r}
+#| label: audit-logic
+
+top_level_breakdown_rows <- list()
+
+inspect_archive <- function(fp) {
+  fname <- basename(fp)
+  ext <- tolower(tools::file_ext(fp))
+  file_size_mb <- round(file.size(fp) / 1024^2, 2)
+
+  tryCatch({
+    entries <- if (ext == "zip") list_zip(fp) else list_rar(fp)
+
+    # Directory entries (trailing slash, or no extension) are not files
+    is_dir_entry <- str_detect(entries$EntryName, "[/\\\\]$") |
+      (!str_detect(basename(gsub("\\\\", "/", entries$EntryName)), "\\."))
+    file_entries <- entries[!is_dir_entry, ] %>%
+      mutate(Classification = map_chr(EntryName, classify_entry))
+
+    top_level_dirs <- entries$EntryName %>%
+      gsub("\\\\", "/", .) %>%
+      str_extract("^[^/]+") %>%
+      unique() %>%
+      discard(is.na)
+
+    # One row per top-level name per archive
+    breakdown <- file_entries %>%
+      mutate(Top_Level_Name = gsub("\\\\", "/", EntryName) %>% str_extract("^[^/]+")) %>%
+      filter(!is.na(Top_Level_Name)) %>%
+      group_by(Top_Level_Name) %>%
+      summarise(
+        Entry_Count = n(),
+        Uncompressed_MB = round(sum(Uncompressed_Bytes, na.rm = TRUE) / 1024^2, 2),
+        .groups = "drop"
+      ) %>%
+      mutate(FileName = fname, .before = 1)
+    top_level_breakdown_rows[[length(top_level_breakdown_rows) + 1]] <<- breakdown
+
+    flagged <- file_entries %>% filter(Classification != "Clean")
+
+    tibble(
+      FileName = fname,
+      Archive_Size_MB = file_size_mb,
+      Entry_Count = nrow(file_entries),
+      Total_Uncompressed_MB = round(sum(file_entries$Uncompressed_Bytes, na.rm = TRUE) / 1024^2, 2),
+      Top_Level_Names = paste(head(top_level_dirs, 10), collapse = "; "),
+      Flagged_Entry_Count = nrow(flagged),
+      Flagged_Entries_Preview = paste(head(flagged$EntryName, 10), collapse = "; "),
+      Status = "Success"
+    )
+  }, error = function(e) {
+    tibble(
+      FileName = fname, Archive_Size_MB = file_size_mb, Entry_Count = NA,
+      Total_Uncompressed_MB = NA, Top_Level_Names = NA,
+      Flagged_Entry_Count = NA, Flagged_Entries_Preview = NA,
+      Status = paste("Failed:", e$message)
+    )
+  })
+}
+
+report <- map_dfr(archive_files, inspect_archive)
+
+print("--- Archive Audit Preview ---")
+print(report %>% select(FileName, Entry_Count, Total_Uncompressed_MB, Flagged_Entry_Count, Status))
+```
+
+### Flagged Entries // Entrées signalées
+
+```{r}
+#| label: flagged-entries
+
+flagged_summary <- report %>%
+  filter(!is.na(Flagged_Entry_Count), Flagged_Entry_Count > 0) %>%
+  select(FileName, Flagged_Entry_Count, Flagged_Entries_Preview)
+
+if (nrow(flagged_summary) == 0) {
+  print("No flagged entries found.")
+} else {
+  print(flagged_summary)
+}
+```
+
+### Top-Level Breakdown // Ventilation par premier niveau
+
+```{r}
+#| label: top-level-breakdown
+
+if (length(top_level_breakdown_rows) > 0) {
+  breakdown_report <- bind_rows(top_level_breakdown_rows)
+  print(breakdown_report)
+} else {
+  breakdown_report <- NULL
+  print("No top-level breakdown available.")
+}
+```
+
+## Save Results // Enregistrer les résultats
+
+```{r}
+#| label: save-results
+
+output_dir <- "Results/Inspect_Archive"
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+date_stamp <- format(Sys.Date(), "%Y%m%d")
+
+output_file <- file.path(output_dir, paste0("Archive_Audit_", dir_label, "_", date_stamp, ".csv"))
+write_excel_csv(report, output_file)
+print(paste("Report saved to:", output_file))
+
+if (!is.null(breakdown_report)) {
+  breakdown_file <- file.path(output_dir, paste0("Archive_TopLevel_Breakdown_", dir_label, "_", date_stamp, ".csv"))
+  write_excel_csv(breakdown_report, breakdown_file)
+  print(paste("Top-level breakdown saved to:", breakdown_file))
+}
+```
+
+## Curation Insights // Aperçu de la curation
+
+Use this report to decide what to do with each archive:
+
+-   **Flagged_Entry_Count \> 0:** Ask the depositor to remove system junk and cache files. Review any executable (`.exe`, `.sh`, `.dll`) for security and preservation risk before accepting it.
+
+-   **Nested archives:** An archive inside an archive hides its content from file inventories. Prefer a flat structure, or extract and re-inventory the inner archive.
+
+-   **Top_Level_Names:** Compare these against what the README says the archive contains. Unexpected folder names often reveal forgotten working files.
+
+-   **Top-level breakdown:** When a very large archive must be split, repackage along top-level folders (for example, one `.zip` per folder) instead of an arbitrary size-based split. Each part then remains self-describing.
+
+-   **Status "Failed":** A `.rar` archive reports a failure when no UnRAR tool is available. Install one or set `RAR_TOOL_PATH`, then run the audit again.
+
+//
+
+Utilisez ce rapport pour décider du sort de chaque archive :
+
+-   **Flagged_Entry_Count \> 0 :** Demandez au déposant de retirer les fichiers parasites et les fichiers de cache. Examinez tout exécutable (`.exe`, `.sh`, `.dll`) du point de vue des risques pour la sécurité et la préservation avant de l'accepter.
+
+-   **Archives imbriquées :** Une archive dans une archive dissimule son contenu aux inventaires de fichiers. Privilégiez une structure à plat, ou extrayez l'archive interne et refaites l'inventaire.
+
+-   **Top_Level_Names :** Comparez ces noms avec ce que le README indique comme contenu de l'archive. Des noms de dossiers inattendus révèlent souvent des fichiers de travail oubliés.
+
+-   **Ventilation par premier niveau :** Lorsqu'une très grande archive doit être scindée, reconditionnez-la selon les dossiers de premier niveau (par exemple, un `.zip` par dossier) plutôt que par une division arbitraire fondée sur la taille. Chaque partie reste ainsi autoexplicative.
+
+-   **Statut « Failed » :** Une archive `.rar` signale un échec lorsqu'aucun outil UnRAR n'est disponible. Installez-en un ou définissez `RAR_TOOL_PATH`, puis relancez l'audit.
+
+## Additional Tools // Outils supplémentaires
+
+-   **7-Zip:** A free [archiver](https://www.7-zip.org/) that lists and extracts `.zip`, `.rar`, `.7z`, and many other formats from a graphical interface or the command line.
+
+-   **UnRAR:** The [command-line tool](https://www.rarlab.com/rar_add.htm) from RARLAB used by this notebook to list `.rar` contents.
+
+-   **Droid (Digital Record Object Identification):** A [tool](https://github.com/digital-preservation/droid) from The National Archives (UK) to profile file formats inside archives without full extraction.
+
+//
+
+-   **7-Zip :** Un [logiciel d'archivage](https://www.7-zip.org/) gratuit qui liste et extrait les formats `.zip`, `.rar`, `.7z` et bien d'autres, à partir d'une interface graphique ou de la ligne de commande.
+
+-   **UnRAR :** L'[outil en ligne de commande](https://www.rarlab.com/rar_add.htm) de RARLAB utilisé par ce cahier pour lister le contenu des archives `.rar`.
+
+-   **Droid (Digital Record Object Identification) :** Un [outil](https://github.com/digital-preservation/droid) des Archives nationales du Royaume-Uni permettant de profiler les formats de fichiers à l'intérieur des archives sans extraction complète.
+
+## Using the Non-Interactive R Script // Utilisation du script R non interactif
+
+For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
+
+Download the **R Script:** [**`Inspect_Archive_Script.R`**](Scripts/Inspect_Archive_Script.R)
+
+//
+
+Pour les utilisateurs qui souhaitent exécuter cette analyse sur un serveur, dans le cadre d'un traitement par lots ou depuis la ligne de commande, voici un script R pur qui effectue le même processus.
+
+Télécharger le **script R :** [**`Inspect_Archive_Script.R`**](Scripts/Inspect_Archive_Script.R)
+
+### Example HPC Submission Script // Exemple de script de soumission HPC
+
+`Inspect_Archive_submit.sh`
+
+``` bash
+#!/bin/bash
+#SBATCH --job-name=archive_audit
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=00:30:00
+#SBATCH --mem=8G
+#SBATCH --output=logs/archive_audit_%j.log
+
+# Load R Module
+module load R
+
+# For .rar archives, point to an UnRAR binary if one is not on the PATH
+# export RAR_TOOL_PATH="/path/to/unrar"
+
+# Define directories
+DATA_DIR="/scratch/user/project_data/deposits"
+OUTPUT_DIR="/scratch/user/archive_results"
+
+# Prepare Environment
+mkdir -p logs
+
+# Run Analysis
+echo "Starting Archive Contents Audit on $DATA_DIR"
+Rscript Inspect_Archive_Script.R "$DATA_DIR" "$OUTPUT_DIR"
+```
+
+## References // Références
+
+::: {#refs}
+:::

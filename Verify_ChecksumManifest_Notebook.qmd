@@ -1,0 +1,356 @@
+---
+title: "Checksum Manifest Verification"
+author: "Data Curation Team"
+date: "2026-10-06"
+format:
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+    theme: cosmo
+params:
+  target_dir: "data/Verify_ChecksumManifest/"
+  manifest_name: "MANIFEST.sha256"
+  sample_n: 50
+  full_verify_below_mb: 50
+bibliography: references.bib
+---
+
+## Overview // Aperçu
+
+A **checksum manifest** is a text file listing a cryptographic digest (SHA-256 or MD5) and a relative path for every file in a dataset. It lets anyone confirm, long after deposit, that each file is complete and unaltered. The manifest is only useful if it is actually checked against the files on disk.
+
+//
+
+Un **manifeste de sommes de contrôle** est un fichier texte qui énumère, pour chaque fichier d'un jeu de données, une empreinte cryptographique (SHA-256 ou MD5) et un chemin relatif. Il permet à quiconque de confirmer, longtemps après le dépôt, que chaque fichier est complet et inchangé. Le manifeste n'est utile que s'il est réellement comparé aux fichiers présents sur le disque.
+
+::: {.callout-note title="Curation Goal // Objectif de la curation"}
+Verify the manifest shipped with a dataset (for example `MANIFEST.sha256`, `MANIFEST.md5`, or `checksums.txt`) against the files actually present: confirm every listed file exists, re-hash files to detect corruption or alteration, and find files on disk that the manifest does not list.
+//
+Vérifier le manifeste fourni avec un jeu de données (par exemple `MANIFEST.sha256`, `MANIFEST.md5` ou `checksums.txt`) par rapport aux fichiers réellement présents : confirmer que chaque fichier listé existe, recalculer les empreintes pour détecter une corruption ou une modification, et repérer les fichiers présents sur le disque mais absents du manifeste.
+:::
+
+::: {.callout-warning title="Identifying Risks // Identification des risques"}
+A hash mismatch means a file changed after the manifest was written (corruption, a partial transfer, or an edit). A missing file means the deposit is incomplete. A file that is on disk but not in the manifest is undocumented and cannot be verified.
+//
+Une empreinte différente signifie qu'un fichier a changé après la création du manifeste (corruption, transfert partiel ou modification). Un fichier manquant signifie que le dépôt est incomplet. Un fichier présent sur le disque mais absent du manifeste n'est pas documenté et ne peut pas être vérifié.
+:::
+
+**This notebook uses a sampling strategy for large datasets:**
+
+1.  **Exhaustive checks (cheap):** Existence, size, and files missing from the manifest are always checked for every file, because they only need a directory listing.
+2.  **Full re-hash of small files:** Every file at or under a size threshold is hashed completely.
+3.  **Sampled re-hash of large files:** A random sample of the larger files is hashed completely. A file is never partially hashed, since a partial hash cannot honestly confirm a match.
+
+//
+
+**Ce cahier applique une stratégie d'échantillonnage pour les grands jeux de données :**
+
+1.  **Vérifications exhaustives (peu coûteuses) :** L'existence, la taille et les fichiers absents du manifeste sont toujours vérifiés pour chaque fichier, car ils ne nécessitent qu'une liste de répertoire.
+2.  **Nouveau calcul complet pour les petits fichiers :** Chaque fichier dont la taille est inférieure ou égale à un seuil est entièrement haché.
+3.  **Nouveau calcul sur échantillon pour les gros fichiers :** Un échantillon aléatoire des fichiers plus volumineux est entièrement haché. Un fichier n'est jamais haché partiellement, car une empreinte partielle ne peut pas confirmer honnêtement une correspondance.
+
+------------------------------------------------------------------------
+
+## Setup // Configuration
+
+We use the `digest` package to compute SHA-256 and MD5 digests directly from files [@digest].
+
+//
+
+Nous utilisons le package `digest` pour calculer les empreintes SHA-256 et MD5 directement à partir des fichiers [@digest].
+
+### R Packages // Packages R
+
+```{r}
+#| label: install-packages
+#| eval: false
+
+# install.packages(c("tidyverse", "digest", "rstudioapi"))
+```
+
+### Load Libraries // Charger les bibliothèques
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+
+library(tidyverse)  # Data manipulation [@tidyverse]
+library(digest)     # File hashing
+library(rstudioapi) # Interactive folder selection
+```
+
+## Select Target Directory // Sélectionner le répertoire cible
+
+This block allows for interactive selection of the dataset directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header. The manifest name and sampling thresholds also come from the YAML header.
+
+//
+
+Ce bloc permet de sélectionner de manière interactive le répertoire du jeu de données. En cas d'exécution dans un environnement non interactif, le chemin par défaut est celui défini dans l'en-tête YAML. Le nom du manifeste et les seuils d'échantillonnage proviennent également de l'en-tête YAML.
+
+```{r}
+#| label: select-target-dir
+
+if (interactive() && .Platform$OS.type == "windows") {
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select Dataset Directory")
+} else {
+  selected_dir <- NULL
+}
+
+if (!is.null(selected_dir)) {
+  target_dir <- selected_dir
+} else {
+  target_dir <- params$target_dir
+}
+
+manifest_name <- params$manifest_name
+sample_n <- as.integer(params$sample_n)
+full_verify_below_mb <- as.numeric(params$full_verify_below_mb)
+
+print(paste("Analyzing directory:", target_dir))
+```
+
+## Locate and Parse the Manifest // Localiser et analyser le manifeste
+
+The manifest is expected in the common `<hex digest>  <relative path>` layout used by `sha256sum` and `md5sum`: one or two spaces, an optional `*` binary-mode marker, and forward or back slashes. The hash algorithm is inferred from the digest length (64 hex characters for SHA-256, 32 for MD5).
+
+//
+
+Le manifeste doit suivre la disposition courante `<empreinte hexadécimale>  <chemin relatif>` utilisée par `sha256sum` et `md5sum` : un ou deux espaces, un marqueur facultatif `*` de mode binaire, et des barres obliques ou obliques inverses. L'algorithme de hachage est déduit de la longueur de l'empreinte (64 caractères hexadécimaux pour SHA-256, 32 pour MD5).
+
+```{r}
+#| label: parse-manifest
+
+manifest_matches <- list.files(target_dir, pattern = paste0("^", manifest_name, "$"),
+                               recursive = TRUE, full.names = TRUE, ignore.case = TRUE)
+if (length(manifest_matches) == 0) {
+  stop(sprintf("No file named '%s' found under %s.", manifest_name, target_dir))
+}
+manifest_path <- manifest_matches[1]
+manifest_dir <- dirname(manifest_path)
+print(paste("Using manifest:", manifest_path))
+
+manifest_lines <- readLines(manifest_path, warn = FALSE)
+manifest_lines <- manifest_lines[trimws(manifest_lines) != ""]
+
+parse_line <- function(line) {
+  m <- str_match(line, "^([0-9a-fA-F]{32,64})\\s+\\*?(.+)$")
+  if (is.na(m[1, 1])) return(tibble(Hash = NA_character_, Path = NA_character_))
+  tibble(Hash = tolower(m[1, 2]), Path = str_trim(m[1, 3]))
+}
+manifest <- map_dfr(manifest_lines, parse_line) %>% filter(!is.na(Hash))
+manifest$Path <- gsub("\\\\", "/", manifest$Path)
+
+algo <- if (nrow(manifest) > 0 && nchar(manifest$Hash[1]) == 32) "md5" else "sha256"
+
+print(sprintf("Parsed %d manifest entries. Algorithm inferred: %s", nrow(manifest), algo))
+```
+
+## Existence and Size Check // Vérification de l'existence et de la taille
+
+This pass is cheap and always covers every file in the manifest.
+
+//
+
+Cette étape est peu coûteuse et couvre toujours chaque fichier du manifeste.
+
+```{r}
+#| label: existence-check
+
+manifest <- manifest %>%
+  mutate(
+    Full_Path = file.path(manifest_dir, Path),
+    Exists = file.exists(Full_Path),
+    Size_Bytes = ifelse(Exists, file.size(Full_Path), NA_real_),
+    Size_MB = round(Size_Bytes / 1024^2, 2)
+  )
+
+n_missing <- sum(!manifest$Exists)
+print(sprintf("Existence check: %d/%d files present on disk.", sum(manifest$Exists), nrow(manifest)))
+if (n_missing > 0) print(sprintf("WARNING: %d file(s) listed in the manifest are missing from disk.", n_missing))
+```
+
+## Hash Verification // Vérification des empreintes
+
+Files at or under the size threshold are always re-hashed. Larger files are sampled with a fixed random seed so the selection is reproducible. This is the slow, input/output-bound step.
+
+//
+
+Les fichiers dont la taille est inférieure ou égale au seuil sont toujours recalculés. Les fichiers plus volumineux sont échantillonnés avec une graine aléatoire fixe afin que la sélection soit reproductible. C'est l'étape lente, limitée par les entrées-sorties.
+
+```{r}
+#| label: hash-verification
+
+present <- manifest %>% filter(Exists)
+small <- present %>% filter(Size_MB <= full_verify_below_mb)
+large <- present %>% filter(Size_MB > full_verify_below_mb)
+
+set.seed(42)  # reproducible sample selection, not a security-relevant seed
+sample_large <- if (nrow(large) > sample_n) large %>% slice_sample(n = sample_n) else large
+
+to_verify <- bind_rows(small, sample_large)
+print(sprintf("Full-hash verification: %d file(s) at/under %g MB + %d/%d larger file(s) sampled = %d file(s).",
+              nrow(small), full_verify_below_mb, nrow(sample_large), nrow(large), nrow(to_verify)))
+
+hash_file <- function(fp) {
+  tryCatch(digest::digest(fp, algo = algo, file = TRUE), error = function(e) NA_character_)
+}
+
+to_verify$Computed_Hash <- map_chr(to_verify$Full_Path, hash_file)
+to_verify$Match <- tolower(to_verify$Computed_Hash) == to_verify$Hash
+```
+
+## Assemble the Report // Assembler le rapport
+
+Each manifest entry receives a verification status. Files on disk that the manifest does not list are appended as a separate category.
+
+//
+
+Chaque entrée du manifeste reçoit un statut de vérification. Les fichiers présents sur le disque mais absents du manifeste sont ajoutés comme catégorie distincte.
+
+```{r}
+#| label: assemble-report
+
+report <- manifest %>%
+  left_join(to_verify %>% select(Path, Computed_Hash, Match), by = "Path") %>%
+  mutate(
+    Verification = case_when(
+      !Exists ~ "MISSING FROM DISK",
+      is.na(Match) ~ "Not sampled (existence/size only)",
+      Match ~ "Hash verified: match",
+      !Match ~ "HASH MISMATCH"
+    )
+  ) %>%
+  select(Path, Size_MB, Verification, Manifest_Hash = Hash, Computed_Hash)
+
+# Files on disk that are not listed in the manifest at all
+disk_files <- list.files(manifest_dir, recursive = TRUE, full.names = FALSE)
+disk_files <- disk_files[!grepl("Curation_Results", disk_files, ignore.case = TRUE)]
+disk_files <- disk_files[basename(disk_files) != basename(manifest_path)]
+orphans <- setdiff(gsub("\\\\", "/", disk_files), manifest$Path)
+
+if (length(orphans) > 0) {
+  orphan_report <- tibble(Path = orphans, Size_MB = NA, Verification = "ON DISK, NOT IN MANIFEST",
+                          Manifest_Hash = NA_character_, Computed_Hash = NA_character_)
+  report <- bind_rows(report, orphan_report)
+}
+
+n_mismatch <- sum(report$Verification == "HASH MISMATCH", na.rm = TRUE)
+n_verified_ok <- sum(report$Verification == "Hash verified: match", na.rm = TRUE)
+
+print(sprintf("%d verified matches, %d MISMATCHES, %d missing, %d orphaned (on disk, not in manifest).",
+              n_verified_ok, n_mismatch, n_missing, length(orphans)))
+if (n_mismatch > 0) print("CRITICAL: at least one hash mismatch found. Do not publish until it is resolved.")
+
+print(report %>% select(Path, Size_MB, Verification))
+```
+
+## Save Results // Enregistrer les résultats
+
+```{r}
+#| label: save-results
+
+output_dir <- "Results/Verify_ChecksumManifest"
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+output_file <- file.path(output_dir, paste0("ChecksumManifest_Verification_", dir_label, "_", format(Sys.Date(), "%Y%m%d"), ".csv"))
+
+write_excel_csv(report, output_file)
+print(paste("Report saved to:", output_file))
+```
+
+## Curation Insights // Aperçu de la curation
+
+The `Verification` column takes one of five values:
+
+-   **Hash verified: match:** The file was fully re-hashed and matches the manifest.
+
+-   **HASH MISMATCH:** The file was fully re-hashed and does **not** match. Treat this as a required action: the file changed after the manifest was written. Do not publish until the cause is found and a correct copy is obtained.
+
+-   **MISSING FROM DISK:** The manifest lists a file that is not in the dataset. The deposit is incomplete, or the file was renamed or moved.
+
+-   **ON DISK, NOT IN MANIFEST:** The file is present but undocumented, so it cannot be verified. Ask the depositor whether it belongs in the dataset and, if so, to update the manifest.
+
+-   **Not sampled (existence/size only):** The file exists but was not selected for re-hashing in this run. It is **not** verified. Raise `sample_n` (or lower the size threshold) if you need wider coverage, and never report these files as checked.
+
+//
+
+La colonne `Verification` prend l'une des cinq valeurs suivantes :
+
+-   **Hash verified: match :** Le fichier a été entièrement re-haché et correspond au manifeste.
+
+-   **HASH MISMATCH :** Le fichier a été entièrement re-haché et **ne** correspond **pas**. Considérez cela comme une action obligatoire : le fichier a changé après la création du manifeste. Ne publiez pas avant d'en avoir trouvé la cause et obtenu une copie correcte.
+
+-   **MISSING FROM DISK :** Le manifeste énumère un fichier absent du jeu de données. Le dépôt est incomplet, ou le fichier a été renommé ou déplacé.
+
+-   **ON DISK, NOT IN MANIFEST :** Le fichier est présent mais non documenté ; il ne peut donc pas être vérifié. Demandez au déposant s'il fait partie du jeu de données et, le cas échéant, de mettre à jour le manifeste.
+
+-   **Not sampled (existence/size only) :** Le fichier existe mais n'a pas été retenu pour un nouveau calcul d'empreinte lors de cette exécution. Il n'est **pas** vérifié. Augmentez `sample_n` (ou abaissez le seuil de taille) si vous avez besoin d'une couverture plus large, et ne présentez jamais ces fichiers comme vérifiés.
+
+## Additional Tools // Outils supplémentaires
+
+-   **`sha256sum` / `md5sum`:** The standard command-line utilities that produce and check manifests in this format (`sha256sum -c MANIFEST.sha256`). On Windows, `certutil -hashfile` computes the same digests.
+
+-   **BagIt:** A [packaging specification](https://www.rfc-editor.org/rfc/rfc8493) that bundles a payload with checksum manifests, widely used for preservation transfers.
+
+-   **Fixity checking:** Repeat verification periodically after deposit to detect silent corruption (bit rot) in storage.
+
+//
+
+-   **`sha256sum` / `md5sum` :** Les utilitaires standard en ligne de commande qui produisent et vérifient les manifestes dans ce format (`sha256sum -c MANIFEST.sha256`). Sous Windows, `certutil -hashfile` calcule les mêmes empreintes.
+
+-   **BagIt :** Une [spécification de conditionnement](https://www.rfc-editor.org/rfc/rfc8493) qui regroupe un contenu avec des manifestes de sommes de contrôle, très utilisée pour les transferts de préservation.
+
+-   **Vérification de la fixité :** Répétez périodiquement la vérification après le dépôt afin de détecter la corruption silencieuse (dégradation des bits) dans le stockage.
+
+## Using the Non-Interactive R Script // Utilisation du script R non interactif
+
+For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
+
+Download the **R Script:** [**`Verify_ChecksumManifest_Script.R`**](Scripts/Verify_ChecksumManifest_Script.R)
+
+//
+
+Pour les utilisateurs qui souhaitent exécuter cette analyse sur un serveur, dans le cadre d'un traitement par lots ou depuis la ligne de commande, voici un script R pur qui effectue le même processus.
+
+Télécharger le **script R :** [**`Verify_ChecksumManifest_Script.R`**](Scripts/Verify_ChecksumManifest_Script.R)
+
+### Example HPC Submission Script // Exemple de script de soumission HPC
+
+`Verify_ChecksumManifest_submit.sh`
+
+``` bash
+#!/bin/bash
+#SBATCH --job-name=checksum_verify
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=04:00:00
+#SBATCH --mem=8G
+#SBATCH --output=logs/checksum_verify_%j.log
+
+# Load R Module
+module load R
+
+# Define arguments
+# Usage: Rscript Verify_ChecksumManifest_Script.R <dir> [output_dir] [manifest] [sample_n] [full_verify_below_mb]
+DATA_DIR="/scratch/user/project_data/deposit"
+OUTPUT_DIR="/scratch/user/checksum_results"
+MANIFEST="MANIFEST.sha256"
+SAMPLE_N=50
+FULL_VERIFY_BELOW_MB=50
+
+# Prepare Environment
+mkdir -p logs
+
+# Run Analysis
+# Hashing is input/output-bound, so a large dataset can take hours.
+echo "Starting checksum verification on $DATA_DIR"
+Rscript Verify_ChecksumManifest_Script.R "$DATA_DIR" "$OUTPUT_DIR" "$MANIFEST" $SAMPLE_N $FULL_VERIFY_BELOW_MB
+```
+
+## References // Références
+
+::: {#refs}
+:::
