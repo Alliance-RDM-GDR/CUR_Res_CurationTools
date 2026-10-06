@@ -73,6 +73,8 @@ book:
     - part: Data_Geospatial.qmd
       chapters:
         - Inspect_gpkg_Notebook.qmd
+        - Inspect_Raster_Notebook.qmd
+        - Inspect_LAS_Notebook.qmd
         
     - part: Data_Image.qmd
       chapters:

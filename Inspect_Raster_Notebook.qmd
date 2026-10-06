@@ -1,0 +1,329 @@
+---
+title: "Georeferenced Rasters (.tif, .tiff)"
+author: "Data Curation Team"
+date: "2026-10-06"
+format:
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+    theme: cosmo
+params:
+  target_dir: "data/Inspect_Images/"
+bibliography: references.bib
+---
+
+```{r}
+#| label: eval-gate
+#| include: false
+
+knitr::opts_chunk$set(eval = dir.exists(params$target_dir))
+```
+
+## Overview // Aperçu
+
+A **georeferenced raster** is a grid of cells whose positions are tied to real places: satellite imagery, climate grids, elevation models. The file is usually a GeoTIFF, which is a TIFF with extra tags that store the coordinate reference system (CRS), the extent, and the cell size. Without them, the file is just an image.
+
+//
+
+Une **image matricielle géoréférencée** est une grille de cellules dont les positions sont rattachées à des lieux réels : imagerie satellitaire, grilles climatiques, modèles d'élévation. Le fichier est généralement un GeoTIFF, c'est-à-dire un TIFF contenant des balises supplémentaires qui stockent le système de référence de coordonnées (SRC), l'emprise et la taille des cellules. Sans elles, le fichier n'est qu'une image.
+
+::: {.callout-note title="Curation Goal // Objectif de la curation"}
+Report whether each raster has a **CRS**, and its extent, resolution, number of bands, data type, and NoData value, so that its georeferencing can be trusted and documented.
+//
+Indiquer si chaque image matricielle possède un **SRC**, ainsi que son emprise, sa résolution, son nombre de bandes, son type de données et sa valeur NoData, afin que son géoréférencement puisse être jugé fiable et documenté.
+:::
+
+::: {.callout-warning title="Identifying Risks // Identification des risques"}
+A raster with no CRS cannot be placed on a map or combined with other layers. A wrong or undeclared NoData value turns missing cells into false data, and silently distorts statistics.
+//
+Une image matricielle sans SRC ne peut pas être placée sur une carte ni combinée à d'autres couches. Une valeur NoData erronée ou non déclarée transforme des cellules manquantes en fausses données et fausse silencieusement les statistiques.
+:::
+
+**This notebook complements the [TIFF inspection](Inspect_Tiff_Notebook.qmd).** That notebook covers file-level image attributes (bit depth and compression), but not georeferencing. Rasters are read with the `terra` package. Only the metadata is needed, so large files are not loaded into memory.
+
+//
+
+**Ce cahier complète l'[inspection des fichiers TIFF](Inspect_Tiff_Notebook.qmd).** Ce dernier traite les attributs des images au niveau du fichier (profondeur de bits et compression), mais pas le géoréférencement. Les images matricielles sont lues avec le package `terra`. Seules les métadonnées sont nécessaires ; les gros fichiers ne sont donc pas chargés en mémoire.
+
+::: {.callout-tip title="Sample Data // Données d'exemple"}
+This notebook is set to read the example GeoTIFF files in `data/Inspect_Images/`. To inspect your own rasters, place them in another folder and change `target_dir` in the YAML header.
+//
+Ce cahier est configuré pour lire les exemples de fichiers GeoTIFF du dossier `data/Inspect_Images/`. Pour inspecter vos propres images matricielles, placez-les dans un autre dossier et modifiez `target_dir` dans l'en-tête YAML.
+:::
+
+------------------------------------------------------------------------
+
+## Setup // Configuration
+
+We use the `terra` package for raster metadata.
+
+//
+
+Nous utilisons le package `terra` pour les métadonnées des images matricielles.
+
+### R Packages // Packages R
+
+```{r}
+#| label: install-packages
+#| eval: false
+
+# install.packages(c("tidyverse", "terra", "rstudioapi"))
+```
+
+### Load Libraries // Charger les bibliothèques
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+
+library(tidyverse)  # Data manipulation [@tidyverse]
+library(terra)      # Raster metadata
+library(rstudioapi) # Interactive folder selection
+```
+
+## Select Target Directory // Sélectionner le répertoire cible
+
+This block allows for interactive selection of the directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.
+
+//
+
+Ce bloc permet de sélectionner le répertoire de manière interactive. En cas d'exécution dans un environnement non interactif, le chemin par défaut est celui défini dans l'en-tête YAML.
+
+```{r}
+#| label: select-target-dir
+
+if (interactive() && .Platform$OS.type == "windows") {
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select Raster Directory")
+} else {
+  selected_dir <- NULL
+}
+
+if (!is.null(selected_dir)) {
+  target_dir <- selected_dir
+} else {
+  target_dir <- params$target_dir
+}
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+output_dir <- "Results/Inspect_Raster"
+
+print(paste("Analyzing directory:", target_dir))
+```
+
+## Inventory of TIFF Files // Liste des fichiers TIFF
+
+We scan for `.tif` and `.tiff` files. Folders named `Curation_Results` are skipped.
+
+//
+
+Nous recherchons les fichiers `.tif` et `.tiff`. Les dossiers nommés `Curation_Results` sont ignorés.
+
+```{r}
+#| label: inventory
+
+raster_files <- list.files(
+  path = target_dir,
+  pattern = "\\.tiff?$",
+  recursive = TRUE,
+  full.names = TRUE,
+  ignore.case = TRUE
+)
+
+raster_files <- raster_files[!grepl("Curation_Results", raster_files, ignore.case = TRUE)]
+
+message(paste("Found", length(raster_files), "TIFF file(s) to check for georeferencing."))
+
+if (length(raster_files) == 0) {
+  stop("No TIFF files found.", call. = FALSE)
+}
+```
+
+## Georeferencing Inspection // Inspection du géoréférencement
+
+For each file, the function reports the CRS as an authority code (such as `EPSG:4326`) when it can, as `Present (non-EPSG / unregistered)` when a CRS exists without a registered code, and as `MISSING` when there is none.
+
+//
+
+Pour chaque fichier, la fonction indique le SRC sous forme de code d'autorité (comme `EPSG:4326`) lorsque c'est possible, sous la forme `Present (non-EPSG / unregistered)` lorsqu'un SRC existe sans code enregistré, et sous la forme `MISSING` lorsqu'il n'y en a aucun.
+
+```{r}
+#| label: inspection-logic
+
+inspect_raster <- function(fp) {
+  fname <- basename(fp)
+  file_size_mb <- round(file.size(fp) / 1024^2, 2)
+
+  tryCatch({
+    r <- terra::rast(fp)
+
+    crs_wkt <- terra::crs(r, describe = TRUE)
+    crs_code <- if (nrow(crs_wkt) > 0 && !is.na(crs_wkt$code[1])) {
+      paste0(crs_wkt$authority[1], ":", crs_wkt$code[1])
+    } else if (terra::crs(r) != "") {
+      "Present (non-EPSG / unregistered)"
+    } else {
+      "MISSING"
+    }
+
+    ext_r <- terra::ext(r)
+    nodata <- tryCatch(paste(unique(terra::NAflag(r)), collapse = ", "), error = function(e) "Unknown")
+
+    tibble(
+      FileName = fname,
+      Size_MB = file_size_mb,
+      CRS = crs_code,
+      NCol = terra::ncol(r),
+      NRow = terra::nrow(r),
+      NBands = terra::nlyr(r),
+      XRes = round(terra::xres(r), 6),
+      YRes = round(terra::yres(r), 6),
+      Extent = paste0("xmin=", round(ext_r$xmin, 2), ", xmax=", round(ext_r$xmax, 2),
+                       ", ymin=", round(ext_r$ymin, 2), ", ymax=", round(ext_r$ymax, 2)),
+      DataType = paste(unique(terra::datatype(r)), collapse = ", "),
+      NoDataValue = nodata,
+      Status = "Success"
+    )
+
+  }, error = function(e) {
+    tibble(
+      FileName = fname, Size_MB = file_size_mb, CRS = NA, NCol = NA, NRow = NA,
+      NBands = NA, XRes = NA, YRes = NA, Extent = NA, DataType = NA, NoDataValue = NA,
+      Status = paste("Read Failed:", e$message)
+    )
+  })
+}
+```
+
+## Generating the Report // Génération du rapport
+
+This step runs the inspection on every file.
+
+//
+
+Cette étape exécute l'inspection sur chaque fichier.
+
+```{r}
+#| label: execution
+
+message("Generating Raster Georeferencing Report...")
+report <- map_dfr(raster_files, inspect_raster)
+```
+
+## Save Results // Enregistrer les résultats
+
+```{r}
+#| label: save-results
+
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+output_file <- file.path(output_dir, paste0("Raster_Georef_Report_", dir_label, "_", format(Sys.Date(), "%Y%m%d"), ".csv"))
+
+write_excel_csv(report, output_file)
+
+message(paste("Process complete."))
+message(paste("   Analyzed:", nrow(report), "files"))
+if (any(report$CRS == "MISSING", na.rm = TRUE)) {
+  message("   WARNING: One or more rasters have no CRS defined.")
+}
+message(paste("   Report saved to:", output_file))
+```
+
+## Curation Insights // Aperçu de la curation
+
+Use this report to decide what to ask the depositor:
+
+-   **CRS "MISSING":** The raster has no coordinate reference system. It cannot be georeferenced from the file alone. Ask the depositor which CRS it uses, and document it in the README.
+
+-   **CRS "Present (non-EPSG / unregistered)":** The file carries a CRS, but it has no registered code. Record the full definition in the documentation so that others can reproduce it.
+
+-   **Extent:** Compare it with the study area. Values that do not fit the stated CRS point to a wrong or mislabelled projection.
+
+-   **XRes and YRes:** The cell size, in the units of the CRS. Check that it matches the documented resolution, and that the two values are consistent.
+
+-   **NBands and DataType:** Confirm that the number of bands and the data type match the product description (for example, one band of 32-bit floats for a temperature grid).
+
+-   **NoDataValue:** Make sure it is declared and documented. A raster with undeclared NoData can show fill values, such as -9999, as real data.
+
+-   **Status "Read Failed":** The file could not be read as a raster, so it may be corrupt.
+
+//
+
+Utilisez ce rapport pour décider de ce qu'il faut demander au déposant :
+
+-   **SRC « MISSING » :** L'image matricielle n'a aucun système de référence de coordonnées. Elle ne peut pas être géoréférencée à partir du seul fichier. Demandez au déposant quel SRC est utilisé et documentez-le dans le README.
+
+-   **SRC « Present (non-EPSG / unregistered) » :** Le fichier contient un SRC, mais sans code enregistré. Consignez la définition complète dans la documentation afin que d'autres puissent la reproduire.
+
+-   **Extent :** Comparez avec la zone d'étude. Des valeurs qui ne conviennent pas au SRC indiqué signalent une projection erronée ou mal étiquetée.
+
+-   **XRes et YRes :** La taille des cellules, dans les unités du SRC. Vérifiez qu'elle correspond à la résolution documentée et que les deux valeurs sont cohérentes.
+
+-   **NBands et DataType :** Confirmez que le nombre de bandes et le type de données correspondent à la description du produit (par exemple, une bande de nombres à virgule flottante de 32 bits pour une grille de températures).
+
+-   **NoDataValue :** Assurez-vous qu'elle est déclarée et documentée. Une image matricielle dont la valeur NoData n'est pas déclarée peut présenter des valeurs de remplissage, comme -9999, comme de vraies données.
+
+-   **Statut « Read Failed » :** Le fichier n'a pas pu être lu comme image matricielle ; il est donc peut-être corrompu.
+
+## Additional Tools // Outils supplémentaires
+
+-   **`terra`:** The R [package](https://rspatial.github.io/terra/) used here for raster and vector data.
+
+-   **GDAL:** The [library and command-line tools](https://gdal.org/) behind most geospatial software. `gdalinfo` prints the full metadata of a raster.
+
+-   **QGIS:** A free [desktop GIS](https://qgis.org/) to view a raster and check its CRS and extent visually.
+
+//
+
+-   **`terra` :** Le [package](https://rspatial.github.io/terra/) R utilisé ici pour les données matricielles et vectorielles.
+
+-   **GDAL :** La [bibliothèque et les outils en ligne de commande](https://gdal.org/) à la base de la plupart des logiciels géospatiaux. `gdalinfo` affiche l'ensemble des métadonnées d'une image matricielle.
+
+-   **QGIS :** Un [SIG de bureau](https://qgis.org/) gratuit pour visualiser une image matricielle et vérifier visuellement son SRC et son emprise.
+
+## Using the Non-Interactive R Script // Utilisation du script R non interactif
+
+For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
+
+Download the **R Script:** [**`Inspect_Raster_Script.R`**](Scripts/Inspect_Raster_Script.R)
+
+//
+
+Pour les utilisateurs qui souhaitent exécuter cette analyse sur un serveur, dans le cadre d'un traitement par lots ou depuis la ligne de commande, voici un script R pur qui effectue le même processus.
+
+Télécharger le **script R :** [**`Inspect_Raster_Script.R`**](Scripts/Inspect_Raster_Script.R)
+
+### Example HPC Submission Script // Exemple de script de soumission HPC
+
+`Inspect_Raster_submit.sh`
+
+``` bash
+#!/bin/bash
+#SBATCH --job-name=raster_check
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=00:30:00
+#SBATCH --mem=8G
+#SBATCH --output=logs/raster_check_%j.log
+
+# Load R Module
+module load R
+# Note: terra needs GDAL and PROJ. Check 'module avail gdal' if installation fails.
+module load gdal
+
+# Define directories
+DATA_DIR="/scratch/user/project_data/rasters"
+OUTPUT_DIR="/scratch/user/raster_results"
+
+# Prepare Environment
+mkdir -p logs
+
+# Run Analysis
+echo "Starting raster georeferencing inspection on $DATA_DIR"
+Rscript Inspect_Raster_Script.R "$DATA_DIR" "$OUTPUT_DIR"
+```
+
+## References // Références
+
+::: {#refs}
+:::

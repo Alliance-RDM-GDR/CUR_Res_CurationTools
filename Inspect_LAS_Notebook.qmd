@@ -1,0 +1,387 @@
+---
+title: "LiDAR Point Clouds (.las, .laz)"
+author: "Data Curation Team"
+date: "2026-10-06"
+format:
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+    theme: cosmo
+params:
+  target_dir: "data/Inspect_LAS/"
+bibliography: references.bib
+---
+
+```{r}
+#| label: eval-gate
+#| include: false
+
+knitr::opts_chunk$set(eval = dir.exists(params$target_dir))
+```
+
+## Overview // Aperçu
+
+**LAS** is the standard binary format for LiDAR point clouds, and **LAZ** is its lossless compressed form. A file starts with a header that records the format version, the point record layout, the number of points, the bounding box, and, through variable length records (VLRs), the coordinate reference system (CRS). Point clouds are very large, so reading the header alone is the practical way to inspect many files.
+
+//
+
+**LAS** est le format binaire standard des nuages de points LiDAR, et **LAZ** en est la forme compressée sans perte. Un fichier commence par un en-tête qui consigne la version du format, la disposition des enregistrements de points, le nombre de points, l'emprise et, au moyen d'enregistrements de longueur variable (VLR), le système de référence de coordonnées (SRC). Les nuages de points sont très volumineux ; lire seulement l'en-tête est donc la façon pratique d'inspecter de nombreux fichiers.
+
+::: {.callout-note title="Curation Goal // Objectif de la curation"}
+Report, for every file, the LAS version, what each point record stores (such as colour or GPS time), the point count, the bounding box, the embedded CRS, and the generating software, **from the header only**, so it stays fast without decompressing the point data.
+//
+Indiquer, pour chaque fichier, la version LAS, ce que chaque enregistrement de point contient (couleur ou heure GPS, par exemple), le nombre de points, l'emprise, le SRC intégré et le logiciel générateur, **à partir de l'en-tête seulement**, afin de rester rapide sans décompresser les données de points.
+:::
+
+::: {.callout-warning title="Identifying Risks // Identification des risques"}
+A point cloud with no CRS is just a set of numbers: it cannot be placed on a map or combined with other layers. Coordinates are stored in the file's native units, so a missing CRS also hides whether they are metres, feet, or degrees.
+//
+Un nuage de points sans SRC n'est qu'un ensemble de nombres : il ne peut pas être placé sur une carte ni combiné à d'autres couches. Les coordonnées sont stockées dans les unités natives du fichier ; l'absence de SRC masque donc aussi s'il s'agit de mètres, de pieds ou de degrés.
+:::
+
+**Where the CRS is read from.** LAS stores its projection either as a GeoTIFF-style `GeoAsciiParamsTag` record or, in LAS 1.4, as an OGC WKT record (possibly an extended VLR). The notebook checks each of them and reports the first one found, shortened to 150 characters, or `Not found in header`. It reads the header with the `rlas` package and does not decompress the full point cloud.
+
+//
+
+**D'où provient le SRC.** LAS stocke sa projection soit sous forme d'un enregistrement `GeoAsciiParamsTag` de style GeoTIFF, soit, en LAS 1.4, sous forme d'un enregistrement WKT de l'OGC (éventuellement un VLR étendu). Le cahier vérifie chacun d'eux et indique le premier trouvé, abrégé à 150 caractères, ou `Not found in header`. Il lit l'en-tête avec le package `rlas` et ne décompresse pas l'ensemble du nuage de points.
+
+::: {.callout-tip title="Sample Data // Données d'exemple"}
+No sample data is bundled with this notebook. If the folder `data/Inspect_LAS/` does not exist, the code is displayed but not run. Place your own files there (or change `target_dir` in the YAML header) and render again to see the results.
+//
+Aucune donnée d'exemple n'est fournie avec ce cahier. Si le dossier `data/Inspect_LAS/` n'existe pas, le code est affiché mais n'est pas exécuté. Placez-y vos propres fichiers (ou modifiez `target_dir` dans l'en-tête YAML) et générez à nouveau le document pour voir les résultats.
+:::
+
+------------------------------------------------------------------------
+
+## Setup // Configuration
+
+The `rlas` package reads LAS and LAZ headers.
+
+//
+
+Le package `rlas` lit les en-têtes LAS et LAZ.
+
+### R Packages // Packages R
+
+```{r}
+#| label: install-packages
+#| eval: false
+
+# install.packages(c("tidyverse", "rlas", "rstudioapi"))
+```
+
+### Load Libraries // Charger les bibliothèques
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+
+library(tidyverse)  # Data manipulation [@tidyverse]
+library(rlas)       # Reading LAS/LAZ headers
+library(rstudioapi) # Interactive folder selection
+```
+
+## Select Target Directory // Sélectionner le répertoire cible
+
+This block allows for interactive selection of the directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.
+
+//
+
+Ce bloc permet de sélectionner le répertoire de manière interactive. En cas d'exécution dans un environnement non interactif, le chemin par défaut est celui défini dans l'en-tête YAML.
+
+```{r}
+#| label: select-target-dir
+
+if (interactive() && .Platform$OS.type == "windows") {
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select LAS/LAZ Directory")
+} else {
+  selected_dir <- NULL
+}
+
+if (!is.null(selected_dir)) {
+  target_dir <- selected_dir
+} else {
+  target_dir <- params$target_dir
+}
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+output_dir <- "Results/Inspect_LAS"
+
+print(paste("Analyzing directory:", target_dir))
+```
+
+## Inventory of LAS Files // Liste des fichiers LAS
+
+We scan for `.las` and `.laz` files. Folders named `Curation_Results` are skipped.
+
+//
+
+Nous recherchons les fichiers `.las` et `.laz`. Les dossiers nommés `Curation_Results` sont ignorés.
+
+```{r}
+#| label: inventory
+
+las_files <- list.files(
+  path = target_dir,
+  pattern = "\\.la[sz]$",
+  recursive = TRUE,
+  full.names = TRUE,
+  ignore.case = TRUE
+)
+las_files <- las_files[!grepl("Curation_Results", las_files, ignore.case = TRUE)]
+
+message(paste("Found", length(las_files), "LAS/LAZ file(s)."))
+
+if (length(las_files) == 0) {
+  stop("No LAS/LAZ files found.", call. = FALSE)
+}
+```
+
+## Point Format Reference // Référence des formats de points
+
+The Point Data Format ID in the header says what each point record stores. This helper translates the common IDs into plain language. Other IDs are reported as `Format <id>`, to be looked up in the LAS specification.
+
+//
+
+L'identifiant du format de données de points dans l'en-tête indique ce que contient chaque enregistrement de point. Cette fonction traduit en langage clair les identifiants courants. Les autres identifiants sont indiqués sous la forme `Format <id>`, à rechercher dans la spécification LAS.
+
+```{r}
+#| label: point-format
+
+point_format_desc <- function(id) {
+  dplyr::case_when(
+    id %in% c(0)       ~ "Core (no color, no GPS time)",
+    id %in% c(1)       ~ "Core + GPS time",
+    id %in% c(2)       ~ "Core + RGB color",
+    id %in% c(3)       ~ "Core + GPS time + RGB color",
+    id %in% c(6)       ~ "Core + GPS time (LAS 1.4 extended)",
+    id %in% c(7)       ~ "Core + GPS time + RGB (LAS 1.4 extended)",
+    id %in% c(8)       ~ "Core + GPS time + RGB + NIR (LAS 1.4 extended)",
+    TRUE               ~ paste("Format", id, "(see LAS spec)")
+  )
+}
+```
+
+## Header Inspection // Inspection de l'en-tête
+
+For each file, the function reads the header, finds the CRS text, and builds one row of metadata. A file that cannot be read produces a `Read Failed` row instead of stopping the batch.
+
+//
+
+Pour chaque fichier, la fonction lit l'en-tête, trouve le texte du SRC et construit une ligne de métadonnées. Un fichier illisible produit une ligne `Read Failed` au lieu d'arrêter le lot.
+
+```{r}
+#| label: inspection-logic
+
+inspect_las <- function(fp) {
+  fname <- basename(fp)
+  file_size_mb <- round(file.size(fp) / 1024^2, 2)
+
+  tryCatch({
+    h <- rlas::read.lasheader(fp)
+
+    # CRS: LAS stores projection either as a GeoAsciiParamsTag string (older/
+    # GeoTIFF-key style) or a WKT VLR (LAS 1.4 "OGC Coordinate System WKT").
+    # Check both; report whichever is present, or "Not found" otherwise.
+    vlrs <- h[["Variable Length Records"]]
+    evlrs <- h[["Extended Variable Length Records"]]
+    # Different VLR types store the projection text under different field
+    # names ("tags" for GeoTIFF-key style records, "WKT OGC COORDINATE SYSTEM"
+    # for LAS 1.4 WKT records) -- try each and take the first non-empty match.
+    extract_crs_text <- function(vlr_entry) {
+      if (is.null(vlr_entry)) return(NA_character_)
+      candidate <- vlr_entry[["tags"]]
+      if (is.null(candidate)) candidate <- vlr_entry[["WKT OGC COORDINATE SYSTEM"]]
+      if (is.null(candidate) || length(candidate) == 0) return(NA_character_)
+      paste(candidate, collapse = " ")
+    }
+    crs_text <- extract_crs_text(vlrs[["GeoAsciiParamsTag"]])
+    if (is.na(crs_text)) crs_text <- extract_crs_text(vlrs[["WKT OGC CS"]])
+    if (is.na(crs_text) && !is.null(evlrs) && length(evlrs) > 0) crs_text <- extract_crs_text(evlrs[["WKT OGC CS"]])
+    if (is.na(crs_text) || trimws(crs_text) == "") {
+      crs_text <- "Not found in header"
+    } else {
+      crs_text <- substr(crs_text, 1, 150)
+    }
+
+    tibble(
+      FileName = fname,
+      Size_MB = file_size_mb,
+      LAS_Version = paste0(h[["Version Major"]], ".", h[["Version Minor"]]),
+      Point_Format = point_format_desc(h[["Point Data Format ID"]]),
+      Point_Count = h[["Number of point records"]],
+      Extent = paste0("X: ", round(h[["Min X"]], 2), " to ", round(h[["Max X"]], 2),
+                       " | Y: ", round(h[["Min Y"]], 2), " to ", round(h[["Max Y"]], 2),
+                       " | Z: ", round(h[["Min Z"]], 2), " to ", round(h[["Max Z"]], 2)),
+      CRS = crs_text,
+      Generating_Software = h[["Generating Software"]],
+      Creation_Year = h[["File Creation Year"]],
+      Status = "Success"
+    )
+
+  }, error = function(e) {
+    tibble(
+      FileName = fname, Size_MB = file_size_mb, LAS_Version = NA, Point_Format = NA,
+      Point_Count = NA, Extent = NA, CRS = NA, Generating_Software = NA, Creation_Year = NA,
+      Status = paste("Read Failed:", e$message)
+    )
+  })
+}
+```
+
+## Reading the Headers // Lecture des en-têtes
+
+This step runs the inspection on every file. Point data is not decompressed.
+
+//
+
+Cette étape exécute l'inspection sur chaque fichier. Les données de points ne sont pas décompressées.
+
+```{r}
+#| label: execution
+
+message("Reading LAS/LAZ headers (fast: header-only, does not decompress point data)...")
+report <- map_dfr(las_files, inspect_las)
+```
+
+## Save Results // Enregistrer les résultats
+
+```{r}
+#| label: save-results
+
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+output_file <- file.path(output_dir, paste0("LAS_Report_", dir_label, "_", format(Sys.Date(), "%Y%m%d"), ".csv"))
+write_excel_csv(report, output_file)
+
+codebook <- tibble(
+  Variable = c("FileName", "Size_MB", "LAS_Version", "Point_Format", "Point_Count",
+               "Extent", "CRS", "Generating_Software", "Creation_Year", "Status"),
+  Type = c("Text", "Numeric", "Text", "Text", "Integer", "Text", "Text", "Text", "Integer", "Text"),
+  Description = c(
+    "Name of the LAS/LAZ file.",
+    "File size in megabytes.",
+    "LAS format version (e.g. 1.2, 1.4).",
+    "What each point record stores, decoded from the LAS Point Data Format ID (e.g. core XYZ + RGB color).",
+    "Total number of points in the file.",
+    "Bounding box in the file's native coordinate units (X/Y/Z min-max), as stored in the header.",
+    "Coordinate reference system, read from the header's GeoTIFF-style or WKT projection tag; \"Not found in header\" if neither is present.",
+    "Software that generated/last wrote the file, from the header.",
+    "Year the file was created, from the header.",
+    'Either "Success" or "Read Failed: <error message>".'
+  )
+)
+codebook_file <- file.path(output_dir, "LAS_Report_Codebook.csv")
+write_excel_csv(codebook, codebook_file)
+
+message(paste("Process complete. Report saved to:", output_file))
+if (any(report$CRS == "Not found in header", na.rm = TRUE)) {
+  message("NOTE: one or more point clouds have no embedded CRS. Confirm the coordinate system is documented in the README.")
+}
+```
+
+## Curation Insights // Aperçu de la curation
+
+Use this report to decide what to ask the depositor:
+
+-   **CRS "Not found in header":** The file has no embedded projection. Confirm that the coordinate system, units, and vertical datum are documented in the README, or ask the depositor to add them. Without them, the point cloud cannot be georeferenced.
+
+-   **CRS present:** Check that it matches what the documentation says, including the **vertical** reference, which is often missing even when the horizontal one is given.
+
+-   **Extent:** Compare the bounding box with the study area. Values that are implausible for the stated CRS (for example, coordinates in the millions in a degree-based system) suggest a wrong or missing projection.
+
+-   **Point_Format:** Check that the stored attributes match what the project needs, for example colour (RGB) or near-infrared for vegetation work, and GPS time for flight-line analysis.
+
+-   **Point_Count:** A very small count for a large file, or a count of zero, may mean a damaged or empty file.
+
+-   **LAS_Version and Generating_Software:** Older versions and unusual software are worth documenting, because they may limit which tools can read the file.
+
+-   **Status "Read Failed":** The header could not be read, so the file may be corrupt or not LAS.
+
+-   **LAZ files:** They are lossless, but they need a reader with LAZ support (for example, `rlas` and LAStools). Mention this in the documentation.
+
+//
+
+Utilisez ce rapport pour décider de ce qu'il faut demander au déposant :
+
+-   **SRC « Not found in header » :** Le fichier ne contient aucune projection intégrée. Vérifiez que le système de coordonnées, les unités et le référentiel altimétrique sont documentés dans le README, ou demandez au déposant de les ajouter. Sans eux, le nuage de points ne peut pas être géoréférencé.
+
+-   **SRC présent :** Vérifiez qu'il correspond à ce que dit la documentation, y compris la référence **verticale**, souvent absente même lorsque la référence horizontale est donnée.
+
+-   **Extent :** Comparez l'emprise avec la zone d'étude. Des valeurs invraisemblables pour le SRC indiqué (par exemple, des coordonnées de l'ordre de plusieurs millions dans un système en degrés) laissent penser à une projection erronée ou manquante.
+
+-   **Point_Format :** Vérifiez que les attributs stockés correspondent aux besoins du projet, par exemple la couleur (RVB) ou le proche infrarouge pour les travaux sur la végétation, et l'heure GPS pour l'analyse des lignes de vol.
+
+-   **Point_Count :** Un nombre très faible pour un gros fichier, ou un nombre égal à zéro, peut signifier un fichier endommagé ou vide.
+
+-   **LAS_Version et Generating_Software :** Les anciennes versions et les logiciels inhabituels méritent d'être documentés, car ils peuvent limiter les outils capables de lire le fichier.
+
+-   **Statut « Read Failed » :** L'en-tête n'a pas pu être lu ; le fichier est donc peut-être corrompu ou n'est pas au format LAS.
+
+-   **Fichiers LAZ :** Ils sont sans perte, mais exigent un lecteur compatible LAZ (par exemple, `rlas` et LAStools). Mentionnez-le dans la documentation.
+
+## Additional Tools // Outils supplémentaires
+
+-   **`rlas`:** The R [package](https://cran.r-project.org/package=rlas) used here to read LAS and LAZ headers and data.
+
+-   **`lidR`:** An R [package](https://r-lidar.github.io/lidRbook/) for point cloud processing that builds on `rlas` for visualization, filtering, and analysis.
+
+-   **PDAL:** A [library and command-line tool](https://pdal.io/) for translating and inspecting point cloud data, including `pdal info`.
+
+-   **ASPRS LAS specification:** The [official specification](https://www.asprs.org/) of the format and its point data formats.
+
+//
+
+-   **`rlas` :** Le [package](https://cran.r-project.org/package=rlas) R utilisé ici pour lire les en-têtes et les données LAS et LAZ.
+
+-   **`lidR` :** Un [package](https://r-lidar.github.io/lidRbook/) R de traitement des nuages de points qui s'appuie sur `rlas` pour la visualisation, le filtrage et l'analyse.
+
+-   **PDAL :** Une [bibliothèque et un outil en ligne de commande](https://pdal.io/) pour convertir et inspecter les données de nuages de points, y compris `pdal info`.
+
+-   **Spécification LAS de l'ASPRS :** La [spécification officielle](https://www.asprs.org/) du format et de ses formats de données de points.
+
+## Using the Non-Interactive R Script // Utilisation du script R non interactif
+
+For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
+
+Download the **R Script:** [**`Inspect_LAS_Script.R`**](Scripts/Inspect_LAS_Script.R)
+
+//
+
+Pour les utilisateurs qui souhaitent exécuter cette analyse sur un serveur, dans le cadre d'un traitement par lots ou depuis la ligne de commande, voici un script R pur qui effectue le même processus.
+
+Télécharger le **script R :** [**`Inspect_LAS_Script.R`**](Scripts/Inspect_LAS_Script.R)
+
+### Example HPC Submission Script // Exemple de script de soumission HPC
+
+`Inspect_LAS_submit.sh`
+
+``` bash
+#!/bin/bash
+#SBATCH --job-name=las_check
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=01:00:00
+#SBATCH --mem=8G
+#SBATCH --output=logs/las_check_%j.log
+
+# Load R Module
+module load R
+
+# Define directories
+DATA_DIR="/scratch/user/project_data/lidar"
+OUTPUT_DIR="/scratch/user/las_results"
+
+# Prepare Environment
+mkdir -p logs
+
+# Run Analysis
+echo "Starting LAS/LAZ header inspection on $DATA_DIR"
+Rscript Inspect_LAS_Script.R "$DATA_DIR" "$OUTPUT_DIR"
+```
+
+## References // Références
+
+::: {#refs}
+:::
