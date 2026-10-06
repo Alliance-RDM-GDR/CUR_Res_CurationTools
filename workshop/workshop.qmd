@@ -334,7 +334,7 @@ inventory <- inventory %>%
 ```
 
 ::: {style="font-size: 0.75em; margin-top: 10px; font-style: italic; color: #555;"}
-*Core logic only. Full version: [script](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_Extensions_Script.R) | [notebook](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_Extensions_Notebook.qmd).*
+*Core logic only. Full version: [script](https://github.com/Alliance-RDM-GDR/CUR_Res_CurationTools/blob/main/Scripts/Inspect_Extensions_Script.R) | [notebook](https://github.com/Alliance-RDM-GDR/CUR_Res_CurationTools/blob/main/Inspect_Extensions_Notebook.qmd).*
 :::
 ::::
 
@@ -528,7 +528,7 @@ analyze_csv_health <- function(file_path) {
 ```
 
 ::: {style="font-size: 0.75em; margin-top: 10px; font-style: italic; color: #555;"}
-*Core logic only. Full version: [script](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_csv_Script.R) | [notebook](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_csv_Notebook.qmd).*
+*Core logic only. Full version: [script](https://github.com/Alliance-RDM-GDR/CUR_Res_CurationTools/blob/main/Scripts/Inspect_csv_Script.R) | [notebook](https://github.com/Alliance-RDM-GDR/CUR_Res_CurationTools/blob/main/Inspect_csv_Notebook.qmd).*
 :::
 :::
 
@@ -737,7 +737,7 @@ curated_data <- full_report %>%
 ```
 
 ::: {style="font-size: 0.75em; margin-top: 10px; font-style: italic; color: #555;"}
-*Core logic only. Full version: [script](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_Images_Script.R) | [notebook](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_Images_Notebook.qmd).*
+*Core logic only. Full version: [script](https://github.com/Alliance-RDM-GDR/CUR_Res_CurationTools/blob/main/Scripts/Inspect_Images_Script.R) | [notebook](https://github.com/Alliance-RDM-GDR/CUR_Res_CurationTools/blob/main/Inspect_Images_Notebook.qmd).*
 :::
 :::
 
@@ -903,7 +903,7 @@ if (link_type == "H5L_TYPE_EXTERNAL") {
 ```
 
 ::: {style="font-size: 0.75em; margin-top: 10px; font-style: italic; color: #555;"}
-*Core logic only. Full version: [script](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_hdf5_Script.R) | [notebook](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_hdf5_Notebook.qmd).*
+*Core logic only. Full version: [script](https://github.com/Alliance-RDM-GDR/CUR_Res_CurationTools/blob/main/Scripts/Inspect_hdf5_Script.R) | [notebook](https://github.com/Alliance-RDM-GDR/CUR_Res_CurationTools/blob/main/Inspect_hdf5_Notebook.qmd).*
 :::
 :::
 
@@ -1058,7 +1058,7 @@ if (all(is.na(sample_data[[first_var]]))) {
 ```
 
 ::: {style="font-size: 0.75em; margin-top: 10px; font-style: italic; color: #555;"}
-*Core logic only. Full version: [script](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_nc_Script.R) | [notebook](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_nc_Notebook.qmd).*
+*Core logic only. Full version: [script](https://github.com/Alliance-RDM-GDR/CUR_Res_CurationTools/blob/main/Scripts/Inspect_nc_Script.R) | [notebook](https://github.com/Alliance-RDM-GDR/CUR_Res_CurationTools/blob/main/Inspect_nc_Notebook.qmd).*
 :::
 :::
 
@@ -1201,7 +1201,7 @@ fonts <- pdftools::pdf_fonts(file_path)
 ```
 
 ::: {style="font-size: 0.75em; margin-top: 10px; font-style: italic; color: #555;"}
-*Core logic only. Full version: [script](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_PDF_Script.R) | [notebook](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_PDF_Notebook.qmd).*
+*Core logic only. Full version: [script](https://github.com/Alliance-RDM-GDR/CUR_Res_CurationTools/blob/main/Scripts/Inspect_PDF_Script.R) | [notebook](https://github.com/Alliance-RDM-GDR/CUR_Res_CurationTools/blob/main/Inspect_PDF_Notebook.qmd).*
 :::
 :::
 
@@ -1348,7 +1348,7 @@ map_dfr(tables, function(tbl) {
 ```
 
 ::: {style="font-size: 0.75em; margin-top: 10px; font-style: italic; color: #555;"}
-*Core logic only. Full version: [script](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Scripts/Inspect_sqlite_Script.R) | [notebook](file:///d:/Alliance/RDM/CUR_Res_CurationTools/Inspect_sqlite_Notebook.qmd).*
+*Core logic only. Full version: [script](https://github.com/Alliance-RDM-GDR/CUR_Res_CurationTools/blob/main/Scripts/Inspect_sqlite_Script.R) | [notebook](https://github.com/Alliance-RDM-GDR/CUR_Res_CurationTools/blob/main/Inspect_sqlite_Notebook.qmd).*
 :::
 :::
 
