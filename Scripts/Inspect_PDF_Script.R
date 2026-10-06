@@ -51,6 +51,8 @@ pdf_files <- list.files(
   ignore.case = TRUE
 )
 
+pdf_files <- pdf_files[!grepl("Curation_Results", pdf_files, ignore.case = TRUE)]
+
 message(paste("Found", length(pdf_files), "PDF files."))
 
 if (length(pdf_files) == 0) {

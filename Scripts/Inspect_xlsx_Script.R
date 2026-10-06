@@ -53,6 +53,11 @@ excel_files <- list.files(
   ignore.case = TRUE
 )
 
+excel_files <- excel_files[!grepl("Curation_Results", excel_files, ignore.case = TRUE)]
+# Exclude Excel's own hidden lock files (created while the workbook is open
+# in Excel elsewhere) — not depositor content, and unreadable as data.
+excel_files <- excel_files[!grepl("^~\\$", basename(excel_files))]
+
 message(paste("Found", length(excel_files), "Excel files."))
 
 if (length(excel_files) == 0) {

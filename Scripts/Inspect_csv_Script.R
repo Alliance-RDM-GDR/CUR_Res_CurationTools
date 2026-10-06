@@ -56,8 +56,25 @@ csv_files <- list.files(
   ignore.case = TRUE
 )
 
+csv_files <- csv_files[!grepl("Curation_Results", csv_files, ignore.case = TRUE)]
+
 message(sprintf("Found %d CSV files.", length(csv_files)))
 
+
+# ------------------------------------------------------------------------------
+# 2b. Delimiter Detection
+# ------------------------------------------------------------------------------
+# A ".csv" file is not guaranteed to be comma-delimited — European/French-locale
+# exports commonly use semicolons (since comma is the decimal separator there).
+# Reading a semicolon-delimited file with a hardcoded comma silently "succeeds"
+# as a single-column file instead of failing, so this must be detected, not assumed.
+detect_delimiter <- function(file_path) {
+  first_line <- tryCatch(readLines(file_path, n = 1, warn = FALSE), error = function(e) "")
+  if (length(first_line) == 0) return(",")
+  candidates <- c("," = ",", ";" = ";", "\t" = "\t", "|" = "|")
+  counts <- purrr::map_int(candidates, ~ lengths(regmatches(first_line, gregexpr(.x, first_line, fixed = TRUE))))
+  candidates[[which.max(counts)]]
+}
 
 # ------------------------------------------------------------------------------
 # 3. Part I: Health Check Function
@@ -67,14 +84,15 @@ message("--- Starting Health Check ---")
 analyze_csv_health <- function(file_path) {
   fname <- basename(file_path)
   file_info <- file.info(file_path)
-  
+
   guess <- readr::guess_encoding(file_path, n_max = 1000)
   likely_encoding <- if (nrow(guess) > 0) guess$encoding[1] else "Unknown"
-  
+  delim <- detect_delimiter(file_path)
+
   tryCatch({
-    df <- read_csv(file_path, locale = locale(encoding = likely_encoding), 
+    df <- read_delim(file_path, delim = delim, locale = locale(encoding = likely_encoding),
                    show_col_types = FALSE, progress = FALSE)
-    
+
     n_rows <- nrow(df)
     n_cols <- ncol(df)
     total_cells <- n_rows * n_cols
@@ -94,8 +112,14 @@ analyze_csv_health <- function(file_path) {
       pii_found <- any(unlist(pii_check))
     }
     
+    # Column-name screen: PII_Risk above only looks for email patterns in values,
+    # so a file with columns like "Surname" or "D.O.B" can still read PII_Risk = FALSE.
+    pii_name_pattern <- "surname|last.?name|family.?name|given.?name|first.?name|full.?name|^name$|d\\.?o\\.?b|birth|address|street|postal|zip.?code|phone|e-?mail|\\bsin\\b|ssn|health.?card|\\bmrn\\b|initials"
+    pii_cols <- names(df)[str_detect(names(df), regex(pii_name_pattern, ignore_case = TRUE))]
+
     tibble(
       FileName = fname,
+      Delimiter = c(","=",", ";"=";", "\t"="Tab", "|"="|")[[delim]],
       Size_MB = round(file_info$size / 1024^2, 2),
       Encoding = likely_encoding,
       Rows = n_rows,
@@ -103,14 +127,16 @@ analyze_csv_health <- function(file_path) {
       Pct_Complete = pct_complete,
       Duplicate_Rows = n_duplicates,
       PII_Risk = pii_found,
+      PII_Suspect_Columns = paste(pii_cols, collapse = "; "),
       Status = "Success"
     )
   }, error = function(e) {
     tibble(
       FileName = fname,
+      Delimiter = c(","=",", ";"=";", "\t"="Tab", "|"="|")[[delim]],
       Size_MB = round(file_info$size / 1024^2, 2),
       Encoding = likely_encoding,
-      Rows = NA, Cols = NA, Pct_Complete = NA, Duplicate_Rows = NA, PII_Risk = NA,
+      Rows = NA, Cols = NA, Pct_Complete = NA, Duplicate_Rows = NA, PII_Risk = NA, PII_Suspect_Columns = NA,
       Status = paste("Read Failed:", e$message)
     )
   })
@@ -140,19 +166,21 @@ warn_undocumented_columns <- function(data, codebook, report_name) {
 }
 
 health_codebook <- tibble(
-  Variable = c("FileName", "Size_MB", "Encoding", "Rows", "Cols", "Pct_Complete",
-               "Duplicate_Rows", "PII_Risk", "Status"),
-  Type = c("Text", "Numeric", "Text", "Integer", "Integer", "Numeric (0-100)",
-           "Integer", "Logical", "Text"),
+  Variable = c("FileName", "Delimiter", "Size_MB", "Encoding", "Rows", "Cols", "Pct_Complete",
+               "Duplicate_Rows", "PII_Risk", "PII_Suspect_Columns", "Status"),
+  Type = c("Text", "Text", "Numeric", "Text", "Integer", "Integer", "Numeric (0-100)",
+           "Integer", "Logical", "Text", "Text"),
   Description = c(
     "Name of the CSV file (no path).",
+    "Delimiter auto-detected from the first line (',', ';', Tab, or '|') — a \".csv\" extension does not guarantee a comma delimiter, especially from European/French-locale software.",
     "File size in megabytes.",
     "Character encoding detected via readr::guess_encoding() (e.g. UTF-8, ISO-8859-1).",
     "Number of data rows read.",
     "Number of columns read.",
     "Percentage of non-missing cells across the whole file.",
     "Count of exact duplicate rows.",
-    "TRUE if an email-like pattern was found in a character column (checked in the first 1000 rows).",
+    "TRUE if an email-like pattern was found in a character column (checked in the first 1000 rows). Values only; see PII_Suspect_Columns for column names.",
+    "Column names suggesting personal data (name, surname, date of birth, address, phone, email, initials, etc.), semicolon-separated. Name-based heuristic: a hit needs a human look, an empty result is not proof of no PII.",
     'Either "Success", or "Read Failed: <error message>" if the file could not be parsed.'
   )
 )
@@ -171,7 +199,7 @@ message("--- Starting Detailed Profiling ---")
 
 safe_skim <- function(file_path) {
   tryCatch({
-    df <- read_csv(file_path, show_col_types = FALSE)
+    df <- read_delim(file_path, delim = detect_delimiter(file_path), show_col_types = FALSE)
     skim(df) %>%
       as_tibble() %>%
       select(-any_of("numeric.hist")) %>%  # sparkline glyphs: unreadable/fragile in a flat CSV

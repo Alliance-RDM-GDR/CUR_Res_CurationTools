@@ -54,6 +54,8 @@ text_files <- list.files(
   ignore.case = TRUE
 )
 
+text_files <- text_files[!grepl("Curation_Results", text_files, ignore.case = TRUE)]
+
 message(paste("Found", length(text_files), "Text/Markdown files."))
 
 if (length(text_files) == 0) {

@@ -48,9 +48,17 @@ message(paste("Starting Archive analysis on:", target_dir))
 # Inventory -----------------------------------------------------------------
 archive_files <- list.files(
   path = target_dir,
-  pattern = "\\.(zip|tar|tar\\.gz|tgz|7z|rar)$", 
-  recursive = TRUE, 
-  full.names = TRUE, 
+  # "report" is included because instrument software (e.g. KINARM Dexterit-E)
+  # sometimes exports a zip archive under a custom extension: verified on
+  # dataset 1459, where *.report files are ordinary zip archives (containing
+  # report/1.pdf, source_exams.txt, analysis_info.properties) that a
+  # zip-only pattern silently skipped. archive::archive() identifies the
+  # actual format from content, not from the extension, so listing a
+  # non-archive .report file here just fails safely into Status =
+  # "Corrupt/Unreadable" below rather than causing a false positive.
+  pattern = "\\.(zip|tar|tar\\.gz|tgz|7z|rar|report)$",
+  recursive = TRUE,
+  full.names = TRUE,
   ignore.case = TRUE
 )
 

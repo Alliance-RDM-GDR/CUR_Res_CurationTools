@@ -54,6 +54,8 @@ tiff_files <- list.files(
   ignore.case = TRUE
 )
 
+tiff_files <- tiff_files[!grepl("Curation_Results", tiff_files, ignore.case = TRUE)]
+
 message(paste("Found", length(tiff_files), "TIFF files."))
 
 if (length(tiff_files) == 0) {

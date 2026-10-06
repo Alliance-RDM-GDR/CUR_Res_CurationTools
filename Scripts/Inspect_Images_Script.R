@@ -57,6 +57,9 @@ image_files <- list.files(
   ignore.case = TRUE
 )
 
+# Exclude this project's own curation-output convention (see CURATION_GUIDELINES.md)
+image_files <- image_files[!str_detect(image_files, "(?i)Curation_Results")]
+
 if (length(image_files) == 0) {
   stop("No image files found in the target directory.", call. = FALSE)
 }

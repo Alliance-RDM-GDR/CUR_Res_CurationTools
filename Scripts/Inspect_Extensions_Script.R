@@ -4,6 +4,16 @@
 # Script: Inspect_Extensions_Script.R
 # Description: Generates a full file inventory with ExifTool metadata.
 #              Designed for Hybrid use (Interactive / HPC).
+#
+# This is a "run on every dataset" general script (CURATION_GUIDELINES.md,
+# Section 3: "File inventory first"), including large ones. ExifTool reads
+# one file at a time (see the comment at "Deep Metadata Extraction" below for
+# why), which does not scale to tens of thousands of files. Rather than
+# skipping this script entirely on a large dataset (which loses the basic
+# inventory and Format_Summary too, not just the ExifTool columns), it
+# auto-skips ONLY the ExifTool pass above exif_file_limit files, still
+# producing the full fast inventory. Pass "all" as the 3rd argument to force
+# ExifTool on regardless of file count.
 # ------------------------------------------------------------------------------
 
 suppressPackageStartupMessages({
@@ -27,14 +37,16 @@ if (interactive()) {
   }
   if (is.null(target_dir)) stop("No directory selected.")
   output_dir <- file.path(getwd(), "Results/Inspect_Extensions")
+  exif_file_limit <- "2000"
 } else {
   args <- commandArgs(trailingOnly = TRUE)
   if (length(args) == 0) {
-    stop("Usage: Rscript Inspect_Extensions_Script.R <input_dir> [output_dir]", call. = FALSE)
+    stop("Usage: Rscript Inspect_Extensions_Script.R <input_dir> [output_dir] [exif_file_limit|all]", call. = FALSE)
   }
   target_dir <- args[1]
   if (!dir.exists(target_dir)) stop(paste("Input directory does not exist:", target_dir))
   output_dir <- if (length(args) >= 2) args[2] else file.path(getwd(), "Results/Inspect_Extensions")
+  exif_file_limit <- if (length(args) >= 3) args[3] else "2000"
 }
 
 if (!dir.exists(output_dir)) {
@@ -63,6 +75,10 @@ all_files <- list.files(
   all.files = TRUE
 )
 
+# Exclude this project's own curation-output convention so a report generated
+# on a prior pass isn't re-inventoried as if it were depositor content.
+all_files <- all_files[!str_detect(all_files, "(?i)Curation_Results")]
+
 message(sprintf("Found %d total files.", length(all_files)))
 
 if (length(all_files) > 0) {
@@ -83,8 +99,8 @@ if (length(all_files) > 0) {
     )
   
   # Apply Risk Flags
-  junk_patterns <- c("\\.ds_store", "thumbs\\.db", "__macosx")
-  exec_patterns <- c("\\.exe$", "\\.bat$", "\\.sh$", "\\.bin$", "\\.jar$")
+  junk_patterns <- c("\\.ds_store", "thumbs\\.db", "__macosx", "^~\\$")
+  exec_patterns <- c("\\.exe$", "\\.bat$", "\\.sh$", "\\.bin$", "\\.jar$", "\\.dll$", "\\.so$", "\\.dylib$", "\\.msi$")
   
   inventory <- inventory %>%
     mutate(
@@ -102,8 +118,26 @@ if (length(all_files) > 0) {
   
   # Check if package is loaded AND if the external tool is actually installed
   has_exiftool <- requireNamespace("exiftoolr", quietly = TRUE) && !is.null(exiftoolr::exif_version())
-  
-  if (has_exiftool) {
+
+  # ExifTool reads one file at a time (see below), so on a submission with
+  # tens of thousands of files this pass alone can take hours. Skip ONLY this
+  # pass above exif_file_limit, not the whole script, so the fast inventory
+  # and Format_Summary are still produced. Pass "all" as the 3rd script
+  # argument to force ExifTool on regardless of file count.
+  exif_limit_is_all <- identical(tolower(exif_file_limit), "all")
+  exif_limit_n <- if (exif_limit_is_all) Inf else suppressWarnings(as.numeric(exif_file_limit))
+  if (is.na(exif_limit_n)) exif_limit_n <- 2000
+  skip_exif_for_size <- has_exiftool && nrow(inventory) > exif_limit_n
+
+  if (skip_exif_for_size) {
+    message(sprintf(
+      "NOTICE: %d files found, above the ExifTool limit of %d. Skipping the per-file ExifTool pass (it does not scale to this many files) but still producing the full basic inventory and Format_Summary below. Re-run with \"all\" as the 3rd argument to force ExifTool on every file regardless of count.",
+      nrow(inventory), exif_limit_n
+    ))
+    inventory <- inventory %>%
+      mutate(MIMEType = NA_character_, FileType = NA_character_, Author = NA_character_,
+             CreateDate = NA_character_, Warning = NA_character_)
+  } else if (has_exiftool) {
     message("ExifTool detected. Extracting deep metadata (MIME types, Authors, Warnings)...")
 
     # We ask for specific tags to keep the process efficient
