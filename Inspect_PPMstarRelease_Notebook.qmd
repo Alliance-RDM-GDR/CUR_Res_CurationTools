@@ -1,0 +1,375 @@
+---
+title: "PPMstar Release Structure Check"
+author: "Data Curation Team"
+date: "2026-10-06"
+format:
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+    theme: cosmo
+params:
+  target_dir: "data/Inspect_PPMstarRelease/"
+bibliography: references.bib
+---
+
+```{r}
+#| label: eval-gate
+#| include: false
+
+knitr::opts_chunk$set(eval = dir.exists(params$target_dir))
+```
+
+## Overview // Aperçu
+
+**PPMstar** is a code that simulates 3-D stellar hydrodynamics, and its collaboration publishes very large data releases. A release has a `release.json` at the top and one folder per simulation run. Each run holds a `variables.json`, a `prfs/` folder of radial profiles, and a `moms/myavsbq/<dump>/` folder tree of raw 3-D "moms" cube files, one folder per saved dump.
+
+//
+
+**PPMstar** est un code qui simule l'hydrodynamique stellaire en 3D, et sa collaboration publie de très grands lots de données. Un lot comporte un fichier `release.json` au sommet et un dossier par simulation. Chaque simulation contient un fichier `variables.json`, un dossier `prfs/` de profils radiaux et une arborescence `moms/myavsbq/<dump>/` de fichiers bruts de cubes 3D « moms », un dossier par instantané enregistré.
+
+::: {.callout-note title="Curation Goal // Objectif de la curation"}
+Cross-check what the JSON metadata **claims** (number of dumps, files per dump, bytes per file, number of profile files) against what is **actually on disk**, without opening the large binary payloads.
+//
+Recouper ce que les métadonnées JSON **affirment** (nombre d'instantanés, fichiers par instantané, octets par fichier, nombre de fichiers de profils) avec ce qui se trouve **réellement sur le disque**, sans ouvrir les volumineux fichiers binaires.
+:::
+
+::: {.callout-warning title="Identifying Risks // Identification des risques"}
+In a release with thousands of files, a missing dump folder, a truncated cube, or a profile file outside the released range is easy to miss, and it silently breaks every later analysis that assumes the metadata is true.
+//
+Dans un lot de milliers de fichiers, un dossier d'instantané manquant, un cube tronqué ou un fichier de profil hors de la plage publiée passe facilement inaperçu, et il fausse silencieusement toute analyse ultérieure qui suppose que les métadonnées sont exactes.
+:::
+
+**Scope.** The notebook is driven entirely by `release.json`, so no run names or other per-submission details are hardcoded. The `moms`, `myavsbq` and `prfs` names come from the PPMstar code and its Python reader (PyPPM), so the same notebook should work on any release that follows the same `release.json`, `variables.json`, `moms/myavsbq`, `prfs` and `frombqavs` layout. Point `target_dir` at the folder that contains `release.json` directly, not at its parent.
+
+**Two companions:** The byte-level payloads are covered by the [checksum manifest verification](Verify_ChecksumManifest_Notebook.qmd), and the actual values of the cubes by the [moms content check](Inspect_PPMstarMoms_Notebook.qmd). The internal layout of the `.rprof` and `.aaa` files needs the depositor's own PyPPM package to decode and is out of scope.
+
+//
+
+**Portée.** Le cahier est entièrement piloté par `release.json` ; aucun nom de simulation ni autre détail propre à un dépôt n'est codé en dur. Les noms `moms`, `myavsbq` et `prfs` proviennent du code PPMstar et de son lecteur Python (PyPPM) ; le même cahier devrait donc fonctionner pour tout lot suivant la même disposition `release.json`, `variables.json`, `moms/myavsbq`, `prfs` et `frombqavs`. Pointez `target_dir` vers le dossier qui contient directement `release.json`, et non vers son parent.
+
+**Deux compléments :** Le contenu octet par octet est couvert par la [vérification du manifeste de sommes de contrôle](Verify_ChecksumManifest_Notebook.qmd), et les valeurs réelles des cubes par le [contrôle du contenu des moms](Inspect_PPMstarMoms_Notebook.qmd). La disposition interne des fichiers `.rprof` et `.aaa` nécessite le package PyPPM du déposant pour être décodée et sort du cadre de ce cahier.
+
+::: {.callout-tip title="Sample Data // Données d'exemple"}
+No sample data is bundled with this notebook. If the folder `data/Inspect_PPMstarRelease/` does not exist, the code is displayed but not run. Place your own files there (or change `target_dir` in the YAML header) and render again to see the results.
+//
+Aucune donnée d'exemple n'est fournie avec ce cahier. Si le dossier `data/Inspect_PPMstarRelease/` n'existe pas, le code est affiché mais n'est pas exécuté. Placez-y vos propres fichiers (ou modifiez `target_dir` dans l'en-tête YAML) et générez à nouveau le document pour voir les résultats.
+:::
+
+------------------------------------------------------------------------
+
+## Setup // Configuration
+
+We use `jsonlite` to read `release.json` and `variables.json` [@jsonlite].
+
+//
+
+Nous utilisons `jsonlite` pour lire `release.json` et `variables.json` [@jsonlite].
+
+### R Packages // Packages R
+
+```{r}
+#| label: install-packages
+#| eval: false
+
+# install.packages(c("tidyverse", "jsonlite", "rstudioapi"))
+```
+
+### Load Libraries // Charger les bibliothèques
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+
+library(tidyverse)  # Data manipulation [@tidyverse]
+library(jsonlite)   # Reading JSON metadata [@jsonlite]
+library(rstudioapi) # Interactive folder selection
+```
+
+## Select Target Directory // Sélectionner le répertoire cible
+
+This block allows for interactive selection of the directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.
+
+//
+
+Ce bloc permet de sélectionner le répertoire de manière interactive. En cas d'exécution dans un environnement non interactif, le chemin par défaut est celui défini dans l'en-tête YAML.
+
+```{r}
+#| label: select-target-dir
+
+if (interactive() && .Platform$OS.type == "windows") {
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select PPMstar Release Directory")
+} else {
+  selected_dir <- NULL
+}
+
+if (!is.null(selected_dir)) {
+  target_dir <- selected_dir
+} else {
+  target_dir <- params$target_dir
+}
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+output_dir <- "Results/Inspect_PPMstarRelease"
+
+print(paste("Analyzing directory:", target_dir))
+```
+
+## Per-Run Checks // Contrôles de chaque simulation
+
+The function runs the following checks for each run declared in `release.json`: the run folder and `variables.json` exist, the list of dumps agrees with the release, the `flags.F` and include files are present, the dump folder count and names under `moms/myavsbq` are right, every cube file has the declared size, and the profile files in `prfs/` match their declared count and the released dump range. On disk, dump folders use 4-digit zero-padding (such as `0560`), while the JSON has plain integers, so the comparison pads the numbers first.
+
+//
+
+La fonction exécute les contrôles suivants pour chaque simulation déclarée dans `release.json` : le dossier de la simulation et `variables.json` existent, la liste des instantanés concorde avec le lot, les fichiers `flags.F` et include sont présents, le nombre et les noms des dossiers d'instantanés sous `moms/myavsbq` sont corrects, chaque fichier de cube a la taille déclarée, et les fichiers de profils de `prfs/` correspondent au nombre déclaré et à la plage d'instantanés publiée. Sur le disque, les dossiers d'instantanés utilisent un remplissage à 4 chiffres (comme `0560`), alors que le JSON contient des entiers simples ; la comparaison complète donc d'abord les nombres.
+
+```{r}
+#| label: run-checks
+
+release_path <- file.path(target_dir, "release.json")
+if (!file.exists(release_path)) {
+  stop(sprintf("No release.json found directly under %s.", target_dir), call. = FALSE)
+}
+release <- fromJSON(release_path, simplifyDataFrame = FALSE)
+message(sprintf("Loaded release.json: %d run(s) declared.", length(release$runs)))
+
+check_run <- function(run) {
+  short <- run$short
+  run_dir <- file.path(target_dir, short)
+  issues <- character(0)
+
+  if (!dir.exists(run_dir)) {
+    return(tibble(Run = short, Check = "run_directory_exists", Expected = "exists", Actual = "MISSING", Status = "FAIL"))
+  }
+
+  rows <- list()
+
+  # A. variables.json presence and cross-check against release.json's own claims
+  varjson_path <- file.path(run_dir, "variables.json")
+  if (!file.exists(varjson_path)) {
+    rows[[length(rows) + 1]] <- tibble(Run = short, Check = "variables_json_exists", Expected = "exists", Actual = "MISSING", Status = "FAIL")
+  } else {
+    varjson <- tryCatch(fromJSON(varjson_path, simplifyDataFrame = FALSE), error = function(e) NULL)
+    if (is.null(varjson)) {
+      rows[[length(rows) + 1]] <- tibble(Run = short, Check = "variables_json_parses", Expected = "valid JSON", Actual = "PARSE ERROR", Status = "FAIL")
+    } else {
+      dumps_release <- as.integer(unlist(run$dumps))
+      dumps_varjson <- as.integer(unlist(varjson$dumps))
+      dumps_match <- identical(sort(dumps_release), sort(dumps_varjson))
+      rows[[length(rows) + 1]] <- tibble(Run = short, Check = "dumps_list_matches_release_json",
+                                          Expected = paste(length(dumps_release), "dumps"),
+                                          Actual = paste(length(dumps_varjson), "dumps",
+                                                          if (!dumps_match) "(LIST DIFFERS)" else "(identical)"),
+                                          Status = if (dumps_match) "OK" else "FAIL")
+    }
+  }
+
+  # B. flags.F and .include files present
+  flags_file <- file.path(run_dir, run$flags)
+  rows[[length(rows) + 1]] <- tibble(Run = short, Check = "flags_F_exists", Expected = run$flags,
+                                      Actual = if (file.exists(flags_file)) "present" else "MISSING",
+                                      Status = if (file.exists(flags_file)) "OK" else "FAIL")
+  include_file <- file.path(run_dir, run$include)
+  rows[[length(rows) + 1]] <- tibble(Run = short, Check = "include_file_exists", Expected = run$include,
+                                      Actual = if (file.exists(include_file)) "present" else "MISSING",
+                                      Status = if (file.exists(include_file)) "OK" else "FAIL")
+
+  # C. moms/myavsbq: dump-folder count and per-file size check
+  moms_dir <- file.path(run_dir, "moms", "myavsbq")
+  n_dumps_expected <- length(run$dumps)
+  if (!dir.exists(moms_dir)) {
+    rows[[length(rows) + 1]] <- tibble(Run = short, Check = "moms_dir_exists", Expected = "exists", Actual = "MISSING", Status = "FAIL")
+  } else {
+    dump_dirs <- list.files(moms_dir, full.names = FALSE)
+    rows[[length(rows) + 1]] <- tibble(Run = short, Check = "moms_dump_folder_count",
+                                        Expected = as.character(n_dumps_expected),
+                                        Actual = as.character(length(dump_dirs)),
+                                        Status = if (length(dump_dirs) == n_dumps_expected) "OK" else "FAIL")
+
+    # Dump numbers in the JSON are plain integers (e.g. 560); on-disk folder and
+    # file names use 4-digit zero-padding (e.g. "0560"). Compare padded forms,
+    # or a run with dump numbers under 1000 (e.g. O32, 560-569) produces a false
+    # mismatch here even though nothing is actually wrong.
+    dumps_padded <- sprintf("%04d", as.integer(unlist(run$dumps)))
+    missing_dumps <- setdiff(dumps_padded, dump_dirs)
+    extra_dumps <- setdiff(dump_dirs, dumps_padded)
+    if (length(missing_dumps) > 0) {
+      rows[[length(rows) + 1]] <- tibble(Run = short, Check = "moms_missing_dump_folders",
+                                          Expected = "none", Actual = paste(missing_dumps, collapse = ", "), Status = "FAIL")
+    }
+    if (length(extra_dumps) > 0) {
+      rows[[length(rows) + 1]] <- tibble(Run = short, Check = "moms_unexpected_dump_folders",
+                                          Expected = "none", Actual = paste(extra_dumps, collapse = ", "), Status = "FAIL")
+    }
+
+    # File-size check: every moms sub-cube file must equal bytes_per_file
+    expected_bytes <- run$bytes_per_file
+    all_moms_files <- list.files(moms_dir, recursive = TRUE, full.names = TRUE)
+    if (length(all_moms_files) > 0) {
+      sizes <- file.size(all_moms_files)
+      wrong_size <- all_moms_files[sizes != expected_bytes]
+      rows[[length(rows) + 1]] <- tibble(Run = short, Check = "moms_file_count",
+                                          Expected = as.character(n_dumps_expected * run$files_per_dump),
+                                          Actual = as.character(length(all_moms_files)),
+                                          Status = if (length(all_moms_files) == n_dumps_expected * run$files_per_dump) "OK" else "FAIL")
+      rows[[length(rows) + 1]] <- tibble(Run = short, Check = "moms_file_sizes_match_bytes_per_file",
+                                          Expected = paste0("all = ", expected_bytes, " bytes"),
+                                          Actual = if (length(wrong_size) == 0) "all match" else paste(length(wrong_size), "file(s) differ:", paste(head(basename(wrong_size), 5), collapse = ", ")),
+                                          Status = if (length(wrong_size) == 0) "OK" else "FAIL")
+    }
+  }
+
+  # D. prfs/: file count vs release.json's declared prfs_files, and frombqavs/
+  # dump range sanity (every file's embedded dump number should be one of the
+  # run's RELEASED moms dumps, since that subfolder is documented as "spherical
+  # averages of the released dumps").
+  prfs_dir <- file.path(run_dir, "prfs")
+  if (!dir.exists(prfs_dir)) {
+    rows[[length(rows) + 1]] <- tibble(Run = short, Check = "prfs_dir_exists", Expected = "exists", Actual = "MISSING", Status = "FAIL")
+  } else {
+    prfs_all <- list.files(prfs_dir, recursive = TRUE, full.names = FALSE)
+    n_prfs_actual <- length(prfs_all)
+    n_prfs_expected <- run$prfs_files
+    rows[[length(rows) + 1]] <- tibble(Run = short, Check = "prfs_total_file_count",
+                                        Expected = as.character(n_prfs_expected),
+                                        Actual = as.character(n_prfs_actual),
+                                        Status = if (isTRUE(n_prfs_actual == n_prfs_expected)) "OK" else "FAIL")
+
+    frombqavs_dir <- file.path(prfs_dir, "frombqavs")
+    if (dir.exists(frombqavs_dir)) {
+      frombqavs_files <- list.files(frombqavs_dir)
+      dump_numbers <- as.integer(str_match(frombqavs_files, "(\\d{4})")[, 2])
+      released_dumps <- as.integer(unlist(run$dumps))
+      out_of_range <- frombqavs_files[!dump_numbers %in% released_dumps]
+      rows[[length(rows) + 1]] <- tibble(Run = short, Check = "frombqavs_file_count",
+                                          Expected = paste(n_dumps_expected, "(one per released dump)"),
+                                          Actual = as.character(length(frombqavs_files)),
+                                          Status = if (length(frombqavs_files) == n_dumps_expected) "OK" else "FAIL")
+      if (length(out_of_range) > 0) {
+        rows[[length(rows) + 1]] <- tibble(Run = short, Check = "frombqavs_dump_number_out_of_released_range",
+                                            Expected = "all dump numbers within released set",
+                                            Actual = paste(out_of_range, collapse = ", "), Status = "FAIL")
+      }
+    }
+  }
+
+  bind_rows(rows)
+}
+
+message("Checking each run...")
+report <- map_dfr(release$runs, check_run)
+```
+
+## Save Results // Enregistrer les résultats
+
+```{r}
+#| label: save-results
+
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+output_file <- file.path(output_dir, paste0("PPMstarRelease_Consistency_", dir_label, "_", format(Sys.Date(), "%Y%m%d"), ".csv"))
+write_excel_csv(report, output_file)
+
+n_fail <- sum(report$Status == "FAIL")
+message(sprintf("Process complete. %d check(s) failed out of %d.", n_fail, nrow(report)))
+if (n_fail > 0) {
+  message("Failed checks:")
+  report %>% filter(Status == "FAIL") %>% pwalk(function(Run, Check, Expected, Actual, Status) {
+    message(sprintf("  [%s] %s: expected %s, got %s", Run, Check, Expected, Actual))
+  })
+}
+message(paste("Report saved to:", output_file))
+```
+
+## Curation Insights // Aperçu de la curation
+
+Every row of the report is one check of one run, with `Expected`, `Actual` and `Status` (`OK` or `FAIL`). Use the failed rows to decide what to ask the depositor:
+
+-   **`run_directory_exists` or `variables_json_exists` FAIL:** A run declared in `release.json` is missing, or incomplete. The release is not what its metadata says.
+
+-   **`dumps_list_matches_release_json` FAIL:** The two JSON files disagree on which dumps were released. One of them is out of date.
+
+-   **`moms_dump_folder_count`, `moms_missing_dump_folders`, `moms_unexpected_dump_folders` FAIL:** Dump folders are missing or unexpected. Compare the names listed with the release.
+
+-   **`moms_file_count` or `moms_file_sizes_match_bytes_per_file` FAIL:** A cube file has the wrong size, which usually means a truncated or interrupted transfer. Ask for a new copy and verify it with the checksum manifest.
+
+-   **`prfs_total_file_count`, `frombqavs_file_count` or `frombqavs_dump_number_out_of_released_range` FAIL:** The radial profiles do not match what was declared or released.
+
+-   **No failures:** The structure agrees with the metadata. The payloads themselves still need the checksum and content checks.
+
+//
+
+Chaque ligne du rapport est un contrôle d'une simulation, avec `Expected`, `Actual` et `Status` (`OK` ou `FAIL`). Utilisez les lignes en échec pour décider de ce qu'il faut demander au déposant :
+
+-   **`run_directory_exists` ou `variables_json_exists` FAIL :** Une simulation déclarée dans `release.json` est absente ou incomplète. Le lot ne correspond pas à ses métadonnées.
+
+-   **`dumps_list_matches_release_json` FAIL :** Les deux fichiers JSON ne s'accordent pas sur les instantanés publiés. L'un d'eux est périmé.
+
+-   **`moms_dump_folder_count`, `moms_missing_dump_folders`, `moms_unexpected_dump_folders` FAIL :** Des dossiers d'instantanés sont manquants ou inattendus. Comparez les noms indiqués avec le lot.
+
+-   **`moms_file_count` ou `moms_file_sizes_match_bytes_per_file` FAIL :** Un fichier de cube a une taille incorrecte, ce qui signifie généralement un transfert tronqué ou interrompu. Demandez une nouvelle copie et vérifiez-la avec le manifeste de sommes de contrôle.
+
+-   **`prfs_total_file_count`, `frombqavs_file_count` ou `frombqavs_dump_number_out_of_released_range` FAIL :** Les profils radiaux ne correspondent pas à ce qui a été déclaré ou publié.
+
+-   **Aucun échec :** La structure concorde avec les métadonnées. Les données elles-mêmes doivent encore passer les contrôles de sommes de contrôle et de contenu.
+
+## Additional Tools // Outils supplémentaires
+
+-   **PyPPM:** The PPMstar collaboration's own [Python reader](https://github.com/PPMstar/PyPPM) for this data.
+
+-   **PPMnotebooks:** The collaboration's [example notebooks](https://github.com/PPMstar/PPMnotebooks), which use the same `moms/myavsbq` and `prfs` layout.
+
+-   **Checksum verification:** Use the [checksum manifest verification](Verify_ChecksumManifest_Notebook.qmd) to confirm the payloads byte by byte.
+
+//
+
+-   **PyPPM :** Le [lecteur Python](https://github.com/PPMstar/PyPPM) de la collaboration PPMstar pour ces données.
+
+-   **PPMnotebooks :** Les [cahiers d'exemples](https://github.com/PPMstar/PPMnotebooks) de la collaboration, qui utilisent la même disposition `moms/myavsbq` et `prfs`.
+
+-   **Vérification des sommes de contrôle :** Utilisez la [vérification du manifeste de sommes de contrôle](Verify_ChecksumManifest_Notebook.qmd) pour confirmer les données octet par octet.
+
+## Using the Non-Interactive R Script // Utilisation du script R non interactif
+
+For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
+
+Download the **R Script:** [**`Inspect_PPMstarRelease_Script.R`**](Scripts/Inspect_PPMstarRelease_Script.R)
+
+//
+
+Pour les utilisateurs qui souhaitent exécuter cette analyse sur un serveur, dans le cadre d'un traitement par lots ou depuis la ligne de commande, voici un script R pur qui effectue le même processus.
+
+Télécharger le **script R :** [**`Inspect_PPMstarRelease_Script.R`**](Scripts/Inspect_PPMstarRelease_Script.R)
+
+### Example HPC Submission Script // Exemple de script de soumission HPC
+
+`Inspect_PPMstarRelease_submit.sh`
+
+``` bash
+#!/bin/bash
+#SBATCH --job-name=ppmstar_release
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=00:30:00
+#SBATCH --mem=4G
+#SBATCH --output=logs/ppmstar_release_%j.log
+
+# Load R Module
+module load R
+
+# Define directories
+DATA_DIR="/scratch/user/project_data/O-shell-data-release"
+OUTPUT_DIR="/scratch/user/ppmstar_results"
+
+# Prepare Environment
+mkdir -p logs
+
+# Run Analysis
+echo "Starting PPMstar release check on $DATA_DIR"
+Rscript Inspect_PPMstarRelease_Script.R "$DATA_DIR" "$OUTPUT_DIR"
+```
+
+## References // Références
+
+::: {#refs}
+:::

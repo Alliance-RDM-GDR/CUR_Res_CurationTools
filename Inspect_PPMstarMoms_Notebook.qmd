@@ -1,0 +1,376 @@
+---
+title: "PPMstar Moms Cube Content Check"
+author: "Data Curation Team"
+date: "2026-10-06"
+format:
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+    theme: cosmo
+params:
+  target_dir: "data/Inspect_PPMstarMoms/"
+  dumps_per_run: 3
+  seed: 42
+bibliography: references.bib
+---
+
+```{r}
+#| label: eval-gate
+#| include: false
+
+knitr::opts_chunk$set(eval = dir.exists(params$target_dir))
+```
+
+## Overview // Aperçu
+
+A PPMstar "moms" file is a headerless stream of raw little-endian `float32` values: the 3-D cubes of the simulation. Each file holds `N_VARS` variables of `edge^3` values each, one variable after the other. The variable names, units and order, and the cube edge, are documented in the run's `variables.json`.
+
+//
+
+Un fichier « moms » de PPMstar est un flux brut, sans en-tête, de valeurs `float32` petit-boutistes : les cubes 3D de la simulation. Chaque fichier contient `N_VARS` variables de `edge^3` valeurs chacune, l'une après l'autre. Les noms, unités et ordre des variables, ainsi que l'arête du cube, sont documentés dans le fichier `variables.json` de la simulation.
+
+::: {.callout-note title="Curation Goal // Objectif de la curation"}
+**Read a sample of the actual data** and report real per-variable statistics (minimum, maximum, mean, and the number of `NaN` and `Inf` values), using the variable names and units from `variables.json` rather than hardcoding them. It is a plausibility spot check: physically reasonable ranges, no unexpected `Inf`, and `NaN` only where the release documents it as expected.
+//
+**Lire un échantillon des données réelles** et fournir de vraies statistiques par variable (minimum, maximum, moyenne et nombre de valeurs `NaN` et `Inf`), à partir des noms et unités de `variables.json` plutôt que de les coder en dur. C'est un contrôle ponctuel de plausibilité : plages physiquement raisonnables, aucune valeur `Inf` inattendue et `NaN` seulement là où le lot le documente comme attendu.
+:::
+
+::: {.callout-warning title="Identifying Risks // Identification des risques"}
+A file can have the right size and checksum and still hold nonsense, for example from a failed run or a wrong variable order. Infinite values are never expected and point to a numerical problem.
+//
+Un fichier peut avoir la bonne taille et la bonne somme de contrôle tout en contenant des données absurdes, par exemple à la suite d'une simulation défaillante ou d'un mauvais ordre des variables. Les valeurs infinies ne sont jamais attendues et signalent un problème numérique.
+:::
+
+**Why a sample, not every file.** A single moms file can be hundreds of megabytes to several gigabytes, and a run can have thousands. This notebook reads a configurable number of dump folders per run (`dumps_per_run`, default 3) and **one file per sampled dump**, chosen with a fixed random seed (`seed`, default 42) so the result is reproducible. It lists exactly which files it read. It confirms plausibility on those files, not on the whole release.
+
+For the structural check (file counts and sizes) without opening the payloads, use the [release structure check](Inspect_PPMstarRelease_Notebook.qmd).
+
+//
+
+**Pourquoi un échantillon et non tous les fichiers.** Un seul fichier moms peut peser de quelques centaines de mégaoctets à plusieurs gigaoctets, et une simulation peut en compter des milliers. Ce cahier lit un nombre configurable de dossiers d'instantanés par simulation (`dumps_per_run`, 3 par défaut) et **un fichier par instantané échantillonné**, choisi avec une graine aléatoire fixe (`seed`, 42 par défaut) afin que le résultat soit reproductible. Il indique précisément quels fichiers ont été lus. Il confirme la plausibilité sur ces fichiers, pas sur l'ensemble du lot.
+
+Pour le contrôle structurel (nombre et taille des fichiers) sans ouvrir les données, utilisez la [vérification de la structure du lot](Inspect_PPMstarRelease_Notebook.qmd).
+
+::: {.callout-tip title="Sample Data // Données d'exemple"}
+No sample data is bundled with this notebook. If the folder `data/Inspect_PPMstarMoms/` does not exist, the code is displayed but not run. Place your own files there (or change `target_dir` in the YAML header) and render again to see the results.
+//
+Aucune donnée d'exemple n'est fournie avec ce cahier. Si le dossier `data/Inspect_PPMstarMoms/` n'existe pas, le code est affiché mais n'est pas exécuté. Placez-y vos propres fichiers (ou modifiez `target_dir` dans l'en-tête YAML) et générez à nouveau le document pour voir les résultats.
+:::
+
+------------------------------------------------------------------------
+
+## Setup // Configuration
+
+We use `jsonlite` to read `variables.json` [@jsonlite]. The sampling settings are parameters in the YAML header.
+
+//
+
+Nous utilisons `jsonlite` pour lire `variables.json` [@jsonlite]. Les paramètres d'échantillonnage figurent dans l'en-tête YAML.
+
+### R Packages // Packages R
+
+```{r}
+#| label: install-packages
+#| eval: false
+
+# install.packages(c("tidyverse", "jsonlite", "rstudioapi"))
+```
+
+### Load Libraries // Charger les bibliothèques
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+
+library(tidyverse)  # Data manipulation [@tidyverse]
+library(jsonlite)   # Reading JSON metadata [@jsonlite]
+library(rstudioapi) # Interactive folder selection
+```
+
+## Select Target Directory // Sélectionner le répertoire cible
+
+This block allows for interactive selection of the directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.
+
+//
+
+Ce bloc permet de sélectionner le répertoire de manière interactive. En cas d'exécution dans un environnement non interactif, le chemin par défaut est celui défini dans l'en-tête YAML.
+
+```{r}
+#| label: select-target-dir
+
+if (interactive() && .Platform$OS.type == "windows") {
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select PPMstar Release Directory")
+} else {
+  selected_dir <- NULL
+}
+
+if (!is.null(selected_dir)) {
+  target_dir <- selected_dir
+} else {
+  target_dir <- params$target_dir
+}
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+output_dir <- "Results/Inspect_PPMstarMoms"
+dumps_per_run <- as.integer(params$dumps_per_run)
+seed <- as.integer(params$seed)
+
+print(paste("Analyzing directory:", target_dir))
+```
+
+## Locating the Runs // Localisation des simulations
+
+A run is any subfolder directly under the release directory that contains a `variables.json`. The random seed is set here so that the sampling is reproducible.
+
+//
+
+Une simulation est tout sous-dossier situé directement sous le répertoire du lot qui contient un fichier `variables.json`. La graine aléatoire est définie ici afin que l'échantillonnage soit reproductible.
+
+```{r}
+#| label: locate-runs
+
+run_dirs <- list.dirs(target_dir, recursive = FALSE)
+run_dirs <- run_dirs[!grepl("Curation_Results", run_dirs, ignore.case = TRUE)]
+run_dirs <- run_dirs[file.exists(file.path(run_dirs, "variables.json"))]
+
+message(sprintf("Found %d run(s) with a variables.json.", length(run_dirs)))
+if (length(run_dirs) == 0) {
+  stop("No runs found.", call. = FALSE)
+}
+
+set.seed(seed)
+```
+
+## Per-Run Sampling and Content Read // Échantillonnage et lecture du contenu de chaque simulation
+
+For each run, the function samples dump folders, reads one sub-cube file from each, and computes the statistics of every variable. It reports a failure, instead of guessing, when the file size does not match what `variables.json` implies.
+
+//
+
+Pour chaque simulation, la fonction échantillonne des dossiers d'instantanés, lit un fichier de sous-cube dans chacun et calcule les statistiques de chaque variable. Elle signale un échec, au lieu de deviner, lorsque la taille du fichier ne correspond pas à ce que `variables.json` implique.
+
+```{r}
+#| label: sampling-and-read
+
+inspect_run <- function(run_dir) {
+  run_name <- basename(run_dir)
+  varjson <- tryCatch(fromJSON(file.path(run_dir, "variables.json"), simplifyDataFrame = FALSE),
+                       error = function(e) NULL)
+  if (is.null(varjson)) {
+    return(tibble(Run = run_name, Dump = NA_character_, File = NA_character_,
+                   Variable_Index = NA_integer_, Variable_Name = NA_character_, Units = NA_character_,
+                   Min = NA_real_, Max = NA_real_, Mean = NA_real_, N_NaN = NA_integer_, N_Inf = NA_integer_,
+                   N_Values = NA_integer_, Status = "Failed: variables.json did not parse"))
+  }
+
+  variables <- varjson$variables
+  n_vars <- length(variables)
+  edge <- varjson$sub_cube_with_ghosts
+  if (is.null(edge) || is.null(n_vars) || n_vars == 0) {
+    return(tibble(Run = run_name, Dump = NA_character_, File = NA_character_,
+                   Variable_Index = NA_integer_, Variable_Name = NA_character_, Units = NA_character_,
+                   Min = NA_real_, Max = NA_real_, Mean = NA_real_, N_NaN = NA_integer_, N_Inf = NA_integer_,
+                   N_Values = NA_integer_, Status = "Failed: variables.json missing 'variables' or 'sub_cube_with_ghosts'"))
+  }
+  values_per_var <- edge^3
+
+  moms_dir <- file.path(run_dir, "moms", "myavsbq")
+  if (!dir.exists(moms_dir)) {
+    return(tibble(Run = run_name, Dump = NA_character_, File = NA_character_,
+                   Variable_Index = NA_integer_, Variable_Name = NA_character_, Units = NA_character_,
+                   Min = NA_real_, Max = NA_real_, Mean = NA_real_, N_NaN = NA_integer_, N_Inf = NA_integer_,
+                   N_Values = NA_integer_, Status = "Failed: no moms/myavsbq directory"))
+  }
+
+  dump_dirs <- list.dirs(moms_dir, recursive = FALSE)
+  if (length(dump_dirs) == 0) {
+    return(tibble(Run = run_name, Dump = NA_character_, File = NA_character_,
+                   Variable_Index = NA_integer_, Variable_Name = NA_character_, Units = NA_character_,
+                   Min = NA_real_, Max = NA_real_, Mean = NA_real_, N_NaN = NA_integer_, N_Inf = NA_integer_,
+                   N_Values = NA_integer_, Status = "Failed: no dump folders found under moms/myavsbq"))
+  }
+  sampled_dumps <- if (length(dump_dirs) > dumps_per_run) sample(dump_dirs, dumps_per_run) else dump_dirs
+
+  read_one_file <- function(fp, dump_label) {
+    tryCatch({
+      n_total <- values_per_var * n_vars
+      vals <- readBin(fp, what = "numeric", n = n_total, size = 4, endian = "little")
+      if (length(vals) != n_total) {
+        return(tibble(Run = run_name, Dump = dump_label, File = basename(fp),
+                       Variable_Index = NA_integer_, Variable_Name = NA_character_, Units = NA_character_,
+                       Min = NA_real_, Max = NA_real_, Mean = NA_real_, N_NaN = NA_integer_, N_Inf = NA_integer_,
+                       N_Values = length(vals),
+                       Status = sprintf("Failed: read %d values, expected %d (file size does not match variables.json)", length(vals), n_total)))
+      }
+      map_dfr(seq_len(n_vars), function(v) {
+        block <- vals[((v - 1) * values_per_var + 1):(v * values_per_var)]
+        finite_block <- block[is.finite(block)]
+        var_info <- variables[[v]]
+        tibble(
+          Run = run_name, Dump = dump_label, File = basename(fp),
+          Variable_Index = var_info$index %||% (v - 1),
+          Variable_Name = var_info$name %||% paste0("var", v - 1),
+          Units = var_info$units %||% NA_character_,
+          Min = if (length(finite_block) > 0) min(finite_block) else NA_real_,
+          Max = if (length(finite_block) > 0) max(finite_block) else NA_real_,
+          Mean = if (length(finite_block) > 0) mean(finite_block) else NA_real_,
+          N_NaN = sum(is.nan(block)),
+          N_Inf = sum(is.infinite(block)),
+          N_Values = length(block),
+          Status = "Success"
+        )
+      })
+    }, error = function(e) {
+      tibble(Run = run_name, Dump = dump_label, File = basename(fp),
+             Variable_Index = NA_integer_, Variable_Name = NA_character_, Units = NA_character_,
+             Min = NA_real_, Max = NA_real_, Mean = NA_real_, N_NaN = NA_integer_, N_Inf = NA_integer_,
+             N_Values = NA_integer_, Status = paste("Failed:", e$message))
+    })
+  }
+
+  `%||%` <- function(a, b) if (is.null(a)) b else a
+
+  map_dfr(sampled_dumps, function(dd) {
+    files_in_dump <- list.files(dd, full.names = TRUE)
+    if (length(files_in_dump) == 0) return(NULL)
+    f <- files_in_dump[1]  # one sub-cube file is enough for a plausibility spot check
+    message(sprintf("  Reading %s ...", f))
+    read_one_file(f, basename(dd))
+  })
+}
+
+message("Sampling and reading moms cube files (this reads real data, may take a moment per file)...")
+report <- map_dfr(run_dirs, inspect_run)
+```
+
+## Save Results // Enregistrer les résultats
+
+```{r}
+#| label: save-results
+
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+output_file <- file.path(output_dir, paste0("PPMstarMoms_ContentCheck_", dir_label, "_", format(Sys.Date(), "%Y%m%d"), ".csv"))
+write_excel_csv(report, output_file)
+
+codebook <- tibble(
+  Variable = c("Run", "Dump", "File", "Variable_Index", "Variable_Name", "Units",
+               "Min", "Max", "Mean", "N_NaN", "N_Inf", "N_Values", "Status"),
+  Type = c("Text", "Text", "Text", "Integer", "Text", "Text",
+           "Numeric", "Numeric", "Numeric", "Integer", "Integer", "Integer", "Text"),
+  Description = c(
+    "Run/subfolder name.",
+    "Dump folder name this file was sampled from.",
+    "Sub-cube file name actually read (one file per sampled dump, not every sub-cube).",
+    "Variable index, from variables.json (0-based, as documented).",
+    "Variable name, from variables.json.",
+    "Variable units, from variables.json.",
+    "Minimum finite value found for this variable in this file.",
+    "Maximum finite value found for this variable in this file.",
+    "Mean of finite values for this variable in this file.",
+    "Count of NaN values for this variable in this file (variables.json / the README may document where NaN is expected, e.g. near-vacuum outer radial bins).",
+    "Count of Inf/-Inf values (never expected; any non-zero count here is worth investigating).",
+    "Total values read for this variable in this file (edge^3, ghosts included).",
+    'Either "Success" or a "Failed: <reason>" message, e.g. a file whose size does not match what variables.json implies.'
+  )
+)
+codebook_file <- file.path(output_dir, "PPMstarMoms_ContentCheck_Codebook.csv")
+write_excel_csv(codebook, codebook_file)
+
+n_inf <- sum(report$N_Inf > 0, na.rm = TRUE)
+message(sprintf("Process complete. %d file(s) sampled across %d run(s).",
+                 length(unique(paste(report$Run, report$File))), length(unique(report$Run))))
+if (n_inf > 0) message(sprintf("WARNING: %d variable/file combination(s) contain Inf values, which is never expected. Investigate.", n_inf))
+message(paste("Report saved to:", output_file))
+message("Reminder: this is a sample, not exhaustive. It confirms plausibility on the files actually read, not the whole release.")
+```
+
+## Curation Insights // Aperçu de la curation
+
+Use this report to judge whether the sampled cubes look plausible:
+
+-   **N_Inf \> 0:** Infinite values are never expected. Investigate the run and ask the depositor.
+
+-   **N_NaN \> 0:** `NaN` may be legitimate, for example in near-vacuum outer radial bins, but only if the release documents it. Compare it with the README or `variables.json`.
+
+-   **Min, Max, Mean:** Check that each variable is in a physically reasonable range for its `Units`. A variable that is constant, all zero, or many orders of magnitude off suggests a wrong variable order or a failed run.
+
+-   **Status "Failed: read ... values, expected ...":** The file size does not match what `variables.json` implies, so the file is truncated or the metadata is wrong.
+
+-   **Sampling:** The sample is small and fixed by the seed. A clean result confirms plausibility on the files actually read, not on the whole release. Raise `dumps_per_run` for wider coverage, and combine it with the [structure check](Inspect_PPMstarRelease_Notebook.qmd) and the [checksum verification](Verify_ChecksumManifest_Notebook.qmd).
+
+//
+
+Utilisez ce rapport pour juger si les cubes échantillonnés semblent plausibles :
+
+-   **N_Inf \> 0 :** Les valeurs infinies ne sont jamais attendues. Examinez la simulation et interrogez le déposant.
+
+-   **N_NaN \> 0 :** `NaN` peut être légitime, par exemple dans les couches radiales externes proches du vide, mais seulement si le lot le documente. Comparez avec le README ou `variables.json`.
+
+-   **Min, Max, Mean :** Vérifiez que chaque variable se trouve dans une plage physiquement raisonnable pour ses `Units`. Une variable constante, entièrement nulle ou décalée de plusieurs ordres de grandeur laisse penser à un mauvais ordre des variables ou à une simulation défaillante.
+
+-   **Statut « Failed: read ... values, expected ... » :** La taille du fichier ne correspond pas à ce que `variables.json` implique ; le fichier est donc tronqué ou les métadonnées sont erronées.
+
+-   **Échantillonnage :** L'échantillon est petit et fixé par la graine. Un résultat sans anomalie confirme la plausibilité sur les fichiers réellement lus, pas sur l'ensemble du lot. Augmentez `dumps_per_run` pour une couverture plus large, et combinez-le avec la [vérification de la structure](Inspect_PPMstarRelease_Notebook.qmd) et la [vérification des sommes de contrôle](Verify_ChecksumManifest_Notebook.qmd).
+
+## Additional Tools // Outils supplémentaires
+
+-   **PyPPM:** The PPMstar collaboration's own [Python reader](https://github.com/PPMstar/PyPPM), able to load and visualize these cubes.
+
+-   **PPMnotebooks:** The collaboration's [example notebooks](https://github.com/PPMstar/PPMnotebooks), including examples that work on the moms cubes.
+
+-   **Release structure and checksums:** The [release structure check](Inspect_PPMstarRelease_Notebook.qmd) and the [checksum manifest verification](Verify_ChecksumManifest_Notebook.qmd) complete this content check.
+
+//
+
+-   **PyPPM :** Le [lecteur Python](https://github.com/PPMstar/PyPPM) de la collaboration PPMstar, capable de charger et de visualiser ces cubes.
+
+-   **PPMnotebooks :** Les [cahiers d'exemples](https://github.com/PPMstar/PPMnotebooks) de la collaboration, dont des exemples qui exploitent les cubes moms.
+
+-   **Structure du lot et sommes de contrôle :** La [vérification de la structure du lot](Inspect_PPMstarRelease_Notebook.qmd) et la [vérification du manifeste de sommes de contrôle](Verify_ChecksumManifest_Notebook.qmd) complètent ce contrôle de contenu.
+
+## Using the Non-Interactive R Script // Utilisation du script R non interactif
+
+For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
+
+Download the **R Script:** [**`Inspect_PPMstarMoms_Script.R`**](Scripts/Inspect_PPMstarMoms_Script.R)
+
+//
+
+Pour les utilisateurs qui souhaitent exécuter cette analyse sur un serveur, dans le cadre d'un traitement par lots ou depuis la ligne de commande, voici un script R pur qui effectue le même processus.
+
+Télécharger le **script R :** [**`Inspect_PPMstarMoms_Script.R`**](Scripts/Inspect_PPMstarMoms_Script.R)
+
+### Example HPC Submission Script // Exemple de script de soumission HPC
+
+`Inspect_PPMstarMoms_submit.sh`
+
+``` bash
+#!/bin/bash
+#SBATCH --job-name=ppmstar_moms
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=02:00:00
+#SBATCH --mem=32G
+#SBATCH --output=logs/ppmstar_moms_%j.log
+
+# Load R Module
+module load R
+
+# Define directories
+DATA_DIR="/scratch/user/project_data/O-shell-data-release"
+OUTPUT_DIR="/scratch/user/ppmstar_results"
+
+# Prepare Environment
+mkdir -p logs
+
+# Run Analysis
+echo "Starting PPMstar moms content check on $DATA_DIR"
+Rscript Inspect_PPMstarMoms_Script.R "$DATA_DIR" "$OUTPUT_DIR" 3 42   # dumps_per_run, seed
+```
+
+## References // Références
+
+::: {#refs}
+:::

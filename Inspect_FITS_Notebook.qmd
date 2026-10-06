@@ -1,0 +1,425 @@
+---
+title: "FITS Astronomy Files (.fits, .fit, .fts)"
+author: "Data Curation Team"
+date: "2026-10-06"
+format:
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+    theme: cosmo
+params:
+  target_dir: "data/Inspect_FITS/"
+bibliography: references.bib
+---
+
+```{r}
+#| label: eval-gate
+#| include: false
+
+knitr::opts_chunk$set(eval = dir.exists(params$target_dir))
+```
+
+## Overview // Aperçu
+
+The **Flexible Image Transport System (FITS)** is the standard file format across almost all of astronomy, for images, spectra, and tables alike. A FITS file is a sequence of **HDUs (Header/Data Units)**: each one holds a human-readable header of 80-character keyword cards, followed by a data block. A single file can contain many HDUs, so one file may hold several images or tables.
+
+//
+
+Le **système de transport d'images flexible (FITS)** est le format de fichier standard dans presque tous les domaines de l'astronomie, pour les images, les spectres et les tableaux. Un fichier FITS est une suite d'**HDU (Header/Data Units)** : chacune comporte un en-tête lisible formé de fiches de mots-clés de 80 caractères, suivi d'un bloc de données. Un même fichier peut contenir de nombreuses HDU et donc plusieurs images ou tableaux.
+
+::: {.callout-note title="Curation Goal // Objectif de la curation"}
+Extract the metadata of every HDU in every file (type, dimensions, bit depth, target, telescope, instrument, observation date, units, and World Coordinate System) **from the headers only**, without loading pixel or table data, so that it stays fast on large archives.
+//
+Extraire les métadonnées de chaque HDU de chaque fichier (type, dimensions, profondeur de bits, cible, télescope, instrument, date d'observation, unités et système de coordonnées du monde) **à partir des en-têtes seulement**, sans charger les pixels ni les données des tableaux, afin de rester rapide sur de grandes archives.
+:::
+
+::: {.callout-warning title="Identifying Risks // Identification des risques"}
+Images without a World Coordinate System (WCS) cannot be mapped to sky positions. Missing descriptive keywords (`OBJECT`, `TELESCOP`, `INSTRUME`, `DATE-OBS`, `BUNIT`) leave the data unintelligible without outside documentation. Multi-extension files can hide many HDUs behind an empty primary HDU.
+//
+Les images sans système de coordonnées du monde (WCS) ne peuvent pas être associées à des positions sur le ciel. L'absence de mots-clés descriptifs (`OBJECT`, `TELESCOP`, `INSTRUME`, `DATE-OBS`, `BUNIT`) rend les données inintelligibles sans documentation externe. Les fichiers à extensions multiples peuvent cacher de nombreuses HDU derrière une HDU primaire vide.
+:::
+
+**How multi-HDU files are read.** `FITSio::readFITS()` loads the full data array into memory, which is impractical for every HDU of every file on a real archive. This notebook instead reads only the header cards with `FITSio::readFITSheader()` on a raw file connection, computes the size of the data segment from `BITPIX`, `NAXISn`, `PCOUNT` and `GCOUNT` (data is padded to whole 2880-byte blocks), and seeks past it to the next header, until the file ends. Gzip-compressed files (`.fits.gz`) are handled too.
+
+//
+
+**Lecture des fichiers à HDU multiples.** `FITSio::readFITS()` charge en mémoire tout le tableau de données, ce qui est impraticable pour chaque HDU de chaque fichier d'une archive réelle. Ce cahier lit plutôt uniquement les fiches d'en-tête avec `FITSio::readFITSheader()` sur une connexion de fichier brute, calcule la taille du segment de données à partir de `BITPIX`, `NAXISn`, `PCOUNT` et `GCOUNT` (les données sont complétées jusqu'à des blocs entiers de 2880 octets) et saute jusqu'à l'en-tête suivant, jusqu'à la fin du fichier. Les fichiers compressés avec gzip (`.fits.gz`) sont également pris en charge.
+
+::: {.callout-tip title="Sample Data // Données d'exemple"}
+No sample data is bundled with this notebook. If the folder `data/Inspect_FITS/` does not exist, the code is displayed but not run. Place your own files there (or change `target_dir` in the YAML header) and render again to see the results.
+//
+Aucune donnée d'exemple n'est fournie avec ce cahier. Si le dossier `data/Inspect_FITS/` n'existe pas, le code est affiché mais n'est pas exécuté. Placez-y vos propres fichiers (ou modifiez `target_dir` dans l'en-tête YAML) et générez à nouveau le document pour voir les résultats.
+:::
+
+------------------------------------------------------------------------
+
+## Setup // Configuration
+
+We use the `FITSio` package to read the header cards. The cards are then parsed with a few small helper functions.
+
+//
+
+Nous utilisons le package `FITSio` pour lire les fiches d'en-tête. Les fiches sont ensuite analysées à l'aide de quelques petites fonctions auxiliaires.
+
+### R Packages // Packages R
+
+```{r}
+#| label: install-packages
+#| eval: false
+
+# install.packages(c("tidyverse", "FITSio", "rstudioapi"))
+```
+
+### Load Libraries // Charger les bibliothèques
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+
+library(tidyverse)  # Data manipulation [@tidyverse]
+library(FITSio)     # Reading FITS headers
+library(rstudioapi) # Interactive folder selection
+```
+
+## Select Target Directory // Sélectionner le répertoire cible
+
+This block allows for interactive selection of the directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.
+
+//
+
+Ce bloc permet de sélectionner le répertoire de manière interactive. En cas d'exécution dans un environnement non interactif, le chemin par défaut est celui défini dans l'en-tête YAML.
+
+```{r}
+#| label: select-target-dir
+
+if (interactive() && .Platform$OS.type == "windows") {
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select FITS Directory")
+} else {
+  selected_dir <- NULL
+}
+
+if (!is.null(selected_dir)) {
+  target_dir <- selected_dir
+} else {
+  target_dir <- params$target_dir
+}
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+output_dir <- "Results/Inspect_FITS"
+
+print(paste("Analyzing directory:", target_dir))
+```
+
+## Inventory of FITS Files // Liste des fichiers FITS
+
+We scan for `.fits`, `.fit`, and `.fts` files, including their `.gz` forms. Folders named `Curation_Results` are skipped.
+
+//
+
+Nous recherchons les fichiers `.fits`, `.fit` et `.fts`, y compris leurs formes `.gz`. Les dossiers nommés `Curation_Results` sont ignorés.
+
+```{r}
+#| label: inventory
+
+fits_files <- list.files(
+  path = target_dir,
+  pattern = "\\.(fits|fit|fts)(\\.gz)?$",
+  recursive = TRUE,
+  full.names = TRUE,
+  ignore.case = TRUE
+)
+fits_files <- fits_files[!grepl("Curation_Results", fits_files, ignore.case = TRUE)]
+
+message(paste("Found", length(fits_files), "FITS file(s)."))
+
+if (length(fits_files) == 0) {
+  stop("No FITS files found.", call. = FALSE)
+}
+```
+
+## Header Parsing Helpers // Fonctions d'analyse des en-têtes
+
+`readFITSheader()` returns raw 80-character cards. We parse the ones we need ourselves, rather than relying on the higher-level reader that also loads the data.
+
+//
+
+`readFITSheader()` renvoie des fiches brutes de 80 caractères. Nous analysons nous-mêmes celles dont nous avons besoin, plutôt que de recourir au lecteur de plus haut niveau qui charge aussi les données.
+
+```{r}
+#| label: header-helpers
+
+# FITSio::readFITSheader() returns raw 80-char cards; parse the ones we need
+# ourselves rather than relying on FITSio's higher-level (data-loading) reader.
+parse_header_cards <- function(hdr_lines) {
+  kv <- list()
+  for (line in hdr_lines) {
+    key <- trimws(substr(line, 1, 8))
+    if (key %in% c("COMMENT", "HISTORY", "") ) next
+    if (!grepl("=", substr(line, 9, 10), fixed = TRUE)) next
+    val_part <- substr(line, 11, 80)
+    val_part <- sub("/.*$", "", val_part)  # strip inline comment
+    val_part <- trimws(val_part)
+    val_part <- gsub("^'|'$", "", val_part)  # strip FITS string quotes
+    kv[[key]] <- trimws(val_part)
+  }
+  kv
+}
+
+get_num <- function(kv, key, default = NA_real_) {
+  v <- kv[[key]]
+  if (is.null(v)) return(default)
+  n <- suppressWarnings(as.numeric(v))
+  if (length(n) == 0 || is.na(n)) default else n
+}
+
+get_chr <- function(kv, key, default = NA_character_) {
+  v <- kv[[key]]
+  if (is.null(v) || v == "") default else v
+}
+```
+
+## Walking the HDUs // Parcours des HDU
+
+For each file, the function reads one header, records its keywords, skips the data block, and repeats until no further header is found.
+
+//
+
+Pour chaque fichier, la fonction lit un en-tête, consigne ses mots-clés, saute le bloc de données et recommence jusqu'à ce qu'aucun autre en-tête ne soit trouvé.
+
+```{r}
+#| label: hdu-walk
+
+inspect_fits_file <- function(fp) {
+  fname <- basename(fp)
+  is_gz <- grepl("\\.gz$", fp, ignore.case = TRUE)
+
+  rows <- list()
+  zz <- tryCatch(if (is_gz) gzfile(fp, "rb") else file(fp, "rb"), error = function(e) NULL)
+  if (is.null(zz)) {
+    return(tibble(FileName = fname, HDU_Index = NA_integer_, HDU_Type = NA_character_,
+                   Extension_Name = NA_character_, Dimensions = NA_character_, BitDepth = NA_character_,
+                   Object = NA_character_, Telescope = NA_character_, Instrument = NA_character_,
+                   Date_Obs = NA_character_, BUnit = NA_character_, Has_WCS = NA,
+                   CType1 = NA_character_, CType2 = NA_character_,
+                   Status = "Failed: could not open file"))
+  }
+  on.exit(try(close(zz), silent = TRUE), add = TRUE)
+
+  hdu_idx <- 0
+  repeat {
+    hdu_idx <- hdu_idx + 1
+    hdr <- tryCatch(readFITSheader(zz), error = function(e) NULL)
+    if (is.null(hdr) || length(hdr) == 0) break
+
+    kv <- parse_header_cards(hdr)
+
+    naxis <- get_num(kv, "NAXIS", 0)
+    naxis_vals <- if (!is.na(naxis) && naxis > 0) {
+      vapply(seq_len(naxis), function(i) get_num(kv, paste0("NAXIS", i), NA_real_), numeric(1))
+    } else numeric(0)
+    dims_str <- if (length(naxis_vals) > 0) paste(naxis_vals, collapse = " x ") else "(no data array)"
+
+    bitpix <- get_num(kv, "BITPIX", NA_real_)
+    pcount <- get_num(kv, "PCOUNT", 0)
+    gcount <- get_num(kv, "GCOUNT", 1)
+    n_data_elements <- if (length(naxis_vals) > 0) prod(naxis_vals) else 0
+    data_bytes <- (n_data_elements + pcount) * abs(bitpix) / 8 * gcount
+    data_bytes <- if (is.na(data_bytes)) 0 else data_bytes
+    data_blocks <- ceiling(data_bytes / 2880)
+
+    hdu_type <- if (hdu_idx == 1) "PRIMARY" else get_chr(kv, "XTENSION", "UNKNOWN")
+    has_wcs <- !is.null(kv[["CTYPE1"]])
+
+    rows[[hdu_idx]] <- tibble(
+      FileName = fname,
+      HDU_Index = hdu_idx,
+      HDU_Type = hdu_type,
+      Extension_Name = get_chr(kv, "EXTNAME"),
+      Dimensions = dims_str,
+      BitDepth = as.character(bitpix),
+      Object = get_chr(kv, "OBJECT"),
+      Telescope = get_chr(kv, "TELESCOP"),
+      Instrument = get_chr(kv, "INSTRUME"),
+      Date_Obs = get_chr(kv, "DATE-OBS"),
+      BUnit = get_chr(kv, "BUNIT"),
+      Has_WCS = has_wcs,
+      CType1 = get_chr(kv, "CTYPE1"),
+      CType2 = get_chr(kv, "CTYPE2"),
+      Status = "Success"
+    )
+
+    if (data_blocks > 0) {
+      seek_ok <- tryCatch({ seek(zz, where = data_blocks * 2880, origin = "current"); TRUE },
+                           error = function(e) FALSE)
+      if (!seek_ok) break
+    }
+  }
+
+  if (length(rows) == 0) {
+    return(tibble(FileName = fname, HDU_Index = NA_integer_, HDU_Type = NA_character_,
+                   Extension_Name = NA_character_, Dimensions = NA_character_, BitDepth = NA_character_,
+                   Object = NA_character_, Telescope = NA_character_, Instrument = NA_character_,
+                   Date_Obs = NA_character_, BUnit = NA_character_, Has_WCS = NA,
+                   CType1 = NA_character_, CType2 = NA_character_,
+                   Status = "Failed: no readable HDU (not a valid FITS file?)"))
+  }
+  bind_rows(rows)
+}
+```
+
+## Reading the Headers // Lecture des en-têtes
+
+This step runs the walk on every file. No pixel or table data is loaded.
+
+//
+
+Cette étape exécute le parcours sur chaque fichier. Aucune donnée de pixels ni de tableau n'est chargée.
+
+```{r}
+#| label: execution
+
+message("Reading FITS headers (fast, no pixel/table data is loaded)...")
+report <- map_dfr(fits_files, inspect_fits_file)
+```
+
+## Save Results // Enregistrer les résultats
+
+```{r}
+#| label: save-results
+
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+output_file <- file.path(output_dir, paste0("FITS_Report_", dir_label, "_", format(Sys.Date(), "%Y%m%d"), ".csv"))
+write_excel_csv(report, output_file)
+
+codebook <- tibble(
+  Variable = c("FileName", "HDU_Index", "HDU_Type", "Extension_Name", "Dimensions", "BitDepth",
+               "Object", "Telescope", "Instrument", "Date_Obs", "BUnit", "Has_WCS",
+               "CType1", "CType2", "Status"),
+  Type = c("Text", "Integer", "Text", "Text", "Text", "Text", "Text", "Text", "Text",
+           "Text", "Text", "Logical", "Text", "Text", "Text"),
+  Description = c(
+    "Name of the FITS file.",
+    "1-based index of this HDU within the file (1 = primary HDU).",
+    'HDU type: "PRIMARY" for HDU 1, otherwise the XTENSION keyword value (e.g. "IMAGE", "TABLE", "BINTABLE").',
+    "EXTNAME keyword, if present.",
+    'Data array dimensions from NAXISn, e.g. "1024 x 1024"; "(no data array)" for a header-only HDU (NAXIS = 0, common for a primary HDU that only holds metadata before image extensions).',
+    "BITPIX keyword (bits per data value; negative = floating point, e.g. -32 is float32, -64 is float64).",
+    "OBJECT keyword (target name), if present.",
+    "TELESCOP keyword, if present.",
+    "INSTRUME keyword, if present.",
+    "DATE-OBS keyword (observation date/time), if present.",
+    "BUNIT keyword (physical units of the data values), if present.",
+    "TRUE if a World Coordinate System is defined (CTYPE1 present) for this HDU, letting pixel coordinates be mapped to sky/physical coordinates; FALSE/absent WCS on an image HDU is worth asking the depositor about.",
+    "CTYPE1 keyword (first WCS axis type, e.g. \"RA---TAN\"), if present.",
+    "CTYPE2 keyword (second WCS axis type, e.g. \"DEC--TAN\"), if present.",
+    'Either "Success", or "Failed: <reason>" if the file could not be opened or no valid HDU was found.'
+  )
+)
+codebook_file <- file.path(output_dir, "FITS_Report_Codebook.csv")
+write_excel_csv(codebook, codebook_file)
+
+n_files <- length(unique(report$FileName))
+n_no_wcs <- sum(!report$Has_WCS & report$HDU_Type %in% c("PRIMARY", "IMAGE") & report$Dimensions != "(no data array)", na.rm = TRUE)
+message(sprintf("Process complete. %d file(s), %d HDU(s) total.", n_files, nrow(report)))
+if (n_no_wcs > 0) message(sprintf("Note: %d image HDU(s) have no WCS (CTYPE1) defined. Worth confirming with the depositor whether that is expected.", n_no_wcs))
+message(paste("Report saved to:", output_file))
+```
+
+## Curation Insights // Aperçu de la curation
+
+Use this report to decide what to ask the depositor:
+
+-   **Has_WCS = FALSE on an image HDU:** Without a World Coordinate System (`CTYPE1`), pixel positions cannot be mapped to the sky. Confirm whether this is expected, for example for a calibration frame or a laboratory image.
+
+-   **Missing `Object`, `Telescope`, `Instrument` or `Date_Obs`:** These keywords make the data self-describing. If they are absent, the information must be in the README or a data dictionary.
+
+-   **Missing `BUnit`:** Without physical units, the values in the array cannot be interpreted. Ask for them.
+
+-   **BitDepth:** Negative values indicate floating point (-32 is float32, -64 is float64), while positive values are integers. Confirm that the depth matches what the instrument produced.
+
+-   **HDU_Type and Dimensions:** A primary HDU with no data array followed by `IMAGE`, `TABLE` or `BINTABLE` extensions is a normal multi-extension layout. Check that the number of HDUs matches the documentation.
+
+-   **Status "Failed":** The file could not be opened or holds no valid HDU, so it may be corrupt or not FITS at all.
+
+//
+
+Utilisez ce rapport pour décider de ce qu'il faut demander au déposant :
+
+-   **Has_WCS = FALSE sur une HDU d'image :** Sans système de coordonnées du monde (`CTYPE1`), les positions des pixels ne peuvent pas être associées au ciel. Vérifiez si c'est attendu, par exemple pour une image d'étalonnage ou de laboratoire.
+
+-   **`Object`, `Telescope`, `Instrument` ou `Date_Obs` manquants :** Ces mots-clés rendent les données autodescriptives. S'ils sont absents, l'information doit figurer dans le README ou un dictionnaire de données.
+
+-   **`BUnit` manquant :** Sans unités physiques, les valeurs du tableau ne peuvent pas être interprétées. Demandez-les.
+
+-   **BitDepth :** Les valeurs négatives indiquent des nombres à virgule flottante (-32 correspond à float32, -64 à float64), alors que les valeurs positives sont des entiers. Vérifiez que la profondeur correspond à ce que l'instrument a produit.
+
+-   **HDU_Type et Dimensions :** Une HDU primaire sans tableau de données suivie d'extensions `IMAGE`, `TABLE` ou `BINTABLE` est une structure à extensions multiples normale. Vérifiez que le nombre de HDU correspond à la documentation.
+
+-   **Statut « Failed » :** Le fichier n'a pas pu être ouvert ou ne contient aucune HDU valide ; il est donc peut-être corrompu ou n'est pas du tout au format FITS.
+
+## Additional Tools // Outils supplémentaires
+
+-   **FITS Standard:** The [official FITS home page](https://fits.gsfc.nasa.gov/) hosts the standard, the keyword dictionaries, and the validation resources.
+
+-   **Astropy:** The Python [astronomy library](https://www.astropy.org/) reads and writes FITS, including data, through `astropy.io.fits`.
+
+-   **SAOImageDS9:** A free [image viewer](https://sites.google.com/cfa.harvard.edu/saoimageds9) for astronomical FITS files that shows the WCS and each HDU.
+
+-   **`FITSio`:** The R [package](https://cran.r-project.org/package=FITSio) used here.
+
+//
+
+-   **Norme FITS :** La [page d'accueil officielle de FITS](https://fits.gsfc.nasa.gov/) héberge la norme, les dictionnaires de mots-clés et les ressources de validation.
+
+-   **Astropy :** La [bibliothèque d'astronomie](https://www.astropy.org/) Python lit et écrit les fichiers FITS, y compris les données, avec `astropy.io.fits`.
+
+-   **SAOImageDS9 :** Un [visualiseur d'images](https://sites.google.com/cfa.harvard.edu/saoimageds9) gratuit pour les fichiers FITS astronomiques, qui affiche le WCS et chaque HDU.
+
+-   **`FITSio` :** Le [package](https://cran.r-project.org/package=FITSio) R utilisé ici.
+
+## Using the Non-Interactive R Script // Utilisation du script R non interactif
+
+For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
+
+Download the **R Script:** [**`Inspect_FITS_Script.R`**](Scripts/Inspect_FITS_Script.R)
+
+//
+
+Pour les utilisateurs qui souhaitent exécuter cette analyse sur un serveur, dans le cadre d'un traitement par lots ou depuis la ligne de commande, voici un script R pur qui effectue le même processus.
+
+Télécharger le **script R :** [**`Inspect_FITS_Script.R`**](Scripts/Inspect_FITS_Script.R)
+
+### Example HPC Submission Script // Exemple de script de soumission HPC
+
+`Inspect_FITS_submit.sh`
+
+``` bash
+#!/bin/bash
+#SBATCH --job-name=fits_check
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=01:00:00
+#SBATCH --mem=8G
+#SBATCH --output=logs/fits_check_%j.log
+
+# Load R Module
+module load R
+
+# Define directories
+DATA_DIR="/scratch/user/project_data/fits_files"
+OUTPUT_DIR="/scratch/user/fits_results"
+
+# Prepare Environment
+mkdir -p logs
+
+# Run Analysis
+echo "Starting FITS header inspection on $DATA_DIR"
+Rscript Inspect_FITS_Script.R "$DATA_DIR" "$OUTPUT_DIR"
+```
+
+## References // Références
+
+::: {#refs}
+:::

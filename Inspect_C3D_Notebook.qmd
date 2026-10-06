@@ -1,0 +1,516 @@
+---
+title: "C3D Motion Capture Files (.c3d)"
+author: "Data Curation Team"
+date: "2026-10-06"
+format:
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+    theme: cosmo
+params:
+  target_dir: "data/Inspect_C3D/"
+bibliography: references.bib
+---
+
+```{r}
+#| label: eval-gate
+#| include: false
+
+knitr::opts_chunk$set(eval = dir.exists(params$target_dir))
+```
+
+## Overview // Aperçu
+
+**C3D** is the standard binary file format for motion-capture and biomechanics data. It is used by laboratory systems and by robotic assessment instruments such as KINARM. A file starts with a fixed-layout 512-byte header (marker and analog counts, frame range, frame rate), followed by a parameter section of named groups and parameters, and then the 3D point and analog data.
+
+//
+
+**C3D** est le format de fichier binaire standard pour les données de capture de mouvement et de biomécanique. Il est utilisé par les systèmes de laboratoire et par les instruments d'évaluation robotisés comme KINARM. Un fichier commence par un en-tête de 512 octets à disposition fixe (nombre de marqueurs et de voies analogiques, plage d'images, fréquence d'images), suivi d'une section de paramètres regroupés en groupes nommés, puis des données de points 3D et analogiques.
+
+::: {.callout-note title="Curation Goal // Objectif de la curation"}
+Read the header and the parameter section of C3D files, list every character-type (string) parameter, and flag the ones that look like free text or an identifying code rather than a numeric ID or a known harmless value.
+//
+Lire l'en-tête et la section de paramètres des fichiers C3D, énumérer chaque paramètre de type caractère (chaîne) et signaler ceux qui ressemblent à du texte libre ou à un code identifiant plutôt qu'à un identifiant numérique ou à une valeur inoffensive connue.
+:::
+
+::: {.callout-warning title="Identifying Risks // Identification des risques"}
+Parameter strings can hold names, identification codes, or notes typed by the operator. These files are typically shipped inside per-exam `.zip` archives, so identifying text is easy to overlook.
+//
+Les chaînes de paramètres peuvent contenir des noms, des codes d'identification ou des notes saisies par l'opérateur. Ces fichiers sont généralement livrés dans des archives `.zip` par examen, de sorte que du texte identifiant passe facilement inaperçu.
+:::
+
+**Scope and limitations (read before trusting a clean result):**
+
+1.  **Little-endian files only:** The documented parameter-record layout is implemented for the common case (Intel processor type, byte 4 of the parameter header equal to 84). Files written by a DEC or MIPS/SGI system are reported as `Unsupported processor type` and only their header statistics are given.
+2.  **Character parameters only:** Only string parameters are decoded. Numeric parameters (such as height, weight, or calibration constants) are counted but not decoded.
+3.  **Not a validator:** The notebook does not check the 3D point or analog data blocks for corruption.
+4.  **Heuristic personal-information screen:** `Suspect_PII_Parameters` is pattern-based, not a verdict. Confirm every hit by reading the actual value, and do not assume that a file with no hits has no identifying text.
+
+**Sampling inside archives:** Because C3D files normally sit in archives, the notebook samples **one representative trial per archive** instead of extracting tens of thousands of files.
+
+//
+
+**Portée et limites (à lire avant de se fier à un résultat sans signalement) :**
+
+1.  **Fichiers petit-boutiste seulement :** La disposition documentée des enregistrements de paramètres est implémentée pour le cas courant (type de processeur Intel, octet 4 de l'en-tête des paramètres égal à 84). Les fichiers écrits par un système DEC ou MIPS/SGI sont signalés comme `Unsupported processor type` et seules leurs statistiques d'en-tête sont fournies.
+2.  **Paramètres de type caractère seulement :** Seuls les paramètres de type chaîne sont décodés. Les paramètres numériques (taille, poids, constantes d'étalonnage, etc.) sont comptés mais pas décodés.
+3.  **Pas un validateur :** Le cahier ne vérifie pas si les blocs de données de points 3D ou analogiques sont corrompus.
+4.  **Contrôle heuristique des renseignements personnels :** `Suspect_PII_Parameters` repose sur des motifs ; ce n'est pas un verdict. Confirmez chaque résultat en lisant la valeur réelle, et ne supposez pas qu'un fichier sans signalement ne contient aucun texte identifiant.
+
+**Échantillonnage dans les archives :** Comme les fichiers C3D se trouvent normalement dans des archives, le cahier échantillonne **un essai représentatif par archive** au lieu d'extraire des dizaines de milliers de fichiers.
+
+::: {.callout-tip title="Sample Data // Données d'exemple"}
+No sample data is bundled with this notebook. If the folder `data/Inspect_C3D/` does not exist, the code is displayed but not run. Place your own files there (or change `target_dir` in the YAML header) and render again to see the results.
+//
+Aucune donnée d'exemple n'est fournie avec ce cahier. Si le dossier `data/Inspect_C3D/` n'existe pas, le code est affiché mais n'est pas exécuté. Placez-y vos propres fichiers (ou modifiez `target_dir` dans l'en-tête YAML) et générez à nouveau le document pour voir les résultats.
+:::
+
+------------------------------------------------------------------------
+
+## Setup // Configuration
+
+We use the `archive` package to read inside `.zip` archives without extracting them to disk. The C3D header and parameter section are decoded with base R (`readBin()`).
+
+//
+
+Nous utilisons le package `archive` pour lire à l'intérieur des archives `.zip` sans les extraire sur le disque. L'en-tête et la section de paramètres C3D sont décodés avec R de base (`readBin()`).
+
+### R Packages // Packages R
+
+```{r}
+#| label: install-packages
+#| eval: false
+
+# install.packages(c("tidyverse", "archive", "rstudioapi"))
+```
+
+### Load Libraries // Charger les bibliothèques
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+
+library(tidyverse)  # Data manipulation [@tidyverse]
+library(archive)    # Reading inside zip archives
+library(rstudioapi) # Interactive folder selection
+```
+
+## Select Target Directory // Sélectionner le répertoire cible
+
+This block allows for interactive selection of the directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.
+
+//
+
+Ce bloc permet de sélectionner le répertoire de manière interactive. En cas d'exécution dans un environnement non interactif, le chemin par défaut est celui défini dans l'en-tête YAML.
+
+```{r}
+#| label: select-target-dir
+
+if (interactive() && .Platform$OS.type == "windows") {
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select Directory Containing C3D Files / Exam Archives")
+} else {
+  selected_dir <- NULL
+}
+
+if (!is.null(selected_dir)) {
+  target_dir <- selected_dir
+} else {
+  target_dir <- params$target_dir
+}
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+output_dir <- "Results/Inspect_C3D"
+
+print(paste("Analyzing directory:", target_dir))
+```
+
+## C3D Parsing // Analyse des fichiers C3D
+
+These functions read the 512-byte header, decode the parameter records, filter out harmless values, and combine everything into one row per file. See the [C3D specification](https://www.c3d.org/) for the full layout.
+
+//
+
+Ces fonctions lisent l'en-tête de 512 octets, décodent les enregistrements de paramètres, écartent les valeurs inoffensives et regroupent le tout en une ligne par fichier. Consultez la [spécification C3D](https://www.c3d.org/) pour la disposition complète.
+
+```{r}
+#| label: c3d-parsing
+
+# Reads the 512-byte header block. Returns a list of the fields useful for
+# curation triage; see the C3D spec (c3d.org) for the full field layout.
+read_c3d_header <- function(raw) {
+  if (length(raw) < 512) stop("File shorter than one C3D block (512 bytes); not a valid C3D file.")
+  if (as.integer(raw[2]) != 80L) stop("Byte 2 is not 0x50 (80); not a valid C3D file.")
+
+  param_start_block <- as.integer(raw[1])
+  read_i16 <- function(off) as.integer(readBin(raw[off:(off + 1)], "integer", n = 1, size = 2, signed = TRUE, endian = "little"))
+  read_f32 <- function(off) readBin(raw[off:(off + 3)], "double", n = 1, size = 4, endian = "little")
+
+  list(
+    param_start_block = param_start_block,
+    num_points        = read_i16(3),
+    analog_per_frame   = read_i16(5),
+    first_frame       = read_i16(7),
+    last_frame        = read_i16(9),
+    scale_factor      = read_f32(13),
+    data_start_block  = read_i16(17),
+    analog_samples_per_3d_frame = read_i16(19),
+    frame_rate        = read_f32(21)
+  )
+}
+
+# Walks the parameter section starting at byte offset `start` (1-indexed, into
+# `raw`) and returns a tibble of every parameter record found: group name
+# (resolved from the matching negative-groupId group-definition record when
+# available), parameter name, data type, and decoded value for character data.
+parse_c3d_parameters <- function(raw, start, end) {
+  pos <- start
+  groups <- list()   # abs(groupId) -> group name
+  params <- list()
+
+  # First pass: walk every record once, classifying as group or parameter.
+  records <- list()
+  guard <- 0
+  while (pos < end && guard < 100000) {
+    guard <- guard + 1
+    name_len_signed <- as.integer(raw[pos])
+    if (as.raw(raw[pos]) == as.raw(0x00)) break  # name length 0 marks end of parameter section
+    name_len <- abs(name_len_signed)
+    group_id <- as.integer(raw[pos + 1])
+    if (group_id == 0 || pos + 2 + name_len > end) break
+
+    name <- rawToChar(raw[(pos + 2):(pos + 1 + name_len)])
+    name <- gsub("[^[:print:]]", "", name)
+    next_off_pos <- pos + 2 + name_len
+    next_offset <- as.integer(readBin(raw[next_off_pos:(next_off_pos + 1)], "integer", n = 1, size = 2, signed = TRUE, endian = "little"))
+    record_start <- pos
+    body_start <- next_off_pos + 2
+
+    if (group_id < 0) {
+      # Group definition: [descLength(1)][description]
+      desc_len <- as.integer(raw[body_start])
+      groups[[as.character(abs(group_id))]] <- name
+    } else {
+      # Parameter: [dataType(1)][numDims(1)][dims(numDims)][data][descLen(1)][desc]
+      data_type <- as.integer(raw[body_start])
+      if (data_type >= 128) data_type <- data_type - 256L  # signed byte
+      num_dims <- as.integer(raw[body_start + 1])
+      dims <- if (num_dims > 0) as.integer(raw[(body_start + 2):(body_start + 1 + num_dims)]) else integer(0)
+      data_start <- body_start + 2 + num_dims
+      type_size <- switch(as.character(data_type), "-1" = 1L, "1" = 1L, "2" = 2L, "4" = 4L, 1L)
+      n_elements <- if (length(dims) > 0) prod(dims) else 1L
+      data_len <- n_elements * type_size
+
+      value <- NA_character_
+      if (data_type == -1 && data_len > 0 && data_start + data_len - 1 <= end) {
+        raw_chars <- raw[data_start:(data_start + data_len - 1)]
+        if (num_dims <= 1) {
+          value <- rawToChar(raw_chars[raw_chars != as.raw(0)])
+        } else {
+          # dims[1] = characters per string, dims[2] = number of strings (column-major)
+          chars_per <- dims[1]
+          n_strings <- if (length(dims) >= 2) dims[2] else 1L
+          vals <- vapply(seq_len(n_strings), function(i) {
+            s <- raw_chars[((i - 1) * chars_per + 1):(i * chars_per)]
+            trimws(rawToChar(s[s != as.raw(0)]))
+          }, character(1))
+          value <- paste(vals, collapse = " | ")
+        }
+        value <- gsub("[^[:print:]]", "", value)
+        value <- trimws(value)
+      }
+
+      records[[length(records) + 1]] <- list(
+        group_id = group_id, name = name, data_type = data_type, value = value
+      )
+    }
+
+    if (next_offset <= 0) break
+    # Offset is measured from the byte immediately after the offset field
+    # itself (i.e. from `next_off_pos`, the position of the offset's low
+    # byte, plus the offset value), not from the start of this record.
+    pos <- next_off_pos + next_offset
+  }
+
+  if (length(records) == 0) return(tibble(Group = character(0), Parameter = character(0), Value = character(0), Is_Char_Type = logical(0)))
+
+  map_dfr(records, function(r) {
+    tibble(
+      Group = if (!is.null(groups[[as.character(r$group_id)]])) groups[[as.character(r$group_id)]] else paste0("group_", r$group_id),
+      Parameter = r$name,
+      Value = r$value,
+      Is_Char_Type = r$data_type == -1
+    )
+  })
+}
+
+# Heuristic: does a character parameter's value look like free text or a
+# short identifying code, as opposed to a numeric ID, a known enum keyword,
+# or blank? This narrows what a human needs to read; it is not a verdict.
+non_identifying_keywords <- c("na", "n/a", "unknown", "none", "seated", "standing",
+                               "true", "false", "left", "right", "m", "f", "yes", "no")
+looks_suspect <- function(value) {
+  if (is.na(value) || value == "") return(FALSE)
+  v <- trimws(value)
+  if (grepl("^[0-9._-]+$", v)) return(FALSE)             # purely numeric (an ID, a version number)
+  if (tolower(v) %in% non_identifying_keywords) return(FALSE)
+  if (grepl("^[A-Za-z0-9_.-]{1,40}$", v) && nchar(v) <= 40) return(TRUE)  # short code/word: name, initials, protocol tag
+  TRUE  # anything longer / with spaces / punctuation: free text (notes, operator name, etc.)
+}
+
+inspect_one_c3d <- function(raw, source_label) {
+  tryCatch({
+    hdr <- read_c3d_header(raw)
+
+    # header byte 1 is the number of 512-byte blocks *before* the parameter
+    # section (i.e. it is 0 if the parameter section immediately followed the
+    # header, which it never does), not a 1-indexed block number: verified
+    # empirically against KINARM-exported files, where byte 1 == 1 and the
+    # valid parameter-section header (reserved, reserved, n_blocks, processor
+    # type 84) is found at file block 2 (byte offset 513), i.e. at
+    # header_byte1 * 512 + 1, not (header_byte1 - 1) * 512 + 1.
+    param_block_start <- hdr$param_start_block * 512L + 1L
+    if (param_block_start > length(raw) || param_block_start < 1) {
+      stop("Parameter start block is out of range.")
+    }
+    n_param_blocks <- as.integer(raw[param_block_start + 2L])
+    processor_type <- as.integer(raw[param_block_start + 3L])
+    if (!processor_type %in% c(84L)) {
+      return(tibble(
+        Source = source_label, NumPoints = hdr$num_points, NumAnalogChannels = NA,
+        FirstFrame = hdr$first_frame, LastFrame = hdr$last_frame,
+        NumFrames = hdr$last_frame - hdr$first_frame + 1L, FrameRate = hdr$frame_rate,
+        DataFormat = if (hdr$scale_factor < 0) "Floating-point" else "Integer",
+        CharParameterCount = NA, Suspect_PII_Parameters = NA,
+        Status = paste0("Unsupported processor type (", processor_type, "); header stats only")
+      ))
+    }
+
+    param_end <- min(length(raw), param_block_start - 1L + n_param_blocks * 512L)
+    params <- parse_c3d_parameters(raw, param_block_start + 4L, param_end)
+    char_params <- params %>% filter(Is_Char_Type, !is.na(Value), Value != "")
+    suspect <- char_params %>% filter(map_lgl(Value, looks_suspect))
+
+    analog_channels <- if (hdr$analog_samples_per_3d_frame > 0 && (hdr$last_frame - hdr$first_frame + 1) > 0) {
+      hdr$analog_per_frame
+    } else NA_integer_
+
+    tibble(
+      Source = source_label,
+      NumPoints = hdr$num_points,
+      NumAnalogChannels = analog_channels,
+      FirstFrame = hdr$first_frame,
+      LastFrame = hdr$last_frame,
+      NumFrames = hdr$last_frame - hdr$first_frame + 1L,
+      FrameRate = round(hdr$frame_rate, 2),
+      DataFormat = if (hdr$scale_factor < 0) "Floating-point" else "Integer",
+      CharParameterCount = nrow(char_params),
+      Suspect_PII_Parameters = if (nrow(suspect) > 0) {
+        paste(sprintf("%s.%s=%s", suspect$Group, suspect$Parameter,
+                       ifelse(nchar(suspect$Value) > 60, paste0(substr(suspect$Value, 1, 60), "..."), suspect$Value)),
+              collapse = " ; ")
+      } else "",
+      Status = "Success"
+    )
+  }, error = function(e) {
+    tibble(Source = source_label, NumPoints = NA, NumAnalogChannels = NA, FirstFrame = NA,
+           LastFrame = NA, NumFrames = NA, FrameRate = NA, DataFormat = NA,
+           CharParameterCount = NA, Suspect_PII_Parameters = NA,
+           Status = paste("Read Failed:", e$message))
+  })
+}
+```
+
+## Inventory and Sampling // Liste et échantillonnage
+
+Standalone `.c3d` files are all inspected. For each `.zip` or `.report` archive, one trial is sampled, preferring trials whose path does not contain `common`.
+
+//
+
+Tous les fichiers `.c3d` autonomes sont inspectés. Pour chaque archive `.zip` ou `.report`, un essai est échantillonné, de préférence parmi ceux dont le chemin ne contient pas `common`.
+
+```{r}
+#| label: inventory
+
+standalone_c3d <- list.files(target_dir, pattern = "\\.c3d$", recursive = TRUE, full.names = TRUE, ignore.case = TRUE)
+standalone_c3d <- standalone_c3d[!grepl("Curation_Results", standalone_c3d, ignore.case = TRUE)]
+
+archive_files <- list.files(target_dir, pattern = "\\.(zip|report)$", recursive = TRUE, full.names = TRUE, ignore.case = TRUE)
+archive_files <- archive_files[!grepl("Curation_Results", archive_files, ignore.case = TRUE)]
+
+message(sprintf("Found %d standalone .c3d file(s) and %d archive(s) to sample.", length(standalone_c3d), length(archive_files)))
+
+results <- list()
+
+for (fp in standalone_c3d) {
+  raw <- readBin(fp, "raw", n = file.info(fp)$size)
+  results[[length(results) + 1]] <- inspect_one_c3d(raw, basename(fp))
+}
+
+if (length(archive_files) > 0) {
+  message("Sampling one trial C3D from each archive (this reads inside the zip without extracting to disk)...")
+  for (fp in archive_files) {
+    label <- basename(fp)
+    tryCatch({
+      contents <- archive::archive(fp)
+      candidates <- contents$path[grepl("\\.c3d$", contents$path, ignore.case = TRUE) & !grepl("common", contents$path, ignore.case = TRUE)]
+      if (length(candidates) == 0) {
+        candidates <- contents$path[grepl("\\.c3d$", contents$path, ignore.case = TRUE)]
+      }
+      if (length(candidates) == 0) {
+        results[[length(results) + 1]] <- tibble(
+          Source = paste0(label, " (no .c3d found)"), NumPoints = NA, NumAnalogChannels = NA,
+          FirstFrame = NA, LastFrame = NA, NumFrames = NA, FrameRate = NA, DataFormat = NA,
+          CharParameterCount = NA, Suspect_PII_Parameters = NA, Status = "No .c3d member in archive"
+        )
+        next
+      }
+      con <- archive::archive_read(fp, file = candidates[1], mode = "rb")
+      raw <- readBin(con, "raw", n = 50 * 1024 * 1024)  # C3D header+params are small; cap well above any realistic trial size
+      close(con)
+      results[[length(results) + 1]] <- inspect_one_c3d(raw, paste0(label, " :: ", candidates[1]))
+    }, error = function(e) {
+      results[[length(results) + 1]] <<- tibble(
+        Source = label, NumPoints = NA, NumAnalogChannels = NA, FirstFrame = NA, LastFrame = NA,
+        NumFrames = NA, FrameRate = NA, DataFormat = NA, CharParameterCount = NA,
+        Suspect_PII_Parameters = NA, Status = paste("Archive Read Failed:", e$message)
+      )
+    })
+  }
+}
+
+if (length(results) == 0) {
+  stop("No .c3d files or archives found.", call. = FALSE)
+}
+
+report <- bind_rows(results)
+```
+
+## Save Results // Enregistrer les résultats
+
+```{r}
+#| label: save-results
+
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+output_file <- file.path(output_dir, paste0("C3D_Report_", dir_label, "_", format(Sys.Date(), "%Y%m%d"), ".csv"))
+write_excel_csv(report, output_file)
+
+codebook <- tibble(
+  Variable = c("Source", "NumPoints", "NumAnalogChannels", "FirstFrame", "LastFrame", "NumFrames",
+               "FrameRate", "DataFormat", "CharParameterCount", "Suspect_PII_Parameters", "Status"),
+  Type = c("Text", "Integer", "Integer", "Integer", "Integer", "Integer", "Numeric", "Text",
+           "Integer", "Text", "Text"),
+  Description = c(
+    "File name (standalone) or 'archive :: internal/path.c3d' (sampled from inside a zip/report archive; one representative trial per archive, not every trial).",
+    "Number of 3D marker points per frame, from the C3D header.",
+    "Analog samples per 3D frame, from the header (NA if not applicable to this file).",
+    "First frame number.", "Last frame number.", "Last minus first frame, plus one.",
+    "Capture frame rate (Hz).",
+    "\"Floating-point\" or \"Integer\", from the sign of the header scale factor.",
+    "Count of character-type (string) parameters found in the parameter section.",
+    "Character parameters whose value did not match a purely-numeric or known-keyword pattern, as \"Group.Parameter=value\" pairs, semicolon-separated. A heuristic filter for a human to read, not a PII verdict; a blank result is not proof of no PII.",
+    'Either "Success", "Unsupported processor type (...)" (DEC/MIPS files: header stats only, parameters not decoded), "No .c3d member in archive", or a "...Failed: <error>" message.'
+  )
+)
+codebook_file <- file.path(output_dir, "C3D_Report_Codebook.csv")
+write_excel_csv(codebook, codebook_file)
+
+message(paste("Process complete. Report saved to:", output_file))
+if (any(nzchar(coalesce(report$Suspect_PII_Parameters, "")), na.rm = TRUE)) {
+  message("NOTICE: one or more files have character parameters flagged for human review (Suspect_PII_Parameters).")
+}
+```
+
+## Curation Insights // Aperçu de la curation
+
+Use this report to decide what to ask the depositor:
+
+-   **Suspect_PII_Parameters not blank:** Each entry is a `Group.Parameter=value` pair whose value did not look like a plain number or a known harmless keyword. Read each value. If it is a name, an ID tied to a person, or a free-text note, ask the depositor whether it can be removed or replaced.
+
+-   **Suspect_PII_Parameters blank:** This is **not** proof that a file is free of identifying text. The filter narrows what a human needs to check, and does not replace checking.
+
+-   **Status "Unsupported processor type":** DEC and MIPS/SGI files are not decoded. Only the header statistics are available, so the parameters need another tool.
+
+-   **Status "No .c3d member in archive":** An archive that holds no C3D file may be mislabelled. Check the documentation.
+
+-   **NumPoints, NumFrames, FrameRate:** Compare them with the protocol. A different frame rate or marker count inside one study is worth asking about.
+
+-   **Sampling:** One trial per archive tells you about the archive's *format*, not about every trial inside it. Free text can differ between trials.
+
+//
+
+Utilisez ce rapport pour décider de ce qu'il faut demander au déposant :
+
+-   **Suspect_PII_Parameters non vide :** Chaque entrée est une paire `Group.Parameter=valeur` dont la valeur ne ressemblait pas à un nombre simple ni à un mot-clé inoffensif connu. Lisez chaque valeur. S'il s'agit d'un nom, d'un identifiant lié à une personne ou d'une note en texte libre, demandez au déposant s'il est possible de la retirer ou de la remplacer.
+
+-   **Suspect_PII_Parameters vide :** Ce n'est **pas** la preuve qu'un fichier ne contient aucun texte identifiant. Le filtre réduit ce qu'un humain doit vérifier, sans remplacer la vérification.
+
+-   **Statut « Unsupported processor type » :** Les fichiers DEC et MIPS/SGI ne sont pas décodés. Seules les statistiques d'en-tête sont disponibles ; il faut donc un autre outil pour les paramètres.
+
+-   **Statut « No .c3d member in archive » :** Une archive qui ne contient aucun fichier C3D est peut-être mal étiquetée. Consultez la documentation.
+
+-   **NumPoints, NumFrames, FrameRate :** Comparez-les avec le protocole. Une fréquence d'images ou un nombre de marqueurs différent au sein d'une même étude mérite une question.
+
+-   **Échantillonnage :** Un essai par archive renseigne sur le *format* de l'archive, pas sur chaque essai qu'elle contient. Le texte libre peut différer d'un essai à l'autre.
+
+## Additional Tools // Outils supplémentaires
+
+-   **C3D.org:** The [official site](https://www.c3d.org/) of the format, with the specification and file-format documentation.
+
+-   **ezc3d:** An open-source [C3D reader and writer](https://github.com/pyomeca/ezc3d) with R, Python, and MATLAB bindings, able to decode the point and analog data this notebook does not read.
+
+-   **Archive inspection:** Because C3D files travel in archives, pair this notebook with the [archive contents audit](Inspect_Archive_Notebook.qmd).
+
+//
+
+-   **C3D.org :** Le [site officiel](https://www.c3d.org/) du format, avec la spécification et la documentation du format de fichier.
+
+-   **ezc3d :** Un [lecteur et scripteur C3D](https://github.com/pyomeca/ezc3d) libre avec des liaisons pour R, Python et MATLAB, capable de décoder les données de points et analogiques que ce cahier ne lit pas.
+
+-   **Inspection des archives :** Comme les fichiers C3D voyagent dans des archives, associez ce cahier à l'[audit du contenu des archives](Inspect_Archive_Notebook.qmd).
+
+## Using the Non-Interactive R Script // Utilisation du script R non interactif
+
+For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
+
+Download the **R Script:** [**`Inspect_C3D_Script.R`**](Scripts/Inspect_C3D_Script.R)
+
+//
+
+Pour les utilisateurs qui souhaitent exécuter cette analyse sur un serveur, dans le cadre d'un traitement par lots ou depuis la ligne de commande, voici un script R pur qui effectue le même processus.
+
+Télécharger le **script R :** [**`Inspect_C3D_Script.R`**](Scripts/Inspect_C3D_Script.R)
+
+### Example HPC Submission Script // Exemple de script de soumission HPC
+
+`Inspect_C3D_submit.sh`
+
+``` bash
+#!/bin/bash
+#SBATCH --job-name=c3d_check
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=01:00:00
+#SBATCH --mem=8G
+#SBATCH --output=logs/c3d_check_%j.log
+
+# Load R Module
+module load R
+
+# Define directories
+DATA_DIR="/scratch/user/project_data/motion_capture"
+OUTPUT_DIR="/scratch/user/c3d_results"
+
+# Prepare Environment
+mkdir -p logs
+
+# Run Analysis
+echo "Starting C3D inspection on $DATA_DIR"
+Rscript Inspect_C3D_Script.R "$DATA_DIR" "$OUTPUT_DIR"
+```
+
+## References // Références
+
+::: {#refs}
+:::

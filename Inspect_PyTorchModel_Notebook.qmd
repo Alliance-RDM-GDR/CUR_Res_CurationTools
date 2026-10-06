@@ -1,0 +1,371 @@
+---
+title: "PyTorch Model Checkpoints (.pt, .pth)"
+author: "Data Curation Team"
+date: "2026-10-06"
+format:
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+    theme: cosmo
+params:
+  target_dir: "data/Inspect_PyTorchModel/"
+bibliography: references.bib
+---
+
+```{r}
+#| label: eval-gate
+#| include: false
+
+knitr::opts_chunk$set(eval = dir.exists(params$target_dir))
+```
+
+## Overview // Aperçu
+
+Trained machine-learning models are increasingly deposited with research data. A PyTorch checkpoint (`.pt` or `.pth`) is a serialized Python object. Modern checkpoints use a zip-based container (introduced around 2020), and older ones are a plain pickle file. Pickle is not a data format: **loading a pickle file can execute arbitrary code** stored in it.
+
+//
+
+Les modèles d'apprentissage automatique entraînés sont de plus en plus souvent déposés avec les données de recherche. Un point de contrôle PyTorch (`.pt` ou `.pth`) est un objet Python sérialisé. Les points de contrôle modernes utilisent un conteneur à base de zip (introduit vers 2020), et les plus anciens sont de simples fichiers pickle. Pickle n'est pas un format de données : **charger un fichier pickle peut exécuter du code arbitraire** qu'il contient.
+
+::: {.callout-note title="Curation Goal // Objectif de la curation"}
+Report the format of each checkpoint (zip-based or legacy) and whether it loads with PyTorch's restricted, safe mode (`weights_only=True`), so that reusers know whether the file can be opened without trusting it blindly.
+//
+Indiquer le format de chaque point de contrôle (à base de zip ou ancien) et s'il se charge avec le mode restreint et sûr de PyTorch (`weights_only=True`), afin que les réutilisateurs sachent si le fichier peut être ouvert sans lui faire aveuglément confiance.
+:::
+
+::: {.callout-warning title="Identifying Risks // Identification des risques"}
+A checkpoint that fails the safe load embeds arbitrary Python objects. Anyone who reuses it must either trust the file blindly or inspect it by hand. That is the finding to report to the depositor, and the notebook never works around it.
+//
+Un point de contrôle qui échoue au chargement sûr contient des objets Python arbitraires. Quiconque le réutilise doit soit faire aveuglément confiance au fichier, soit l'examiner à la main. C'est la constatation à signaler au déposant, et le cahier ne la contourne jamais.
+:::
+
+**What this notebook deliberately does not do.** It **never** loads a checkpoint with `weights_only=False`, because doing so executes the pickled Python objects in the file. A checkpoint that fails the safe load is not something to work around by trusting it, so the notebook records the failure and the first line of PyTorch's error instead.
+
+**Requirements.** Python with the `torch` package, reachable from R through `reticulate`. Set the `RETICULATE_PYTHON` environment variable to a specific interpreter if reticulate does not find the right one.
+
+//
+
+**Ce que ce cahier ne fait volontairement pas.** Il ne charge **jamais** un point de contrôle avec `weights_only=False`, car cela exécuterait les objets Python sérialisés dans le fichier. Un point de contrôle qui échoue au chargement sûr ne doit pas être contourné en lui faisant confiance ; le cahier consigne donc l'échec et la première ligne de l'erreur de PyTorch.
+
+**Prérequis.** Python avec le package `torch`, accessible depuis R grâce à `reticulate`. Définissez la variable d'environnement `RETICULATE_PYTHON` avec un interpréteur précis si reticulate ne trouve pas le bon.
+
+::: {.callout-tip title="Sample Data // Données d'exemple"}
+No sample data is bundled with this notebook. If the folder `data/Inspect_PyTorchModel/` does not exist, the code is displayed but not run. Place your own files there (or change `target_dir` in the YAML header) and render again to see the results.
+//
+Aucune donnée d'exemple n'est fournie avec ce cahier. Si le dossier `data/Inspect_PyTorchModel/` n'existe pas, le code est affiché mais n'est pas exécuté. Placez-y vos propres fichiers (ou modifiez `target_dir` dans l'en-tête YAML) et générez à nouveau le document pour voir les résultats.
+:::
+
+------------------------------------------------------------------------
+
+## Setup // Configuration
+
+We use `reticulate` to call Python from R.
+
+//
+
+Nous utilisons `reticulate` pour appeler Python depuis R.
+
+### R Packages // Packages R
+
+```{r}
+#| label: install-packages
+#| eval: false
+
+# install.packages(c("tidyverse", "reticulate", "rstudioapi"))
+# Python: pip install torch
+```
+
+### Load Libraries // Charger les bibliothèques
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+
+library(tidyverse)  # Data manipulation [@tidyverse]
+library(reticulate) # Calling Python (torch)
+library(rstudioapi) # Interactive folder selection
+```
+
+## Select Target Directory // Sélectionner le répertoire cible
+
+This block allows for interactive selection of the directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.
+
+//
+
+Ce bloc permet de sélectionner le répertoire de manière interactive. En cas d'exécution dans un environnement non interactif, le chemin par défaut est celui défini dans l'en-tête YAML.
+
+```{r}
+#| label: select-target-dir
+
+if (interactive() && .Platform$OS.type == "windows") {
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select Directory")
+} else {
+  selected_dir <- NULL
+}
+
+if (!is.null(selected_dir)) {
+  target_dir <- selected_dir
+} else {
+  target_dir <- params$target_dir
+}
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+output_dir <- "Results/Inspect_PyTorchModel"
+
+print(paste("Analyzing directory:", target_dir))
+```
+
+## Inventory of Checkpoint Files // Liste des points de contrôle
+
+We scan for `.pt` and `.pth` files. Folders named `Curation_Results` are skipped.
+
+//
+
+Nous recherchons les fichiers `.pt` et `.pth`. Les dossiers nommés `Curation_Results` sont ignorés.
+
+```{r}
+#| label: inventory
+
+model_files <- list.files(
+  path = target_dir,
+  pattern = "\\.(pt|pth)$",
+  recursive = TRUE,
+  full.names = TRUE,
+  ignore.case = TRUE
+)
+model_files <- model_files[!grepl("Curation_Results", model_files, ignore.case = TRUE)]
+
+message(paste("Found", length(model_files), ".pt/.pth file(s)."))
+
+if (length(model_files) == 0) {
+  stop("No PyTorch checkpoint files found.", call. = FALSE)
+}
+```
+
+## Python Setup // Configuration de Python
+
+This block checks that `torch` can be imported through `reticulate`, and stops with a clear message if it cannot.
+
+//
+
+Ce bloc vérifie que `torch` peut être importé par l'intermédiaire de `reticulate`, et s'arrête avec un message clair si ce n'est pas le cas.
+
+```{r}
+#| label: python-setup
+
+torch_available <- tryCatch({
+  reticulate::py_run_string("import torch, zipfile")
+  TRUE
+}, error = function(e) {
+  message("Could not import torch/zipfile via reticulate: ", conditionMessage(e))
+  FALSE
+})
+
+if (!torch_available) {
+  stop("Python 'torch' is required (via reticulate) but is not available. Set RETICULATE_PYTHON if needed.", call. = FALSE)
+}
+```
+
+## Checking the Checkpoints // Vérification des points de contrôle
+
+For each file, Python checks whether it is a zip container, counts its internal entries, and tries `torch.load(weights_only=True)` on the CPU. A failure is caught and recorded, never overridden. The loaded weights are not used for anything else.
+
+//
+
+Pour chaque fichier, Python vérifie s'il s'agit d'un conteneur zip, compte ses entrées internes et essaie `torch.load(weights_only=True)` sur le processeur. Un échec est intercepté et consigné, jamais contourné. Les poids chargés ne servent à rien d'autre.
+
+```{r}
+#| label: inspection
+
+inspect_model <- function(fp) {
+  fname <- basename(fp)
+  file_size_mb <- round(file.size(fp) / 1024^2, 2)
+  fp_py <- normalizePath(fp, winslash = "/", mustWork = TRUE)
+
+  tryCatch({
+    py_code <- sprintf('
+import zipfile, torch
+
+fp = r"""%s"""
+is_zip_format = zipfile.is_zipfile(fp)
+
+entry_count = None
+if is_zip_format:
+    with zipfile.ZipFile(fp) as z:
+        entry_count = len(z.namelist())
+
+safe_load_ok = False
+safe_load_error = ""
+try:
+    torch.load(fp, weights_only=True, map_location="cpu")
+    safe_load_ok = True
+except Exception as e:
+    safe_load_error = str(e).splitlines()[0][:200]
+', fp_py)
+
+    reticulate::py_run_string(py_code)
+    py <- reticulate::py
+
+    tibble(
+      FileName = fname,
+      Size_MB = file_size_mb,
+      Is_Zip_Based_Format = isTRUE(py$is_zip_format),
+      Internal_Entry_Count = if (is.null(py$entry_count)) NA_integer_ else as.integer(py$entry_count),
+      Safe_Load_Possible = isTRUE(py$safe_load_ok),
+      Safe_Load_Error = if (isTRUE(py$safe_load_ok)) "" else py$safe_load_error,
+      Status = "Success"
+    )
+  }, error = function(e) {
+    tibble(
+      FileName = fname, Size_MB = file_size_mb, Is_Zip_Based_Format = NA,
+      Internal_Entry_Count = NA, Safe_Load_Possible = NA, Safe_Load_Error = NA,
+      Status = paste("Inspection Failed:", e$message)
+    )
+  })
+}
+```
+
+## Running the Checks // Exécution des vérifications
+
+This step runs the check on every checkpoint. Loading a large checkpoint reads it into memory, so allow enough memory for the largest file.
+
+//
+
+Cette étape exécute la vérification sur chaque point de contrôle. Le chargement d'un gros point de contrôle le lit en mémoire ; prévoyez donc assez de mémoire pour le plus grand fichier.
+
+```{r}
+#| label: execution
+
+message("Checking checkpoint format and safe-load status (weights_only=True only; never trusts the file by default)...")
+report <- map_dfr(model_files, inspect_model)
+```
+
+## Save Results // Enregistrer les résultats
+
+```{r}
+#| label: save-results
+
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+output_file <- file.path(output_dir, paste0("PyTorchModel_Report_", dir_label, "_", format(Sys.Date(), "%Y%m%d"), ".csv"))
+write_excel_csv(report, output_file)
+
+codebook <- tibble(
+  Variable = c("FileName", "Size_MB", "Is_Zip_Based_Format", "Internal_Entry_Count",
+               "Safe_Load_Possible", "Safe_Load_Error", "Status"),
+  Type = c("Text", "Numeric", "Logical", "Integer", "Logical", "Text", "Text"),
+  Description = c(
+    "Name of the checkpoint file.",
+    "File size in megabytes.",
+    "TRUE if the file uses the modern zip-based PyTorch serialization format (introduced ~2020), as opposed to a legacy pickle-only file.",
+    "Number of internal entries in the zip container (tensor data files plus the pickled object graph), if zip-based.",
+    "TRUE if the checkpoint loads successfully with torch.load(weights_only=True) — PyTorch's restricted-unpickling safe mode. FALSE means the file embeds arbitrary Python objects and can only be loaded by choosing to trust the source (weights_only=False), which allows arbitrary code execution if the file is malicious.",
+    "The error PyTorch raised under weights_only=True, when Safe_Load_Possible is FALSE.",
+    'Either "Success" or "Inspection Failed: <error message>".'
+  )
+)
+codebook_file <- file.path(output_dir, "PyTorchModel_Report_Codebook.csv")
+write_excel_csv(codebook, codebook_file)
+
+message(paste("Process complete. Report saved to:", output_file))
+if (any(!report$Safe_Load_Possible, na.rm = TRUE)) {
+  message("NOTE: one or more checkpoints cannot be safely loaded (require weights_only=False) — this is a standard Ultralytics/YOLO checkpoint behavior, but should be documented for reusers.")
+}
+```
+
+## Curation Insights // Aperçu de la curation
+
+Use this report to decide how to document and handle each checkpoint:
+
+-   **Safe_Load_Possible = TRUE:** The file loads under `weights_only=True`, which means it holds tensors and plain data and can be opened without executing embedded code. This is the best case for a reusable model.
+
+-   **Safe_Load_Possible = FALSE:** The file embeds arbitrary Python objects, and can only be loaded by choosing to trust it. This is common for full training checkpoints, including those saved by Ultralytics (YOLO). **Do not load it with `weights_only=False` to look inside.** Document it in the README, so that reusers know what they are trusting, and ask the depositor whether a weights-only version can be provided.
+
+-   **Safe_Load_Error:** The first line of PyTorch's error usually names the blocked object. Keep it in your notes for the depositor.
+
+-   **Is_Zip_Based_Format = FALSE:** A legacy pickle-only file. It is older, less inspectable, and has the same code-execution risk. Ask for a re-saved modern checkpoint.
+
+-   **Safer formats:** For long-term sharing, consider asking for the weights in a format that cannot execute code, such as `safetensors`, alongside the original.
+
+-   **Status "Inspection Failed":** The file could not be inspected (corrupt, or Python could not read it). Treat it as unverified.
+
+//
+
+Utilisez ce rapport pour décider comment documenter et traiter chaque point de contrôle :
+
+-   **Safe_Load_Possible = TRUE :** Le fichier se charge avec `weights_only=True`, ce qui signifie qu'il contient des tenseurs et des données simples et peut être ouvert sans exécuter de code intégré. C'est le meilleur cas pour un modèle réutilisable.
+
+-   **Safe_Load_Possible = FALSE :** Le fichier contient des objets Python arbitraires et ne peut être chargé qu'en choisissant de lui faire confiance. C'est fréquent pour les points de contrôle d'entraînement complets, y compris ceux enregistrés par Ultralytics (YOLO). **Ne le chargez pas avec `weights_only=False` pour regarder à l'intérieur.** Documentez-le dans le README afin que les réutilisateurs sachent à quoi ils font confiance, et demandez au déposant s'il peut fournir une version ne contenant que les poids.
+
+-   **Safe_Load_Error :** La première ligne de l'erreur de PyTorch nomme généralement l'objet bloqué. Conservez-la dans vos notes pour le déposant.
+
+-   **Is_Zip_Based_Format = FALSE :** Un ancien fichier pickle seul. Il est plus ancien, moins inspectable et présente le même risque d'exécution de code. Demandez un point de contrôle moderne réenregistré.
+
+-   **Formats plus sûrs :** Pour un partage à long terme, envisagez de demander les poids dans un format qui ne peut pas exécuter de code, comme `safetensors`, en plus de l'original.
+
+-   **Statut « Inspection Failed » :** Le fichier n'a pas pu être inspecté (corrompu, ou Python n'a pas pu le lire). Considérez-le comme non vérifié.
+
+## Additional Tools // Outils supplémentaires
+
+-   **`torch.load` documentation:** The PyTorch [documentation](https://pytorch.org/docs/stable/generated/torch.load.html) explains the `weights_only` option and its security implications.
+
+-   **safetensors:** A [file format](https://huggingface.co/docs/safetensors) for tensors that cannot execute code when loaded.
+
+-   **`reticulate`:** The R [interface to Python](https://rstudio.github.io/reticulate/) used by this notebook.
+
+//
+
+-   **Documentation de `torch.load` :** La [documentation](https://pytorch.org/docs/stable/generated/torch.load.html) de PyTorch explique l'option `weights_only` et ses conséquences en matière de sécurité.
+
+-   **safetensors :** Un [format de fichier](https://huggingface.co/docs/safetensors) pour les tenseurs qui ne peut pas exécuter de code au chargement.
+
+-   **`reticulate` :** L'[interface R vers Python](https://rstudio.github.io/reticulate/) utilisée par ce cahier.
+
+## Using the Non-Interactive R Script // Utilisation du script R non interactif
+
+For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
+
+Download the **R Script:** [**`Inspect_PyTorchModel_Script.R`**](Scripts/Inspect_PyTorchModel_Script.R)
+
+//
+
+Pour les utilisateurs qui souhaitent exécuter cette analyse sur un serveur, dans le cadre d'un traitement par lots ou depuis la ligne de commande, voici un script R pur qui effectue le même processus.
+
+Télécharger le **script R :** [**`Inspect_PyTorchModel_Script.R`**](Scripts/Inspect_PyTorchModel_Script.R)
+
+### Example HPC Submission Script // Exemple de script de soumission HPC
+
+`Inspect_PyTorchModel_submit.sh`
+
+``` bash
+#!/bin/bash
+#SBATCH --job-name=pytorch_check
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=01:00:00
+#SBATCH --mem=32G
+#SBATCH --output=logs/pytorch_check_%j.log
+
+# Load R Module
+module load R
+module load python
+source ~/envs/torch/bin/activate   # an environment with torch installed
+export RETICULATE_PYTHON="$(which python)"
+
+# Define directories
+DATA_DIR="/scratch/user/project_data/models"
+OUTPUT_DIR="/scratch/user/pytorch_results"
+
+# Prepare Environment
+mkdir -p logs
+
+# Run Analysis
+echo "Starting PyTorch checkpoint inspection on $DATA_DIR"
+Rscript Inspect_PyTorchModel_Script.R "$DATA_DIR" "$OUTPUT_DIR"
+```
+
+## References // Références
+
+::: {#refs}
+:::

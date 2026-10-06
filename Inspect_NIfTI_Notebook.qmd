@@ -1,0 +1,496 @@
+---
+title: "NIfTI Neuroimaging Volumes (.nii, .nii.gz)"
+author: "Data Curation Team"
+date: "2026-10-06"
+format:
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+    theme: cosmo
+params:
+  target_dir: "data/Inspect_NIfTI/"
+bibliography: references.bib
+---
+
+```{r}
+#| label: eval-gate
+#| include: false
+
+knitr::opts_chunk$set(eval = dir.exists(params$target_dir))
+```
+
+## Overview // Aperçu
+
+The **Neuroimaging Informatics Technology Initiative (NIfTI)** format is the standard file format for MRI and fMRI volumes. A file holds a fixed-size header, which describes the array and how it maps to physical space, followed by the voxel data. Files come as `.nii` or gzip-compressed `.nii.gz`, in NIfTI-1 or NIfTI-2 layout, and in either byte order.
+
+//
+
+Le format **NIfTI (Neuroimaging Informatics Technology Initiative)** est le format de fichier standard pour les volumes d'IRM et d'IRMf. Un fichier contient un en-tête de taille fixe, qui décrit le tableau et son lien avec l'espace physique, suivi des données des voxels. Les fichiers existent en `.nii` ou en `.nii.gz` compressé avec gzip, selon la disposition NIfTI-1 ou NIfTI-2, et dans l'un ou l'autre ordre des octets.
+
+::: {.callout-note title="Curation Goal // Objectif de la curation"}
+Read only the first 348 or 540 bytes of each file to report its version, dimensions, data type, voxel size, units, spatial orientation, and scaling, and to screen the header for truncation and for free-text fields that may hold identifying information.
+//
+Lire uniquement les 348 ou 540 premiers octets de chaque fichier afin d'indiquer sa version, ses dimensions, son type de données, la taille des voxels, les unités, l'orientation spatiale et la mise à l'échelle, et de vérifier la présence de troncature et de champs de texte libre pouvant contenir des renseignements identifiants.
+:::
+
+::: {.callout-warning title="Identifying Risks // Identification des risques"}
+Human brain volumes are sensitive: free-text header fields may hold a name, an ID, or a protocol name, and an image of a head can reveal a face. A file with no spatial orientation cannot be placed in scanner or standard space. A truncated file loses data silently.
+//
+Les volumes cérébraux humains sont sensibles : les champs d'en-tête en texte libre peuvent contenir un nom, un identifiant ou un nom de protocole, et une image de la tête peut révéler un visage. Un fichier sans orientation spatiale ne peut pas être placé dans l'espace du scanner ou dans un espace standard. Un fichier tronqué perd des données sans avertissement.
+:::
+
+**Three curation checks are built in:**
+
+1.  **Spatial orientation:** If `qform_code` and `sform_code` are both 0, the file carries no mapping from voxel indices to real-world space. This is the neuroimaging counterpart of a raster with no coordinate reference system.
+2.  **Truncation:** For uncompressed files, the expected size is `vox_offset` plus the number of voxels times the bytes per voxel. A smaller actual size means the file was cut short. This cannot be checked on `.gz` files without decompressing them.
+3.  **De-identification screen:** The free-text fields `descrip`, `aux_file` and `intent_name` are recorded **only as empty or non-empty** (and the length of `descrip`), never with their content, so that potentially identifying text is not copied into the reports. A flagged file is then inspected by hand.
+
+//
+
+**Trois contrôles de curation sont intégrés :**
+
+1.  **Orientation spatiale :** Si `qform_code` et `sform_code` valent tous deux 0, le fichier ne contient aucune correspondance entre les indices de voxels et l'espace réel. C'est l'équivalent en neuro-imagerie d'une image matricielle sans système de référence de coordonnées.
+2.  **Troncature :** Pour les fichiers non compressés, la taille attendue est `vox_offset` plus le nombre de voxels multiplié par le nombre d'octets par voxel. Une taille réelle inférieure signifie que le fichier a été coupé. Cela ne peut pas être vérifié sur les fichiers `.gz` sans les décompresser.
+3.  **Contrôle de dépersonnalisation :** Les champs de texte libre `descrip`, `aux_file` et `intent_name` sont consignés **uniquement comme vides ou non vides** (et la longueur de `descrip`), jamais avec leur contenu, afin que du texte potentiellement identifiant ne soit pas copié dans les rapports. Un fichier signalé est ensuite examiné manuellement.
+
+::: {.callout-tip title="Sample Data // Données d'exemple"}
+No sample data is bundled with this notebook. If the folder `data/Inspect_NIfTI/` does not exist, the code is displayed but not run. Place your own files there (or change `target_dir` in the YAML header) and render again to see the results.
+//
+Aucune donnée d'exemple n'est fournie avec ce cahier. Si le dossier `data/Inspect_NIfTI/` n'existe pas, le code est affiché mais n'est pas exécuté. Placez-y vos propres fichiers (ou modifiez `target_dir` dans l'en-tête YAML) et générez à nouveau le document pour voir les résultats.
+:::
+
+------------------------------------------------------------------------
+
+## Setup // Configuration
+
+No special package is needed. The header is read as raw bytes with base R (`readBin()`), at the byte offsets given by the NIfTI specification. NIfTI-1 offsets were validated against real NIfTI-1 volumes. NIfTI-2 offsets follow the official `nifti2.h` header but were tested only on a synthetic file, so rows from NIfTI-2 files say so in the `Status` column.
+
+//
+
+Aucun package particulier n'est nécessaire. L'en-tête est lu sous forme d'octets bruts avec R de base (`readBin()`), aux positions indiquées par la spécification NIfTI. Les positions NIfTI-1 ont été validées sur de vrais volumes NIfTI-1. Les positions NIfTI-2 suivent l'en-tête officiel `nifti2.h`, mais n'ont été testées que sur un fichier synthétique ; les lignes issues de fichiers NIfTI-2 le précisent donc dans la colonne `Status`.
+
+### R Packages // Packages R
+
+```{r}
+#| label: install-packages
+#| eval: false
+
+# install.packages(c("tidyverse", "rstudioapi"))
+```
+
+### Load Libraries // Charger les bibliothèques
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+
+library(tidyverse)  # Data manipulation [@tidyverse]
+library(rstudioapi) # Interactive folder selection
+```
+
+## Select Target Directory // Sélectionner le répertoire cible
+
+This block allows for interactive selection of the directory. If running in a non-interactive environment, it defaults to the path defined in the YAML header.
+
+//
+
+Ce bloc permet de sélectionner le répertoire de manière interactive. En cas d'exécution dans un environnement non interactif, le chemin par défaut est celui défini dans l'en-tête YAML.
+
+```{r}
+#| label: select-target-dir
+
+if (interactive() && .Platform$OS.type == "windows") {
+  selected_dir <- rstudioapi::selectDirectory(caption = "Select NIfTI Directory")
+} else {
+  selected_dir <- NULL
+}
+
+if (!is.null(selected_dir)) {
+  target_dir <- selected_dir
+} else {
+  target_dir <- params$target_dir
+}
+target_dir <- normalizePath(target_dir, winslash = "/", mustWork = TRUE)
+dir_label <- gsub("[^A-Za-z0-9_.-]", "_", basename(sub("[/\\\\]+$", "", target_dir)))
+output_dir <- "Results/Inspect_NIfTI"
+
+print(paste("Analyzing directory:", target_dir))
+```
+
+## Inventory of NIfTI Files // Liste des fichiers NIfTI
+
+We scan for `.nii` and `.nii.gz` files. Folders named `Curation_Results` are skipped.
+
+//
+
+Nous recherchons les fichiers `.nii` et `.nii.gz`. Les dossiers nommés `Curation_Results` sont ignorés.
+
+```{r}
+#| label: inventory
+
+nii_files <- list.files(
+  path = target_dir,
+  pattern = "\\.nii(\\.gz)?$",
+  recursive = TRUE,
+  full.names = TRUE,
+  ignore.case = TRUE
+)
+nii_files <- nii_files[!grepl("Curation_Results", nii_files, ignore.case = TRUE)]
+
+message(paste("Found", length(nii_files), "NIfTI file(s)."))
+
+if (length(nii_files) == 0) {
+  stop("No NIfTI files found.", call. = FALSE)
+}
+```
+
+## Lookup Tables // Tables de correspondance
+
+These tables translate the numeric codes stored in the header into readable data types and units.
+
+//
+
+Ces tables traduisent les codes numériques stockés dans l'en-tête en types de données et en unités lisibles.
+
+```{r}
+#| label: lookup-tables
+
+dtype_names <- c(
+  "2" = "uint8", "4" = "int16", "8" = "int32", "16" = "float32", "32" = "complex64",
+  "64" = "float64", "128" = "RGB24", "256" = "int8", "512" = "uint16", "768" = "uint32",
+  "1024" = "int64", "1280" = "uint64", "1536" = "float128", "1792" = "complex128",
+  "2048" = "complex256", "2304" = "RGBA32"
+)
+
+spatial_unit <- function(u) {
+  switch(as.character(bitwAnd(as.integer(u), 7L)),
+         "0" = "unknown", "1" = "meter", "2" = "mm", "3" = "micron", "other")
+}
+temporal_unit <- function(u) {
+  switch(as.character(bitwAnd(as.integer(u), 56L)),
+         "0" = "unknown", "8" = "sec", "16" = "msec", "24" = "usec",
+         "32" = "Hz", "40" = "ppm", "48" = "rad/s", "other")
+}
+```
+
+## Result Row Constructor // Constructeur de lignes de résultats
+
+Success and failure rows share identical column names and types, so that a batch with both kinds of rows can always be combined.
+
+//
+
+Les lignes de réussite et d'échec partagent les mêmes noms et types de colonnes, de sorte qu'un lot contenant les deux types de lignes puisse toujours être combiné.
+
+```{r}
+#| label: row-constructor
+
+# Success and failure rows must share identical column names AND types so
+# bind_rows() never fails on a mixed batch.
+make_row <- function(fname, rel, compressed = NA, version = NA_integer_, endian = NA_character_,
+                     dims = NA_character_, n_dims = NA_integer_, datatype = NA_character_,
+                     bitpix = NA_integer_, voxel = NA_character_, dt4 = NA_real_,
+                     sp_units = NA_character_, t_units = NA_character_, vox_offset = NA_real_,
+                     slope = NA_real_, inter = NA_real_, qform = NA_integer_, sform = NA_integer_,
+                     has_orient = NA, magic = NA_character_, expected = NA_real_,
+                     actual = NA_real_, size_check = NA_character_,
+                     descrip_ne = NA, descrip_len = NA_integer_, aux_ne = NA, intent_ne = NA,
+                     status = "Success") {
+  tibble(
+    FileName = fname, RelativePath = rel, Compressed = compressed,
+    NIfTI_Version = version, Byte_Order = endian,
+    Dimensions = dims, N_Dims = n_dims, Datatype = datatype, BitPix = bitpix,
+    Voxel_Size = voxel, Pixdim4_TR = dt4,
+    Spatial_Units = sp_units, Temporal_Units = t_units, Vox_Offset = vox_offset,
+    Scl_Slope = slope, Scl_Inter = inter, Qform_Code = qform, Sform_Code = sform,
+    Has_Spatial_Orientation = has_orient, Magic = magic,
+    Expected_Size_Bytes = expected, Actual_Size_Bytes = actual, Size_Check = size_check,
+    Descrip_Nonempty = descrip_ne, Descrip_Length = descrip_len,
+    Aux_File_Nonempty = aux_ne, Intent_Name_Nonempty = intent_ne,
+    Status = status
+  )
+}
+
+read_head <- function(fp, is_gz) {
+  con <- if (is_gz) gzfile(fp, "rb") else file(fp, "rb")
+  on.exit(close(con))
+  readBin(con, "raw", n = 540)
+}
+```
+
+## Per-File Header Parse // Analyse de l'en-tête de chaque fichier
+
+The function detects the version and byte order from the `sizeof_hdr` field, reads each field from its offset, and runs the three curation checks.
+
+//
+
+La fonction détecte la version et l'ordre des octets à partir du champ `sizeof_hdr`, lit chaque champ à sa position et exécute les trois contrôles de curation.
+
+```{r}
+#| label: header-parse
+
+inspect_nifti <- function(fp) {
+  fname <- basename(fp)
+  rel <- sub(paste0(target_dir, "/"), "", fp, fixed = TRUE)
+  is_gz <- grepl("\\.gz$", fp, ignore.case = TRUE)
+
+  tryCatch({
+    h <- read_head(fp, is_gz)
+    if (length(h) < 348) stop("file is shorter than a NIfTI-1 header (348 bytes)")
+
+    sz_le <- readBin(h[1:4], "integer", size = 4, endian = "little")
+    sz_be <- readBin(h[1:4], "integer", size = 4, endian = "big")
+    if (sz_le == 348) { ver <- 1L; end <- "little"
+    } else if (sz_be == 348) { ver <- 1L; end <- "big"
+    } else if (sz_le == 540) { ver <- 2L; end <- "little"
+    } else if (sz_be == 540) { ver <- 2L; end <- "big"
+    } else {
+      stop(sprintf("sizeof_hdr is %d (little-endian read) / %d (big-endian read), neither 348 nor 540: not a NIfTI-1/2 header (could be ANALYZE 7.5 or another format)", sz_le, sz_be))
+    }
+    if (ver == 2L && length(h) < 540) stop("NIfTI-2 file shorter than its 540-byte header")
+
+    # h is a 1-based raw vector; offsets below are the 0-based byte offsets from the specs.
+    rd_int <- function(off, n = 1, size = 2) readBin(h[(off + 1):(off + n * size)], "integer", n = n, size = size, endian = end)
+    rd_num <- function(off, n = 1, size = 4) readBin(h[(off + 1):(off + n * size)], "numeric", n = n, size = size, endian = end)
+    rd_txt <- function(off, len) {
+      x <- h[(off + 1):(off + len)]
+      x <- x[x != as.raw(0)]
+      if (length(x)) rawToChar(x) else ""
+    }
+
+    if (ver == 1L) {
+      dim_v <- rd_int(40, 8, 2); datatype <- rd_int(70, 1, 2); bitpix <- rd_int(72, 1, 2)
+      pixdim <- rd_num(76, 8, 4); vox_offset <- rd_num(108, 1, 4)
+      slope <- rd_num(112, 1, 4); inter <- rd_num(116, 1, 4)
+      xyzt <- as.integer(h[124])
+      descrip <- rd_txt(148, 80); aux <- rd_txt(228, 24); intent <- rd_txt(328, 16)
+      qform <- rd_int(252, 1, 2); sform <- rd_int(254, 1, 2)
+      magic <- rd_txt(344, 4)
+    } else {
+      datatype <- rd_int(12, 1, 2); bitpix <- rd_int(14, 1, 2)
+      dim_v <- rd_int(16, 8, 8); pixdim <- rd_num(104, 8, 8); vox_offset <- rd_int(168, 1, 8)
+      slope <- rd_num(176, 1, 8); inter <- rd_num(184, 1, 8)
+      descrip <- rd_txt(240, 80); aux <- rd_txt(320, 24)
+      qform <- rd_int(344, 1, 4); sform <- rd_int(348, 1, 4)
+      xyzt <- rd_int(500, 1, 4); intent <- rd_txt(508, 16)
+      magic <- rd_txt(4, 3)
+    }
+
+    n_dims <- dim_v[1]
+    if (is.na(n_dims) || n_dims < 1 || n_dims > 7) stop(sprintf("implausible dimension count (dim[0] = %s)", n_dims))
+    dims <- dim_v[2:(n_dims + 1)]
+
+    # pixdim[1] (R index 1) is qfac; the spatial steps dx, dy, dz are R indices 2..4.
+    voxel_size <- paste(round(pixdim[2:(min(n_dims, 3L) + 1L)], 4), collapse = " x ")
+    dt4 <- if (n_dims >= 4) pixdim[5] else NA_real_
+
+    dt_name <- unname(dtype_names[as.character(datatype)])
+    if (is.na(dt_name)) dt_name <- paste("unknown code", datatype)
+
+    expected <- vox_offset + prod(as.numeric(dims)) * (bitpix / 8)
+    actual <- file.size(fp)
+    size_check <- if (is_gz) {
+      "not checked (compressed)"
+    } else if (actual == expected) {
+      "match"
+    } else if (actual < expected) {
+      "TRUNCATED (file smaller than the header implies)"
+    } else {
+      "larger than the header implies (extra trailing bytes)"
+    }
+
+    make_row(
+      fname, rel, compressed = is_gz, version = ver, endian = end,
+      dims = paste(dims, collapse = " x "), n_dims = as.integer(n_dims),
+      datatype = dt_name, bitpix = as.integer(bitpix),
+      voxel = voxel_size, dt4 = dt4,
+      sp_units = spatial_unit(xyzt), t_units = temporal_unit(xyzt),
+      vox_offset = vox_offset, slope = slope, inter = inter,
+      qform = as.integer(qform), sform = as.integer(sform),
+      has_orient = (qform > 0 || sform > 0), magic = magic,
+      expected = expected, actual = actual, size_check = size_check,
+      descrip_ne = nzchar(descrip), descrip_len = nchar(descrip),
+      aux_ne = nzchar(aux), intent_ne = nzchar(intent),
+      status = if (ver == 2L) "Success (NIfTI-2 parsed per the official header spec; not validated against a real NIfTI-2 file)" else "Success"
+    )
+  }, error = function(e) {
+    make_row(fname, rel, compressed = is_gz, status = paste("Failed:", conditionMessage(e)))
+  })
+}
+```
+
+## Reading the Headers // Lecture des en-têtes
+
+This step runs the parse on every file. Only the first 348 or 540 bytes of each file are read.
+
+//
+
+Cette étape exécute l'analyse sur chaque fichier. Seuls les 348 ou 540 premiers octets de chaque fichier sont lus.
+
+```{r}
+#| label: execution
+
+message("Reading NIfTI headers (only the first 348/540 bytes of each file)...")
+report <- map_dfr(nii_files, inspect_nifti)
+```
+
+## Save Results // Enregistrer les résultats
+
+```{r}
+#| label: save-results
+
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+output_file <- file.path(output_dir, paste0("NIfTI_Report_", dir_label, "_", format(Sys.Date(), "%Y%m%d"), ".csv"))
+write_excel_csv(report, output_file)
+
+codebook <- tibble(
+  Variable = names(report),
+  Type = map_chr(report, function(col) {
+    if (is.logical(col)) "Logical" else if (is.integer(col)) "Integer" else if (is.numeric(col)) "Numeric" else "Text"
+  }),
+  Description = c(
+    "File name.",
+    "Path relative to the scanned directory.",
+    "TRUE for .nii.gz (gzip-compressed).",
+    "1 or 2, from the sizeof_hdr field (348 = NIfTI-1, 540 = NIfTI-2).",
+    "little or big, the byte order the header was written in.",
+    "Array dimensions (dim[1..dim[0]]), e.g. \"64 x 64 x 30 x 200\" for a 4-D fMRI run.",
+    "Number of dimensions (dim[0]); 3 for a structural volume, 4 for time series.",
+    "Voxel data type from the datatype code (e.g. float32, int16).",
+    "Bits per voxel.",
+    "Voxel size along the first (up to) three spatial axes, in Spatial_Units.",
+    "pixdim[4], the step along the 4th dimension (the repetition time TR for fMRI), in Temporal_Units; blank for volumes with fewer than 4 dimensions.",
+    "Spatial unit code from xyzt_units (unknown, meter, mm, micron).",
+    "Temporal unit code from xyzt_units (unknown, sec, msec, usec, Hz, ppm, rad/s).",
+    "Byte offset where voxel data starts (vox_offset).",
+    "scl_slope: voxel values should be multiplied by this (0 or NaN means no scaling).",
+    "scl_inter: added after multiplying by scl_slope.",
+    "qform_code: 0 unknown, 1 scanner anatomical, 2 aligned anatomical, 3 Talairach, 4 MNI-152.",
+    "sform_code: same coding as qform_code.",
+    "TRUE if qform_code or sform_code is above 0, i.e. the file defines how voxel indices map to real-world space; FALSE (both 0) means no spatial orientation is defined, worth asking the depositor about.",
+    "Magic string identifying the format (n+1 or ni1 for NIfTI-1, n+2 for NIfTI-2).",
+    "Size the file should have if uncompressed: vox_offset + product of dimensions x bits per voxel / 8. For .nii.gz this is the size after decompression.",
+    "Actual file size on disk in bytes. For .nii.gz this is the compressed size, so it is not comparable to Expected_Size_Bytes (see Size_Check).",
+    "match, TRUNCATED, larger than the header implies, or not checked (compressed).",
+    "TRUE if the free-text descrip field (80 bytes) is not empty. The value itself is deliberately NOT recorded; inspect flagged files by hand.",
+    "Character length of descrip (0 if empty); length only, never the content.",
+    "TRUE if the aux_file field (24 bytes) is not empty (value not recorded).",
+    "TRUE if the intent_name field (16 bytes) is not empty (value not recorded).",
+    "Success, or Failed: <reason> (e.g. not a NIfTI header)."
+  )
+)
+codebook_file <- file.path(output_dir, "NIfTI_Report_Codebook.csv")
+write_excel_csv(codebook, codebook_file)
+
+ok <- report %>% filter(startsWith(Status, "Success"))
+message(sprintf("Process complete. %d file(s) read, %d failed.", nrow(report), nrow(report) - nrow(ok)))
+if (nrow(ok) > 0) {
+  message(sprintf("  Distinct dimension sets: %d", n_distinct(ok$Dimensions)))
+  n_txt <- sum(ok$Descrip_Nonempty | ok$Aux_File_Nonempty | ok$Intent_Name_Nonempty, na.rm = TRUE)
+  if (n_txt > 0) message(sprintf("  NOTE: %d file(s) have a non-empty free-text header field (descrip/aux_file/intent_name). Inspect by hand before publication.", n_txt))
+  n_orient <- sum(!ok$Has_Spatial_Orientation, na.rm = TRUE)
+  if (n_orient > 0) message(sprintf("  NOTE: %d file(s) define no spatial orientation (qform_code and sform_code both 0).", n_orient))
+  n_trunc <- sum(startsWith(ok$Size_Check, "TRUNCATED"), na.rm = TRUE)
+  if (n_trunc > 0) message(sprintf("  WARNING: %d file(s) are smaller than their header implies (truncated or corrupt).", n_trunc))
+}
+message(paste("Report saved to:", output_file))
+```
+
+## Curation Insights // Aperçu de la curation
+
+Use this report to decide what to ask the depositor:
+
+-   **Size_Check = TRUNCATED:** The file is smaller than its header implies, so it is truncated or corrupt. Ask for a new copy. For `.nii.gz` files the check is "not checked", so verify them with a checksum manifest instead.
+
+-   **Has_Spatial_Orientation = FALSE:** Both `qform_code` and `sform_code` are 0. This may be acceptable for some derived products, but raw scans normally have an orientation. Ask about it.
+
+-   **Descrip_Nonempty, Aux_File_Nonempty, Intent_Name_Nonempty:** A non-empty free-text field is a common place for scanner software strings, a protocol name, or occasionally a name or ID. Open the flagged files by hand and decide whether to clear the field before publication.
+
+-   **Dimensions and Voxel_Size:** Compare these across files. A different shape or voxel size inside one study is worth asking about. A 4-D volume with `Pixdim4_TR` is a time series such as fMRI.
+
+-   **Scl_Slope and Scl_Inter:** If the slope is not 0 or 1, stored values must be rescaled to get physical values. Document it.
+
+-   **Status "Failed":** The file is not a NIfTI-1 or NIfTI-2 header. It could be ANALYZE 7.5 or another format.
+
+-   **Header only:** This notebook does not look at the voxel data, so it cannot tell whether a head image could allow facial reconstruction. Defacing and similar decisions need separate review.
+
+//
+
+Utilisez ce rapport pour décider de ce qu'il faut demander au déposant :
+
+-   **Size_Check = TRUNCATED :** Le fichier est plus petit que ne l'indique son en-tête ; il est donc tronqué ou corrompu. Demandez une nouvelle copie. Pour les fichiers `.nii.gz`, le contrôle indique « not checked » ; vérifiez-les plutôt avec un manifeste de sommes de contrôle.
+
+-   **Has_Spatial_Orientation = FALSE :** `qform_code` et `sform_code` valent tous deux 0. Cela peut être acceptable pour certains produits dérivés, mais les images brutes ont normalement une orientation. Posez la question.
+
+-   **Descrip_Nonempty, Aux_File_Nonempty, Intent_Name_Nonempty :** Un champ de texte libre non vide est un endroit fréquent pour les chaînes du logiciel du scanner, un nom de protocole ou, parfois, un nom ou un identifiant. Ouvrez à la main les fichiers signalés et décidez s'il faut vider le champ avant la publication.
+
+-   **Dimensions et Voxel_Size :** Comparez-les d'un fichier à l'autre. Une forme ou une taille de voxel différente au sein d'une même étude mérite une question. Un volume 4D avec `Pixdim4_TR` est une série temporelle, comme en IRMf.
+
+-   **Scl_Slope et Scl_Inter :** Si la pente n'est ni 0 ni 1, les valeurs stockées doivent être remises à l'échelle pour obtenir des valeurs physiques. Documentez-le.
+
+-   **Statut « Failed » :** Le fichier n'a pas d'en-tête NIfTI-1 ou NIfTI-2. Il pourrait s'agir d'ANALYZE 7.5 ou d'un autre format.
+
+-   **En-tête seulement :** Ce cahier n'examine pas les données des voxels ; il ne peut donc pas dire si une image de tête permettrait de reconstituer un visage. Le retrait des traits du visage et les décisions semblables exigent un examen distinct.
+
+## Additional Tools // Outils supplémentaires
+
+-   **NiBabel:** The Python [library](https://nipy.org/nibabel/) to read and write NIfTI and related neuroimaging formats, including the full voxel data.
+
+-   **NIfTI specification:** The [NIfTI-1 documentation](https://nifti.nimh.nih.gov/nifti-1/) describes every header field used by this notebook.
+
+-   **BIDS (Brain Imaging Data Structure):** A [standard](https://bids.neuroimaging.io/) for organizing and naming neuroimaging datasets, with a validator that checks a dataset against it.
+
+//
+
+-   **NiBabel :** La [bibliothèque](https://nipy.org/nibabel/) Python pour lire et écrire les fichiers NIfTI et les formats de neuro-imagerie apparentés, y compris l'ensemble des données des voxels.
+
+-   **Spécification NIfTI :** La [documentation NIfTI-1](https://nifti.nimh.nih.gov/nifti-1/) décrit chaque champ d'en-tête utilisé par ce cahier.
+
+-   **BIDS (Brain Imaging Data Structure) :** Une [norme](https://bids.neuroimaging.io/) pour organiser et nommer les jeux de données de neuro-imagerie, avec un validateur qui vérifie la conformité d'un jeu de données.
+
+## Using the Non-Interactive R Script // Utilisation du script R non interactif
+
+For users who want to run this analysis on a server, in a batch job, or from the command line, here is a pure R script that performs the same process.
+
+Download the **R Script:** [**`Inspect_NIfTI_Script.R`**](Scripts/Inspect_NIfTI_Script.R)
+
+//
+
+Pour les utilisateurs qui souhaitent exécuter cette analyse sur un serveur, dans le cadre d'un traitement par lots ou depuis la ligne de commande, voici un script R pur qui effectue le même processus.
+
+Télécharger le **script R :** [**`Inspect_NIfTI_Script.R`**](Scripts/Inspect_NIfTI_Script.R)
+
+### Example HPC Submission Script // Exemple de script de soumission HPC
+
+`Inspect_NIfTI_submit.sh`
+
+``` bash
+#!/bin/bash
+#SBATCH --job-name=nifti_check
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=01:00:00
+#SBATCH --mem=8G
+#SBATCH --output=logs/nifti_check_%j.log
+
+# Load R Module
+module load R
+
+# Define directories
+DATA_DIR="/scratch/user/project_data/mri"
+OUTPUT_DIR="/scratch/user/nifti_results"
+
+# Prepare Environment
+mkdir -p logs
+
+# Run Analysis
+echo "Starting NIfTI header inspection on $DATA_DIR"
+Rscript Inspect_NIfTI_Script.R "$DATA_DIR" "$OUTPUT_DIR"
+```
+
+## References // Références
+
+::: {#refs}
+:::
