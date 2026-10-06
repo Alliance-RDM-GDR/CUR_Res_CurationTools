@@ -85,6 +85,9 @@ inspect_video <- function(fp) {
     probe_args <- c("-v", "quiet", "-print_format", "json", "-show_format", "-show_streams", shQuote(fp))
     probe_json <- suppressWarnings(system2(ffprobe_bin, probe_args, stdout = TRUE, stderr = FALSE))
     probe <- fromJSON(paste(probe_json, collapse = "\n"))
+    # ffprobe prints nothing usable when it cannot parse the container (e.g. a
+    # truncated file); without this check the row silently vanishes from the report.
+    if (is.null(probe$format)) stop("ffprobe could not read the container (file may be truncated or corrupt)")
 
     duration_sec <- as.numeric(probe$format$duration)
     container <- probe$format$format_name

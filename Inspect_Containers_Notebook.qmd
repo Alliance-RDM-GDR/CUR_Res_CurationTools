@@ -261,12 +261,12 @@ module load R
 DATA_DIR="/scratch/user/project_data/deposits"
 
 # Prepare Environment
-mkdir -p Results/Inspect_Archives
+mkdir -p Results/Inspect_Containers
 mkdir -p logs
 
 # Run
 echo "Starting Archive Inspection on $DATA_DIR"
-Rscript Inspect_Archive_Script.R "$DATA_DIR"
+Rscript Inspect_Containers_Script.R "$DATA_DIR"
 ```
 
 ## References

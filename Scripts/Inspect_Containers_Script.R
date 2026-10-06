@@ -1,12 +1,12 @@
 #!/usr/bin/env Rscript
 
 # ==============================================================================
-# Script: Inspect_Archive_Script.R
+# Script: Inspect_Containers_Script.R
 # Purpose: Batch inspection of compressed archives (.zip, .tar, .7z, etc.).
 #          - Detects "Zip Bombs" (High compression ratio)
 #          - Checks Integrity (Corrupt headers)
 #          - Inventories contents without extraction
-# Usage:   Rscript Inspect_Archive_Script.R <target_directory>
+# Usage:   Rscript Inspect_Containers_Script.R <target_directory>
 # ==============================================================================
 
 # Load libraries silently
@@ -29,7 +29,7 @@ if (interactive()) {
 } else {
   args <- commandArgs(trailingOnly = TRUE)
   if (length(args) == 0) {
-    stop("Error: No target directory provided.\nUsage: Rscript Inspect_Archive_Script.R /path/to/archives [output_dir]", call. = FALSE)
+    stop("Error: No target directory provided.\nUsage: Rscript Inspect_Containers_Script.R /path/to/archives [output_dir]", call. = FALSE)
   }
   target_dir <- args[1]
   if (!dir.exists(target_dir)) {
